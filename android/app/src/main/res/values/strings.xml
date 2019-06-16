@@ -1,0 +1,4 @@
+<resources>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">Dj7TPazg0YCJROJyZZ0eM2yq6rUxcf1271e8-d228-45ab-a414-a00599f2e151</string>
+    <string name="app_name">HandamProject</string>
+</resources>
