@@ -1,3 +1,7 @@
+/**
+ * 설정파일
+ */
+
 const init = {
   type: "dev",
   server: {
@@ -18,7 +22,7 @@ const init = {
   }
 };
 
-export default {
+const config = {
   server: init.server[init.type],
   mailServer: init.mailServer[init.type],
   shuttleWebView: init.shuttleWebView[init.type],
@@ -31,3 +35,5 @@ export default {
   androidVersion: "2.1.0",
   iosVersion: "2.1.0"
 };
+
+export default config;

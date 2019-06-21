@@ -1,3 +1,6 @@
+/**
+ * redux store 설정
+ */
 import { createStore, applyMiddleware } from "redux";
 import modules from "./modules";
 import ReduxThunk from "redux-thunk";

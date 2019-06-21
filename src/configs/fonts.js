@@ -1,3 +1,7 @@
+/**
+ * 폰트 모음
+ */
+
 import { Platform } from "react-native";
 
 export default {

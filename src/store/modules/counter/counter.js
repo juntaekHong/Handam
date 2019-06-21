@@ -1,3 +1,6 @@
+/**
+ * 액션 타입, 액션 생성자, redux-thunk, immer 예제
+ */
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 

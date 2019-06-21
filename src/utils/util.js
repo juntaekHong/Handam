@@ -1,3 +1,8 @@
+/*
+ * util 모음
+ * widthPercentageToDp: 디바이스 크기에 따라 크기 변환
+ *
+ */
 import { Dimensions, PixelRatio } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;

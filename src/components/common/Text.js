@@ -1,3 +1,8 @@
+/**
+ * 폰트 적용된 Text Component
+ * 기본 폰트 크기 14
+ * 기본 색      #000
+ */
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 
