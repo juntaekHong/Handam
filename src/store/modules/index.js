@@ -3,6 +3,10 @@
  */
 import { combineReducers } from "redux";
 import counter from "./counter/counter";
+import auth from "./auth/auth";
+import signin from "./sign/signin";
 export default combineReducers({
-  counter
+  counter,
+  auth,
+  signin
 });

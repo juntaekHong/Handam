@@ -5,10 +5,19 @@ import store from "./store";
 import AppNavigation from "./navigations";
 import SplashScreen from "react-native-splash-screen";
 import { useScreens } from "react-native-screens";
+import NavigatorService from "./utils/navigators";
+import config from "./configs/config";
+import OneSignal from "react-native-onesignal";
 useScreens();
 
 export default class App extends PureComponent {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    try {
+      OneSignal.init(config.pushKey);
+      OneSignal.inFocusDisplaying(2);
+    } catch (e) {}
+
     SplashScreen.hide();
   }
 
@@ -16,7 +25,11 @@ export default class App extends PureComponent {
     return (
       <Provider store={store}>
         <SafeAreaView style={styles.container}>
-          <AppNavigation />
+          <AppNavigation
+            ref={navigatorRef => {
+              NavigatorService.setContainer(navigatorRef);
+            }}
+          />
         </SafeAreaView>
       </Provider>
     );

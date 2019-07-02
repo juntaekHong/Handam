@@ -7,7 +7,7 @@ import axios from "axios";
 const ROOT_URL = config.server;
 
 function rest(method) {
-  return async (url, { body, header, token } = {}) => {
+  return async (url, { body = {}, header = {}, token = "" } = {}) => {
     try {
       const { data } = await axios[`${method}`](`${ROOT_URL}${url}`, body, {
         headers: {

@@ -20,5 +20,21 @@ export default {
   nanumSquareR: Platform.select({
     ios: "NanumSquareR",
     android: "NanumSquareRegular"
+  }),
+  nanumBarunGothicB: Platform.select({
+    ios: "NanumBarunGothicBold",
+    android: "NanumBarunGothicBold"
+  }),
+  nanumBarunGothicUL: Platform.select({
+    ios: "NanumBarunGothicUltraLight",
+    android: "NanumBarunGothicUltraLight"
+  }),
+  nanumBarunGothicL: Platform.select({
+    ios: "NanumBarunGothicLight",
+    android: "NanumBarunGothicLight"
+  }),
+  nanumBarunGothic: Platform.select({
+    ios: "NanumBarunGothic",
+    android: "NanumBarunGothic"
   })
 };

@@ -71,6 +71,16 @@ import com.android.build.OutputFile
  *   extraPackagerArgs: []
  * ]
  */
+ buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal 
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 project.ext.react = [
     entryFile: "index.js"
@@ -150,6 +160,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-onesignal')
+    implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-screens')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-vector-icons')

@@ -33,7 +33,8 @@ const config = {
   jongro: "100900010",
   seongbuk: "107900003",
   androidVersion: "2.1.0",
-  iosVersion: "2.1.0"
+  iosVersion: "2.1.0",
+  signDataKey: ["userId"]
 };
 
 export default config;
