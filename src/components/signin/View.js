@@ -10,7 +10,8 @@ export const SignInMainView = styled.KeyboardAvoidingView`
 
 export const SignInLinkView = styled.View`
   width: 100%;
-  height: ${widthPercentageToDP(16)}
+  height: ${props =>
+    props.height ? widthPercentageToDP(props.height) : widthPercentageToDP(16)}
   flex-direction: row;
   justify-content: center;
   align-items: center;

@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
 import colors from "../../configs/colors";
 
-export const SignInButton = styled.View`
+export const SignInButtonStyle = styled.TouchableOpacity`
   width: ${props =>
     props.width ? widthPercentageToDP(props.width) : widthPercentageToDP(279)};
   height: ${props =>
@@ -21,7 +21,11 @@ export const SignInButton = styled.View`
   border-color: ${props =>
     props.borderColor ? props.borderColor : colors.border};
   background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : colors.disable};
+    props.disabled ? colors.disable : colors.active};
   justify-content: center;
   align-items: center;
 `;
+
+export const SignInButton = props => {
+  return <SignInButtonStyle disabled={true} {...props} />;
+};

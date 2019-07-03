@@ -4,7 +4,6 @@ import { View, StyleSheet } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import { AuthActions, SignInActions } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
-import { removeData } from "../../utils/util";
 
 class UpdateCheck extends PureComponent {
   constructor(props) {

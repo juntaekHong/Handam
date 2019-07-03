@@ -4,7 +4,8 @@
 const colors = {
   border: "#dbdbdb",
   rightBlue: "#23a3f9",
-  disable: "#dbdbdb"
+  disable: "#dbdbdb",
+  active: "#259ffa"
 };
 
 export default colors;

@@ -3,10 +3,6 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import { connect } from "react-redux";
 import { RightBubble } from "../../components/common/Chat";
 import {
-  NRText,
-  NLText,
-  NBText,
-  NEBText,
   NBGBText,
   NBGText,
   NBGLText,
