@@ -5,6 +5,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { getData, storeData, removeAllData } from "../../../utils/util";
 import api from "../../../utils/api";
+import config from "../../../configs/config";
 
 const SIGNIN_NAVIGATE = "signin/SIGNIN_NAVIGATE";
 const SIGNIN_USERDATA = "singin/SIGNIN_USERDATA";
@@ -37,6 +38,28 @@ export const checkToken = appId => async dispatch => {
   } catch (err) {
     removeAllData();
     dispatch(signInNavigateAction("signIn"));
+    return false;
+  }
+};
+
+export const postSingIn = (userId, userPw, appId) => async dispatch => {
+  try {
+    let userData = {
+      userId,
+      userPw,
+      appId
+    };
+    const jsonData = await api.post("/signIn", { body: userData });
+    if (jsonData.statusCode == 200) {
+      const result = jsonData.result;
+      await storeData("token", result.token);
+      await storeData("userId", result.userId);
+      dispatch(userDataAction(result));
+      return true;
+    } else {
+      throw "error";
+    }
+  } catch (err) {
     return false;
   }
 };

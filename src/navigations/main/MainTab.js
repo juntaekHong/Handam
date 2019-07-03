@@ -3,10 +3,10 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator
 } from "react-navigation";
-import Home from "../../containers/Home/Home";
-import Left from "../../containers/Left/Left";
-import Right from "../../containers/Right/Right";
-import { MaterialIcon } from "react-native-vector-icons/MaterialIcons";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import Home from "../../containers/home/Home";
+import Left from "../../containers/left/Left";
+import Right from "../../containers/right/Right";
 
 const HomeStack = createStackNavigator(
   {

@@ -10,3 +10,9 @@ export const LinkView = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 `;
+
+export const CenterView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

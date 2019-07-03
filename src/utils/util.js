@@ -6,6 +6,7 @@
 import { Dimensions, PixelRatio } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import config from "../configs/config";
+import Toast from "react-native-root-toast";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -56,4 +57,16 @@ export const removeAllData = async () => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export const showMessage = (message, options) => {
+  Toast.show(message, {
+    duration: Toast.durations.LONG,
+    position: Toast.positions.BOTTOM,
+    shadow: true,
+    animation: true,
+    hideOnPress: true,
+    delay: 0,
+    ...options
+  });
 };

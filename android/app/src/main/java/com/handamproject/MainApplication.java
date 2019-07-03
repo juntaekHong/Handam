@@ -3,6 +3,7 @@ package com.handamproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.rnscreens.RNScreensPackage;
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNDeviceInfo(),
             new ReactNativeOneSignalPackage(),
             new AsyncStoragePackage(),
             new RNScreensPackage(),

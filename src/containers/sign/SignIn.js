@@ -9,8 +9,11 @@ import { SignInButton } from "../../components/signin/Button";
 import { SignInMainView, SignInLinkView } from "../../components/signin/View";
 import { LinkView } from "../../components/common/View";
 import colors from "../../configs/colors";
+import { SignInActions } from "../../store/actionCreator";
+import OneSignal from "react-native-onesignal";
+import { showMessage } from "../../utils/util";
 
-const SignIn = ({}) => {
+const SignIn = ({ navigation }) => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
 
@@ -19,12 +22,20 @@ const SignIn = ({}) => {
   }, []);
   handlePwd = useCallback(value => {
     setPwd(value);
-  });
+  }, []);
 
   initState = useCallback(() => {
     setId("");
     setPwd("");
   }, []);
+
+  postSignIn = useCallback(() => {
+    OneSignal.getPermissionSubscriptionState(async status => {
+      const result = await SignInActions.postSingIn(id, pwd, status.userId);
+      if (result) navigation.navigate("main");
+      else showMessage("로그인에 실패했습니다.");
+    });
+  }, [id, pwd]);
 
   return (
     <SignInMainView>
@@ -46,7 +57,7 @@ const SignIn = ({}) => {
       </SignInInputView>
       <SignInButton
         marginBottom={15}
-        behavior="padding"
+        onPress={this.postSignIn}
         disabled={id.length <= 0 || pwd.length <= 0}
       >
         <NBGText color={"white"}>시작하기</NBGText>

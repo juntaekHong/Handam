@@ -1,9 +1,10 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import { AuthActions, SignInActions } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
+import { getData, storeData } from "../../utils/util";
 
 class UpdateCheck extends PureComponent {
   constructor(props) {
