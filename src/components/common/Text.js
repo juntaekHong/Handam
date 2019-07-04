@@ -9,6 +9,7 @@ import fonts from "../../configs/fonts";
 export const NRText = styled.Text`
   font-size: ${props => (props.fontSize ? props.fontSize : 14)};
   font-family: ${fonts.nanumSquareR};
+  include-font-padding: false;
   color: ${props => (props.color ? props.color : "#000")};
 `;
 
