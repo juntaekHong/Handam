@@ -11,8 +11,19 @@ export const LinkView = styled.TouchableOpacity`
   align-items: center;
 `;
 
+export const BaseView = styled.View`
+  flex: 1;
+  background-color: ${props =>
+    props.backgroundColor ? props.backgroundColor : "white"};
+`;
+
 export const CenterView = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+
+export const TitleView = styled.View`
+  width: 100%;
+  height: ${widthPercentageToDP(55)};
 `;

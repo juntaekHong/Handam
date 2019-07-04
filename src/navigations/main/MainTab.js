@@ -4,9 +4,9 @@ import {
   createStackNavigator
 } from "react-navigation";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import Home from "../../containers/home/Home";
-import Left from "../../containers/left/Left";
-import Right from "../../containers/right/Right";
+import Left from "../../containers/Left/Left";
+import Home from "../../containers/Home/Home";
+import Right from "../../containers/Right/Right";
 
 const HomeStack = createStackNavigator(
   {
