@@ -25,6 +25,23 @@ export const NLText = styled(NRText)`
   font-family: ${fonts.nanumSquareL};
 `;
 
+export const NBGText = styled.Text`
+  font-size: ${props => (props.fontSize ? props.fontSize : 14)};
+  font-family: ${fonts.nanumBarunGothic};
+  color: ${props => (props.color ? props.color : "#000")};
+`;
+
+export const NBGLText = styled(NRText)`
+  font-family: ${fonts.nanumBarunGothicL};
+`;
+
+export const NBGBText = styled(NRText)`
+  font-family: ${fonts.nanumBarunGothicB};
+`;
+
+export const NBGULText = styled(NRText)`
+  font-family: ${fonts.nanumBarunGothicUL};
+`;
 //커뮤니티
 //기본
 export const CText = styled.Text`
@@ -48,4 +65,5 @@ export const CEText = styled(CText)`
   width: ${widthPercentageToDP(200)};
   height: ${widthPercentageToDP(13)};
   color: ${"#646464"};
+`;
 `;

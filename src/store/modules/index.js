@@ -3,9 +3,15 @@
  */
 import { combineReducers } from "redux";
 import counter from "./counter/counter";
-import talk from "./community/talk";
+import auth from "./auth/auth";
+import signin from "./sign/signin";
+import common from "./common/common";
+import talk from "./common/talk";
 
 export default combineReducers({
   counter,
-  talk
+  auth,
+  signin,
+  common,
+  talk,
 });
