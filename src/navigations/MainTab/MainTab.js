@@ -5,9 +5,10 @@ import {
 } from "react-navigation";
 import Home from "../../containers/Home/Home";
 import Left from "../../containers/Left/Left";
-import Right from "../../containers/Right/Right";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { View, Button, Text } from "react-native";
+import CommunityTab from "../CommunityTab/CommunityTab";
+import TalkAboutScreen from "../../containers/Right/TalkAboutScreen";
 
 const Test = props => {
   navigation = () => {
@@ -33,11 +34,23 @@ const HomeStack = createStackNavigator(
   }
 );
 
+const RightStack = createStackNavigator(
+  {
+    Community: { screen: CommunityTab },
+    TalkAbout: { screen: TalkAboutScreen },
+  },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  }
+)
+
 export default createMaterialTopTabNavigator(
   {
     Left: { screen: Left, navigationOptions: { tabBarLabel: "성적표" } },
     Home: { screen: HomeStack, navigationOptions: { tabBarLabel: "홈" } },
-    Right: { screen: Right, navigationOptions: { tabBarLabel: "커뮤니티" } }
+    Right: { screen: RightStack, navigationOptions: { tabBarLabel: "커뮤니티" } }
   },
   {
     initialRouteName: "Home",
