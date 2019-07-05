@@ -4,6 +4,7 @@ import { widthPercentageToDP } from "../../utils/util";
 import { NBGText } from "./Text";
 import FastImage from "react-native-fast-image";
 import navigations from "../../utils/navigators";
+import colors from "../../configs/colors";
 
 export const LinkView = styled.TouchableOpacity`
   height: 100%;
@@ -19,12 +20,22 @@ export const BaseView = styled.View`
   flex: 1;
   background-color: ${props =>
     props.backgroundColor ? props.backgroundColor : "white"};
+  padding-top: ${({ paddingTop }) =>
+    paddingTop ? widthPercentageToDP(paddingTop) : 0};
+  padding-bottom: ${({ paddingBottom }) =>
+    paddingBottom ? widthPercentageToDP(paddingBottom) : 0};
+`;
+
+export const HCenterView = styled(BaseView)`
+  align-items: center;
 `;
 
 export const CenterView = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  background-color: ${props =>
+    props.backgroundColor ? props.backgroundColor : "colors.white"};
 `;
 
 const TitleView = styled.View`

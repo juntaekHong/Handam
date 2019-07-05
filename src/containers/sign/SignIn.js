@@ -6,7 +6,11 @@ import {
 } from "../../components/signin/TextInput";
 import { NBGText } from "../../components/common/Text";
 import { SignInButton } from "../../components/signin/Button";
-import { SignInMainView, SignInLinkView } from "../../components/signin/View";
+import {
+  SignInMainView,
+  SignInLinkView,
+  SignInImage
+} from "../../components/signin/View";
 import { LinkView } from "../../components/common/View";
 import colors from "../../configs/colors";
 import { SignInActions } from "../../store/actionCreator";
@@ -43,6 +47,7 @@ const SignIn = ({ navigation }) => {
 
   return (
     <SignInMainView>
+      <SignInImage />
       <SignInInputView marginBottom={12}>
         <SignInInput
           placeholder="이메일"
