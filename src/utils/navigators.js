@@ -32,6 +32,14 @@ function navigate(routeName, params) {
   );
 }
 
+function navigateBack() {
+  _container.dispatch(
+    StackActions.pop({
+      n: 1
+    })
+  );
+}
+
 function navigateDeep(actions) {
   _container.dispatch(
     actions.reduceRight(
@@ -59,6 +67,7 @@ export default {
   setContainer,
   navigateDeep,
   navigate,
+  navigateBack,
   reset,
   getCurrentRoute
 };

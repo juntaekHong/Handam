@@ -5,10 +5,12 @@
  */
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
+import { widthPercentageToDP } from "../../utils/util";
 
 export const NRText = styled.Text`
   font-size: ${props => (props.fontSize ? props.fontSize : 14)};
   font-family: ${fonts.nanumSquareR};
+  include-font-padding: false;
   color: ${props => (props.color ? props.color : "#000")};
 `;
 
@@ -28,6 +30,13 @@ export const NBGText = styled.Text`
   font-size: ${props => (props.fontSize ? props.fontSize : 14)};
   font-family: ${fonts.nanumBarunGothic};
   color: ${props => (props.color ? props.color : "#000")};
+  margin-top: ${({ marginTop }) =>
+    marginTop ? widthPercentageToDP(marginTop) : 0};
+  margin-bottom: ${({ marginBottom }) =>
+    marginBottom ? widthPercentageToDP(marginBottom) : 0};
+  text-align: ${({ align }) => (align ? align : "auto")};
+  text-align-vertical: ${({ alignVertical }) =>
+    alignVertical ? alignVertical : "center"};
 `;
 
 export const NBGLText = styled(NRText)`

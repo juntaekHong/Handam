@@ -6,7 +6,11 @@ import {
 } from "../../components/signin/TextInput";
 import { NBGText } from "../../components/common/Text";
 import { SignInButton } from "../../components/signin/Button";
-import { SignInMainView, SignInLinkView } from "../../components/signin/View";
+import {
+  SignInMainView,
+  SignInLinkView,
+  SignInImage
+} from "../../components/signin/View";
 import { LinkView } from "../../components/common/View";
 import colors from "../../configs/colors";
 import { SignInActions } from "../../store/actionCreator";
@@ -16,6 +20,10 @@ import { showMessage } from "../../utils/util";
 const SignIn = ({ navigation }) => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
+
+  navigateSignUp = useCallback(() => {
+    navigation.navigate("signUp1");
+  }, []);
 
   handleId = useCallback(value => {
     setId(value);
@@ -39,6 +47,7 @@ const SignIn = ({ navigation }) => {
 
   return (
     <SignInMainView>
+      <SignInImage />
       <SignInInputView marginBottom={12}>
         <SignInInput
           placeholder="이메일"
@@ -63,7 +72,11 @@ const SignIn = ({ navigation }) => {
         <NBGText color={"white"}>시작하기</NBGText>
       </SignInButton>
       <SignInLinkView height={22}>
-        <LinkView paddingLeft={10.5} paddingRight={10.5}>
+        <LinkView
+          paddingLeft={10.5}
+          paddingRight={10.5}
+          onPress={this.navigateSignUp}
+        >
           <NBGText color={colors.active}>가입하기</NBGText>
         </LinkView>
         <SignInButton width={1} height={14} backgroundColor={"black"} />

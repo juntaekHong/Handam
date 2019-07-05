@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
+import FastImage from "react-native-fast-image";
 
 export const SignInMainView = styled.KeyboardAvoidingView`
   flex: 1;
@@ -16,3 +18,16 @@ export const SignInLinkView = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+export const SignInImage = () => {
+  return (
+    <FastImage
+      style={{
+        width: widthPercentageToDP(235),
+        height: widthPercentageToDP(164),
+        marginBottom: widthPercentageToDP(8)
+      }}
+      source={require("HandamProject/assets/image/sign/loginimage.png")}
+    />
+  );
+};
