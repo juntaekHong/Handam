@@ -9,7 +9,8 @@ const colors = {
   disable: "#dbdbdb",
   active: "#259ffa",
   subContent: "#646464",
-  introInActive: "#b2b2b2"
+  introInActive: "#b2b2b2",
+  signUpNext: "#cad5dd"
 };
 
 export default colors;
