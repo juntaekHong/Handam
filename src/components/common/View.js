@@ -40,7 +40,7 @@ export const CenterView = styled.View`
 
 const TitleView = styled.View`
   width: 100%;
-  height: ${widthPercentageToDP(55)};
+  height: ${({ width = 55 }) => widthPercentageToDP(width)};
   flex-direction: row;
   align-items: center;
   padding-left: ${widthPercentageToDP(10)};
@@ -50,7 +50,10 @@ const TitleView = styled.View`
 
 const TitleText = styled(NBGText)`
   font-size: ${widthPercentageToDP(18)};
+  height: ${widthPercentageToDP(19)};
   align-self: center;
+  include-font-padding: false;
+  text-align-vertical: center;
 `;
 
 const TitleIcon = styled.TouchableOpacity`
@@ -60,16 +63,23 @@ const TitleIcon = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const Title = props => {
+export const Title = ({
+  width,
+  leftRender,
+  leftInVisible,
+  leftHandler,
+  title,
+  rightRender,
+  rightHandler,
+  rightInVisible
+}) => {
   return (
-    <TitleView>
-      {props.leftRender ? (
-        props.leftRender()
-      ) : (
+    <TitleView width={width}>
+      {leftRender ? (
+        leftRender()
+      ) : !leftInVisible ? (
         <TitleIcon
-          onPress={
-            props.leftHandler ? props.leftHandler : navigations.navigateBack
-          }
+          onPress={leftHandler ? leftHandler : navigations.navigateBack}
         >
           <FastImage
             style={{
@@ -79,12 +89,16 @@ export const Title = props => {
             source={require("HandamProject/assets/image/common/previous.png")}
           />
         </TitleIcon>
-      )}
-      <TitleText>{props.title}</TitleText>
-      {props.rightRender ? (
-        props.rightRender()
       ) : (
-        <TitleIcon onPress={props.rightHandler}>
+        <TitleIcon />
+      )}
+      <TitleText>{title}</TitleText>
+      {rightRender ? (
+        rightRender()
+      ) : !rightInVisible ? (
+        <TitleIcon
+          onPress={rightHandler ? rightHandler : navigations.navigateBack}
+        >
           <FastImage
             style={{
               height: widthPercentageToDP(18),
@@ -93,6 +107,8 @@ export const Title = props => {
             source={require("HandamProject/assets/image/common/close.png")}
           />
         </TitleIcon>
+      ) : (
+        <TitleIcon />
       )}
     </TitleView>
   );

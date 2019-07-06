@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getData, widthPercentageToDP } from "../../utils/util";
+import { widthPercentageToDP } from "../../utils/util";
 import AppIntroSlider from "react-native-app-intro-slider";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { Image } from "react-native";
 import { AuthActions } from "../../store/actionCreator";
 import colors from "../../configs/colors";
 import { NBGBText, NBGText } from "../../components/common/Text";
-import { BaseView, HCenterView } from "../../components/common/View";
+import { HCenterView } from "../../components/common/View";
 const slides = [
   {
     key: "somethun",
@@ -106,13 +106,6 @@ class Intro extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  slide: {
-    flex: 1,
-    justifyContent: "space-between"
-  }
-});
-
-export default connect(({ auth, signin }) => ({
+export default connect(({ signin }) => ({
   signin_navigate: signin.signin_navigate
 }))(Intro);

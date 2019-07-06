@@ -41,7 +41,7 @@ function rest(method) {
         return data;
       }
     } catch (err) {
-      console.log(err);
+      console.log("err", err);
       const { response } = err;
       // 403: token이 인증되지 않을경우 로그인 화면으로 네비게이팅
       if (response.status == 403) {

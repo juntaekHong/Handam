@@ -20,7 +20,6 @@ import { showMessage } from "../../utils/util";
 const SignIn = ({ navigation }) => {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
-
   navigateSignUp = useCallback(() => {
     navigation.navigate("signUp1");
   }, []);

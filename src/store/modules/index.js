@@ -6,9 +6,11 @@ import counter from "./counter/counter";
 import auth from "./auth/auth";
 import signin from "./sign/signin";
 import common from "./common/common";
+import signup from "./sign/signup";
 export default combineReducers({
   counter,
   auth,
   signin,
-  common
+  common,
+  signup
 });

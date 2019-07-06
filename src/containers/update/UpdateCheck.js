@@ -2,7 +2,11 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { View, StyleSheet, Text } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
-import { AuthActions, SignInActions } from "../../store/actionCreator";
+import {
+  AuthActions,
+  SignInActions,
+  CommonActions
+} from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { getData, storeData } from "../../utils/util";
 
@@ -16,6 +20,8 @@ class UpdateCheck extends PureComponent {
 
   async componentDidMount() {
     const auth = await AuthActions.checkIntro();
+    CommonActions.getTerm1();
+    CommonActions.getTerm2();
     OneSignal.getPermissionSubscriptionState(async status => {
       await SignInActions.checkToken(status.userId);
       if (auth) {

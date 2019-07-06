@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
-import { useCallback } from "react";
 import colors from "../../configs/colors";
+import { Image, View } from "react-native";
+import { NBGText } from "../common/Text";
+import Modal from "react-native-modal";
+import { Title } from "../common/View";
+import HTML from "react-native-render-html";
 
 const StepContainer = styled.View`
   width: 100%;
@@ -29,5 +33,103 @@ export const Step = ({ number }) => {
       <StepItem value={number == 2} />
       <StepItem value={number == 3} right={0} />
     </StepContainer>
+  );
+};
+
+const TermCheckContainer = styled.TouchableOpacity`
+  width: ${widthPercentageToDP(289)};
+  height: ${widthPercentageToDP(67)};
+  flex-direction: row;
+  margin-bottom: ${({ marginBottom }) =>
+    marginBottom ? widthPercentageToDP(marginBottom) : 0};
+`;
+
+const TermCheckBox = styled.TouchableOpacity`
+  width: ${widthPercentageToDP(42)};
+  height: 100%;
+  padding-left: ${widthPercentageToDP(7)};
+`;
+
+const TermContentView = styled.TouchableOpacity`
+  flex: 1;
+`;
+
+const TermSubject = styled.View`
+  height: ${widthPercentageToDP(21)};
+  margin-bottom: ${widthPercentageToDP(6)};
+  padding-left: ${widthPercentageToDP(1)};
+  justify-content: center;
+`;
+
+export const TermCheckView = ({
+  check,
+  checkHandler,
+  subject,
+  content,
+  open
+}) => (
+  <TermCheckContainer>
+    <TermCheckBox onPress={checkHandler}>
+      <Image
+        style={{
+          width: widthPercentageToDP(21),
+          height: widthPercentageToDP(21)
+        }}
+        source={
+          check
+            ? require("HandamProject/assets/image/sign/smallselectionblue.png")
+            : require("HandamProject/assets/image/sign/smallselectiongrey.png")
+        }
+      />
+    </TermCheckBox>
+    <TermContentView onPress={open}>
+      <TermSubject>
+        <NBGText color={"#646464"}>{subject}</NBGText>
+      </TermSubject>
+      <NBGText
+        numberOfLines={2}
+        ellipsizeMode={"tail"}
+        fontSize={10}
+        color={"#9e9e9e"}
+      >
+        {content}
+      </NBGText>
+    </TermContentView>
+  </TermCheckContainer>
+);
+
+const TermModalView = styled.View`
+  flex: 1;
+  margin-top: ${widthPercentageToDP(65)};
+  border-radius: ${widthPercentageToDP(14)};
+  background-color: ${colors.white};
+  bottom: 0;
+  margin-bottom: 0;
+`;
+const TermModalBody = styled.ScrollView`
+  padding-left: ${widthPercentageToDP(17)};
+  padding-right: ${widthPercentageToDP(17)};
+  padding-bottom: ${widthPercentageToDP(19)};
+`;
+export const TermModal = ({
+  visible = false,
+  title,
+  rightHandler,
+  content = "<h1></h1>"
+}) => {
+  return (
+    <Modal isVisible={visible} style={{ bottom: 0, paddingBottom: 0 }}>
+      <TermModalView>
+        <Title
+          title={title}
+          leftInVisible={true}
+          width={70}
+          rightHandler={rightHandler}
+        />
+        <TermModalBody>
+          <HTML html={content} />
+        </TermModalBody>
+      </TermModalView>
+    </Modal>
   );
 };
