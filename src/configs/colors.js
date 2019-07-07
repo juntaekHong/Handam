@@ -8,9 +8,11 @@ const colors = {
   rightBlue: "#23a3f9",
   disable: "#dbdbdb",
   active: "#259ffa",
+  error: "#fa2626",
   subContent: "#646464",
   introInActive: "#b2b2b2",
-  signUpNext: "#cad5dd"
+  signUpNext: "#cad5dd",
+  notFocus: "#646464"
 };
 
 export default colors;

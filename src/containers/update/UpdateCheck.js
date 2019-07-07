@@ -19,6 +19,7 @@ class UpdateCheck extends PureComponent {
   }
 
   async componentDidMount() {
+    // this.props.navigation.navigate("signUp2");
     const auth = await AuthActions.checkIntro();
     CommonActions.getTerm1();
     CommonActions.getTerm2();
