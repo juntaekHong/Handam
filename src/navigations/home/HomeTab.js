@@ -4,26 +4,15 @@ import {
   createStackNavigator
 } from "react-navigation";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import Left from "../../containers/left/Left";
-import Right from "../../containers/right/Right";
-import Home from "../../containers/home/Home";
+import TestHome from "../../containers/home/TestHome";
+import TestLeft from "../../containers/left/TestLeft";
+import TestRight from "../../containers/right/TestRight";
 
-const HomeStack = createStackNavigator(
+const HomeTab = createMaterialTopTabNavigator(
   {
-    Home: { screen: Home }
-  },
-  {
-    defaultNavigationOptions: {
-      header: null
-    }
-  }
-);
-
-const MainTab = createMaterialTopTabNavigator(
-  {
-    Left: { screen: Left, navigationOptions: { tabBarLabel: "성적표" } },
-    Home: { screen: HomeStack, navigationOptions: { tabBarLabel: "홈" } },
-    Right: { screen: Right, navigationOptions: { tabBarLabel: "커뮤니티" } }
+    Left: { screen: TestLeft, navigationOptions: { tabBarLabel: "성적표" } },
+    Home: { screen: TestHome, navigationOptions: { tabBarLabel: "홈" } },
+    Right: { screen: TestRight, navigationOptions: { tabBarLabel: "커뮤니티" } }
   },
   {
     initialRouteName: "Home",
@@ -61,4 +50,4 @@ const MainTab = createMaterialTopTabNavigator(
   }
 );
 
-export default MainTab;
+export default HomeTab;

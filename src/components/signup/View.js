@@ -156,9 +156,13 @@ export const SelectView = props => {
           {props.subject}
         </NBGBText>
       </SelectBody>
-      <SelectBody align={"flex-end"}>
+      <SelectBody align={"flex-end"} onPress={props.onPress}>
         <NBGBText fontSize={16} color={colors.selectMajor}>
-          {props.value}
+          {props.value === undefined || props.value === null
+            ? "선택하기"
+            : props.value.length == 0
+            ? "해당없음"
+            : props.value}
         </NBGBText>
       </SelectBody>
     </SelectContainer>

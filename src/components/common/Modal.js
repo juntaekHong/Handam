@@ -17,6 +17,7 @@ const CustomModalView = styled.View`
 const HeaderView = styled.View`
   width: 100%
   padding-top: ${widthPercentageToDP(15)}
+  padding-bottom: ${widthPercentageToDP(10)}
   padding-right: ${widthPercentageToDP(15)}
   align-items: flex-end
   justify-content: flex-end
@@ -48,6 +49,7 @@ export const CustomModal = ({
   width = 295,
   height = 311,
   close = true,
+  renderFooter,
   footerText = "확인",
   footerHandler,
   closeHandler
@@ -69,9 +71,13 @@ export const CustomModal = ({
           ) : null}
         </HeaderView>
         <BodyView>{children}</BodyView>
-        <FooterView onPress={footerHandler}>
-          <NBGText color={colors.white}>{footerText}</NBGText>
-        </FooterView>
+        {!renderFooter ? (
+          <FooterView onPress={footerHandler}>
+            <NBGText color={colors.white}>{footerText}</NBGText>
+          </FooterView>
+        ) : (
+          renderFooter()
+        )}
       </CustomModalView>
     </Modal>
   );

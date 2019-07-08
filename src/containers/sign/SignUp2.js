@@ -33,16 +33,28 @@ const SignUp2 = ({ navigation, userId, userPw, userNickName }) => {
   const [nickNameErr, setNickNameErr] = useState(false);
 
   const navigateNext = useCallback(async () => {
-    if (!checkEmoji(userNickName))
+    if (!checkEmoji(userNickName)) {
+      setNickNameErr(true);
       return openCheckModal("이모티콘은 사용하실 수 없습니다.");
+    }
+
     const idCheck = await SignUpActions.checkUserId(userId);
-    if (!idCheck) return openCheckModal("중복되는 이메일 입니다.");
+    if (!idCheck) {
+      setIdErr(true);
+      return openCheckModal("중복되는 이메일 입니다.");
+    }
     const badNickName = await SignUpActions.checkBlockUserNickName(
       userNickName
     );
-    if (!badNickName) return openCheckModal("만들수 없는 닉네임입니다.");
+    if (!badNickName) {
+      setNickNameErr(true);
+      return openCheckModal("만들수 없는 닉네임입니다.");
+    }
     const nickNameCheck = await SignUpActions.checkUserNickName(userNickName);
-    if (!nickNameCheck) return openCheckModal("중복되는 닉네임 입니다.");
+    if (!nickNameCheck) {
+      setNickNameErr(true);
+      return openCheckModal("중복되는 닉네임 입니다.");
+    }
     navigation.navigate("signUp3");
   }, [userId, userPw, userNickName, checkStr]);
   const navigateReset = useCallback(async () => {
@@ -134,6 +146,7 @@ const SignUp2 = ({ navigation, userId, userPw, userNickName }) => {
       <SignUpCheckModal
         visible={checkModal}
         value={checkStr}
+        closeHandler={closeCheckModal}
         footerHandler={closeCheckModal}
       />
       <Title title="회원가입" rightHandler={navigateReset} />

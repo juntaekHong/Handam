@@ -19,18 +19,22 @@ class UpdateCheck extends PureComponent {
   }
 
   async componentDidMount() {
-    this.props.navigation.navigate("signUp3");
-    // const auth = await AuthActions.checkIntro();
-    // CommonActions.getTerm1();
-    // CommonActions.getTerm2();
-    // OneSignal.getPermissionSubscriptionState(async status => {
-    //   await SignInActions.checkToken(status.userId);
-    //   if (auth) {
-    //     this.props.navigation.navigate(this.props.signin_navigate);
-    //   } else {
-    //     this.props.navigation.navigate("intro");
-    //   }
-    // });
+    // this.props.navigation.navigate("signUp3");
+
+    const auth = await AuthActions.checkIntro();
+    await CommonActions.commonInit();
+    CommonActions.getTrack();
+    CommonActions.getAdmissionYear();
+    CommonActions.getTerm1();
+    CommonActions.getTerm2();
+    OneSignal.getPermissionSubscriptionState(async status => {
+      await SignInActions.checkToken(status.userId);
+      if (auth) {
+        this.props.navigation.navigate(this.props.signin_navigate);
+      } else {
+        this.props.navigation.navigate("intro");
+      }
+    });
   }
 
   render() {
