@@ -40,7 +40,8 @@ const FooterView = styled.TouchableOpacity`
   align-items: center
   border-bottom-left-radius: ${widthPercentageToDP(14)}
   border-bottom-right-radius: ${widthPercentageToDP(14)}
-  background-color: ${colors.active}
+  background-color: ${({ disabled }) =>
+    disabled ? colors.disable : colors.active}
 `;
 
 export const CustomModal = ({
@@ -51,6 +52,7 @@ export const CustomModal = ({
   close = true,
   renderFooter,
   footerText = "확인",
+  footerDisabled = false,
   footerHandler,
   closeHandler
 }) => {
@@ -72,7 +74,7 @@ export const CustomModal = ({
         </HeaderView>
         <BodyView>{children}</BodyView>
         {!renderFooter ? (
-          <FooterView onPress={footerHandler}>
+          <FooterView disabled={footerDisabled} onPress={footerHandler}>
             <NBGText color={colors.white}>{footerText}</NBGText>
           </FooterView>
         ) : (
