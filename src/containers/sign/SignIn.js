@@ -1,4 +1,4 @@
-import React, { Component, useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   SignInInputView,
@@ -22,6 +22,7 @@ import OneSignal from "react-native-onesignal";
 import { showMessage } from "../../utils/util";
 import { FindPwModal } from "../../components/signin/Modal";
 import { checkEmail } from "../../utils/validation";
+import _ from "lodash";
 
 const SignIn = ({ navigation }) => {
   const [id, setId] = useState("");
@@ -29,6 +30,7 @@ const SignIn = ({ navigation }) => {
   const [pwModal, setPwModal] = useState(false);
   const [email, setEmail] = useState("");
   const [pwError, setPwError] = useState(0);
+  const [modalLoading, setModalLoading] = useState(false);
 
   const navigateSignUp = useCallback(() => {
     SignUpActions.init();
@@ -37,6 +39,7 @@ const SignIn = ({ navigation }) => {
 
   const openPwModal = useCallback(() => {
     setEmail("");
+    setPwError(0);
     setPwModal(true);
   }, []);
   const closePwModal = useCallback(() => {
@@ -58,13 +61,14 @@ const SignIn = ({ navigation }) => {
   }, []);
 
   const sendFindPwd = useCallback(async () => {
-    CommonActions.handleLoading(true);
+    if (modalLoading) return;
+    await setModalLoading(true);
     const result = await SignInActions.sendFindPwd(email);
     if (result) showMessage("임시 비밀번호가 전송되었습니다.");
     else showMessage("임시 비밀번호 전송에 실패했습니다.");
     closePwModal();
-    CommonActions.handleLoading(false);
-  }, [email]);
+    setModalLoading(false);
+  }, [email, modalLoading]);
 
   const handleId = useCallback(value => {
     setId(value);
@@ -89,9 +93,11 @@ const SignIn = ({ navigation }) => {
       }
     });
   }, [id, pwd]);
+
   return (
     <SignInMainView>
       <FindPwModal
+        loading={modalLoading}
         value={email}
         visible={pwModal}
         error={pwError}

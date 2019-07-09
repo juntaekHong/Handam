@@ -5,6 +5,7 @@ import { widthPercentageToDP } from "../../utils/util";
 import colors from "../../configs/colors";
 import { NBGText } from "./Text";
 import FastImage from "react-native-fast-image";
+import { UIActivityIndicator } from "react-native-indicators";
 
 const CustomModalView = styled.View`
   width: ${({ width }) => widthPercentageToDP(width)}
@@ -44,7 +45,18 @@ const FooterView = styled.TouchableOpacity`
     disabled ? colors.disable : colors.active}
 `;
 
+const LoadingView = styled.View`
+  position: absolute
+  width: ${({ loading }) => (loading ? "100%" : 0)}
+  height:100%
+  background-color: rgba(0,0,0,0.7)
+  justify-content: center
+  align-items: center
+`;
+
 export const CustomModal = ({
+  animate = "fade",
+  loading = false,
   children,
   visible = false,
   width = 295,
@@ -57,8 +69,8 @@ export const CustomModal = ({
   closeHandler
 }) => {
   return (
-    <Modal isVisible={visible}>
-      <CustomModalView animationType={"fade"} width={width} height={height}>
+    <Modal style={{ margin: 0 }} animationType={animate} isVisible={visible}>
+      <CustomModalView width={width} height={height}>
         <HeaderView>
           {close ? (
             <CloseIcon onPress={closeHandler}>
@@ -81,6 +93,9 @@ export const CustomModal = ({
           renderFooter()
         )}
       </CustomModalView>
+      <LoadingView loading={loading}>
+        {loading ? <UIActivityIndicator color={"gray"} /> : null}
+      </LoadingView>
     </Modal>
   );
 };

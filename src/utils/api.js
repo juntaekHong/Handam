@@ -14,23 +14,31 @@ const server_type = {
 };
 
 function rest(method) {
-  return async (
-    url,
-    { body = {}, header = {}, token = "" } = {},
-    type = "basic"
-  ) => {
+  return async (url, { body = {}, header = {}, token = "" } = {}) => {
     try {
-      const response = await axios({
-        method: method,
-        url: `${server_type[type]}${url}`,
-        data: body,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": token,
-          ...header
-        }
-      });
+      let response;
+      if (method === "GET") {
+        response = await axios.get(`${ROOT_URL}${url}`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-access-token": token,
+            ...header
+          }
+        });
+      } else {
+        response = await axios({
+          method: method,
+          url: `${ROOT_URL}${url}`,
+          data: body,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-access-token": token,
+            ...header
+          }
+        });
+      }
       const { data } = response;
       if (data.statusCode == 200) {
         return data;
