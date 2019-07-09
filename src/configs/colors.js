@@ -12,7 +12,8 @@ const colors = {
   subContent: "#646464",
   introInActive: "#b2b2b2",
   signUpNext: "#cad5dd",
-  notFocus: "#646464"
+  notFocus: "#646464",
+  selectMajor: "#9e9e9e"
 };
 
 export default colors;
