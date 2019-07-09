@@ -4,9 +4,9 @@ import {
   createStackNavigator
 } from "react-navigation";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import TestHome from "../../containers/home/TestHome";
-import TestLeft from "../../containers/left/TestLeft";
-import TestRight from "../../containers/right/TestRight";
+import TestLeft from "../../containers/testleft/TestLeft";
+import TestHome from "../../containers/testhome/TestHome";
+import TestRight from "../../containers/testright/TestRight";
 
 const HomeTab = createMaterialTopTabNavigator(
   {

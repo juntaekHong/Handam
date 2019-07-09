@@ -64,6 +64,20 @@ export const postSingIn = (userId, userPw, appId) => async dispatch => {
   }
 };
 
+export const sendFindPwd = userId => async dispatch => {
+  const jsonData = await api.get(
+    `/userValidation/sendPasswordMail/${userId}`,
+    {},
+    "mail"
+  );
+  console.log(jsonData);
+  if (jsonData.statusCode == 200) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export default handleActions(
   {
     [SIGNIN_NAVIGATE]: (state, { payload }) =>

@@ -35,7 +35,7 @@ export const CenterView = styled.View`
   justify-content: center;
   align-items: center;
   background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : "colors.white"};
+    props.backgroundColor ? props.backgroundColor : colors.white};
 `;
 
 const TitleView = styled.View`

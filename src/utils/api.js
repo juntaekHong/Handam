@@ -6,13 +6,23 @@ import axios from "axios";
 import { showMessage } from "./util";
 
 const ROOT_URL = config.server;
+const MESSAGE_URL = config.mailServer;
+
+const server_type = {
+  basic: ROOT_URL,
+  mail: ROOT_URL
+};
 
 function rest(method) {
-  return async (url, { body = {}, header = {}, token = "" } = {}) => {
+  return async (
+    url,
+    { body = {}, header = {}, token = "" } = {},
+    type = "basic"
+  ) => {
     try {
       const response = await axios({
         method: method,
-        url: `${ROOT_URL}${url}`,
+        url: `${server_type[type]}${url}`,
         data: body,
         headers: {
           Accept: "application/json",

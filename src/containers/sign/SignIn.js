@@ -1,4 +1,4 @@
-import React, { Component, useState, useCallback } from "react";
+import React, { Component, useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   SignInInputView,
@@ -13,7 +13,11 @@ import {
 } from "../../components/signin/View";
 import { LinkView } from "../../components/common/View";
 import colors from "../../configs/colors";
-import { SignInActions, SignUpActions } from "../../store/actionCreator";
+import {
+  SignInActions,
+  SignUpActions,
+  CommonActions
+} from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { showMessage } from "../../utils/util";
 import { FindPwModal } from "../../components/signin/Modal";
@@ -26,26 +30,26 @@ const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pwError, setPwError] = useState(0);
 
-  navigateSignUp = useCallback(() => {
+  const navigateSignUp = useCallback(() => {
     SignUpActions.init();
     navigation.navigate("signUp1");
   }, []);
 
-  openPwModal = useCallback(() => {
+  const openPwModal = useCallback(() => {
     setEmail("");
     setPwModal(true);
   }, []);
-  closePwModal = useCallback(() => {
+  const closePwModal = useCallback(() => {
     setPwModal(false);
   }, []);
 
-  findOnChageText = useCallback(async value => {
+  const findOnChageText = useCallback(async value => {
     setEmail(value);
     if (value.length <= 0) setPwError(0);
     else {
       if (checkEmail(value)) {
         const result = await SignUpActions.checkUserId(value);
-        if (result) setPwError(2);
+        if (!result) setPwError(2);
         else setPwError(3);
       } else {
         setPwError(1);
@@ -53,19 +57,28 @@ const SignIn = ({ navigation }) => {
     }
   }, []);
 
-  handleId = useCallback(value => {
+  const sendFindPwd = useCallback(async () => {
+    CommonActions.handleLoading(true);
+    const result = await SignInActions.sendFindPwd(email);
+    if (result) showMessage("임시 비밀번호가 전송되었습니다.");
+    else showMessage("임시 비밀번호 전송에 실패했습니다.");
+    closePwModal();
+    CommonActions.handleLoading(false);
+  }, [email]);
+
+  const handleId = useCallback(value => {
     setId(value);
   }, []);
-  handlePwd = useCallback(value => {
+  const handlePwd = useCallback(value => {
     setPwd(value);
   }, []);
 
-  initState = useCallback(() => {
+  const initState = useCallback(() => {
     setId("");
     setPwd("");
   }, []);
 
-  postSignIn = useCallback(() => {
+  const postSignIn = useCallback(() => {
     OneSignal.getPermissionSubscriptionState(async status => {
       const result = await SignInActions.postSingIn(id, pwd, status.userId);
       if (result) {
@@ -76,15 +89,16 @@ const SignIn = ({ navigation }) => {
       }
     });
   }, [id, pwd]);
-
   return (
     <SignInMainView>
       <FindPwModal
         value={email}
-        visible={true}
+        visible={pwModal}
         error={pwError}
         footerDisabled={pwError == 2 ? false : true}
         onChangeText={findOnChageText}
+        footerHandler={sendFindPwd}
+        closeHandler={closePwModal}
       />
       <SignInImage />
       <SignInInputView marginBottom={12}>
@@ -92,7 +106,7 @@ const SignIn = ({ navigation }) => {
           placeholder="이메일"
           keyboardType="email-address"
           value={id}
-          onChangeText={this.handleId}
+          onChangeText={handleId}
         />
       </SignInInputView>
       <SignInInputView marginBottom={44}>
@@ -100,12 +114,12 @@ const SignIn = ({ navigation }) => {
           placeholder="비밀번호"
           secureTextEntry={true}
           value={pwd}
-          onChangeText={this.handlePwd}
+          onChangeText={handlePwd}
         />
       </SignInInputView>
       <SignInButton
         marginBottom={15}
-        onPress={this.postSignIn}
+        onPress={postSignIn}
         disabled={id.length <= 0 || pwd.length <= 0}
       >
         <NBGText color={"white"}>시작하기</NBGText>
@@ -114,7 +128,7 @@ const SignIn = ({ navigation }) => {
         <LinkView
           paddingLeft={10.5}
           paddingRight={10.5}
-          onPress={this.navigateSignUp}
+          onPress={navigateSignUp}
         >
           <NBGText color={colors.active}>가입하기</NBGText>
         </LinkView>
