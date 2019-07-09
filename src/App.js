@@ -27,7 +27,7 @@ class App extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Modal isVisible={loading}>
-          <CenterView>
+          <CenterView backgroundColor={"transparent"}>
             <UIActivityIndicator color={"gray"} />
           </CenterView>
         </Modal>

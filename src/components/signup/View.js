@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
 import colors from "../../configs/colors";
 import { Image, View } from "react-native";
-import { NBGText } from "../common/Text";
+import { NBGText, NBGBText } from "../common/Text";
 import Modal from "react-native-modal";
 import { Title } from "../common/View";
 import HTML from "react-native-render-html";
@@ -131,5 +131,40 @@ export const TermModal = ({
         </TermModalBody>
       </TermModalView>
     </Modal>
+  );
+};
+
+const SelectContainer = styled.View`
+  width: ${widthPercentageToDP(289)}
+  height: ${widthPercentageToDP(42)}
+  margin-bottom: ${({ marginBottom = 10 }) => widthPercentageToDP(marginBottom)}
+  flex-direction: row
+  justify-content: space-between
+  border-bottom-width: 1
+  border-color: ${colors.notFocus}
+`;
+const SelectBody = styled.TouchableOpacity`
+  flex:1
+  align-items: ${({ align = "flex-start" }) => align}
+  justify-content: center
+`;
+export const SelectView = props => {
+  return (
+    <SelectContainer {...props}>
+      <SelectBody disabled={true}>
+        <NBGBText fontSize={16} color={colors.notFocus}>
+          {props.subject}
+        </NBGBText>
+      </SelectBody>
+      <SelectBody align={"flex-end"} onPress={props.onPress}>
+        <NBGBText fontSize={16} color={colors.selectMajor}>
+          {props.value === undefined || props.value === null
+            ? "선택하기"
+            : props.value.length == 0
+            ? "해당없음"
+            : props.value}
+        </NBGBText>
+      </SelectBody>
+    </SelectContainer>
   );
 };

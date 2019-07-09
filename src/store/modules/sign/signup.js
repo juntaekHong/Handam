@@ -13,6 +13,11 @@ const SIGNUP_SECOND_TERM = "singup/SIGNUP_SECOND_TERM";
 const SIGNUP_USERID = "signup/SIGNUP_USERID";
 const SIGNUP_USERPW = "signup/SIGNUP_USERPW";
 const SIGNUP_USERNICKNAME = "signup/SIGNUP_USERNICKNAME";
+const SIGNUP_MAJOR = "signup/SIGNUP_MAJOR";
+const SIGNUP_DOUBLE_MAJOR = "signup/SIGNUP_DOUBLE_MAJOR";
+const SIGNUP_MINOR = "signup/SIGNUP_MINOR";
+const SIGNUP_CONNECTED_MAJOR = "signup/SIGNUP_CONNECTED_MAJOR";
+const SIGNUP_ADMISSION_YEAR = "signup/SIGNUP_ADMISSION_YEAR";
 
 const initAction = createAction(SIGNUP_INIT);
 const firstTermAction = createAction(SIGNUP_FIRST_TERM);
@@ -20,6 +25,11 @@ const secondTermAction = createAction(SIGNUP_SECOND_TERM);
 export const userIdAction = createAction(SIGNUP_USERID);
 export const userPwAction = createAction(SIGNUP_USERPW);
 export const userNickNameAction = createAction(SIGNUP_USERNICKNAME);
+export const majorAction = createAction(SIGNUP_MAJOR);
+export const doubleMajorAction = createAction(SIGNUP_DOUBLE_MAJOR);
+export const minorAction = createAction(SIGNUP_MINOR);
+export const connectedMajorAction = createAction(SIGNUP_CONNECTED_MAJOR);
+export const admissionYearAction = createAction(SIGNUP_ADMISSION_YEAR);
 
 export const init = () => dispatch => {
   dispatch(initAction());
@@ -51,12 +61,27 @@ export const checkBlockUserNickName = nickname => async dispatch => {
   else return false;
 };
 
+export const postSignUp = userData => async dispatch => {
+  try {
+    const jsonData = await api.post(`/signUp`, { body: userData });
+    if (jsonData.statusCode == 200) return true;
+    else return false;
+  } catch (e) {
+    return false;
+  }
+};
+
 const initState = {
   first_term: false,
   second_term: false,
   userId: "",
   userPw: "",
-  userNickName: ""
+  userNickName: "",
+  major: null,
+  doubleMajor: null,
+  minor: null,
+  connectedMajor: null,
+  admissionYear: null
 };
 
 export default handleActions(
@@ -81,6 +106,26 @@ export default handleActions(
     [SIGNUP_USERNICKNAME]: (state, { payload }) =>
       produce(state, draft => {
         draft.userNickName = payload;
+      }),
+    [SIGNUP_MAJOR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.major = payload;
+      }),
+    [SIGNUP_DOUBLE_MAJOR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.doubleMajor = payload;
+      }),
+    [SIGNUP_MINOR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.minor = payload;
+      }),
+    [SIGNUP_CONNECTED_MAJOR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.connectedMajor = payload;
+      }),
+    [SIGNUP_ADMISSION_YEAR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.admissionYear = payload;
       })
   },
   initState

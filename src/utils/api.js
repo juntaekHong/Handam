@@ -6,21 +6,39 @@ import axios from "axios";
 import { showMessage } from "./util";
 
 const ROOT_URL = config.server;
+const MESSAGE_URL = config.mailServer;
+
+const server_type = {
+  basic: ROOT_URL,
+  mail: ROOT_URL
+};
 
 function rest(method) {
   return async (url, { body = {}, header = {}, token = "" } = {}) => {
     try {
-      const response = await axios({
-        method: method,
-        url: `${ROOT_URL}${url}`,
-        data: body,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": token,
-          ...header
-        }
-      });
+      let response;
+      if (method === "GET") {
+        response = await axios.get(`${ROOT_URL}${url}`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-access-token": token,
+            ...header
+          }
+        });
+      } else {
+        response = await axios({
+          method: method,
+          url: `${ROOT_URL}${url}`,
+          data: body,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-access-token": token,
+            ...header
+          }
+        });
+      }
       const { data } = response;
       if (data.statusCode == 200) {
         return data;

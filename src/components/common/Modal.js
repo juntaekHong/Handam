@@ -5,6 +5,7 @@ import { widthPercentageToDP } from "../../utils/util";
 import colors from "../../configs/colors";
 import { NBGText } from "./Text";
 import FastImage from "react-native-fast-image";
+import { UIActivityIndicator } from "react-native-indicators";
 
 const CustomModalView = styled.View`
   width: ${({ width }) => widthPercentageToDP(width)}
@@ -17,6 +18,7 @@ const CustomModalView = styled.View`
 const HeaderView = styled.View`
   width: 100%
   padding-top: ${widthPercentageToDP(15)}
+  padding-bottom: ${widthPercentageToDP(10)}
   padding-right: ${widthPercentageToDP(15)}
   align-items: flex-end
   justify-content: flex-end
@@ -39,22 +41,36 @@ const FooterView = styled.TouchableOpacity`
   align-items: center
   border-bottom-left-radius: ${widthPercentageToDP(14)}
   border-bottom-right-radius: ${widthPercentageToDP(14)}
-  background-color: ${colors.active}
+  background-color: ${({ disabled }) =>
+    disabled ? colors.disable : colors.active}
+`;
+
+const LoadingView = styled.View`
+  position: absolute
+  width: ${({ loading }) => (loading ? "100%" : 0)}
+  height:100%
+  background-color: rgba(0,0,0,0.7)
+  justify-content: center
+  align-items: center
 `;
 
 export const CustomModal = ({
+  animate = "fade",
+  loading = false,
   children,
   visible = false,
   width = 295,
   height = 311,
   close = true,
+  renderFooter,
   footerText = "확인",
+  footerDisabled = false,
   footerHandler,
   closeHandler
 }) => {
   return (
-    <Modal isVisible={visible}>
-      <CustomModalView animationType={"fade"} width={width} height={height}>
+    <Modal style={{ margin: 0 }} animationType={animate} isVisible={visible}>
+      <CustomModalView width={width} height={height}>
         <HeaderView>
           {close ? (
             <CloseIcon onPress={closeHandler}>
@@ -69,10 +85,17 @@ export const CustomModal = ({
           ) : null}
         </HeaderView>
         <BodyView>{children}</BodyView>
-        <FooterView onPress={footerHandler}>
-          <NBGText color={colors.white}>{footerText}</NBGText>
-        </FooterView>
+        {!renderFooter ? (
+          <FooterView disabled={footerDisabled} onPress={footerHandler}>
+            <NBGText color={colors.white}>{footerText}</NBGText>
+          </FooterView>
+        ) : (
+          renderFooter()
+        )}
       </CustomModalView>
+      <LoadingView loading={loading}>
+        {loading ? <UIActivityIndicator color={"gray"} /> : null}
+      </LoadingView>
     </Modal>
   );
 };
