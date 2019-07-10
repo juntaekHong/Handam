@@ -40,11 +40,12 @@ export const CenterView = styled.View`
 
 const TitleView = styled.View`
   width: 100%;
-  height: ${({ width = 55 }) => widthPercentageToDP(width)};
+  height: ${({ height = 55 }) => widthPercentageToDP(height)};
   flex-direction: row;
   align-items: center;
-  padding-left: ${widthPercentageToDP(10)};
-  padding-right: ${widthPercentageToDP(10)};
+  padding-left: ${({ paddingLeft = 10 }) => widthPercentageToDP(paddingLeft)};
+  padding-right: ${({ paddingRight = 10 }) =>
+    widthPercentageToDP(paddingRight)};
   justify-content: space-between;
 `;
 
@@ -56,7 +57,7 @@ const TitleText = styled(NBGText)`
   text-align-vertical: center;
 `;
 
-const TitleIcon = styled.TouchableOpacity`
+export const TitleIcon = styled.TouchableOpacity`
   height: ${widthPercentageToDP(36)};
   width: ${widthPercentageToDP(36)};
   justify-content: center;
@@ -64,17 +65,23 @@ const TitleIcon = styled.TouchableOpacity`
 `;
 
 export const Title = ({
-  width,
+  height,
   leftRender,
   leftInVisible,
   leftHandler,
-  title,
+  title = "",
   rightRender,
   rightHandler,
-  rightInVisible
+  rightInVisible,
+  paddingLeft,
+  paddingRight
 }) => {
   return (
-    <TitleView width={width}>
+    <TitleView
+      height={height}
+      paddingLeft={paddingLeft}
+      paddingRight={paddingRight}
+    >
       {leftRender ? (
         leftRender()
       ) : !leftInVisible ? (
