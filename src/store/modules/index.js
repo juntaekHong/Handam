@@ -7,10 +7,12 @@ import auth from "./auth/auth";
 import signin from "./sign/signin";
 import common from "./common/common";
 import signup from "./sign/signup";
+import home from "./home/home";
 export default combineReducers({
   counter,
   auth,
   signin,
   common,
-  signup
+  signup,
+  home
 });
