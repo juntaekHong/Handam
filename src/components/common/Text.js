@@ -66,4 +66,3 @@ export const CEText = styled(CText)`
   height: ${widthPercentageToDP(13)};
   color: ${"#646464"};
 `;
-`;

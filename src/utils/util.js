@@ -7,6 +7,7 @@ import { Dimensions, PixelRatio } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import config from "../configs/config";
 import Toast from "react-native-root-toast";
+import moment from 'moment';
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -69,4 +70,36 @@ export const showMessage = (message, options) => {
     delay: 0,
     ...options
   });
+};
+
+export const timeSince = (date) => {
+  if (date === null || date === undefined)
+      return "";
+      let seconds = Math.floor((new Date(moment().utc(moment().format())) - new Date(date)) / 1000);
+      if(isNaN(seconds)){
+          return "댓글 없음";
+      }
+
+      let interval = Math.floor(seconds / 31536000);
+
+      if (interval >= 1) {
+          return interval + " 년전";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) {
+          return interval + " 달전";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+          return interval + " 일전";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1) {
+          return interval + " 시간전";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 0.9) {
+          return interval + " 분전";
+      }
+      return Math.floor(seconds) + " 초전";
 };

@@ -1,8 +1,8 @@
 import { createMaterialTopTabNavigator } from "react-navigation";
-import TalkScreen from "../../containers/Right/TalkScreen";
-import VoteScreen from "../../containers/Right/VoteScreen";
-import RestaurantScreen from "../../containers/Right/RestaurantScreen";
-import KnowledgeScreen from "../../containers/Right/KnowledgeScreen";
+import TalkScreen from "../../containers/Community/TalkScreen";
+import VoteScreen from "../../containers/Community/VoteScreen";
+import RestaurantScreen from "../../containers/Community/RestaurantScreen";
+import KnowledgeScreen from "../../containers/Community/KnowledgeScreen";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 
@@ -23,7 +23,7 @@ export default createMaterialTopTabNavigator(
         activeTintColor: "rgb(96, 169, 243)",
         inactiveTintColor: "rgb(157, 157, 157)",
         labelStyle: {
-          backgroundColor: '#dddddd',
+          backgroundColor: "white",
           width: widthPercentageToDP(79),
           height: widthPercentageToDP(18),
           fontSize: widthPercentageToDP(16),

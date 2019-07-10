@@ -6,9 +6,10 @@ import {
 import Home from "../../containers/Home/Home";
 import Left from "../../containers/Left/Left";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import { View, Button, Text } from "react-native";
 import CommunityTab from "../CommunityTab/CommunityTab";
-import TalkAboutScreen from "../../containers/Right/TalkAboutScreen";
+import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
+import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
+import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
 
 const HomeStack = createStackNavigator(
   {
@@ -25,6 +26,8 @@ const RightStack = createStackNavigator(
   {
     Community: { screen: CommunityTab },
     TalkAbout: { screen: TalkAboutScreen },
+    TalkDetail: { screen: TalkDetailScreen },
+    TalkWrite: { screen: TalkWriteScreen },
   },
   {
     defaultNavigationOptions: {
@@ -33,7 +36,7 @@ const RightStack = createStackNavigator(
   }
 )
 
-export default createMaterialTopTabNavigator(
+const MainTab = createMaterialTopTabNavigator(
   {
     Left: { screen: Left, navigationOptions: { tabBarLabel: "성적표" } },
     Home: { screen: HomeStack, navigationOptions: { tabBarLabel: "홈" } },
