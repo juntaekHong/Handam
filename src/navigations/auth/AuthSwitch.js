@@ -1,16 +1,15 @@
-import React from "react";
 import { createSwitchNavigator } from "react-navigation";
-import MainTab from "../main/MainTab";
 import Intro from "../../containers/intro/Intro";
 import UpdateCheck from "../../containers/update/UpdateCheck";
-import SignIn from "../../containers/sign/SignIn";
+import SignStack from "../sign/SignStack";
+import HomeTab from "../home/HomeTab";
 
 const AuthSwitch = createSwitchNavigator(
   {
-    main: MainTab,
+    main: HomeTab,
     intro: { screen: Intro },
     update: { screen: UpdateCheck },
-    signIn: { screen: SignIn }
+    sign: { screen: SignStack }
   },
   {
     initialRouteName: "update"

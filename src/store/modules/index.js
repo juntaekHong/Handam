@@ -7,6 +7,7 @@ import auth from "./auth/auth";
 import signin from "./sign/signin";
 import common from "./common/common";
 import talk from "./community/talk";
+import signup from "./sign/signup";
 
 export default combineReducers({
   counter,
@@ -14,4 +15,5 @@ export default combineReducers({
   signin,
   common,
   talk,
+  signup
 });

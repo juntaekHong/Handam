@@ -4,6 +4,7 @@ import { widthPercentageToDP } from "../../utils/util";
 import colors from "../../configs/colors";
 
 export const SignInButtonStyle = styled.TouchableOpacity`
+  flex-direction: row;
   width: ${props =>
     props.width ? widthPercentageToDP(props.width) : widthPercentageToDP(279)};
   height: ${props =>
@@ -18,12 +19,19 @@ export const SignInButtonStyle = styled.TouchableOpacity`
     props.borderRadius
       ? widthPercentageToDP(props.borderRadius)
       : widthPercentageToDP(8)};
+  border-width: ${({ borderWidth }) =>
+    borderWidth ? widthPercentageToDP(borderWidth) : 0};
   border-color: ${props =>
     props.borderColor ? props.borderColor : colors.border};
   background-color: ${props =>
-    props.disabled ? colors.disable : colors.active};
-  justify-content: center;
-  align-items: center;
+    props.disabled
+      ? colors.disable
+      : props.backgroundColor
+      ? props.backgroundColor
+      : colors.active};
+  justify-content: ${({ justifyContent }) =>
+    justifyContent ? justifyContent : "center"}
+  align-items: ${({ alignItems }) => (alignItems ? alignItems : "center")};
 `;
 
 export const SignInButton = props => {

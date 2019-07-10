@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   createMaterialTopTabNavigator,
   createStackNavigator
@@ -6,21 +6,14 @@ import {
 import Home from "../../containers/Home/Home";
 import Left from "../../containers/Left/Left";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+
 import CommunityTab from "../CommunityTab/CommunityTab";
 import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
 import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
 import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
 
-const HomeStack = createStackNavigator(
-  {
-    Home: { screen: Home }
-  },
-  {
-    defaultNavigationOptions: {
-      header: null
-    }
-  }
-);
+import TestLeft from "../../containers/testleft/TestLeft";
+import TestHome from "../../containers/testhome/TestHome";
 
 const RightStack = createStackNavigator(
   {
@@ -36,10 +29,10 @@ const RightStack = createStackNavigator(
   }
 )
 
-const MainTab = createMaterialTopTabNavigator(
+const HomeTab = createMaterialTopTabNavigator(
   {
-    Left: { screen: Left, navigationOptions: { tabBarLabel: "성적표" } },
-    Home: { screen: HomeStack, navigationOptions: { tabBarLabel: "홈" } },
+    Left: { screen: TestLeft, navigationOptions: { tabBarLabel: "성적표" } },
+    Home: { screen: TestHome, navigationOptions: { tabBarLabel: "홈" } },
     Right: { screen: RightStack, navigationOptions: { tabBarLabel: "커뮤니티" } }
   },
   {
@@ -78,4 +71,4 @@ const MainTab = createMaterialTopTabNavigator(
   }
 );
 
-export default MainTab;
+export default HomeTab;

@@ -6,9 +6,15 @@ import axios from "axios";
 import { showMessage } from "./util";
 
 const ROOT_URL = config.server;
+const MESSAGE_URL = config.mailServer;
+
+const server_type = {
+  basic: ROOT_URL,
+  mail: ROOT_URL
+};
 
 function rest(method) {
-  return async (url, { params = {}, body = {}, header = {}, token = "" }) => {
+  return async (url, { body = {}, header = {}, token = "" } = {}) => {
     try {
       let response;
       if (method === "GET") {
@@ -24,7 +30,6 @@ function rest(method) {
         response = await axios({
           method: method,
           url: `${ROOT_URL}${url}`,
-          params: params,
           data: body,
           headers: {
             Accept: "application/json",
@@ -41,7 +46,7 @@ function rest(method) {
         return data;
       }
     } catch (err) {
-      console.log(err);
+      console.log("err", err);
       const { response } = err;
       // 403: token이 인증되지 않을경우 로그인 화면으로 네비게이팅
       if (response.status == 403) {
