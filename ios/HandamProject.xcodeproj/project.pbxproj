@@ -52,6 +52,7 @@
 		529D70A140EB4490B04CD0BB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDF5AE9471E4C9387D35826 /* Octicons.ttf */; };
 		5AFDEA35508143CAB9F1E09C /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF42EA68102542D68D71B232 /* AntDesign.ttf */; };
 		5CBA5F74E4FD4223B6885E94 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02DA2C8A6A4E43A8BBE1F5DA /* libRNCAsyncStorage.a */; };
+		6802EDBEDDF84FDABD8E9BFF /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */; };
 		6C554CFB206A49DEBC3A070E /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5090815A48BB46A69C0AE0A3 /* Entypo.ttf */; };
 		74B8413D6E6544FDA4A0BB5F /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EDB9DD7BADB497699C37C20 /* libRNDeviceInfo-tvOS.a */; };
 		75A76E2899804324B9B85512 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D811A59AAAC45139335BF15 /* Ionicons.ttf */; };
@@ -123,6 +124,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = HandamProject;
+		};
+		07161D0922D7759300357860 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7CD62E34E42C40258EB975B6 /* RNCWebView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNCWebView;
 		};
 		07CEB1A622CE28F90059B415 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -508,9 +516,10 @@
 		5A8E0DA01AF543B9A02615E0 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6004F4AB60E944AF8048AAB9 /* NanumBarunGothicLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumBarunGothicLight.ttf; path = ../assets/fonts/NanumBarunGothicLight.ttf; sourceTree = "<group>"; };
-		6366A4F348A24051BB2AB878 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
+		603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		776CD417EF6F458B887CBD00 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7CD62E34E42C40258EB975B6 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		84711010F678444E9B237628 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		874BEC8A13494214A4DB89C7 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -579,7 +588,7 @@
 				0102E29198784A9A8DFEB7D7 /* libRCTOneSignal.a in Frameworks */,
 				368C4A67F3884E6B84D469EB /* libRNDeviceInfo.a in Frameworks */,
 				E3294C6EE0C24344A6A174B1 /* libFastImage.a in Frameworks */,
-				80BB6FE5773A4C0B9A7F2534 /* libimageCropPicker.a in Frameworks */,
+				6802EDBEDDF84FDABD8E9BFF /* libRNCWebView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,6 +682,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		07161D0622D7759300357860 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07161D0A22D7759300357860 /* libRNCWebView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		07CEB1A222CE28F90059B415 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,7 +715,7 @@
 				8EDB9DD7BADB497699C37C20 /* libRNDeviceInfo-tvOS.a */,
 				91DEB2AFEA1740B88CA7AABC /* libFastImage.a */,
 				F6E02A5A012646CF831F8008 /* libFastImage-tvOS.a */,
-				6366A4F348A24051BB2AB878 /* libimageCropPicker.a */,
+				603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -890,7 +907,7 @@
 				5A8E0DA01AF543B9A02615E0 /* RCTOneSignal.xcodeproj */,
 				776CD417EF6F458B887CBD00 /* RNDeviceInfo.xcodeproj */,
 				4F0C0DCEE9564BC79D38F515 /* FastImage.xcodeproj */,
-				874BEC8A13494214A4DB89C7 /* imageCropPicker.xcodeproj */,
+				7CD62E34E42C40258EB975B6 /* RNCWebView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1163,6 +1180,10 @@
 					ProjectRef = 5906197937AF426583D7E0BD /* RNCAsyncStorage.xcodeproj */;
 				},
 				{
+					ProductGroup = 07161D0622D7759300357860 /* Products */;
+					ProjectRef = 7CD62E34E42C40258EB975B6 /* RNCWebView.xcodeproj */;
+				},
+				{
 					ProductGroup = 07D0C4E222CCF2B80016364B /* Products */;
 					ProjectRef = 776CD417EF6F458B887CBD00 /* RNDeviceInfo.xcodeproj */;
 				},
@@ -1227,6 +1248,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07161D0A22D7759300357860 /* libRNCWebView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCWebView.a;
+			remoteRef = 07161D0922D7759300357860 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		07CEB1A722CE28F90059B415 /* libFastImage.a */ = {
@@ -1731,7 +1759,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = HandamProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1779,7 +1807,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = HandamProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1830,7 +1858,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = HandamProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1863,7 +1891,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = HandamProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1901,7 +1929,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1957,7 +1985,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2012,7 +2040,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2067,7 +2095,7 @@
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-webview/ios",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
