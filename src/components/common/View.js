@@ -38,6 +38,11 @@ export const CenterView = styled.View`
     props.backgroundColor ? props.backgroundColor : colors.white};
 `;
 
+export const CenterScroll = styled.ScrollView`
+  flex: 1
+  width: 100%
+`;
+
 export const RowView = styled.View`
   width: ${({ width }) => widthPercentageToDP(width)}
   height: ${({ height }) => widthPercentageToDP(height)}

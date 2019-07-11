@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { HCenterView } from "../../components/common/View";
+import { CenterScroll, HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
 import {
   HomeTitle,
@@ -7,16 +7,23 @@ import {
   HomeAd,
   HomeNavigateView,
   TodayLectureTitle,
-  TodayLine
+  TodayLine,
+  TodayLecture
 } from "../../components/home/View";
 import { HomeActions, CommonActions } from "../../store/actionCreator";
+import moment from "moment";
 import {
   ScheduleButton,
   BusButton,
   NoticeButton
 } from "../../components/home/Button";
+import { ScrollView } from "react-native";
 
-const Home = ({ noticeList }) => {
+const Home = ({ navigation, noticeList }) => {
+  const [time, setTime] = useState(moment().format("MM. DD (ddd)"));
+  const navigateNotice = useCallback(() => {
+    navigation.navigate("notice");
+  }, []);
   useEffect(async () => {
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
@@ -25,15 +32,23 @@ const Home = ({ noticeList }) => {
   return (
     <HCenterView>
       <HomeTitle />
-      <AboutHandam />
-      <HomeAd list={noticeList} />
-      <HomeNavigateView>
-        <ScheduleButton />
-        <BusButton />
-        <NoticeButton />
-      </HomeNavigateView>
-      <TodayLectureTitle />
-      <TodayLine />
+      <CenterScroll
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: "center"
+        }}
+      >
+        <AboutHandam />
+        <HomeAd list={noticeList} />
+        <HomeNavigateView>
+          <ScheduleButton />
+          <BusButton />
+          <NoticeButton onPress={navigateNotice} />
+        </HomeNavigateView>
+        <TodayLectureTitle />
+        <TodayLine time={time} />
+        <TodayLecture />
+      </CenterScroll>
     </HCenterView>
   );
 };
