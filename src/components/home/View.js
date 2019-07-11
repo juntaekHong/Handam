@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components/native";
-import { Title, TitleIcon } from "../common/View";
+import { Title, TitleIcon, RowView } from "../common/View";
 import { widthPercentageToDP } from "../../utils/util";
-import { Image, View } from "react-native";
-import { NBGBText } from "../common/Text";
+import { Image, View, TouchableOpacity } from "react-native";
+import { NBGBText, NBGText } from "../common/Text";
 import colors from "../../configs/colors";
 import FastImage from "react-native-fast-image";
 import Carousel from "react-native-looped-carousel";
+import moment from "moment";
 
 const HomeTitleRightView = styled.View`
   height: 100%
@@ -118,8 +119,7 @@ export const HomeAd = ({ list = [] }) => {
       }}
     >
       {list.map((item, index) => {
-        return item.noticeImg.indexOf("https") >= 0 ||
-          item.noticeImg.indexOf("http") >= 0 ? (
+        return (
           <FastImage
             key={index}
             resizeMode={FastImage.resizeMode.cover}
@@ -129,10 +129,88 @@ export const HomeAd = ({ list = [] }) => {
             }}
             source={{ uri: item.noticeImg }}
           />
-        ) : (
-          <View style={{ width: "100%", height: widthPercentageToDP(186) }} />
         );
       })}
     </Carousel>
-  ) : null;
+  ) : (
+    <View style={{ width: "100%", height: widthPercentageToDP(186) }} />
+  );
+};
+
+export const HomeNavigateView = styled.View`
+  width: ${widthPercentageToDP(310)}
+  margin-top: ${widthPercentageToDP(27)}
+  margin-bottom: ${widthPercentageToDP(25)}
+  align-items: center
+  justify-content: space-between
+  flex-direction: row
+`;
+
+export const HomeNavigate = styled.TouchableOpacity`
+  width: ${widthPercentageToDP(80)}
+  height: ${widthPercentageToDP(100)}
+  background-color: ${({ backgroundColor = colors.white }) => backgroundColor}
+  border-radius: ${widthPercentageToDP(8)}
+  padding-top :${widthPercentageToDP(20)}
+  align-items: center
+`;
+
+const TodayLectureTitleView = styled(RowView)`
+  width: 100%
+  height: ${widthPercentageToDP(50)}
+  padding-left: ${widthPercentageToDP(41)}
+  padding-right: ${widthPercentageToDP(25)}
+  justify-content: space-between
+  align-items: center
+`;
+export const TodayLectureTitle = props => {
+  return (
+    <TodayLectureTitleView>
+      <NBGBText fontSize={20} color={colors.active}>
+        오늘의 강의
+      </NBGBText>
+      <TouchableOpacity {...props}>
+        <Image
+          style={{
+            width: widthPercentageToDP(50),
+            height: widthPercentageToDP(50)
+          }}
+          source={require("HandamProject/assets/image/home/refresh.png")}
+        />
+      </TouchableOpacity>
+    </TodayLectureTitleView>
+  );
+};
+
+const TodayLineView = styled(RowView)`
+  width: 100%
+  height: ${widthPercentageToDP(11.5)}
+  padding-left: ${widthPercentageToDP(27)}
+  padding-right: ${widthPercentageToDP(26.6)}
+  justify-content: space-between
+  align-items: center;
+`;
+
+export const TodayLine = props => {
+  return (
+    <TodayLineView>
+      <View
+        style={{
+          width: widthPercentageToDP(122),
+          height: widthPercentageToDP(0.5),
+          backgroundColor: colors.border
+        }}
+      />
+      <NBGText fontSize={10} color={"#9e9e9e"}>
+        {moment().format("MM. DD (ddd)")}
+      </NBGText>
+      <View
+        style={{
+          width: widthPercentageToDP(122),
+          height: widthPercentageToDP(0.5),
+          backgroundColor: colors.border
+        }}
+      />
+    </TodayLineView>
+  );
 };

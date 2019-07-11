@@ -1,9 +1,20 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
-import { HomeTitle, AboutHandam, HomeAd } from "../../components/home/View";
+import {
+  HomeTitle,
+  AboutHandam,
+  HomeAd,
+  HomeNavigateView,
+  TodayLectureTitle,
+  TodayLine
+} from "../../components/home/View";
 import { HomeActions, CommonActions } from "../../store/actionCreator";
-import { Image } from "react-native";
+import {
+  ScheduleButton,
+  BusButton,
+  NoticeButton
+} from "../../components/home/Button";
 
 const Home = ({ noticeList }) => {
   useEffect(async () => {
@@ -16,6 +27,13 @@ const Home = ({ noticeList }) => {
       <HomeTitle />
       <AboutHandam />
       <HomeAd list={noticeList} />
+      <HomeNavigateView>
+        <ScheduleButton />
+        <BusButton />
+        <NoticeButton />
+      </HomeNavigateView>
+      <TodayLectureTitle />
+      <TodayLine />
     </HCenterView>
   );
 };
