@@ -31,7 +31,15 @@ export default handleActions(
     [HOME_NOTICE_LIST]: (state, { payload }) =>
       produce(state, draft => {
         draft.noticeList = [];
-        draft.noticeList = draft.noticeList.concat(payload);
+        payload.map(item => {
+          if (
+            item.noticeImg.indexOf("https") >= 0 ||
+            item.noticeImg.indexOf("http") >= 0
+          ) {
+            draft.noticeList.push(item);
+          }
+        });
+        // draft.noticeList = draft.noticeList.concat(payload);
       })
   },
   initState
