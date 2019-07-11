@@ -46,11 +46,11 @@ class TalkScreen extends Component {
                             this.navigateTalkAbout(index);
                             this.start = false;
                           }}>
-                        <Image style={{ position: "absolute", width: widthPercentageToDP(343), height: widthPercentageToDP(105) }} source={require("../../../assets/images/community/category.png")}/>
-                        <Image style={{ width: widthPercentageToDP(20), height: widthPercentageToDP(13) }} source={require("../../../assets/images/community/quotation_color.png")}/>
+                        <Image style={{ position: "absolute", width: widthPercentageToDP(343), height: widthPercentageToDP(105) }} source={require("../../../assets/image/community/category.png")}/>
+                        <Image style={{ width: widthPercentageToDP(20), height: widthPercentageToDP(13) }} source={require("../../../assets/image/community/quotation_color.png")}/>
                         <View style={{flexDirection: "row", alignItems: "center"}}>
                           <CTText>{item.str}</CTText>
-                          <Image style={{ width: widthPercentageToDP(13), height: widthPercentageToDP(14), marginLeft: widthPercentageToDP(5) }} source={require("../../../assets/images/community/new.png")}/>
+                          <Image style={{ width: widthPercentageToDP(13), height: widthPercentageToDP(14), marginLeft: widthPercentageToDP(5) }} source={require("../../../assets/image/community/new.png")}/>
                         </View>
                         <CEText>{item.explain}</CEText>
                       </TouchableOpacity>

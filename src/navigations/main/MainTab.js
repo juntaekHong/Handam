@@ -3,13 +3,32 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator
 } from "react-navigation";
+
 import TestLeft from "../../containers/testleft/TestLeft";
-import TestRight from "../../containers/testright/TestRight";
 import HomeStack from "../home/HomeStack";
 import FastImage from "react-native-fast-image";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import colors from "../../configs/colors";
+
+import CommunityTab from "../community/CommunityTab";
+import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
+import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
+import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
+
+const CommunityStack = createStackNavigator(
+  {
+    Community : { screen: CommunityTab },
+    TalkAbout : { screen: TalkAboutScreen },
+    TalkDetail: { screen: TalkDetailScreen },
+    TalkWrite: { screen: TalkWriteScreen },
+  },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  }
+)
 
 const HomeTab = createMaterialTopTabNavigator(
   {
@@ -61,8 +80,8 @@ const HomeTab = createMaterialTopTabNavigator(
           )
       }
     },
-    Right: {
-      screen: TestRight,
+    Community: {
+      screen: CommunityStack,
       navigationOptions: {
         tabBarLabel: "커뮤니티",
         tabBarIcon: ({ focused }) =>

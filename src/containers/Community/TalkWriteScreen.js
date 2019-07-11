@@ -225,7 +225,7 @@ class TalkWriteScreen extends Component {
                 </KeyboardAvoidingView>
                 <View style={{flexDirection: "row", width: widthPercentageToDP(375), height:widthPercentageToDP(58), alignItems: "center"}}>
                     <TouchableOpacity style={{marginLeft: widthPercentageToDP(16), marginRight: widthPercentageToDP(10)}} onPress={()=>this.onClickSelectPicture()}>
-                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/images/community/image.png")} />
+                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/image/community/image.png")} />
                     </TouchableOpacity>
                     <Text style={{fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothic}}>사진추가 {this.state.imageNumber}/5 최대 10MB</Text>
                 </View>

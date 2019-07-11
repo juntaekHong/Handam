@@ -64,11 +64,11 @@ class TalkAboutScreen extends Component {
                                         {/* <Text style={{color: "#646464", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicB}}>{timeSince(item.createdAt)}</Text> */}
                                         <Text style={{color: "#646464", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicB}}>{timeSince(item.createdAt)}</Text>
                                         <View style={{flexDirection: "row", height: widthPercentageToDP(12), alignItems: "center"}}>
-                                            <Image style={{width: widthPercentageToDP(11), height: widthPercentageToDP(11)}} source={require("../../../assets/images/community/images.png")}/>
+                                            <Image style={{width: widthPercentageToDP(11), height: widthPercentageToDP(11)}} source={require("../../../assets/image/community/images.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(5)}}>{item.imageCount}</Text>
-                                            <Image style={{width: widthPercentageToDP(8.5), height: widthPercentageToDP(10.2), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/images/community/likes.png")}/>
+                                            <Image style={{width: widthPercentageToDP(8.5), height: widthPercentageToDP(10.2), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/image/community/likes.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(5)}}>{item.goodCount}</Text>
-                                            <Image style={{width: widthPercentageToDP(10.2), height: widthPercentageToDP(9.9), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/images/community/replys.png")}/>
+                                            <Image style={{width: widthPercentageToDP(10.2), height: widthPercentageToDP(9.9), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/image/community/replys.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(4.3)}}>{item.postsReplyCount}</Text>
                                         </View>
                                     </View>
@@ -93,11 +93,11 @@ class TalkAboutScreen extends Component {
             <SafeAreaView style={styles.container}>
                 <View style={{flexDirection: "row", width: widthPercentageToDP(375), height: widthPercentageToDP(53), justifyContent: "space-between", alignItems: "center", paddingTop: widthPercentageToDP(11), paddingBottom: widthPercentageToDP(14)}}>
                     <TouchableOpacity style={{marginLeft: widthPercentageToDP(8)}} onPress={()=>this.navigateBack()}>
-                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/images/community/back.png")}/>
+                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/image/community/back.png")}/>
                     </TouchableOpacity>
                     <Text style={{color: "#000000", fontSize: widthPercentageToDP(17), fontFamily: fonts.nanumSquareB}}>{this.props.categoryList[this.props.navigation.state.params.category].str}</Text>
                     <TouchableOpacity onPress={()=>this.navigateBack()}>
-                        <Image style={{width:widthPercentageToDP(21), height:widthPercentageToDP(21), marginRight: widthPercentageToDP(16)}} source={require("../../../assets/images/community/search.png")}/>
+                        <Image style={{width:widthPercentageToDP(21), height:widthPercentageToDP(21), marginRight: widthPercentageToDP(16)}} source={require("../../../assets/image/community/search.png")}/>
                     </TouchableOpacity>
                 </View>
 
@@ -127,22 +127,22 @@ class TalkAboutScreen extends Component {
                                     <View style={{flexDirection: "row", height: widthPercentageToDP(12), justifyContent: "space-between", alignItems: "center", marginTop: widthPercentageToDP(10)}}>
                                         <Text style={{color: "#646464", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicB}}>{timeSince(item.createdAt)}</Text>
                                         <View style={{flexDirection: "row", height: widthPercentageToDP(12), alignItems: "center"}}>
-                                            <Image style={{width: widthPercentageToDP(11), height: widthPercentageToDP(11)}} source={require("../../../assets/images/community/images.png")}/>
+                                            <Image style={{width: widthPercentageToDP(11), height: widthPercentageToDP(11)}} source={require("../../../assets/image/community/images.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(5)}}>{item.imageCount}</Text>
-                                            <Image style={{width: widthPercentageToDP(8.5), height: widthPercentageToDP(10.2), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/images/community/likes.png")}/>
+                                            <Image style={{width: widthPercentageToDP(8.5), height: widthPercentageToDP(10.2), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/image/community/likes.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(5)}}>{item.goodCount}</Text>
-                                            <Image style={{width: widthPercentageToDP(10.2), height: widthPercentageToDP(9.9), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/images/community/replys.png")}/>
+                                            <Image style={{width: widthPercentageToDP(10.2), height: widthPercentageToDP(9.9), marginLeft: widthPercentageToDP(10.5)}} source={require("../../../assets/image/community/replys.png")}/>
                                             <Text style={{color: "#171717", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginLeft: widthPercentageToDP(4.3)}}>{item.postsReplyCount}</Text>
                                         </View>
                                     </View>
                                 </TouchableOpacity>
                     }}
                 />
-                <TouchableOpacity style={{position: "absolute", width: widthPercentageToDP(87), height: widthPercentageToDP(37), marginTop: widthPercentageToDP(520) }} activeOpacity={0.5} 
-                onPress={()=>{
+                <TouchableOpacity style={{ position: "absolute", width: widthPercentageToDP(87), height: widthPercentageToDP(37), marginTop: widthPercentageToDP(546) }} activeOpacity={0.5} 
+                onPress={ () => {
                     this.navigateTalkWrite();
                 }} >
-                    <Image style={{width: widthPercentageToDP(87), height: widthPercentageToDP(37)}} source={require("../../../assets/images/community/write.png")}/>
+                    <Image style={{width: widthPercentageToDP(87), height: widthPercentageToDP(37)}} source={require("../../../assets/image/community/write.png")}/>
                     <Text style={{position: "absolute", color: "white", fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, marginTop: widthPercentageToDP(10), marginLeft: widthPercentageToDP(23) }}>글쓰기</Text>
                 </TouchableOpacity>
 
