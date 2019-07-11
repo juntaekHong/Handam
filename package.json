@@ -24,6 +24,7 @@
     "react-native-gesture-handler": "^1.2.1",
     "react-native-image-crop-picker": "^0.24.1",
     "react-native-indicators": "^0.13.0",
+    "react-native-looped-carousel": "^0.1.13",
     "react-native-material-textfield": "^0.12.0",
     "react-native-modal": "^11.1.0",
     "react-native-onesignal": "^3.2.14",

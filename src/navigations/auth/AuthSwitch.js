@@ -2,11 +2,11 @@ import { createSwitchNavigator } from "react-navigation";
 import Intro from "../../containers/intro/Intro";
 import UpdateCheck from "../../containers/update/UpdateCheck";
 import SignStack from "../sign/SignStack";
-import HomeTab from "../home/HomeTab";
+import MainTab from "../main/MainTab";
 
 const AuthSwitch = createSwitchNavigator(
   {
-    main: HomeTab,
+    main: MainTab,
     intro: { screen: Intro },
     update: { screen: UpdateCheck },
     sign: { screen: SignStack }

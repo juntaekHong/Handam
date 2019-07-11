@@ -13,7 +13,8 @@ const colors = {
   introInActive: "#b2b2b2",
   signUpNext: "#cad5dd",
   notFocus: "#646464",
-  selectMajor: "#9e9e9e"
+  selectMajor: "#9e9e9e",
+  dotInActive: "#b2b2b2"
 };
 
 export default colors;
