@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { SafeAreaView, StyleSheet, KeyboardAvoidingView, View, TouchableOpacity, Image, TextInput, Text, ScrollView } from "react-native";
+import { SafeAreaView, StyleSheet, KeyboardAvoidingView, View, TouchableOpacity, TextInput, Text, ScrollView, Image, FlatList } from "react-native";
 import { widthPercentageToDP } from "../../utils/util"
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
 import {UIActivityIndicator} from 'react-native-indicators';
+
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 class TalkWriteScreen extends Component {
 
@@ -18,7 +20,12 @@ class TalkWriteScreen extends Component {
             categoryExplain: this.props.categoryList[this.props.navigation.state.params.category].explain,
             categoryIndex: this.props.categoryList[this.props.navigation.state.params.category].index,
             clicked: false,
+            imageTEMPArray: this.props.getPosts.imagePath!=undefined&&this.props.getPosts.imagePath.length>0? eval("("+this.props.getPosts.imagePath[0].path+")").image : [],
+            imageArray: this.props.getPosts.imagePath!=undefined&&this.props.getPosts.imagePath.length>0? eval("("+this.props.getPosts.imagePath[0].path+")").image : [],
+            imageNumber: this.props.getPosts.imagePath!=undefined&&this.props.getPosts.imagePath.length>0? this.props.getPosts.imagePath.length:0,
+            imageSize: 0,
         }
+        console.log(this.state.imageArray)
     }
 
     navigationBack = () => {
@@ -37,15 +44,71 @@ class TalkWriteScreen extends Component {
         } 
     }
 
+    //이미지 선택
+    onClickSelectPicture = async () => {
+        try {
+            let image = await ImageCropPicker.openPicker({
+                width: 200,
+                height: 200,
+                mediaType: 'photo',
+                // cropping: true,
+                includeBase64: true,
+                cropperToolbarTitle: '',
+            });
+
+            // console.log('posts >> ')
+            // console.log(Object.keys(image));
+            // console.log('posts end')
+
+            await this.setState({imageSize: this.state.imageSize+image.size});
+
+            if(this.state.imageSize<10000000){ //이미지 총 합이 10MB보다 작으면 
+                await this.state.imageArray.push(image);
+                await this.setState({imageNumber: this.state.imageNumber+1});
+            } else {
+                this.setState({imageSize: this.state.imageSize-image.size});
+            }
+
+        } catch (err) {
+            // err.code : E_PICKER_CANCELLED,
+            console.log(err);
+        }
+    };
+
     renderSubmit = () => {
         if(this.state.title!=''&&this.state.content!=''&&this.state.category!=''&&this.checkSpace(this.state.title)&&this.checkSpace(this.state.content)&&this.state.clicked==false){
             return (
                 <TouchableOpacity style={styles.submit} activeOpacity={0.3} onPress={ async () => {
                     this.setState({clicked: true});
+
                     const formData = new FormData();
-                    formData.append('postsCategoryIndex', this.state.categoryIndex+1);
-                    formData.append('title', this.state.title);
-                    formData.append('content', this.state.content);
+                    const prevImage = new Array(); //유지 이미지 배열
+                    const removedImage = new Array(); //삭제 이미지 배열
+
+                    if(this.state.imageArray!=null) {
+                        this.state.imageArray.map((item,i)=>{
+                            if(typeof(item)=='string'){ 
+                                this.state.imageTEMPArray.splice(this.state.imageTEMPArray.indexOf(item),1); //삭제된 s3 이미지 걸러내기
+                                prevImage.push(item);
+                            } else {
+                                formData.append('upload', {
+                                    uri: item.path, 
+                                    type: `${item.mime}`, 
+                                    name:`${i}.${item.mime.substr(item.mime.indexOf('/')+1,item.mime.length-1)}`
+                                })
+                            }
+                        })
+                        if(this.state.imageTEMPArray!=null) {
+                                this.state.imageTEMPArray.map((item)=>{
+                                    removedImage.push(item);
+                                })
+                            }
+                            if(prevImage.length!=0) formData.append('prevPath', JSON.stringify({"image":  prevImage}));
+                            if(removedImage.length!=0) formData.append('removedPath', JSON.stringify({"image": removedImage}));
+                    }
+                        formData.append('postsCategoryIndex', this.state.categoryIndex+1);
+                        formData.append('title', this.state.title);
+                        formData.append('content', this.state.content);
                           
                     if(this.props.navigation.state.params.form=="update"){
                         await TalkActions.updatePosts(formData, this.props.getPosts.postsIndex);
@@ -82,21 +145,13 @@ class TalkWriteScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom: widthPercentageToDP(18)}}>
-                    <Text style={[styles.titleview]}>글쓰기</Text>
-                    <TouchableOpacity style={styles.rightIcon} onPress={this.navigationBack}>
-                                {/* <IcoMoon name="close" size={18} color={'black'}/> */}
-                    </TouchableOpacity>
+                 <View style={{flexDirection: "row", width: widthPercentageToDP(375), height: widthPercentageToDP(53), justifyContent: "flex-end", alignItems: "center", paddingTop: widthPercentageToDP(11), paddingBottom: widthPercentageToDP(14)}}>
+                    <Text style={{position: "absolute", width: widthPercentageToDP(375),  color: "#000000", fontSize: widthPercentageToDP(17), fontFamily: fonts.nanumSquareB, textAlign: "center"}}>글쓰기</Text>
+                    {this.renderSubmit()}
                 </View>
                 <KeyboardAvoidingView style={{flex: 1}} enabled>
                     <ScrollView style={{width: widthPercentageToDP(375)}} keyboardShouldPersistTaps='never' >
                         <View style={{flex:1}}>
-                            <View style={{height: widthPercentageToDP(26), flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                                <View style={{flexDirection:'row', alignItems:'center'}}>
-                                    <Text style={[styles.category]}>카테고리</Text>
-                                </View>
-                                <Text style={[{fontSize: widthPercentageToDP(11), color:'#c2c2c2', marginRight: widthPercentageToDP(21)}]}>{this.state.categoryExplain}</Text>
-                            </View>
                             <View style={styles.line}/>
                             <View style={styles.titleContainer}>  
                                 <TextInput 
@@ -116,7 +171,7 @@ class TalkWriteScreen extends Component {
                                     returnKeyType={'done'}
                                     multiline={false}/>
                             </View>
-
+                            <View style={styles.line}/>
                             <View style={styles.contentContainer}>                                      
                                 <TextInput 
                                     style={{color: '#000000',
@@ -135,12 +190,45 @@ class TalkWriteScreen extends Component {
                                     autoCapitalize={'none'}
                                     multiline={true}/>
                             </View>
-                        </View>
-                        <View style={styles.submitView}>
-                            {this.renderSubmit()}
+                            {this.state.imageArray.length!=0?
+                                <FlatList
+                                    style={{flexGrow: 1, backgroundColor: '#ffffff', width: '100%', height: '100%', marginTop: widthPercentageToDP(43), paddingHorizontal: widthPercentageToDP(16)}}
+                                    horizontal={true}
+                                    //pagingEnabled={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    ListHeaderComponent={this.renderListHeader}
+                                    ListFooterComponent={this.renderListFooter}
+                                    data={this.state.imageArray}
+                                    renderItem={({item, index}) => {
+                                        return  <View>
+                                                    <Image style={{width: widthPercentageToDP(95), height: widthPercentageToDP(95), marginRight: widthPercentageToDP(10), borderRadius: widthPercentageToDP(4)}}
+                                                                        resizeMode={'cover'}
+                                                                        source={typeof(item)=='string'? {uri: `${item}`}:{uri: `data:${item.mime};base64,${item.data}`}} />
+                                                    {/* <TouchableOpacity style={{position: 'absolute', marginTop: widthPercentageToDP(10), marginLeft: widthPercentageToDP(65)}} 
+                                                                onPress={()=>{
+                                                                    this.state.imageArray.splice(index,1); //선택된 이미지 제거
+                                                                    this.setState({imageNumber: this.state.imageNumber-1, imageSize: this.state.imageSize-item.size});
+                                                                }}> 
+                                                        <Image style={{width:util.widthPercentageToDP(32), height:util.widthPercentageToDP(32)}}
+                                                                resizeMode={'cover'}
+                                                                source={require('../../../../assets/image/xbox.png')} />
+                                                    </TouchableOpacity> */}
+                                                </View>
+                                    }}
+                                />
+                                :
+                                null
+                            }
                         </View>
                     </ScrollView> 
                 </KeyboardAvoidingView>
+                <View style={{flexDirection: "row", width: widthPercentageToDP(375), height:widthPercentageToDP(58), alignItems: "center"}}>
+                    <TouchableOpacity style={{marginLeft: widthPercentageToDP(16), marginRight: widthPercentageToDP(10)}} onPress={()=>this.onClickSelectPicture()}>
+                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/images/community/image.png")} />
+                    </TouchableOpacity>
+                    <Text style={{fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothic}}>사진추가 {this.state.imageNumber}/5 최대 10MB</Text>
+                </View>
             </SafeAreaView>
         );
     }
@@ -151,58 +239,46 @@ const styles = StyleSheet.create({
       flex: 1, 
       alignItems: "center"
     },
-    submitView: {
-        // paddingTop:'4.3rem',
-        // paddingBottom:'4.3rem',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        paddingTop: widthPercentageToDP(60),
-        paddingBottom: widthPercentageToDP(60),
-    },
     submitText: {
-        // fontSize: '1.143rem',
-        color: 'white',
-        fontSize: widthPercentageToDP(16)
+        color: "white", 
+        fontSize: widthPercentageToDP(15), 
+        fontFamily: fonts.nanumBarunGothicB
     },
     submit: {
-        // width:'13.7857rem',
-        // height:'3.2857rem',
-        // borderRadius: '1.643rem',
-        backgroundColor: '#4a4a4a',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: widthPercentageToDP(193),
-        height: widthPercentageToDP(46),
-        borderRadius: widthPercentageToDP(23),
+        backgroundColor: "#259ffa", 
+        width: widthPercentageToDP(74.7), 
+        height: widthPercentageToDP(31.5), 
+        justifyContent:"center", 
+        alignItems: "center", 
+        marginRight: widthPercentageToDP(16), 
+        borderRadius: widthPercentageToDP(29)
     },
     submitDisable: {
-        // width: '13.7857rem',
-        // height: '3.2857rem',
-        // borderRadius: '1.643rem',
-        backgroundColor: '#4a4a4a4d',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: widthPercentageToDP(193),
-        height: widthPercentageToDP(46),
-        borderRadius: widthPercentageToDP(23),
+        backgroundColor: "#c3c3c3", 
+        width: widthPercentageToDP(74.7), 
+        height: widthPercentageToDP(31.5), 
+        justifyContent:"center", 
+        alignItems: "center", 
+        marginRight: widthPercentageToDP(16), 
+        borderRadius: widthPercentageToDP(29)
     },
     titleContainer: {
-        width: widthPercentageToDP(335),
-        // borderTopWidth: util.widthPercentageToDP(1),
-        // borderTopColor: 'rgb(200,200,200)',
-        marginTop: widthPercentageToDP(10),
-        marginHorizontal: widthPercentageToDP(21),
-        // paddingVertical: util.widthPercentageToDP(10),
+        width: widthPercentageToDP(343),
+        height: widthPercentageToDP(19),
+        marginVertical: widthPercentageToDP(20),
+        marginHorizontal: widthPercentageToDP(16),
     },
     contentContainer: {
-        width: widthPercentageToDP(335),
-        height: widthPercentageToDP(334),
-        // borderTopWidth: util.widthPercentageToDP(1),
-        // borderTopColor: 'rgb(200,200,200)',
-        marginHorizontal: widthPercentageToDP(21),
-        marginTop: widthPercentageToDP(10),
-        padding: 0,
+        width: widthPercentageToDP(343),
+        height: widthPercentageToDP(295),
+        marginTop: widthPercentageToDP(20),
+        marginHorizontal: widthPercentageToDP(16),
     },
+    line: {
+        backgroundColor: "#dbdbdb", 
+        width: widthPercentageToDP(375), 
+        height: widthPercentageToDP(1)
+    }
   });
 
 export default connect((state) => ({

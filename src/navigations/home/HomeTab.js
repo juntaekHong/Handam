@@ -3,8 +3,6 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator
 } from "react-navigation";
-import Home from "../../containers/Home/Home";
-import Left from "../../containers/Left/Left";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 import CommunityTab from "../CommunityTab/CommunityTab";

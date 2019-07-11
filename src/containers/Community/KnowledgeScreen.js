@@ -6,7 +6,7 @@ export default class KnowledgeScreen extends Component {
     render() {
         return (
             <View>
-                <Text>This Tab is First</Text>
+                <Text>알쓸신한 페이지</Text>
             </View>
         );
     }

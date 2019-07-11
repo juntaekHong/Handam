@@ -12,14 +12,14 @@ const filterHandleAction = createAction(FILTER_HANDLE);
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
 const POSTSLIST = "talk/POSTSLIST";
 const HOTPOSTSLIST = "talk/HOTPOSTSLIST";
-const CREATEPOSTS = "talk/CREATEPOSTS";
+const INIT_GETPOSTS = "talk/INIT_GETPOSTS"
 const GETPOSTS = "talk/GETPOSTS";
 
 const initPostsListAction = createAction(INIT_POSTSLIST);
 const postsListAction = createAction(POSTSLIST);
 const hostpostsListAction = createAction(HOTPOSTSLIST);
+const initGetPostsAction = createAction(INIT_GETPOSTS);
 const getPostsAction = createAction(GETPOSTS);
-const createPostAction = createAction(CREATEPOSTS)
 
 //댓글
 const INIT_REPLYSLIST = "talk/INIT_REPLYSLIST";
@@ -89,7 +89,6 @@ export const createPosts = (posts) => async dispatch => {
   try{
     const jsonData = await api.post(`/posts`, {body: posts, token: token});
     if (jsonData.statusCode == 200) {
-      dispatch(createPostAction(jsonData.result));
       return true;
     } else {
       throw "error";
@@ -98,6 +97,10 @@ export const createPosts = (posts) => async dispatch => {
       console.log(error.message);
       return false;
   }
+}
+
+export const initGetPosts = () => async dispatch => {
+  dispatch(initGetPostsAction());
 }
 
 export const getPosts = (postsIndex) => async dispatch => {
@@ -178,9 +181,9 @@ export const updatePostsReply = (reply) => async dispatch => {
   }
 }
 
-export const deletePostsReply = (reply) => async dispatch => {
+export const deletePostsReply = (postsReplyIndex) => async dispatch => {
   const token = await getData('token');
-  const jsonData = await api.delete(`/postsReply/postsReplyIndex/${postsReplyIndex}`,{body: reply, token: token});
+  const jsonData = await api.delete(`/postsReply/postsReplyIndex/${postsReplyIndex}`,{token: token});
   if(jsonData.statusCode == 200) {
     return true;
   } else {
@@ -242,6 +245,10 @@ export default handleActions(
     [GETPOSTS]: (state, { payload }) =>
       produce(state, draft => {
         draft.getPosts = payload;
+    }),
+    [INIT_GETPOSTS]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.getPosts = {};
     }),
 
     //댓글

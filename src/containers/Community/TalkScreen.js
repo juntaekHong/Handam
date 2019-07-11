@@ -30,7 +30,7 @@ class TalkScreen extends Component {
             ref={(ref) => {
                 this.flatListRef = ref;
             }}
-            style={{flexGrow: 1, backgroundColor: '#f8f8f8', width: '100%', height: '100%', paddingTop: widthPercentageToDP(16), paddingHorizontal: widthPercentageToDP(16)}}
+            style={{flexGrow: 1, width: '100%', height: '100%', marginTop: widthPercentageToDP(16), paddingHorizontal: widthPercentageToDP(16)}}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             data={this.props.categoryList}
@@ -64,6 +64,7 @@ class TalkScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
+    backgroundColor: "#f8f8f8",
     alignItems: "center"
   },
   pageName: {

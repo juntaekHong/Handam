@@ -6,7 +6,7 @@ export default class RestaurantScreen extends Component {
     render() {
         return (
             <View>
-                <Text>This Tab is First</Text>
+                <Text>한슐랭 페이지</Text>
             </View>
         );
     }

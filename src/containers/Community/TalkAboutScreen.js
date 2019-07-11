@@ -10,10 +10,18 @@ class TalkAboutScreen extends Component {
 
     constructor(props) {
         super(props);
-    
+
+        didBlurSubscription = this.props.navigation.addListener(
+            'didFocus',
+            async payload => {
+                TalkActions.initGetPosts();
+            }
+        );
+
         this.state={
         
         }
+        
       }
 
     navigateBack = () => {
@@ -49,7 +57,7 @@ class TalkAboutScreen extends Component {
                                 <View style={{width: widthPercentageToDP(340), paddingRight: widthPercentageToDP(16)}}>
                                     <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: widthPercentageToDP(13)}}>
                                         <Text style={{color: "#000000", fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothicB}} ellipsizeMode={'tail'} numberOfLines={1}>{item.title}</Text>
-                                        <Text style={{backgroundColor: "#259ffa", color: "white", fontSize: widthPercentageToDP(10), fontFamily: fonts.nanumBarunGothicB, textAlign: "center", textAlignVertical: "center", width: widthPercentageToDP(32), height: widthPercentageToDP(14), borderRadius: widthPercentageToDP(10)}}>HOT</Text>
+                                        <Text style={{backgroundColor: "#259ffa", color: "white", fontSize: widthPercentageToDP(10), fontFamily: fonts.nanumBarunGothicB, textAlign: "center", textAlignVertical: "center", width: widthPercentageToDP(32), height: widthPercentageToDP(14), lineHeight: widthPercentageToDP(12), borderRadius: widthPercentageToDP(10)}}>HOT</Text>
                                     </View>
                                     <Text style={{color: "#000000", fontSize: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothicR, marginTop: widthPercentageToDP(8)}} ellipsizeMode={'tail'} numberOfLines={1}>{item.content}</Text>
                                     <View style={{flexDirection: "row", height: widthPercentageToDP(12), justifyContent: "space-between", alignItems: "center", marginTop: widthPercentageToDP(10)}}>
@@ -83,9 +91,9 @@ class TalkAboutScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <View style={{backgroundColor: 'blue', flexDirection: "row", width: widthPercentageToDP(375), height: widthPercentageToDP(21), justifyContent:"space-between", alignItems: "center", marginTop: widthPercentageToDP(19), marginBottom: widthPercentageToDP(28)}}>
-                    <TouchableOpacity style={{backgroundColor: 'red', width: widthPercentageToDP(25), height: widthPercentageToDP(25), marginLeft: widthPercentageToDP(16), justifyContent: "center"}} onPress={()=>this.navigateBack()}>
-                        <Image style={{width:widthPercentageToDP(12), height:widthPercentageToDP(20.5)}} source={require("../../../assets/images/community/back.png")}/>
+                <View style={{flexDirection: "row", width: widthPercentageToDP(375), height: widthPercentageToDP(53), justifyContent: "space-between", alignItems: "center", paddingTop: widthPercentageToDP(11), paddingBottom: widthPercentageToDP(14)}}>
+                    <TouchableOpacity style={{marginLeft: widthPercentageToDP(8)}} onPress={()=>this.navigateBack()}>
+                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/images/community/back.png")}/>
                     </TouchableOpacity>
                     <Text style={{color: "#000000", fontSize: widthPercentageToDP(17), fontFamily: fonts.nanumSquareB}}>{this.props.categoryList[this.props.navigation.state.params.category].str}</Text>
                     <TouchableOpacity onPress={()=>this.navigateBack()}>
@@ -111,7 +119,7 @@ class TalkAboutScreen extends Component {
                         return <TouchableOpacity style={styles.posts} 
                                 onPress={ async ()=>{
                                     await TalkActions.getPosts(item.postsIndex);
-                                    await TalkActions.pageListPostsReply('page=1&count=100',item.postsIndex)
+                                    await TalkActions.pageListPostsReply('page=1&count=100',item.postsIndex);
                                     this.navigateTalkDetail();
                                 }}>
                                     <Text style={{color: "#000000", fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothicB, marginTop: widthPercentageToDP(12)}} ellipsizeMode={'tail'} numberOfLines={1}>{item.title}</Text>
