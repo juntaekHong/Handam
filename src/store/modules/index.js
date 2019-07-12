@@ -6,6 +6,7 @@ import counter from "./counter/counter";
 import auth from "./auth/auth";
 import signin from "./sign/signin";
 import common from "./common/common";
+import talk from "./community/talk";
 import signup from "./sign/signup";
 import home from "./home/home";
 export default combineReducers({
@@ -13,6 +14,7 @@ export default combineReducers({
   auth,
   signin,
   common,
+  talk,
   signup,
   home
 });
