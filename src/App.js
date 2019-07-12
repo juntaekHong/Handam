@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Platform, View, StyleSheet, Text, SafeAreaView } from "react-native";
 import AppNavigation from "./navigations";
-import SplashScreen from "react-native-splash-screen";
+// import SplashScreen from "react-native-splash-screen";
 import { useScreens } from "react-native-screens";
 import NavigatorService from "./utils/navigators";
 import config from "./configs/config";
@@ -19,7 +19,7 @@ class App extends Component {
       OneSignal.init(config.pushKey);
       OneSignal.inFocusDisplaying(2);
     } catch (e) {}
-    SplashScreen.hide();
+    // SplashScreen.hide();
   }
 
   render() {

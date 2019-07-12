@@ -24,6 +24,9 @@ const Home = ({ navigation, noticeList }) => {
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
   }, []);
+  const navigateBus = useCallback(() => {
+    navigation.navigate("bus");
+  }, []);
   useEffect(async () => {
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
@@ -42,7 +45,7 @@ const Home = ({ navigation, noticeList }) => {
         <HomeAd list={noticeList} />
         <HomeNavigateView>
           <ScheduleButton />
-          <BusButton />
+          <BusButton onPress={navigateBus} />
           <NoticeButton onPress={navigateNotice} />
         </HomeNavigateView>
         <TodayLectureTitle />

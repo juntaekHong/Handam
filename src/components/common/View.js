@@ -54,9 +54,8 @@ const TitleView = styled.View`
   height: ${({ height = 55 }) => widthPercentageToDP(height)};
   flex-direction: row;
   align-items: center;
-  padding-left: ${({ paddingLeft = 10 }) => widthPercentageToDP(paddingLeft)};
-  padding-right: ${({ paddingRight = 10 }) =>
-    widthPercentageToDP(paddingRight)};
+  padding-left: ${({ paddingLeft = 8 }) => widthPercentageToDP(paddingLeft)};
+  padding-right: ${({ paddingRight = 8 }) => widthPercentageToDP(paddingRight)};
   justify-content: space-between;
 `;
 
@@ -69,8 +68,8 @@ const TitleText = styled(NBGText)`
 `;
 
 export const TitleIcon = styled.TouchableOpacity`
-  height: ${widthPercentageToDP(36)};
-  width: ${widthPercentageToDP(36)};
+  height: ${widthPercentageToDP(28)};
+  width: ${widthPercentageToDP(28)};
   justify-content: center;
   align-items: center;
 `;
