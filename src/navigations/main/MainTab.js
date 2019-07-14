@@ -15,22 +15,23 @@ import CommunityTab from "../community/CommunityTab";
 import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
 import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
 import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
+import { View } from "react-native";
 
 const CommunityStack = createStackNavigator(
   {
-    Community : { screen: CommunityTab },
-    TalkAbout : { screen: TalkAboutScreen },
+    Community: { screen: CommunityTab },
+    TalkAbout: { screen: TalkAboutScreen },
     TalkDetail: { screen: TalkDetailScreen },
-    TalkWrite: { screen: TalkWriteScreen },
+    TalkWrite: { screen: TalkWriteScreen }
   },
   {
     defaultNavigationOptions: {
       header: null
     }
   }
-)
+);
 
-const HomeTab = createMaterialTopTabNavigator(
+const MainTab = createMaterialTopTabNavigator(
   {
     Left: {
       screen: TestLeft,
@@ -53,7 +54,13 @@ const HomeTab = createMaterialTopTabNavigator(
                 width: widthPercentageToDP(28)
               }}
             />
-          )
+          ),
+        tabBarOptions: {
+          tabStyle: {
+            marginLeft: widthPercentageToDP(30),
+            marginRight: widthPercentageToDP(30)
+          }
+        }
       }
     },
     HomeStack: {
@@ -119,8 +126,10 @@ const HomeTab = createMaterialTopTabNavigator(
       inactiveTintColor: "#9e9e9e",
       tabStyle: {
         height: widthPercentageToDP(49),
+        padding: 0,
         justifyContent: "center",
         alignItems: "center",
+        alignSelf: "center",
         bottom: 0,
         top: 0,
         backgroundColor: "transparent"
@@ -139,4 +148,4 @@ const HomeTab = createMaterialTopTabNavigator(
   }
 );
 
-export default HomeTab;
+export default MainTab;
