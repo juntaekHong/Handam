@@ -8,14 +8,12 @@ import TestLeft from "../../containers/testleft/TestLeft";
 import HomeStack from "../home/HomeStack";
 import FastImage from "react-native-fast-image";
 import { widthPercentageToDP } from "../../utils/util";
-import fonts from "../../configs/fonts";
-import colors from "../../configs/colors";
 
 import CommunityTab from "../community/CommunityTab";
 import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
 import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
 import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
-import { View } from "react-native";
+import { TabView } from "../../components/navigation/TabView";
 
 const CommunityStack = createStackNavigator(
   {
@@ -116,35 +114,36 @@ const MainTab = createMaterialTopTabNavigator(
     initialRouteName: "HomeStack",
     tabBarPosition: "bottom",
     swipeEnabled: true,
-    tabBarOptions: {
-      indicatorStyle: {
-        opacity: 0,
-        backgroundColor: "#fff"
-      },
-      showIcon: true,
-      activeTintColor: colors.active,
-      inactiveTintColor: "#9e9e9e",
-      tabStyle: {
-        height: widthPercentageToDP(49),
-        padding: 0,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        bottom: 0,
-        top: 0,
-        backgroundColor: "transparent"
-      },
-      labelStyle: {
-        fontFamily: fonts.nanumBarunGothicB,
-        fontSize: widthPercentageToDP(10),
-        margin: 0
-      },
-      style: {
-        height: widthPercentageToDP(49),
-        paddingTop: 0,
-        backgroundColor: colors.white
-      }
-    }
+    tabBarComponent: TabView
+    // tabBarOptions: {
+    //   indicatorStyle: {
+    //     opacity: 0,
+    //     backgroundColor: "#fff"
+    //   },
+    //   showIcon: true,
+    //   activeTintColor: colors.active,
+    //   inactiveTintColor: "#9e9e9e",
+    //   tabStyle: {
+    //     height: widthPercentageToDP(49),
+    //     padding: 0,
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     alignSelf: "center",
+    //     bottom: 0,
+    //     top: 0,
+    //     backgroundColor: "transparent"
+    //   },
+    //   labelStyle: {
+    //     fontFamily: fonts.nanumBarunGothicB,
+    //     fontSize: widthPercentageToDP(10),
+    //     margin: 0
+    //   },
+    //   style: {
+    //     height: widthPercentageToDP(49),
+    //     paddingTop: 0,
+    //     backgroundColor: colors.white
+    //   }
+    // }
   }
 );
 
