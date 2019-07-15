@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { widthPercentageToDP } from "../../utils/util";
-import colors from "../../configs/colors";
-import { NBGBText } from "../common/Text";
+import { widthPercentageToDP } from "../../../utils/util";
+import { NBGBText } from "../../common/Text";
 
 const TimeButtonView = styled.TouchableOpacity`
   width: ${widthPercentageToDP(72)}

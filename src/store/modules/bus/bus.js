@@ -4,6 +4,7 @@ import axios from "axios";
 import config from "../../../configs/config";
 import { parseString } from "xml2js";
 import { produce } from "immer";
+import { getArrMsg } from "../../../utils/util";
 
 const BUS_JONGRO_LIST = "bus/BUS_JONGRO_LIST";
 const BUS_JONGRO_TIME_TEXT = "bus/BUS_JONGRO_TIME_TEXT";
@@ -38,7 +39,7 @@ export const getBusList = type => async dispatch => {
     let count = 0;
     let date = moment().format("HH:mm");
     ServiceResult.msgBody[0].itemList.map((item, index) => {
-      if (util.getArrMsg(item.arrmsg1) == "곧 도착") count++;
+      if (getArrMsg(item.arrmsg1) == "곧 도착") count++;
     });
 
     let time = `${date} 기준 ${count}대 운행중`;

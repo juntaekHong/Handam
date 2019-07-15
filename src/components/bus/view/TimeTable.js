@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components/native";
-import { widthPercentageToDP } from "../../utils/util";
-import { NBGBText } from "../common/Text";
-import { TimeButton } from "./Button";
+import { widthPercentageToDP } from "../../../utils/util";
+import { NBGBText } from "../../common/Text";
+import { TimeButton } from "../button/TimeButton";
 
 const TimeTableView = styled.View`
   position: absolute
@@ -20,7 +20,7 @@ const TimeTableView = styled.View`
 export const TimeTable = props => {
   return (
     <TimeTableView>
-      <NBGBText>타임테이블</NBGBText>
+      <NBGBText fontSize={12}>{props.time}</NBGBText>
       <TimeButton {...props} />
     </TimeTableView>
   );

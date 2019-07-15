@@ -25,7 +25,7 @@ const Home = ({ navigation, noticeList }) => {
     navigation.navigate("notice");
   }, []);
   const navigateBus = useCallback(() => {
-    navigation.navigate("bus");
+    navigation.navigate("busstack");
   }, []);
   useEffect(async () => {
     await CommonActions.handleLoading(true);

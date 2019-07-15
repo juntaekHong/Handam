@@ -1,12 +1,12 @@
 import { createStackNavigator } from "react-navigation";
 import MainTab from "../main/MainTab";
 import Notice from "../../containers/notice/Notice";
-import Bus from "../../containers/bus/Bus";
+import BusStack from "../bus/BusStack";
 const RootStack = createStackNavigator(
   {
     main: { screen: MainTab },
     notice: { screen: Notice },
-    bus: { screen: Bus }
+    busstack: { screen: BusStack }
   },
   {
     initialRouteName: "main",
