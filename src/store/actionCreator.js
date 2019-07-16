@@ -9,6 +9,7 @@ import * as common from "./modules/common/common";
 import * as talk from "./modules/community/talk";
 import * as signup from "./modules/sign/signup";
 import * as home from "./modules/home/home";
+import * as bus from "./modules/bus/bus";
 
 const { dispatch } = store;
 
@@ -18,3 +19,4 @@ export const SignUpActions = bindActionCreators(signup, dispatch);
 export const CommonActions = bindActionCreators(common, dispatch);
 export const TalkActions = bindActionCreators(talk, dispatch);
 export const HomeActions = bindActionCreators(home, dispatch);
+export const BusActions = bindActionCreators(bus, dispatch);

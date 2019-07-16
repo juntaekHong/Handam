@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { HomeNavigate } from "./View";
 import { NBGBText } from "../common/Text";
 import { Image, Platform, View } from "react-native";
 import colors from "../../configs/colors";
@@ -22,14 +21,23 @@ const shadow = {
   }
 };
 
+export const HomeNavigate = styled.TouchableOpacity`
+  width: ${widthPercentageToDP(80)}
+  height: ${widthPercentageToDP(100)}
+  background-color: ${({ backgroundColor }) => backgroundColor}
+  border-radius: ${widthPercentageToDP(8)}
+  padding-top :${widthPercentageToDP(20)}
+  align-items: center
+`;
+
 export const HomeNavigateButton = props => {
   return (
-      <HomeNavigate {...props} style={shadow[Platform.OS]}>
-        {props.children}
-        <NBGBText marginTop={7} fontSize={12} color={colors.white}>
-          {props.title}
-        </NBGBText>
-      </HomeNavigate>
+    <HomeNavigate {...props} style={shadow[Platform.OS]}>
+      {props.children}
+      <NBGBText marginTop={7} fontSize={12} color={colors.white}>
+        {props.title}
+      </NBGBText>
+    </HomeNavigate>
   );
 };
 
