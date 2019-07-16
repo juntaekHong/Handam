@@ -146,15 +146,6 @@ export const HomeNavigateView = styled.View`
   flex-direction: row
 `;
 
-export const HomeNavigate = styled.TouchableOpacity`
-  width: ${widthPercentageToDP(80)}
-  height: ${widthPercentageToDP(100)}
-  background-color: ${({ backgroundColor }) => backgroundColor}
-  border-radius: ${widthPercentageToDP(8)}
-  padding-top :${widthPercentageToDP(20)}
-  align-items: center
-`;
-
 const TodayLectureTitleView = styled(RowView)`
   width: 100%
   height: ${widthPercentageToDP(50)}
