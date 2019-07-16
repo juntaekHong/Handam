@@ -11,6 +11,8 @@ import * as signup from "./modules/sign/signup";
 import * as home from "./modules/home/home";
 import * as bus from "./modules/bus/bus";
 
+import * as hansungInfo from './modules/hansungInfo/hansungInfo';
+
 const { dispatch } = store;
 
 export const AuthActions = bindActionCreators(auth, dispatch);
@@ -20,3 +22,5 @@ export const CommonActions = bindActionCreators(common, dispatch);
 export const TalkActions = bindActionCreators(talk, dispatch);
 export const HomeActions = bindActionCreators(home, dispatch);
 export const BusActions = bindActionCreators(bus, dispatch);
+
+export const HansungInfoAction = bindActionCreators(hansungInfo, dispatch);

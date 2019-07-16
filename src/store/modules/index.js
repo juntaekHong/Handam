@@ -10,6 +10,7 @@ import talk from "./community/talk";
 import signup from "./sign/signup";
 import home from "./home/home";
 import bus from "./bus/bus";
+import hansung from './hansungInfo/hansungInfo';
 
 export default combineReducers({
   counter,
@@ -19,5 +20,6 @@ export default combineReducers({
   talk,
   signup,
   home,
-  bus
+  bus,
+  hansung,
 });

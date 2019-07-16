@@ -10,7 +10,7 @@ import {
   TodayLine,
   TodayLecture
 } from "../../components/home/View";
-import { HomeActions, CommonActions } from "../../store/actionCreator";
+import { HomeActions, CommonActions, HansungInfoAction } from "../../store/actionCreator";
 import moment from "moment";
 import {
   ScheduleButton,
@@ -31,6 +31,7 @@ const Home = ({ navigation, noticeList }) => {
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
     await CommonActions.handleLoading(false);
+    await HansungInfoAction.getHansungInfo();
   }, []);
   useEffect(() => {
     initCall();
