@@ -5,8 +5,6 @@ import { NBGBText } from "../../common/Text";
 import { TimeButton } from "../button/TimeButton";
 
 const TimeTableView = styled.View`
-  position: absolute
-  top: ${widthPercentageToDP(106)}
   width: 100%
   height: ${widthPercentageToDP(47.7)}
   padding-left: ${widthPercentageToDP(16)}
@@ -14,7 +12,6 @@ const TimeTableView = styled.View`
   flex-direction: row
   justify-content: space-between
   align-items: center
-  z-index: 100
 `;
 
 export const TimeTable = props => {

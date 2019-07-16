@@ -1,19 +1,17 @@
-import React, { useState, useCallback } from "react";
-import { connect } from "react-redux";
-import { BaseView } from "../../components/common/View";
+import React from "react";
+import { BaseView } from "../../common/View";
 import { WebView } from "react-native-webview";
-import config from "../../configs/config";
-import { widthPercentageToDP } from "../../utils/util";
+import { widthPercentageToDP } from "../../../utils/util";
+import config from "../../../configs/config";
 
-const Shuttle = props => {
+export const ShuttleWebView = props => {
   return (
-    <BaseView>
+    <BaseView style={props.visible ? { height: "100%" } : { height: 0 }}>
       <WebView
         style={{
           flex: 1,
           width: "100%",
-          backgroundColor: "#fff",
-          marginTop: widthPercentageToDP(47.5)
+          backgroundColor: "#fff"
         }}
         source={{ uri: config.shuttleWebView }}
         useWebKit={true}
@@ -26,5 +24,3 @@ const Shuttle = props => {
     </BaseView>
   );
 };
-
-export default connect()(Shuttle);

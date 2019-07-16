@@ -27,10 +27,13 @@ const Home = ({ navigation, noticeList }) => {
   const navigateBus = useCallback(() => {
     navigation.navigate("busstack");
   }, []);
-  useEffect(async () => {
+  const initCall = useCallback(async () => {
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
     await CommonActions.handleLoading(false);
+  }, []);
+  useEffect(() => {
+    initCall();
   }, []);
   return (
     <HCenterView>

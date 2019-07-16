@@ -1,47 +1,30 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { Title, BaseView } from "../../components/common/View";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { Dimensions, View } from "react-native";
-import Shuttle from "./Shuttle";
-import colors from "../../configs/colors";
-import { NBGBText } from "../../components/common/Text";
-import { widthPercentageToDP } from "../../utils/util";
-import fonts from "../../configs/fonts";
 import { TimeTable } from "../../components/bus/view/TimeTable";
 import { BusActions, CommonActions } from "../../store/actionCreator";
 import moment from "moment";
-import Seongbuk from "./Seongbuk";
-import { BusStationListItem } from "../../components/bus/listItem/BusStationListItem";
-import { BusView } from "../../components/bus/view/BusView";
-import Jongro from "./Jongro";
+import { ShuttleWebView } from "../../components/bus/view/ShuttleWebView";
+import { BusList } from "../../components/bus/view/BusList";
+import { BusTab } from "../../components/bus/view/BusTab";
 
-const FirstRoute = () => (
-  <View style={[{ flex: 1, backgroundColor: "#ff4081" }]} />
-);
-
-const SecondRoute = () => (
-  <View style={[{ flex: 1, backgroundColor: "#673ab7" }]} />
-);
-
-const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list }) => {
-  const [state, setState] = useState({
-    index: 0,
-    routes: [
-      { key: "shuttle", title: "셔틀버스" },
-      { key: "sungbuk", title: "성북02" },
-      { key: "jongro", title: "종로03" }
-    ]
-  });
+const Bus = ({
+  navigation,
+  jongro_text,
+  seongbuk_text,
+  seongbuk_list,
+  jongro_list
+}) => {
+  const [index, setIndex] = useState(0);
   const [time, setTime] = useState("");
 
   const navigateTimeTable = useCallback(() => {
     navigation.navigate("bustime");
   }, []);
 
-  const onIndexChange = useCallback(index => {
-    setState({ ...state, index });
-    switch (index) {
+  const onIndexChange = useCallback(value => {
+    setIndex(value);
+    switch (value) {
       case 0:
         setTime(moment().format("hh:mm"));
         break;
@@ -58,13 +41,13 @@ const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list }) => {
     await BusActions.getBusList(type);
   }, []);
 
-  const initCall = useCallback(async () => {
+  const initCall = async () => {
     setTime(moment().format("hh:mm"));
     CommonActions.handleLoading(true);
     await getBusList("jongro");
     await getBusList("seongbuk");
     CommonActions.handleLoading(false);
-  }, []);
+  };
   const goBack = useCallback(() => {
     navigation.navigate("home");
   }, []);
@@ -74,13 +57,18 @@ const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list }) => {
   return (
     <BaseView>
       <Title title={"스쿨버스"} rightInVisible={true} leftHandler={goBack} />
+      <BusTab />
       <TimeTable time={time} onPress={navigateTimeTable} />
+      <ShuttleWebView visible={index == 0} />
+      <BusList list={seongbuk_list} visible={index == 1} />
+      <BusList list={jongro_list} visible={index == 2} />
+      {/*       
       <TabView
         navigationState={state}
         renderScene={SceneMap({
-          shuttle: () => <Shuttle />,
-          sungbuk: () => <Seongbuk />,
-          jongro: () => <Jongro />
+          shuttle: renderShuttle,
+          seungbuk: renderSeongbuk,
+          jongro: renderJongro
         })}
         renderTabBar={props => (
           <TabBar
@@ -89,6 +77,7 @@ const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list }) => {
               fontSize: widthPercentageToDP(14),
               fontFamily: fonts.nanumBarunGothicB
             }}
+            swipeEnabled={false}
             activeColor={colors.active}
             inactiveColor={colors.disable}
             indicatorStyle={{ backgroundColor: colors.active, height: 2 }}
@@ -100,13 +89,14 @@ const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list }) => {
         )}
         onIndexChange={onIndexChange}
         initialLayout={{ width: Dimensions.get("window").width }}
-      />
+      /> */}
     </BaseView>
   );
 };
 
 export default connect(({ bus }) => ({
   jongro_text: bus.jongro_text,
+  jongro_list: bus.jongro_list,
   seongbuk_text: bus.seongbuk_text,
   seongbuk_list: bus.seongbuk_list
 }))(Bus);
