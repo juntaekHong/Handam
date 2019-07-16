@@ -26,9 +26,7 @@ export const widthPercentageToDP = dp => {
 export const storeData = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, value);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 export const getData = async key => {
@@ -37,7 +35,6 @@ export const getData = async key => {
     if (value !== null) return value;
     else return null;
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -45,9 +42,7 @@ export const getData = async key => {
 export const removeData = async (key, callback) => {
   try {
     await AsyncStorage.removeItem(key, callback);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 export const removeAllData = async () => {
@@ -55,9 +50,7 @@ export const removeAllData = async () => {
     for (const key of config.signDataKey) {
       await AsyncStorage.removeItem(key);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 export const showMessage = (message, options) => {

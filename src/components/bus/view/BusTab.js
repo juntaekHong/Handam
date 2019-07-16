@@ -34,23 +34,23 @@ const TabIndicator = styled.View`
     visible ? colors.active : "transparent"}
 `;
 
-export const BusTab = ({ index = 0 }) => {
+export const BusTab = ({ index = 0, onPress }) => {
   return (
     <Tab>
       <TabBarView>
-        <TabBar>
+        <TabBar onPress={() => onPress(0)}>
           <TabLabel visible={index == 0}>스쿨버스</TabLabel>
           <TabIndicator visible={index == 0} />
         </TabBar>
       </TabBarView>
       <TabBarView>
-        <TabBar>
+        <TabBar onPress={() => onPress(1)}>
           <TabLabel visible={index == 1}>성북02</TabLabel>
           <TabIndicator visible={index == 1} />
         </TabBar>
       </TabBarView>
       <TabBarView>
-        <TabBar>
+        <TabBar onPress={() => onPress(2)}>
           <TabLabel visible={index == 2}>종로03</TabLabel>
           <TabIndicator visible={index == 2} />
         </TabBar>

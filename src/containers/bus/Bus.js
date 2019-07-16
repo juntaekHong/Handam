@@ -7,6 +7,8 @@ import moment from "moment";
 import { ShuttleWebView } from "../../components/bus/view/ShuttleWebView";
 import { BusList } from "../../components/bus/view/BusList";
 import { BusTab } from "../../components/bus/view/BusTab";
+import { BusFloatButton } from "../../components/bus/button/BusFloatButton";
+import { getData, storeData } from "../../utils/util";
 
 const Bus = ({
   navigation,
@@ -17,25 +19,33 @@ const Bus = ({
 }) => {
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [favorite, setFavorite] = useState({});
 
   const navigateTimeTable = useCallback(() => {
     navigation.navigate("bustime");
   }, []);
-
-  const onIndexChange = useCallback(value => {
-    setIndex(value);
-    switch (value) {
-      case 0:
-        setTime(moment().format("hh:mm"));
-        break;
-      case 1:
-        setTime(seongbuk_text);
-        break;
-      case 2:
-        setTime(jongro_text);
-        break;
-    }
+  const goBack = useCallback(() => {
+    navigation.navigate("home");
   }, []);
+
+  const onIndexChange = useCallback(
+    value => {
+      setIndex(value);
+      switch (value) {
+        case 0:
+          setTime(moment().format("hh:mm"));
+          break;
+        case 1:
+          setTime(seongbuk_text);
+          break;
+        case 2:
+          setTime(jongro_text);
+          break;
+      }
+    },
+    [seongbuk_text, jongro_text]
+  );
 
   const getBusList = useCallback(async type => {
     await BusActions.getBusList(type);
@@ -44,52 +54,71 @@ const Bus = ({
   const initCall = async () => {
     setTime(moment().format("hh:mm"));
     CommonActions.handleLoading(true);
+    let value = await getData("BusFavorite");
+    if (value !== null) setFavorite(JSON.parse(value));
     await getBusList("jongro");
     await getBusList("seongbuk");
     CommonActions.handleLoading(false);
   };
-  const goBack = useCallback(() => {
-    navigation.navigate("home");
-  }, []);
+
+  const floatAction = useCallback(async () => {
+    if (loading) return;
+    setLoading(true);
+    CommonActions.handleLoading(true);
+    switch (index) {
+      case 1:
+        await getBusList("seongbuk");
+        setTime(seongbuk_text);
+        break;
+      case 2:
+        await getBusList("jongro");
+        setTime(jongro_text);
+        break;
+    }
+    CommonActions.handleLoading(false);
+    setLoading(false);
+  }, [loading, time, index, seongbuk_text, jongro_text]);
+
+  const handleFavorite = useCallback(
+    async id => {
+      let data = favorite;
+      let value = true;
+      if (data[id] !== undefined && data[id] === true) value = false;
+      let tmp = {
+        ...data,
+        [`${id}`]: value
+      };
+      setFavorite(tmp);
+      storeData("BusFavorite", JSON.stringify(tmp));
+    },
+    [favorite]
+  );
+
   useEffect(() => {
     initCall();
   }, []);
+
   return (
     <BaseView>
       <Title title={"스쿨버스"} rightInVisible={true} leftHandler={goBack} />
-      <BusTab />
+      <BusTab onPress={onIndexChange} index={index} />
       <TimeTable time={time} onPress={navigateTimeTable} />
-      <ShuttleWebView visible={index == 0} />
-      <BusList list={seongbuk_list} visible={index == 1} />
-      <BusList list={jongro_list} visible={index == 2} />
-      {/*       
-      <TabView
-        navigationState={state}
-        renderScene={SceneMap({
-          shuttle: renderShuttle,
-          seungbuk: renderSeongbuk,
-          jongro: renderJongro
-        })}
-        renderTabBar={props => (
-          <TabBar
-            {...props}
-            labelStyle={{
-              fontSize: widthPercentageToDP(14),
-              fontFamily: fonts.nanumBarunGothicB
-            }}
-            swipeEnabled={false}
-            activeColor={colors.active}
-            inactiveColor={colors.disable}
-            indicatorStyle={{ backgroundColor: colors.active, height: 2 }}
-            style={{
-              backgroundColor: colors.white,
-              height: widthPercentageToDP(50)
-            }}
-          />
-        )}
-        onIndexChange={onIndexChange}
-        initialLayout={{ width: Dimensions.get("window").width }}
-      /> */}
+      {index == 0 ? (
+        <ShuttleWebView />
+      ) : index == 1 ? (
+        <BusList
+          list={seongbuk_list}
+          favorite={favorite}
+          handleFavorite={handleFavorite}
+        />
+      ) : (
+        <BusList
+          list={jongro_list}
+          favorite={favorite}
+          handleFavorite={handleFavorite}
+        />
+      )}
+      {index !== 0 ? <BusFloatButton onPress={floatAction} /> : null}
     </BaseView>
   );
 };
