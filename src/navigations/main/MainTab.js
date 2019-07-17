@@ -12,23 +12,25 @@ import fonts from "../../configs/fonts";
 import colors from "../../configs/colors";
 
 import CommunityTab from "../community/CommunityTab";
-import TalkAboutScreen from "../../containers/Community/TalkAboutScreen";
-import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
-import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
+import TalkAbout from "../../containers/community/TalkAbout";
+import TalkDetail from "../../containers/community/TalkDetail";
+import TalkWrite from "../../containers/community/TalkWrite";
+import TalkSearch from "../../containers/community/TalkSearch";
 
 const CommunityStack = createStackNavigator(
   {
-    Community : { screen: CommunityTab },
-    TalkAbout : { screen: TalkAboutScreen },
-    TalkDetail: { screen: TalkDetailScreen },
-    TalkWrite: { screen: TalkWriteScreen },
+    Community: { screen: CommunityTab },
+    TalkAbout: { screen: TalkAbout },
+    TalkDetail: { screen: TalkDetail },
+    TalkWrite: { screen: TalkWrite },
+    TalkSearch: { screen: TalkSearch }
   },
   {
     defaultNavigationOptions: {
       header: null
     }
   }
-)
+);
 
 const HomeTab = createMaterialTopTabNavigator(
   {
