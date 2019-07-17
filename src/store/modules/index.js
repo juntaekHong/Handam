@@ -10,8 +10,8 @@ import talk from "./community/talk";
 import signup from "./sign/signup";
 import home from "./home/home";
 import bus from "./bus/bus";
-import hansung from './hansungInfo/hansungInfo';
-
+import hansung from "./hansungInfo/hansungInfo";
+import alarm from "./alarm/alarm";
 export default combineReducers({
   counter,
   auth,
@@ -22,4 +22,5 @@ export default combineReducers({
   home,
   bus,
   hansung,
+  alarm
 });

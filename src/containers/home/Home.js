@@ -10,16 +10,20 @@ import {
   TodayLine,
   TodayLecture
 } from "../../components/home/View";
-import { HomeActions, CommonActions, HansungInfoActions } from "../../store/actionCreator";
+import {
+  HomeActions,
+  CommonActions,
+  HansungInfoActions,
+  AlarmActions
+} from "../../store/actionCreator";
 import moment from "moment";
 import {
   ScheduleButton,
   BusButton,
   NoticeButton
 } from "../../components/home/Button";
-import { ScrollView } from "react-native";
 
-const Home = ({ navigation, noticeList }) => {
+const Home = ({ navigation, noticeList, count }) => {
   const [time, setTime] = useState(moment().format("MM. DD (ddd)"));
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
@@ -31,14 +35,16 @@ const Home = ({ navigation, noticeList }) => {
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
     await HansungInfoActions.getHansungInfo();
+    await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
-  }, []);
+    console.log(count);
+  }, [count]);
   useEffect(() => {
     initCall();
   }, []);
   return (
     <HCenterView>
-      <HomeTitle />
+      <HomeTitle alarm={count > 0} />
       <CenterScroll
         contentContainerStyle={{
           flexGrow: 1,
@@ -60,6 +66,7 @@ const Home = ({ navigation, noticeList }) => {
   );
 };
 
-export default connect(({ home }) => ({
-  noticeList: home.noticeList
+export default connect(({ home, alarm }) => ({
+  noticeList: home.noticeList,
+  count: alarm.count
 }))(Home);
