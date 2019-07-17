@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components/native";
 import { Title, TitleIcon, RowView, HCenterView } from "../common/View";
 import { widthPercentageToDP } from "../../utils/util";
@@ -8,6 +8,7 @@ import colors from "../../configs/colors";
 import FastImage from "react-native-fast-image";
 import Carousel from "react-native-looped-carousel";
 import { CertificateButton } from "./Button";
+import navigators from "../../utils/navigators";
 
 const HomeTitleRightView = styled.View`
   height: 100%
@@ -25,11 +26,14 @@ const BadgeIcon = styled.Image`
   width: ${widthPercentageToDP(6)}
   height: ${widthPercentageToDP(6)}
   position: absolute
-  right: ${widthPercentageToDP(2)}
-  top: ${widthPercentageToDP(2)}
+  right: ${widthPercentageToDP(-2)}
+  top: ${widthPercentageToDP(-2)}
 `;
 
 const HomeTitleRight = ({ alarm = false }) => {
+  navigateAlarm = useCallback(() => {
+    navigators.navigate("alarm");
+  }, []);
   return (
     <HomeTitleRightView>
       <HomeTitleIcon marginRight={8.9}>
@@ -37,7 +41,7 @@ const HomeTitleRight = ({ alarm = false }) => {
           source={require("HandamProject/assets/image/home/settings.png")}
         />
       </HomeTitleIcon>
-      <HomeTitleIcon>
+      <HomeTitleIcon onPress={navigateAlarm}>
         <Image source={require("HandamProject/assets/image/home/alarm.png")} />
         {alarm ? (
           <BadgeIcon
@@ -144,15 +148,6 @@ export const HomeNavigateView = styled.View`
   align-items: center
   justify-content: space-between
   flex-direction: row
-`;
-
-export const HomeNavigate = styled.TouchableOpacity`
-  width: ${widthPercentageToDP(80)}
-  height: ${widthPercentageToDP(100)}
-  background-color: ${({ backgroundColor }) => backgroundColor}
-  border-radius: ${widthPercentageToDP(8)}
-  padding-top :${widthPercentageToDP(20)}
-  align-items: center
 `;
 
 const TodayLectureTitleView = styled(RowView)`

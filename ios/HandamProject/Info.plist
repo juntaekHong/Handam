@@ -40,7 +40,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -58,15 +58,11 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>NanumSquareBold.ttf</string>
-		<string>NanumSquareExtraBold.ttf</string>
-		<string>NanumSquareLight.ttf</string>
-		<string>NanumSquareRegular.ttf</string>
-		<string>NanumBarunGothic.ttf</string>
-		<string>NanumBarunGothicBold.ttf</string>
-		<string>NanumBarunGothicLight.ttf</string>
-		<string>NanumBarunGothicUltraLight.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>NanumBarunGothic.otf</string>
+		<string>NanumBarunGothicBold.otf</string>
+		<string>NanumBarunGothicLight.otf</string>
+		<string>NanumBarunGothicUltraLight.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
