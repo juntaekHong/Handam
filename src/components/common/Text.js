@@ -7,25 +7,6 @@ import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
 
-export const NRText = styled.Text`
-  font-size: ${props => (props.fontSize ? props.fontSize : 14)};
-  font-family: ${fonts.nanumSquareR};
-  include-font-padding: false;
-  color: ${props => (props.color ? props.color : "#000")};
-`;
-
-export const NBText = styled(NRText)`
-  font-family: ${fonts.nanumSquareB};
-`;
-
-export const NEBText = styled(NRText)`
-  font-family: ${fonts.nanumSquareEB};
-`;
-
-export const NLText = styled(NRText)`
-  font-family: ${fonts.nanumSquareL};
-`;
-
 export const NBGText = styled.Text`
   font-size: ${props => (props.fontSize ? props.fontSize : 14)};
   font-family: ${fonts.nanumBarunGothic};
@@ -39,29 +20,29 @@ export const NBGText = styled.Text`
     alignVertical ? alignVertical : "center"};
 `;
 
-export const NBGLText = styled(NRText)`
+export const NBGLText = styled(NBGText)`
   font-family: ${fonts.nanumBarunGothicL};
 `;
 
-export const NBGBText = styled(NRText)`
+export const NBGBText = styled(NBGText)`
   font-family: ${fonts.nanumBarunGothicB};
 `;
 
-export const NBGULText = styled(NRText)`
+export const NBGULText = styled(NBGText)`
   font-family: ${fonts.nanumBarunGothicUL};
 `;
 //커뮤니티
 //기본
 export const CText = styled.Text`
   font-size: ${widthPercentageToDP(16)};
-  font-family: ${fonts.nanumSquareB};
-  textAlign: center;
+  font-family: ${fonts.nanumBarunGothic};
+  text-align: center;
   height: ${widthPercentageToDP(18)};
-  color: ${props => (props.selected==true? "#259ffa":"#dbdbdb")};
+  color: ${props => (props.selected == true ? "#259ffa" : "#dbdbdb")};
 `;
 //카테고리 제목
 export const CTText = styled(CText)`
-  textAlign: left;
+  text-align: left;
   height: ${widthPercentageToDP(18)};
   color: ${"#101010"};
   margin-vertical: ${widthPercentageToDP(8)};
@@ -69,7 +50,7 @@ export const CTText = styled(CText)`
 //카테고리 설명
 export const CEText = styled(CText)`
   font-size: ${widthPercentageToDP(12)};
-  textAlign: left;
+  text-align: left;
   width: ${widthPercentageToDP(200)};
   height: ${widthPercentageToDP(13)};
   color: ${"#646464"};
