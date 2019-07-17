@@ -4,7 +4,6 @@ import { widthPercentageToDP} from "../../utils/util";
 import { connect } from "react-redux";
 import Hyperlink from 'react-native-hyperlink';
 import fonts from '../../configs/fonts';
-import { HansungInfoAction } from "../../store/actionCreator";
 import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
 import {UIActivityIndicator} from "react-native-indicators";
 

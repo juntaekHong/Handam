@@ -2,9 +2,8 @@ import React from 'react';
 import {KeyboardAvoidingView, TextInput, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Platform, View, Text, StyleSheet} from 'react-native';
 import {widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
-
 import { connect } from "react-redux";
-import { HansungInfoAction } from "../../store/actionCreator";
+import { HansungInfoActions } from "../../store/actionCreator";
 import {UIActivityIndicator} from 'react-native-indicators';
 
 class CertificationScreen extends React.Component {
@@ -29,14 +28,14 @@ class CertificationScreen extends React.Component {
 
         let timeout = setInterval(async ()=>{
             if( this.props.hansunginfo!=null&&this.props.hansunginfo.status=='UNVERIFIED'){
-                await HansungInfoAction.getHansungInfo();
+                await HansungInfoActions.getHansungInfo();
             }
             else if( this.props.hansunginfo!=null&&this.props.hansunginfo.status =='SUCCESS'){
-                // await HansungInfoAction.createHansungInfoNonSubjectPoint();
-                // await HansungInfoAction.createHansungInfoGrades();
+                // await HansungInfoActions.createHansungInfoNonSubjectPoint();
+                // await HansungInfoActions.createHansungInfoGrades();
 
-                await HansungInfoAction.nonSubjectPointLoadingHandle(true);
-                await HansungInfoAction.gradesLoadingHandle(true);
+                await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+                await HansungInfoActions.gradesLoadingHandle(true);
 
                 this.props.navigation.goBack(null);
                 clearInterval(timeout);
