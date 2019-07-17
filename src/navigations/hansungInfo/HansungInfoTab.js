@@ -1,6 +1,6 @@
 import {createMaterialTopTabNavigator} from "react-navigation";
-import HansungInfoPointScreen from "../../containers/HansungInfo/HansungPointScreen";
-import GradesScreen from "../../containers/HansungInfo/GradesScreen";
+import HansungInfoPointScreen from "../../containers/hansungInfo/HansungPointScreen";
+import GradesScreen from "../../containers/hansungInfo/GradesScreen";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 

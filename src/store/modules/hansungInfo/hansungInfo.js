@@ -58,7 +58,6 @@ export const createHansungInfo = (hansunginfo) => async dispatch => {
     //서버로 전송
     const jsonData = await api.post(`/hansungInfo`, {token: token});
 
-    console.log(jsonData);
     if(jsonData.statusCode == 200){
         await dispatch(createHansungInfoAction(jsonData.result));
 
@@ -77,7 +76,6 @@ export const deleteHansungInfo = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.delete(`/hansungInfo`,{token: token});
 
-    console.log(jsonData);
     if(jsonData.statusCode == 200){
         await dispatch(deleteHansungInfoAction(jsonData.result));
     } else if (jsonData.statusCode == 403){
@@ -91,7 +89,6 @@ export const getHansungInfo = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.get(`/hansungInfo`,{token: token});
 
-    console.log(jsonData);
     if(jsonData.statusCode == 200){
         await dispatch(getHansungInfoAction(jsonData.result));
     } else if (jsonData.statusCode == 403){
@@ -105,7 +102,6 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.post(`/hansungInfo/nonSubjectPoint`, {token: token});
 
-    console.log(jsonData);
     if(jsonData.statusCode == 200){
         await dispatch(createHansungInfoAction(jsonData.result));
 
@@ -123,7 +119,6 @@ export const createHansungInfoGrades = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.post(`/hansungInfo/grades`, {token: token});
 
-    console.log(jsonData);
     if(jsonData.statusCode == 200){
         await dispatch(createHansungInfoAction(jsonData.result));
 

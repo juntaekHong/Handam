@@ -23,4 +23,4 @@ export const TalkActions = bindActionCreators(talk, dispatch);
 export const HomeActions = bindActionCreators(home, dispatch);
 export const BusActions = bindActionCreators(bus, dispatch);
 
-export const HansungInfoAction = bindActionCreators(hansungInfo, dispatch);
+export const HansungInfoActions = bindActionCreators(hansungInfo, dispatch);

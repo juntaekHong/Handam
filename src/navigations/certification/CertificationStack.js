@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation";
-import CertificationScreen from "../../containers/HansungInfo/CertificationScreen";
+import CertificationScreen from "../../containers/hansungInfo/CertificationScreen";
 
 const CertificationStack = createStackNavigator(
     {
