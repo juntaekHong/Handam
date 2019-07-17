@@ -15,6 +15,8 @@ import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
 import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
 import { TabView } from "../../components/navigation/TabView";
 
+import HansungInfoStack from '../hansungInfo/HansungInfoStack';
+
 const CommunityStack = createStackNavigator(
   {
     Community: { screen: CommunityTab },
@@ -32,7 +34,7 @@ const CommunityStack = createStackNavigator(
 const MainTab = createMaterialTopTabNavigator(
   {
     Left: {
-      screen: TestLeft
+      screen: HansungInfoStack
     },
     HomeStack: {
       screen: HomeStack
