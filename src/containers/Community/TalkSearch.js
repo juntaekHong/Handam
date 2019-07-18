@@ -22,14 +22,13 @@ class TalkSearch extends Component {
 
     this.state = {
       text: "",
-      filter: `postsCategoryIndex eq ${this.props.navigation.state.params
-        .category + 1}`
+      filter: `postsCategoryIndex eq ${this.props.categoryIndex}`
     };
   }
 
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      this.navigateBack();
+      this.navigateTalkAbout();
       return true;
     });
   }
@@ -38,7 +37,7 @@ class TalkSearch extends Component {
     this.backHandler.remove();
   }
 
-  navigateBack = async () => {
+  navigateTalkAbout = async () => {
     await TalkActions.initPostList();
     await TalkActions.pageListPosts(
       this.props.filter,
@@ -46,18 +45,17 @@ class TalkSearch extends Component {
       this.props.postsList.length / 6 + 1,
       6
     );
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("TalkAbout");
   };
 
   navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", {
-      category: this.props.navigation.state.params.category
-    });
+    this.props.navigation.navigate("TalkDetail");
   };
 
   pageListPosts = async () => {
     await TalkActions.pageListPosts(
-      this.state.filter + ` AND title LIKE ${this.state.text}`,
+      this.state.filter +
+        ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
       this.props.orderby,
       this.props.postsList.length / 7 + 1,
       7
@@ -142,7 +140,9 @@ class TalkSearch extends Component {
             width: widthPercentageToDP(375),
             height: widthPercentageToDP(60),
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            borderBottomColor: "#dbdbdb",
+            borderBottomWidth: widthPercentageToDP(1)
           }}
         >
           <View
@@ -181,10 +181,11 @@ class TalkSearch extends Component {
               autoCapitalize={"none"}
               returnKeyType={"search"}
               onSubmitEditing={async () => {
-                // AND (title LIKE ${this.state.text} OR title LIKE ${this.state.text})
+                // ` AND  ((title LIKE ${this.state.text}) OR (content LIKE ${this.state.text}))`
                 await TalkActions.initPostList();
                 await TalkActions.pageListPosts(
-                  this.state.filter + ` AND title LIKE ${this.state.text}`,
+                  this.state.filter +
+                    ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
                   this.props.orderby,
                   this.props.postsList.length / 7,
                   7
@@ -193,7 +194,7 @@ class TalkSearch extends Component {
               }}
             />
           </View>
-          <TouchableOpacity onPress={() => this.navigateBack()}>
+          <TouchableOpacity onPress={() => this.navigateTalkAbout()}>
             <Text
               style={{
                 color: "#000000",
@@ -234,6 +235,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
+  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   total: state.talk.total,
   filter: state.talk.filter,

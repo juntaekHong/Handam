@@ -19,6 +19,9 @@ import { UIActivityIndicator } from "react-native-indicators";
 
 import ImageCropPicker from "react-native-image-crop-picker";
 
+import { CustomModalBlackText } from "../../components/talk/Text";
+import { CustomModal } from "../../components/common/Modal";
+
 class TalkWrite extends Component {
   constructor(props) {
     super(props);
@@ -32,15 +35,9 @@ class TalkWrite extends Component {
         this.props.navigation.state.params.form == "update"
           ? this.props.getPosts.content
           : "",
-      category: this.props.categoryList[
-        this.props.navigation.state.params.category
-      ].str,
-      categoryExplain: this.props.categoryList[
-        this.props.navigation.state.params.category
-      ].explain,
-      categoryIndex: this.props.categoryList[
-        this.props.navigation.state.params.category
-      ].index,
+      category: this.props.categoryList[this.props.categoryIndex].str,
+      categoryExplain: this.props.categoryList[this.props.categoryIndex]
+        .explain,
       clicked: false,
       imageTEMPArray:
         this.props.getPosts.imagePath != undefined &&
@@ -57,7 +54,10 @@ class TalkWrite extends Component {
         this.props.getPosts.imagePath.length > 0
           ? this.props.getPosts.imagePath.length
           : 0,
-      imageSize: 0
+      imageSize: 0,
+      deletemodal: false,
+      imageinfo: null,
+      imageindex: null
     };
   }
 
@@ -65,10 +65,8 @@ class TalkWrite extends Component {
     this.props.navigation.goBack();
   };
 
-  navigateTalkAbout = index => {
-    this.props.navigation.navigate("TalkAbout", {
-      name: this.props.categoryList[index].str
-    });
+  navigateTalkAbout = () => {
+    this.props.navigation.navigate("TalkAbout");
   };
 
   checkSpace = str => {
@@ -165,7 +163,7 @@ class TalkWrite extends Component {
                   JSON.stringify({ image: removedImage })
                 );
             }
-            formData.append("postsCategoryIndex", this.state.categoryIndex + 1);
+            formData.append("postsCategoryIndex", this.props.categoryIndex);
             formData.append("title", this.state.title);
             formData.append("content", this.state.content);
 
@@ -180,7 +178,7 @@ class TalkWrite extends Component {
 
             await TalkActions.initPostList();
             await TalkActions.handleFilter(
-              `postsCategoryIndex eq ${this.state.categoryIndex + 1}`
+              `postsCategoryIndex eq ${this.props.categoryIndex}`
             );
             await TalkActions.pageListPosts(
               this.props.filter,
@@ -194,7 +192,7 @@ class TalkWrite extends Component {
               1,
               2
             );
-            this.navigateTalkAbout(this.state.categoryIndex);
+            this.navigateTalkAbout();
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>
@@ -223,6 +221,22 @@ class TalkWrite extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <CustomModal
+          height={widthPercentageToDP(201.9)}
+          children={
+            <CustomModalBlackText>사진을 삭제하겠습니까?</CustomModalBlackText>
+          }
+          visible={this.state.deletemodal}
+          footerHandler={() => {
+            this.state.imageArray.splice(this.state.imageindex, 1); //선택된 이미지 제거
+            this.setState({
+              imageNumber: this.state.imageNumber - 1,
+              imageSize: this.state.imageSize - this.state.imageinfo.size
+            });
+            this.setState({ deletemodal: false });
+          }}
+          closeHandler={() => this.setState({ deletemodal: false })}
+        />
         <View
           style={{
             flexDirection: "row",
@@ -317,29 +331,32 @@ class TalkWrite extends Component {
                   renderItem={({ item, index }) => {
                     return (
                       <View>
-                        <Image
-                          style={{
-                            width: widthPercentageToDP(95),
-                            height: widthPercentageToDP(95),
-                            marginRight: widthPercentageToDP(10),
-                            borderRadius: widthPercentageToDP(4)
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.setState({
+                              deletemodal: true,
+                              imageinfo: item,
+                              imageindex: index
+                            });
                           }}
-                          resizeMode={"cover"}
-                          source={
-                            typeof item == "string"
-                              ? { uri: `${item}` }
-                              : { uri: `data:${item.mime};base64,${item.data}` }
-                          }
-                        />
-                        {/* <TouchableOpacity style={{position: 'absolute', marginTop: widthPercentageToDP(10), marginLeft: widthPercentageToDP(65)}} 
-                                                            onPress={()=>{
-                                                                this.state.imageArray.splice(index,1); //선택된 이미지 제거
-                                                                this.setState({imageNumber: this.state.imageNumber-1, imageSize: this.state.imageSize-item.size});
-                                                            }}> 
-                                                    <Image style={{width:util.widthPercentageToDP(32), height:util.widthPercentageToDP(32)}}
-                                                            resizeMode={'cover'}
-                                                            source={require('../../../../assets/image/xbox.png')} />
-                                                </TouchableOpacity> */}
+                        >
+                          <Image
+                            style={{
+                              width: widthPercentageToDP(95),
+                              height: widthPercentageToDP(95),
+                              marginRight: widthPercentageToDP(10),
+                              borderRadius: widthPercentageToDP(4)
+                            }}
+                            resizeMode={"cover"}
+                            source={
+                              typeof item == "string"
+                                ? { uri: `${item}` }
+                                : {
+                                    uri: `data:${item.mime};base64,${item.data}`
+                                  }
+                            }
+                          />
+                        </TouchableOpacity>
                       </View>
                     );
                   }}
@@ -435,6 +452,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
+  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
 
   getPosts: state.talk.getPosts,

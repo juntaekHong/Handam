@@ -1,21 +1,21 @@
 import { createMaterialTopTabNavigator } from "react-navigation";
 import Talk from "../../containers/community/Talk";
-import VoteScreen from "../../containers/community/VoteScreen";
-import RestaurantScreen from "../../containers/community/RestaurantScreen";
-import KnowledgeScreen from "../../containers/community/KnowledgeScreen";
+import Vote from "../../containers/community/Vote";
+import Restaurant from "../../containers/community/Restaurant";
+import Knowledge from "../../containers/community/Knowledge";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 
 export default createMaterialTopTabNavigator(
   {
     Talk: { screen: Talk, navigationOptions: { tabBarLabel: "한담 톡" } },
-    Vote: { screen: VoteScreen, navigationOptions: { tabBarLabel: "투표" } },
+    Vote: { screen: Vote, navigationOptions: { tabBarLabel: "투표" } },
     Restaurant: {
-      screen: RestaurantScreen,
+      screen: Restaurant,
       navigationOptions: { tabBarLabel: "한슐랭" }
     },
     Knowledge: {
-      screen: KnowledgeScreen,
+      screen: Knowledge,
       navigationOptions: { tabBarLabel: "알쓸신한" }
     }
   },

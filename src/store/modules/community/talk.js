@@ -5,10 +5,16 @@ import { getData } from "../../../utils/util";
 
 //핸들러
 const FILTER_HANDLE = "talk/FILTER_HANDLE";
+const CATEGORYINDEX_HANDLE = "talk/CATEGORYINDEX_HANDLE";
 const BOTTOMMODAL_HANDLE = "talk/BOTTOMMODAL_HANDLE";
+const IMAGEMODAL_HANDLE = "talk/IMAGEMODAL_HANDLE";
+const IMAGEINDEX_HANDLE = "talk/IMAGEINDEX_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
+const categoryIndexHandleAcation = createAction(CATEGORYINDEX_HANDLE);
 const bottomModalHandleAction = createAction(BOTTOMMODAL_HANDLE);
+const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
+const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 
 //게시물
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
@@ -42,22 +48,25 @@ const re_replyListAction = createAction(RE_REPLYSLIST);
 //state
 const initState = {
   categoryList: [
-    { index: 0, str: "한담", explain: "자유 주제 카테고리 입니다." },
-    { index: 1, str: "건의한담", explain: "건의사항 카테고리 입니다." },
-    { index: 2, str: "대자보", explain: "홍보 카테고리 입니다." },
-    { index: 3, str: "오픈마켓", explain: "상품 거래 카테고리 입니다." },
-    { index: 4, str: "분실물 센터", explain: "분실물 카테고리 입니다." }
+    { str: "한담", explain: "자유 주제 카테고리 입니다." },
+    { str: "건의한담", explain: "건의사항 카테고리 입니다." },
+    { str: "대자보", explain: "홍보 카테고리 입니다." },
+    { str: "오픈마켓", explain: "상품 거래 카테고리 입니다." },
+    { str: "분실물 센터", explain: "분실물 카테고리 입니다." }
   ],
+  categoryIndex: 1,
   filter: `postsCategoryIndex eq 1`,
   orderby: `createdAt DESC`,
 
   bottomModal: false,
+  imageModal: false,
+  imageIndex: 0,
 
   //게시물
   total: 0,
   postsList: [],
   hotpostsList: [],
-  getPosts: {},
+  getPosts: { imagePath: [] },
 
   //댓글
   replysList: [],
@@ -71,8 +80,20 @@ export const handleFilter = filter => dispatch => {
   dispatch(filterHandleAction(filter));
 };
 
+export const handleCategoryIndex = index => dispatch => {
+  dispatch(categoryIndexHandleAcation(index));
+};
+
 export const handleBottomModal = bool => dispatch => {
   dispatch(bottomModalHandleAction(bool));
+};
+
+export const handleImageModal = bool => dispatch => {
+  dispatch(imageModalHandleAction(bool));
+};
+
+export const handleImageIndex = bool => dispatch => {
+  dispatch(imageIndexHandleAction(bool));
 };
 
 //게시물
@@ -161,6 +182,23 @@ export const deletePosts = postsindex => async dispatch => {
   }
 };
 
+export const createPostsReport = posts => async dispatch => {
+  const token = await getData("token");
+  const userId = await getData("userId");
+  posts.userId = userId;
+  try {
+    const jsonData = await api.post(`/postsReport`, {
+      body: posts,
+      token: token
+    });
+    if (jsonData.statusCode == 200) {
+      return true;
+    } else {
+      throw "error";
+    }
+  } catch (err) {}
+};
+
 export const putPostsSubscriber = posts => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.put(
@@ -232,6 +270,23 @@ export const deletePostsReply = postsReplyIndex => async dispatch => {
   }
 };
 
+export const createPostsReplyReport = reply => async dispatch => {
+  const token = await getData("token");
+  const userId = await getData("userId");
+  reply.userId = userId;
+  try {
+    const jsonData = await api.post(`/postsReplyReport`, {
+      body: reply,
+      token: token
+    });
+    if (jsonData.statusCode == 200) {
+      return true;
+    } else {
+      throw "error";
+    }
+  } catch (err) {}
+};
+
 export const putPostsReplySubscriber = reply => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.put(
@@ -271,9 +326,21 @@ export default handleActions(
       produce(state, draft => {
         draft.filter = payload;
       }),
+    [CATEGORYINDEX_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.categoryIndex = payload;
+      }),
     [BOTTOMMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.bottomModal = payload;
+      }),
+    [IMAGEMODAL_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.imageModal = payload;
+      }),
+    [IMAGEINDEX_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.imageIndex = payload;
       }),
 
     //게시물
@@ -301,7 +368,7 @@ export default handleActions(
       }),
     [INIT_GETPOSTS]: (state, { payload }) =>
       produce(state, draft => {
-        draft.getPosts = {};
+        draft.getPosts = { imagePath: [] };
       }),
 
     //댓글

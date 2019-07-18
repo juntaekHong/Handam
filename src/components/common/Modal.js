@@ -158,7 +158,12 @@ const BottomText = styled.Text`
 export const Menu = props => {
   if (props.who == "you") {
     return (
-      <CancelButton onPress={() => console.log("신고??")}>
+      <CancelButton
+        onPress={() => {
+          props.handler();
+          props.reportHandler();
+        }}
+      >
         <BottomText>신고</BottomText>
       </CancelButton>
     );
@@ -167,8 +172,8 @@ export const Menu = props => {
       <View>
         <TopMenuButton
           onPress={() => {
-            props.updateHandler();
             props.handler();
+            props.updateHandler();
           }}
         >
           <BottomText>수정</BottomText>
@@ -178,8 +183,8 @@ export const Menu = props => {
         />
         <BottomMenuButton
           onPress={() => {
-            props.deleteHandler();
             props.handler();
+            props.deleteHandler();
           }}
         >
           <BottomText>삭제</BottomText>

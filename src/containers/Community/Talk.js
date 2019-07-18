@@ -22,8 +22,8 @@ class TalkScreen extends Component {
     this.start = false; // 버튼 중복 방지
   }
 
-  navigateTalkAbout = index => {
-    this.props.navigation.navigate("TalkAbout", { category: index });
+  navigateTalkAbout = () => {
+    this.props.navigation.navigate("TalkAbout");
   };
 
   render() {
@@ -50,10 +50,11 @@ class TalkScreen extends Component {
                 onPress={async () => {
                   if (this.start) return;
                   this.start = true;
+                  await TalkActions.handleCategoryIndex(index + 1);
                   await TalkActions.handleFilter(
-                    `postsCategoryIndex eq ${index + 1}`
+                    `postsCategoryIndex eq ${this.props.categoryIndex}`
                   );
-                  await TalkActions.initPostList();
+                  // await TalkActions.initPostList();
                   await TalkActions.pageListPosts(
                     this.props.filter,
                     this.props.orderby,
@@ -66,7 +67,7 @@ class TalkScreen extends Component {
                     1,
                     2
                   );
-                  this.navigateTalkAbout(index);
+                  this.navigateTalkAbout();
                   this.start = false;
                 }}
               >
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
+  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   filter: state.talk.filter,
   orderby: state.talk.orderby

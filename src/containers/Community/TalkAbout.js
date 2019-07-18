@@ -6,7 +6,8 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  BackHandler
 } from "react-native";
 import { widthPercentageToDP, timeSince } from "../../utils/util";
 import fonts from "../../configs/fonts";
@@ -31,34 +32,37 @@ class TalkAbout extends Component {
       }
     );
 
-    this.state = {
-      categoryName: this.props.categoryList[
-        this.props.navigation.state.params.category
-      ].str
-    };
+    this.state = {};
   }
 
-  navigateBack = () => {
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      this.navigateBack();
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  navigateBack = async () => {
+    await TalkActions.initPostList();
     this.props.navigation.goBack();
   };
 
   navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", {
-      category: this.props.navigation.state.params.category
-    });
+    this.props.navigation.navigate("TalkDetail");
   };
 
   navigateTalkWrite = () => {
     this.props.navigation.navigate("TalkWrite", {
-      category: this.props.navigation.state.params.category,
-      form: "upload"
+      form: "write"
     });
   };
 
   navigateTalkSearch = () => {
-    this.props.navigation.navigate("TalkSearch", {
-      category: this.props.navigation.state.params.category
-    });
+    this.props.navigation.navigate("TalkSearch");
   };
 
   pageListPosts = () => {
@@ -140,7 +144,7 @@ class TalkAbout extends Component {
               fontFamily: fonts.nanumBarunGothicB
             }}
           >
-            {this.state.categoryName}
+            {this.props.categoryList[this.props.categoryIndex - 1].str}
           </Text>
           <TouchableOpacity
             onPress={async () => {
@@ -214,6 +218,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
+  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   hotpostsList: state.talk.hotpostsList,
   total: state.talk.total,

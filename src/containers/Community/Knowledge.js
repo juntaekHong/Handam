@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-export default class RestaurantScreen extends Component {
+export default class Knowledge extends Component {
   render() {
     return (
       <View>
-        <Text>한슐랭 페이지</Text>
+        <Text>알쓸신한 페이지</Text>
       </View>
     );
   }
