@@ -6,14 +6,14 @@ import { widthPercentageToDP } from "../../utils/util";
 
 //기본
 export const DefaultText = styled.Text`
+  color: ${"#000000"};
   font-size: ${widthPercentageToDP(16)};
   font-family: ${fonts.nanumBarunGothicB};
-  color: ${"#000000"};
 `;
 //
 export const PostTitleText = styled(DefaultText)`
-  height: ${widthPercentageToDP(18)};
   color: ${"#101010"};
+  height: ${widthPercentageToDP(18)};
   margin-vertical: ${widthPercentageToDP(8)};
 `;
 
@@ -36,3 +36,24 @@ export const CustomModalText = props => {
     </View>
   );
 };
+
+export const AnonymousOFFText = styled.Text`
+  color: ${"#c3c3c3"};
+  font-size: ${widthPercentageToDP(13)};
+  font-family: ${fonts.nanumBarunGothicB};
+`;
+
+export const AnonymousONText = styled(AnonymousOFFText)`
+  color: ${"#24a0fa"};
+`;
+
+export const WriterName = styled.Text`
+  color: ${"#0c81ff"};
+  font-size: ${widthPercentageToDP(10)};
+  font-family: ${fonts.nanumBarunGothicB};
+  margin-left: ${widthPercentageToDP(4)};
+`;
+
+export const AnonymousWriterName = styled(WriterName)`
+  color: ${"#171717"};
+`;

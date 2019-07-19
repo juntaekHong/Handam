@@ -9,7 +9,8 @@ import {
   Text,
   ScrollView,
   Image,
-  FlatList
+  FlatList,
+  Platform
 } from "react-native";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
@@ -19,7 +20,11 @@ import { UIActivityIndicator } from "react-native-indicators";
 
 import ImageCropPicker from "react-native-image-crop-picker";
 
-import { CustomModalBlackText } from "../../components/talk/Text";
+import {
+  CustomModalBlackText,
+  AnonymousOFFText,
+  AnonymousONText
+} from "../../components/talk/Text";
 import { CustomModal } from "../../components/common/Modal";
 
 class TalkWrite extends Component {
@@ -57,7 +62,8 @@ class TalkWrite extends Component {
       imageSize: 0,
       deletemodal: false,
       imageinfo: null,
-      imageindex: null
+      imageindex: null,
+      anonymous: 1
     };
   }
 
@@ -166,6 +172,7 @@ class TalkWrite extends Component {
             formData.append("postsCategoryIndex", this.props.categoryIndex);
             formData.append("title", this.state.title);
             formData.append("content", this.state.content);
+            formData.append("isAnonymous", this.state.anonymous);
 
             if (this.props.navigation.state.params.form == "update") {
               await TalkActions.updatePosts(
@@ -262,7 +269,11 @@ class TalkWrite extends Component {
           </Text>
           {this.renderSubmit()}
         </View>
-        <KeyboardAvoidingView style={{ flex: 1 }} enabled>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : null}
+          enabled
+        >
           <ScrollView
             style={{ width: widthPercentageToDP(375) }}
             keyboardShouldPersistTaps="never"
@@ -370,33 +381,76 @@ class TalkWrite extends Component {
             flexDirection: "row",
             width: widthPercentageToDP(375),
             height: widthPercentageToDP(58),
+            justifyContent: "space-between",
             alignItems: "center"
           }}
         >
-          <TouchableOpacity
-            style={{
-              marginLeft: widthPercentageToDP(16),
-              marginRight: widthPercentageToDP(10)
-            }}
-            onPress={() => this.onClickSelectPicture()}
-          >
-            <Image
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity
               style={{
-                width: widthPercentageToDP(28),
-                height: widthPercentageToDP(28)
+                marginLeft: widthPercentageToDP(16),
+                marginRight: widthPercentageToDP(10)
               }}
-              source={require("../../../assets/image/community/image.png")}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: "#c3c3c3",
-              fontSize: widthPercentageToDP(13),
-              fontFamily: fonts.nanumBarunGothic
-            }}
-          >
-            사진추가 {this.state.imageNumber}/5 최대 10MB
-          </Text>
+              onPress={() => this.onClickSelectPicture()}
+            >
+              <Image
+                style={{
+                  width: widthPercentageToDP(28),
+                  height: widthPercentageToDP(28)
+                }}
+                source={require("../../../assets/image/community/image.png")}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                color: "#c3c3c3",
+                fontSize: widthPercentageToDP(13),
+                fontFamily: fonts.nanumBarunGothic
+              }}
+            >
+              사진추가 {this.state.imageNumber}/5 최대 10MB
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={async () => {
+                this.state.anonymous == 0
+                  ? await this.setState({ anonymous: 1 })
+                  : await this.setState({ anonymous: 0 });
+              }}
+            >
+              <Image
+                style={{
+                  width: widthPercentageToDP(28),
+                  height: widthPercentageToDP(28)
+                }}
+                source={
+                  this.state.anonymous == 0
+                    ? require("../../../assets/image/community/anonymous_off.png")
+                    : require("../../../assets/image/community/anonymous_on.png")
+                }
+              />
+            </TouchableOpacity>
+            {this.state.anonymous == 0 ? (
+              <AnonymousOFFText
+                style={{
+                  marginRight: widthPercentageToDP(18),
+                  marginLeft: widthPercentageToDP(2)
+                }}
+              >
+                익명
+              </AnonymousOFFText>
+            ) : (
+              <AnonymousONText
+                style={{
+                  marginRight: widthPercentageToDP(18),
+                  marginLeft: widthPercentageToDP(2)
+                }}
+              >
+                익명
+              </AnonymousONText>
+            )}
+          </View>
         </View>
       </SafeAreaView>
     );

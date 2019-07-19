@@ -16,8 +16,9 @@ import { TalkActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 import {
   WritePostBtn,
+  HotPostsListItem,
   PostsListItem,
-  HotPostsListItem
+  ReportedPostsListItem
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
 
@@ -179,19 +180,30 @@ class TalkAbout extends Component {
           ListFooterComponent={this.renderListFooter}
           data={this.props.postsList}
           renderItem={({ item, index }) => {
-            return (
-              <PostsListItem
-                handler={async () => {
-                  await TalkActions.getPosts(item.postsIndex);
-                  await TalkActions.pageListPostsReply(
-                    "page=1&count=100",
-                    item.postsIndex
-                  );
-                  this.navigateTalkDetail();
-                }}
-                data={item}
-              />
-            );
+            if (item.status == "ACTIVE") {
+              return (
+                <PostsListItem
+                  handler={async () => {
+                    await TalkActions.getPosts(item.postsIndex);
+                    await TalkActions.pageListPostsReply(
+                      "page=1&count=100",
+                      item.postsIndex
+                    );
+                    this.navigateTalkDetail();
+                  }}
+                  data={item}
+                />
+              );
+            } else {
+              return (
+                <ReportedPostsListItem
+                  handler={() => {
+                    console.log("신고당한 댓글은 핸들러가 없지요.");
+                  }}
+                  data={item}
+                />
+              );
+            }
           }}
         />
         <WritePostView>

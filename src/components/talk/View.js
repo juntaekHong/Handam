@@ -4,6 +4,7 @@ import Hyperlink from "react-native-hyperlink";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP, timeSince } from "../../utils/util";
+import { WriterName, AnonymousWriterName } from "./Text";
 
 export const LineView = styled.View`
   background-color: #dbdbdb;
@@ -51,23 +52,24 @@ export const ReplyView = props => {
               width: widthPercentageToDP(16.4),
               height: widthPercentageToDP(10.1)
             }}
-            source={require("../../../assets/image/community/quotation.png")}
+            source={
+              props.data.userNickName == props.writerName
+                ? require("../../../assets/image/community/quotation_color.png")
+                : require("../../../assets/image/community/quotation.png")
+            }
           />
-          <Text
-            style={{
-              color: "#171717",
-              fontSize: widthPercentageToDP(10),
-              fontFamily: fonts.nanumBarunGothicR,
-              marginLeft: widthPercentageToDP(4)
-            }}
-          >
-            {props.data.userNickName}
-          </Text>
+
+          {props.data.userNickName == props.writerName ? (
+            <WriterName>글쓴이</WriterName>
+          ) : (
+            <AnonymousWriterName>{props.data.displayName}</AnonymousWriterName>
+          )}
+
           <Text
             style={{
               color: "#9e9e9e",
               fontSize: widthPercentageToDP(8),
-              fontFamily: fonts.nanumBarunGothicR,
+              fontFamily: fonts.nanumBarunGothic,
               marginLeft: widthPercentageToDP(8.5)
             }}
           >
@@ -88,6 +90,7 @@ export const ReplyView = props => {
         <Text
           style={{
             color: "#171717",
+            width: widthPercentageToDP(309),
             fontSize: widthPercentageToDP(13),
             fontFamily: fonts.nanumBarunGothic,
             marginTop: widthPercentageToDP(12)
@@ -121,7 +124,7 @@ export const ReplyView = props => {
             style={{
               color: "#171717",
               fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicR
+              fontFamily: fonts.nanumBarunGothic
             }}
           >
             답글
@@ -150,7 +153,7 @@ export const ReplyView = props => {
             style={{
               color: "#171717",
               fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicR,
+              fontFamily: fonts.nanumBarunGothic,
               marginLeft: widthPercentageToDP(4)
             }}
           >
@@ -205,23 +208,26 @@ export const Re_ReplyView = props => {
                 width: widthPercentageToDP(16.4),
                 height: widthPercentageToDP(10)
               }}
-              source={require("../../../assets/image/community/quotation.png")}
+              source={
+                props.data.userNickName == props.writerName
+                  ? require("../../../assets/image/community/quotation_color.png")
+                  : require("../../../assets/image/community/quotation.png")
+              }
             />
-            <Text
-              style={{
-                color: "#171717",
-                fontSize: widthPercentageToDP(10),
-                fontFamily: fonts.nanumBarunGothicR,
-                marginLeft: widthPercentageToDP(4)
-              }}
-            >
-              {props.data.userNickName}
-            </Text>
+
+            {props.data.userNickName == props.writerName ? (
+              <WriterName>글쓴이</WriterName>
+            ) : (
+              <AnonymousWriterName>
+                {props.data.displayName}
+              </AnonymousWriterName>
+            )}
+
             <Text
               style={{
                 color: "#9e9e9e",
                 fontSize: widthPercentageToDP(8),
-                fontFamily: fonts.nanumBarunGothicR,
+                fontFamily: fonts.nanumBarunGothic,
                 marginLeft: widthPercentageToDP(8.5)
               }}
             >
@@ -242,6 +248,7 @@ export const Re_ReplyView = props => {
           <Text
             style={{
               color: "#171717",
+              width: widthPercentageToDP(251),
               fontSize: widthPercentageToDP(13),
               fontFamily: fonts.nanumBarunGothic
             }}
@@ -276,7 +283,7 @@ export const Re_ReplyView = props => {
               style={{
                 color: "#171717",
                 fontSize: widthPercentageToDP(11),
-                fontFamily: fonts.nanumBarunGothicR,
+                fontFamily: fonts.nanumBarunGothic,
                 marginLeft: widthPercentageToDP(4)
               }}
             >

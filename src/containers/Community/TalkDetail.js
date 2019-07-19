@@ -20,7 +20,9 @@ import { TalkActions } from "../../store/actionCreator";
 import { ReplyView, Re_ReplyView } from "../../components/talk/View";
 import {
   CustomModalText,
-  CustomModalBlackText
+  CustomModalBlackText,
+  AnonymousOFFText,
+  AnonymousONText
 } from "../../components/talk/Text";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { ImageModal } from "../../components/talk/Modal";
@@ -44,7 +46,7 @@ class TalkDetail extends Component {
       imagemodal: false,
       who: "me",
       type: "posts",
-
+      anonymous: 1,
       deletemodal: false,
       updatemodal: false,
       scrapmodal: false
@@ -254,6 +256,7 @@ class TalkDetail extends Component {
                   this.TextInput.focus();
                 }}
                 data={item}
+                writerName={this.props.getPosts.userNickName}
               />
               {/* 대댓글 */}
               {item.childReplies.length != 0
@@ -271,10 +274,11 @@ class TalkDetail extends Component {
                           TalkActions.handleBottomModal(true);
                         }}
                         data={item2}
+                        writerName={this.props.getPosts.userNickName}
                       />
                     );
                   })
-                : console.log("reply don't have re_reply")}
+                : null}
             </View>
           );
         }}
@@ -336,8 +340,8 @@ class TalkDetail extends Component {
           children={
             <CustomModalText
               black1={"이 글을 "}
-              red={"신고 "}
-              black={"하시겠습니까?"}
+              red={"신고"}
+              black2={"하시겠습니까?"}
             />
           }
           visible={this.state.reportmodal}
@@ -450,13 +454,13 @@ class TalkDetail extends Component {
                     marginLeft: widthPercentageToDP(9)
                   }}
                 >
-                  {this.props.getPosts.userNickName}
+                  {this.props.getPosts.displayName}
                 </Text>
                 <Text
                   style={{
                     color: "#929292",
                     fontSize: widthPercentageToDP(8),
-                    fontFamily: fonts.nanumBarunGothicR,
+                    fontFamily: fonts.nanumBarunGothic,
                     marginLeft: widthPercentageToDP(4)
                   }}
                 >
@@ -494,7 +498,7 @@ class TalkDetail extends Component {
                       style={{
                         color: "#171717",
                         fontSize: widthPercentageToDP(11),
-                        fontFamily: fonts.nanumBarunGothicR,
+                        fontFamily: fonts.nanumBarunGothic,
                         marginLeft: widthPercentageToDP(4)
                       }}
                     >
@@ -523,10 +527,13 @@ class TalkDetail extends Component {
             <Text
               style={{
                 color: "#000000",
+                width: widthPercentageToDP(343),
                 fontSize: widthPercentageToDP(16),
                 fontFamily: fonts.nanumBarunGothicB,
                 marginTop: widthPercentageToDP(15)
               }}
+              numberOfLines={1}
+              ellipsizeMode={"tail"}
             >
               {this.props.getPosts.title}
             </Text>
@@ -534,8 +541,9 @@ class TalkDetail extends Component {
               <Text
                 style={{
                   color: "#000000",
+                  width: widthPercentageToDP(343),
                   fontSize: widthPercentageToDP(13),
-                  fontFamily: fonts.nanumBarunGothicR,
+                  fontFamily: fonts.nanumBarunGothic,
                   marginTop: widthPercentageToDP(7)
                 }}
               >
@@ -592,7 +600,7 @@ class TalkDetail extends Component {
                   style={{
                     color: "#171717",
                     fontSize: widthPercentageToDP(11),
-                    fontFamily: fonts.nanumBarunGothicR,
+                    fontFamily: fonts.nanumBarunGothic,
                     marginLeft: widthPercentageToDP(4)
                   }}
                 >
@@ -623,7 +631,7 @@ class TalkDetail extends Component {
                   style={{
                     color: "#171717",
                     fontSize: widthPercentageToDP(11),
-                    fontFamily: fonts.nanumBarunGothicR,
+                    fontFamily: fonts.nanumBarunGothic,
                     marginLeft: widthPercentageToDP(4)
                   }}
                 >
@@ -673,6 +681,7 @@ class TalkDetail extends Component {
             </TouchableOpacity>
           </View>
         ) : null}
+
         <View
           style={{
             backgroundColor: "white",
@@ -682,8 +691,9 @@ class TalkDetail extends Component {
             minHeight: widthPercentageToDP(56),
             alignItems: "center",
             paddingVertical: widthPercentageToDP(8),
-            borderTopColor: "#dbdbdb",
-            borderTopWidth: widthPercentageToDP(0.5)
+            borderColor: "#dbdbdb",
+            borderTopWidth: widthPercentageToDP(0.5),
+            borderBottomWidth: widthPercentageToDP(0.5)
           }}
         >
           <View
@@ -700,17 +710,44 @@ class TalkDetail extends Component {
               borderColor: "#dbdbdb"
             }}
           >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity
+                style={{ marginLeft: widthPercentageToDP(7) }}
+                onPress={async () => {
+                  this.state.anonymous == 0
+                    ? await this.setState({ anonymous: 1 })
+                    : await this.setState({ anonymous: 0 });
+                }}
+              >
+                <Image
+                  style={{
+                    width: widthPercentageToDP(28),
+                    height: widthPercentageToDP(28)
+                  }}
+                  source={
+                    this.state.anonymous == 0
+                      ? require("../../../assets/image/community/anonymous_off.png")
+                      : require("../../../assets/image/community/anonymous_on.png")
+                  }
+                />
+              </TouchableOpacity>
+              {this.state.anonymous == 0 ? (
+                <AnonymousOFFText>익명</AnonymousOFFText>
+              ) : (
+                <AnonymousONText>익명</AnonymousONText>
+              )}
+            </View>
             <TextInput
               ref={input => {
                 this.TextInput = input;
               }}
               style={{
                 color: "#000000",
-                width: widthPercentageToDP(265),
+                width: widthPercentageToDP(216),
                 maxHeight: widthPercentageToDP(76),
                 padding: widthPercentageToDP(0),
                 margin: widthPercentageToDP(0),
-                marginLeft: widthPercentageToDP(13),
+                marginLeft: widthPercentageToDP(5),
                 fontSize: widthPercentageToDP(14),
                 fontFamily: fonts.nanumBarunGothic
               }}
@@ -726,11 +763,11 @@ class TalkDetail extends Component {
               multiline={true}
             />
             <TouchableOpacity
-              onPress={() => {
+              onPress={async () => {
+                await Keyboard.dismiss();
                 this.state.emoji == false
                   ? this.setState({ emoji: true })
                   : this.setState({ emoji: false });
-                Keyboard.dismiss();
               }}
             >
               <Image
@@ -753,6 +790,7 @@ class TalkDetail extends Component {
                 var reply = new Object();
                 reply.content = this.state.reply;
                 reply.postsIndex = this.props.getPosts.postsIndex;
+                reply.isAnonymous = this.state.anonymous;
                 if (this.state.form == "reply") {
                   //댓글 작성
                   await TalkActions.createPostsReply(reply);

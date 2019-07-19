@@ -96,7 +96,7 @@ export const HotPostsListItem = props => {
           style={{
             color: "#000000",
             fontSize: widthPercentageToDP(11),
-            fontFamily: fonts.nanumBarunGothicR,
+            fontFamily: fonts.nanumBarunGothic,
             marginTop: widthPercentageToDP(8)
           }}
           ellipsizeMode={"tail"}
@@ -141,7 +141,7 @@ export const HotPostsListItem = props => {
               style={{
                 color: "#171717",
                 fontSize: widthPercentageToDP(11),
-                fontFamily: fonts.nanumBarunGothicR,
+                fontFamily: fonts.nanumBarunGothic,
                 marginLeft: widthPercentageToDP(5)
               }}
             >
@@ -159,7 +159,7 @@ export const HotPostsListItem = props => {
               style={{
                 color: "#171717",
                 fontSize: widthPercentageToDP(11),
-                fontFamily: fonts.nanumBarunGothicR,
+                fontFamily: fonts.nanumBarunGothic,
                 marginLeft: widthPercentageToDP(5)
               }}
             >
@@ -177,7 +177,7 @@ export const HotPostsListItem = props => {
               style={{
                 color: "#171717",
                 fontSize: widthPercentageToDP(11),
-                fontFamily: fonts.nanumBarunGothicR,
+                fontFamily: fonts.nanumBarunGothic,
                 marginLeft: widthPercentageToDP(4.3)
               }}
             >
@@ -218,7 +218,7 @@ export const PostsListItem = props => {
         style={{
           color: "#000000",
           fontSize: widthPercentageToDP(11),
-          fontFamily: fonts.nanumBarunGothicR,
+          fontFamily: fonts.nanumBarunGothic,
           marginTop: widthPercentageToDP(8)
         }}
         ellipsizeMode={"tail"}
@@ -262,7 +262,7 @@ export const PostsListItem = props => {
             style={{
               color: "#171717",
               fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicR,
+              fontFamily: fonts.nanumBarunGothic,
               marginLeft: widthPercentageToDP(5)
             }}
           >
@@ -280,7 +280,7 @@ export const PostsListItem = props => {
             style={{
               color: "#171717",
               fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicR,
+              fontFamily: fonts.nanumBarunGothic,
               marginLeft: widthPercentageToDP(5)
             }}
           >
@@ -298,7 +298,128 @@ export const PostsListItem = props => {
             style={{
               color: "#171717",
               fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicR,
+              fontFamily: fonts.nanumBarunGothic,
+              marginLeft: widthPercentageToDP(4.3)
+            }}
+          >
+            {props.data.postsReplyCount}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export const ReportedPostsListItem = props => {
+  return (
+    <TouchableOpacity
+      style={{
+        backgroundColor: "red",
+        width: widthPercentageToDP(375),
+        height: widthPercentageToDP(81),
+        paddingHorizontal: widthPercentageToDP(16),
+        borderBottomWidth: widthPercentageToDP(1),
+        borderBottomColor: "#dbdbdb"
+      }}
+      onPress={() => props.handler()}
+    >
+      <Text
+        style={{
+          color: "#000000",
+          fontSize: widthPercentageToDP(13),
+          fontFamily: fonts.nanumBarunGothicB,
+          marginTop: widthPercentageToDP(12)
+        }}
+        ellipsizeMode={"tail"}
+        numberOfLines={1}
+      >
+        {props.data.title}
+      </Text>
+      <Text
+        style={{
+          color: "#000000",
+          fontSize: widthPercentageToDP(11),
+          fontFamily: fonts.nanumBarunGothic,
+          marginTop: widthPercentageToDP(8)
+        }}
+        ellipsizeMode={"tail"}
+        numberOfLines={1}
+      >
+        {props.data.content}
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          height: widthPercentageToDP(12),
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: widthPercentageToDP(10)
+        }}
+      >
+        <Text
+          style={{
+            color: "#646464",
+            fontSize: widthPercentageToDP(11),
+            fontFamily: fonts.nanumBarunGothicB
+          }}
+        >
+          {timeSince(props.data.createdAt)}
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            height: widthPercentageToDP(12),
+            alignItems: "center"
+          }}
+        >
+          <Image
+            style={{
+              width: widthPercentageToDP(11),
+              height: widthPercentageToDP(11)
+            }}
+            source={require("../../../assets/image/community/images.png")}
+          />
+          <Text
+            style={{
+              color: "#171717",
+              fontSize: widthPercentageToDP(11),
+              fontFamily: fonts.nanumBarunGothic,
+              marginLeft: widthPercentageToDP(5)
+            }}
+          >
+            {props.data.imageCount}
+          </Text>
+          <Image
+            style={{
+              width: widthPercentageToDP(8.5),
+              height: widthPercentageToDP(10.2),
+              marginLeft: widthPercentageToDP(10.5)
+            }}
+            source={require("../../../assets/image/community/likes.png")}
+          />
+          <Text
+            style={{
+              color: "#171717",
+              fontSize: widthPercentageToDP(11),
+              fontFamily: fonts.nanumBarunGothic,
+              marginLeft: widthPercentageToDP(5)
+            }}
+          >
+            {props.data.goodCount}
+          </Text>
+          <Image
+            style={{
+              width: widthPercentageToDP(10.2),
+              height: widthPercentageToDP(9.9),
+              marginLeft: widthPercentageToDP(10.5)
+            }}
+            source={require("../../../assets/image/community/replys.png")}
+          />
+          <Text
+            style={{
+              color: "#171717",
+              fontSize: widthPercentageToDP(11),
+              fontFamily: fonts.nanumBarunGothic,
               marginLeft: widthPercentageToDP(4.3)
             }}
           >
