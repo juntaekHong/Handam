@@ -32,12 +32,12 @@ const Home = ({ navigation, noticeList, count }) => {
     navigation.navigate("busstack");
   }, []);
   const initCall = useCallback(async () => {
+    await AlarmActions.alarmInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
     await HansungInfoActions.getHansungInfo();
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
-    console.log(count);
   }, [count]);
   useEffect(() => {
     initCall();
