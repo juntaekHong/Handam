@@ -10,7 +10,7 @@ export default createMaterialTopTabNavigator(
         Grade: { screen: GradesScreen, navigationOptions: { tabBarLabel: "성적표" } },
     },
     {
-        initialRouteName: "Point",  // 처음 보여질 탭
+        initialRouteName: "Grade",  // 처음 보여질 탭
         tabBarPosition: 'top',   // 탭 위치
         swipeEnabled: true,         // Swipe 기능
         lazy: true,                 // Default 값 true, 활성화 된 탭만 렌더링 할 것인지 여부.
