@@ -54,6 +54,7 @@ export const Scroll = props => (
   <ScrollView
     style={{ width: "100%" }}
     contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
+    {...props}
   >
     {props.children}
   </ScrollView>

@@ -6,6 +6,7 @@ import { produce } from "immer";
 import api from "../../../utils/api";
 import axios from "axios";
 import config from "../../../configs/config";
+import { Platform } from "react-native";
 
 const COMMON_INIT = "common/COMMON_INIT";
 const COMMON_LOADING = "common/COMMON_LOADING";
@@ -15,6 +16,7 @@ const COMMON_MAJOR_LIST = "common/COMMON_MAJOR_LIST";
 const COMMON_TRACK_LIST = "common/COMMON_TRACK_LIST";
 const COMMON_ADMISSION_LIST = "common/COMMON_ADMISSION_LIST";
 const COMMON_SEMESTER_LIST = "common/COMMON_SEMESTER_LIST";
+const COMMON_APP_VERSION = "common/COMMON_APP_VERSION";
 
 export const commonInit = createAction(COMMON_INIT);
 const loadingAction = createAction(COMMON_LOADING);
@@ -24,6 +26,7 @@ const majorListAction = createAction(COMMON_MAJOR_LIST);
 const trackListAction = createAction(COMMON_TRACK_LIST);
 const admissionYearAction = createAction(COMMON_ADMISSION_LIST);
 const semesterAction = createAction(COMMON_SEMESTER_LIST);
+const appVersionAction = createAction(COMMON_APP_VERSION);
 
 const initState = {
   loading: false,
@@ -32,7 +35,8 @@ const initState = {
   major_list: [],
   track_list: ["해당없음"],
   admission_list: [],
-  semester_list: []
+  semester_list: [],
+  appVersion: {}
 };
 
 export const handleLoading = value => dispatch => {
@@ -83,6 +87,17 @@ export const getAdmissionYear = () => async dispatch => {
   }
 };
 
+export const getAppVersion = () => async dispatch => {
+  try {
+    const jsonData = await api.get(`/version`);
+    if (jsonData.statusCode == 200) {
+      const { result } = jsonData;
+      dispatch(appVersionAction(result));
+    } else {
+    }
+  } catch (e) {}
+};
+
 export default handleActions(
   {
     [COMMON_INIT]: (undefined, {}) => {},
@@ -122,6 +137,10 @@ export default handleActions(
           draft.semester_list.push(item.admissionYear + "년 2학기");
           draft.semester_list.push(item.admissionYear + "년 1학기");
         });
+      }),
+    [COMMON_APP_VERSION]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.appVersion = payload;
       })
   },
   initState

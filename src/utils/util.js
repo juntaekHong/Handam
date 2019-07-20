@@ -98,6 +98,15 @@ export const timeSince = date => {
   return Math.floor(seconds) + " 초전";
 };
 
+export const timeFormat = (date, format) => {
+  try {
+    const result = moment(date).format(format);
+    return result;
+  } catch (e) {
+    return "";
+  }
+};
+
 export const getArrMsg = str => {
   if (str.indexOf("[") < 0) return str;
   else if (str.indexOf("[") == 0) {
