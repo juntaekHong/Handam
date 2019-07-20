@@ -314,7 +314,6 @@ export const ReportedPostsListItem = props => {
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: "red",
         width: widthPercentageToDP(375),
         height: widthPercentageToDP(81),
         paddingHorizontal: widthPercentageToDP(16),
@@ -328,7 +327,8 @@ export const ReportedPostsListItem = props => {
           color: "#000000",
           fontSize: widthPercentageToDP(13),
           fontFamily: fonts.nanumBarunGothicB,
-          marginTop: widthPercentageToDP(12)
+          marginTop: widthPercentageToDP(12),
+          opacity: 0.2
         }}
         ellipsizeMode={"tail"}
         numberOfLines={1}
@@ -340,7 +340,8 @@ export const ReportedPostsListItem = props => {
           color: "#000000",
           fontSize: widthPercentageToDP(11),
           fontFamily: fonts.nanumBarunGothic,
-          marginTop: widthPercentageToDP(8)
+          marginTop: widthPercentageToDP(8),
+          opacity: 0.2
         }}
         ellipsizeMode={"tail"}
         numberOfLines={1}
@@ -358,12 +359,12 @@ export const ReportedPostsListItem = props => {
       >
         <Text
           style={{
-            color: "#646464",
+            color: "#101010",
             fontSize: widthPercentageToDP(11),
             fontFamily: fonts.nanumBarunGothicB
           }}
         >
-          {timeSince(props.data.createdAt)}
+          * 신고된 게시글입니다.
         </Text>
         <View
           style={{
@@ -375,16 +376,18 @@ export const ReportedPostsListItem = props => {
           <Image
             style={{
               width: widthPercentageToDP(11),
-              height: widthPercentageToDP(11)
+              height: widthPercentageToDP(11),
+              opacity: 0.3
             }}
             source={require("../../../assets/image/community/images.png")}
           />
           <Text
             style={{
-              color: "#171717",
+              color: "#000000",
               fontSize: widthPercentageToDP(11),
               fontFamily: fonts.nanumBarunGothic,
-              marginLeft: widthPercentageToDP(5)
+              marginLeft: widthPercentageToDP(5),
+              opacity: 0.2
             }}
           >
             {props.data.imageCount}
@@ -393,16 +396,18 @@ export const ReportedPostsListItem = props => {
             style={{
               width: widthPercentageToDP(8.5),
               height: widthPercentageToDP(10.2),
-              marginLeft: widthPercentageToDP(10.5)
+              marginLeft: widthPercentageToDP(10.5),
+              opacity: 0.3
             }}
             source={require("../../../assets/image/community/likes.png")}
           />
           <Text
             style={{
-              color: "#171717",
+              color: "#000000",
               fontSize: widthPercentageToDP(11),
               fontFamily: fonts.nanumBarunGothic,
-              marginLeft: widthPercentageToDP(5)
+              marginLeft: widthPercentageToDP(5),
+              opacity: 0.2
             }}
           >
             {props.data.goodCount}
@@ -411,16 +416,18 @@ export const ReportedPostsListItem = props => {
             style={{
               width: widthPercentageToDP(10.2),
               height: widthPercentageToDP(9.9),
-              marginLeft: widthPercentageToDP(10.5)
+              marginLeft: widthPercentageToDP(10.5),
+              opacity: 0.3
             }}
             source={require("../../../assets/image/community/replys.png")}
           />
           <Text
             style={{
-              color: "#171717",
+              color: "#000000",
               fontSize: widthPercentageToDP(11),
               fontFamily: fonts.nanumBarunGothic,
-              marginLeft: widthPercentageToDP(4.3)
+              marginLeft: widthPercentageToDP(4.3),
+              opacity: 0.2
             }}
           >
             {props.data.postsReplyCount}

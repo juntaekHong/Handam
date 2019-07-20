@@ -12,6 +12,7 @@ import styled from "styled-components/native";
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { widthPercentageToDP } from "../../utils/util";
+import { AlertText } from "./Text";
 
 const ImageModalClose = props => {
   if (props.close) {
@@ -131,6 +132,44 @@ export const ImageModal = props => {
           <ImageModalClose {...props} />
         </View>
         <ImageModalFooter {...props} />
+      </SafeAreaView>
+    </Modal>
+  );
+};
+
+export const AlertModal = props => {
+  return (
+    <Modal
+      style={{ margin: 0 }}
+      animationType={"fade"}
+      isVisible={props.visible}
+      // visible={props.visible}
+      // transparent={true}
+    >
+      <SafeAreaView
+        // needsOffscreenAlphaCompositing //child에 opacity 적용하는거 방지
+        style={{
+          flex: 1,
+          // backgroundColor: "#000000",
+          // opacity: 0.5,
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            width: widthPercentageToDP(295),
+            height: widthPercentageToDP(70),
+            justifyContent: "center",
+            alignItems: "center",
+            borderColor: "white",
+            borderRadius: widthPercentageToDP(14),
+            borderWidth: widthPercentageToDP(1)
+          }}
+        >
+          <AlertText>{props.text}</AlertText>
+        </View>
       </SafeAreaView>
     </Modal>
   );

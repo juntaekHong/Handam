@@ -57,3 +57,16 @@ export const WriterName = styled.Text`
 export const AnonymousWriterName = styled(WriterName)`
   color: ${"#171717"};
 `;
+
+export const ReportModalText = styled.Text`
+  color: ${"#272727"};
+  font-size: ${widthPercentageToDP(16)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${widthPercentageToDP(12)};
+`;
+
+export const AlertText = styled.Text`
+  color: ${"#000000"};
+  font-size: ${widthPercentageToDP(18)};
+  font-family: ${fonts.nanumBarunGothic};
+`;

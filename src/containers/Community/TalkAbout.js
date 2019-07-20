@@ -21,6 +21,7 @@ import {
   ReportedPostsListItem
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
+import { AlertModal } from "../../components/talk/Modal";
 
 class TalkAbout extends Component {
   constructor(props) {
@@ -75,6 +76,14 @@ class TalkAbout extends Component {
     );
   };
 
+  renderAlertModal = rendertext => {
+    TalkActions.handleAlertModal(true);
+    TalkActions.handleAlertText(rendertext);
+    setTimeout(() => {
+      TalkActions.handleAlertModal(false);
+    }, 1000);
+  };
+
   renderListHeader = () => {
     return (
       <FlatList
@@ -115,6 +124,10 @@ class TalkAbout extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <AlertModal
+          visible={this.state.alertmodal}
+          text={this.state.alerttext}
+        />
         <View
           style={{
             flexDirection: "row",
@@ -235,5 +248,7 @@ export default connect(state => ({
   hotpostsList: state.talk.hotpostsList,
   total: state.talk.total,
   filter: state.talk.filter,
-  orderby: state.talk.orderby
+  orderby: state.talk.orderby,
+  alertModal: state.talk.alertModal,
+  alertText: state.talk.alertText
 }))(TalkAbout);

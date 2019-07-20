@@ -37,17 +37,16 @@ export default createMaterialTopTabNavigator(
       },
       indicatorStyle: {
         backgroundColor: "rgb(96, 169, 243)",
-        marginLeft: widthPercentageToDP(16)
+        // width: widthPercentageToDP(85.8),
+        height: widthPercentageToDP(2),
+        paddingLeft: widthPercentageToDP(10)
       },
       tabStyle: {
-        // backgroundColor: 'red',
-        backgroundColor: "transparent",
-        width: widthPercentageToDP(79),
-        marginRight: widthPercentageToDP(8)
+        backgroundColor: "transparent"
       },
       style: {
         backgroundColor: "white",
-        paddingHorizontal: widthPercentageToDP(16),
+        // paddingHorizontal: widthPercentageToDP(16)
         elevation: 0, // remove shadow on Android
         shadowOpacity: 0 // remove shadow on iOS
       }

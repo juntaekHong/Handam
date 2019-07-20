@@ -208,7 +208,7 @@ export const BottomMenuModal = props => {
       dialogStyle={{
         backgroundColor: "transparent"
       }}
-      overlayOpacity={0.3}
+      overlayOpacity={0.5}
     >
       <BottomView>
         <Menu {...props} />

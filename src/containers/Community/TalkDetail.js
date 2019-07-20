@@ -17,7 +17,11 @@ import { widthPercentageToDP, timeSince, getData } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
-import { ReplyView, Re_ReplyView } from "../../components/talk/View";
+import {
+  ReplyView,
+  Re_ReplyView,
+  ReportDetailBody
+} from "../../components/talk/View";
 import {
   CustomModalText,
   CustomModalBlackText,
@@ -25,7 +29,7 @@ import {
   AnonymousONText
 } from "../../components/talk/Text";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
-import { ImageModal } from "../../components/talk/Modal";
+import { ImageModal, AlertModal } from "../../components/talk/Modal";
 
 class TalkDetail extends Component {
   constructor(props) {
@@ -49,7 +53,18 @@ class TalkDetail extends Component {
       anonymous: 1,
       deletemodal: false,
       updatemodal: false,
-      scrapmodal: false
+      reportmodal: false,
+      reportdetailmodal: false,
+      scrapmodal: false,
+      reportEU: [
+        { str: "토픽(주제)에 부적절함" },
+        { str: "욕설/비하" },
+        { str: "음란성" },
+        { str: "상업적 광고 및 판매" },
+        { str: "게시글/댓글 도배" },
+        { str: "기타" }
+      ],
+      reportEUindex: null
     };
   }
 
@@ -124,14 +139,17 @@ class TalkDetail extends Component {
     );
   };
 
+  handleReportEUindex = index => {
+    this.setState({ reportEUindex: index });
+  };
   //사용자가 글쓴이인지 판단
   checkUser = async () => {
-    // const userId = await getData("userId"); //유저닉네임으로 변경해야함
-    // if (this.props.getPosts.userNickName == userId) {
-    //   this.setState({ who: "me" });
-    // } else {
-    //   this.setState({ who: "you" });
-    // }
+    const userId = await getData("userId"); //유저닉네임으로 변경해야함
+    if (this.props.getPosts.userNickName == userId) {
+      this.setState({ who: "me" });
+    } else {
+      this.setState({ who: "you" });
+    }
   };
 
   checkSpace = str => {
@@ -237,6 +255,7 @@ class TalkDetail extends Component {
             <View>
               {/* 댓글 */}
               <ReplyView
+                key={index}
                 handler={async () => {
                   this.checkUser();
                   await this.setState({
@@ -263,6 +282,7 @@ class TalkDetail extends Component {
                 ? item.childReplies.map((item2, index) => {
                     return (
                       <Re_ReplyView
+                        key={index}
                         handler={async () => {
                           this.checkUser();
                           await this.setState({
@@ -284,6 +304,14 @@ class TalkDetail extends Component {
         }}
       />
     );
+  };
+
+  renderAlertModal = rendertext => {
+    TalkActions.handleAlertModal(true);
+    TalkActions.handleAlertText(rendertext);
+    setTimeout(() => {
+      TalkActions.handleAlertModal(false);
+    }, 1000);
   };
 
   render() {
@@ -346,10 +374,27 @@ class TalkDetail extends Component {
           }
           visible={this.state.reportmodal}
           footerHandler={() => {
-            this.state.type == "posts" ? this.reportPost() : this.reportReply();
-            this.setState({ reportmodal: false });
+            this.setState({ reportdetailmodal: true, reportmodal: false });
           }}
           closeHandler={() => this.setState({ reportmodal: false })}
+        />
+        <CustomModal
+          height={widthPercentageToDP(381)}
+          children={
+            <ReportDetailBody
+              handler={this.handleReportEUindex}
+              reportEUindex={this.state.reportEUindex}
+              reportEU={this.state.reportEU}
+            />
+          }
+          visible={this.state.reportdetailmodal}
+          footerDisabled={this.state.reportEUindex == null ? true : false}
+          footerHandler={() => {
+            this.state.type == "posts" ? this.reportPost() : this.reportReply();
+            this.setState({ reportdetailmodal: false, reportEUindex: null });
+            this.renderAlertModal("신고가 완료되었습니다.");
+          }}
+          closeHandler={() => this.setState({ reportdetailmodal: false })}
         />
         <CustomModal
           height={widthPercentageToDP(201.9)}
@@ -377,10 +422,21 @@ class TalkDetail extends Component {
             await TalkActions.putPostsSubscriber(posts);
 
             this.state.isScrap == true
-              ? this.setState({ isScrap: false })
-              : this.setState({ isScrap: true });
+              ? [
+                  this.setState({ isScrap: false }),
+                  this.renderAlertModal("스크랩을 취소하였습니다.")
+                ]
+              : [
+                  this.setState({ isScrap: true }),
+                  this.renderAlertModal("이 글을 스크랩하였습니다.")
+                ];
           }}
           closeHandler={() => this.setState({ scrapmodal: false })}
+        />
+
+        <AlertModal
+          visible={this.props.alertModal}
+          text={this.props.alertText}
         />
 
         <View
@@ -923,5 +979,7 @@ export default connect(state => ({
 
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,
-  imageIndex: state.talk.imageIndex
+  imageIndex: state.talk.imageIndex,
+  alertModal: state.talk.alertModal,
+  alertText: state.talk.alertText
 }))(TalkDetail);

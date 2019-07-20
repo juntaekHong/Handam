@@ -9,12 +9,16 @@ const CATEGORYINDEX_HANDLE = "talk/CATEGORYINDEX_HANDLE";
 const BOTTOMMODAL_HANDLE = "talk/BOTTOMMODAL_HANDLE";
 const IMAGEMODAL_HANDLE = "talk/IMAGEMODAL_HANDLE";
 const IMAGEINDEX_HANDLE = "talk/IMAGEINDEX_HANDLE";
+const ALERTMODAL_HANDLE = "talk/ALERTMODAL_HANDLE";
+const ALERTTEXT_HANDLE = "talk/ALERTTEXT_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
 const categoryIndexHandleAcation = createAction(CATEGORYINDEX_HANDLE);
 const bottomModalHandleAction = createAction(BOTTOMMODAL_HANDLE);
 const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
 const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
+const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
+const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
 
 //게시물
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
@@ -61,6 +65,8 @@ const initState = {
   bottomModal: false,
   imageModal: false,
   imageIndex: 0,
+  alertModal: false,
+  alertText: "호로록 칼국수",
 
   //게시물
   total: 0,
@@ -92,8 +98,16 @@ export const handleImageModal = bool => dispatch => {
   dispatch(imageModalHandleAction(bool));
 };
 
-export const handleImageIndex = bool => dispatch => {
-  dispatch(imageIndexHandleAction(bool));
+export const handleImageIndex = index => dispatch => {
+  dispatch(imageIndexHandleAction(index));
+};
+
+export const handleAlertModal = bool => dispatch => {
+  dispatch(alertModalHandleAction(bool));
+};
+
+export const handleAlertText = text => dispatch => {
+  dispatch(alertTextHandleAction(text));
 };
 
 //게시물
@@ -341,6 +355,14 @@ export default handleActions(
     [IMAGEINDEX_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.imageIndex = payload;
+      }),
+    [ALERTMODAL_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.alertModal = payload;
+      }),
+    [ALERTTEXT_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.alertText = payload;
       }),
 
     //게시물
