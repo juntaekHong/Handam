@@ -444,7 +444,7 @@ class TalkDetail extends Component {
             backgroundColor: "white",
             flexDirection: "row",
             width: widthPercentageToDP(375),
-            height: widthPercentageToDP(53),
+            height: widthPercentageToDP(60),
             justifyContent: "space-between",
             alignItems: "center",
             paddingTop: widthPercentageToDP(11),

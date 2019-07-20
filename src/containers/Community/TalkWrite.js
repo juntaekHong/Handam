@@ -264,7 +264,7 @@ class TalkWrite extends Component {
           style={{
             flexDirection: "row",
             width: widthPercentageToDP(375),
-            height: widthPercentageToDP(53),
+            height: widthPercentageToDP(60),
             justifyContent: "flex-end",
             alignItems: "center",
             paddingTop: widthPercentageToDP(11),
