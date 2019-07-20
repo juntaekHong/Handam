@@ -5,7 +5,8 @@ import { UIActivityIndicator } from "react-native-indicators";
 import {
   AuthActions,
   SignInActions,
-  CommonActions
+  CommonActions,
+  AlarmActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { getData, storeData } from "../../utils/util";
@@ -19,10 +20,9 @@ class UpdateCheck extends PureComponent {
   }
 
   async componentDidMount() {
-    // this.props.navigation.navigate("signUp3");
-
     const auth = await AuthActions.checkIntro();
     await CommonActions.commonInit();
+    await AlarmActions.alarmInit();
     CommonActions.getTrack();
     CommonActions.getAdmissionYear();
     CommonActions.getTerm1();
