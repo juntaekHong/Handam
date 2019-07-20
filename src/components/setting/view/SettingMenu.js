@@ -6,10 +6,10 @@ import colors from "../../../configs/colors";
 
 const SettingMenuView = styled.TouchableOpacity`
   width: 100%
+  height: ${widthPercentageToDP(44)}
   flex-direction: row
   justify-content: space-between
-  padding-top: ${widthPercentageToDP(8.5)}
-  padding-bottom: ${widthPercentageToDP(7.5)}
+  align-items: center
   padding-left: ${widthPercentageToDP(29)}
 `;
 const SettingMenuIcon = styled.Image`
@@ -42,7 +42,10 @@ export const SettingMenu = props => {
           <NBGText
             fontSize={16}
             color={"#646464"}
-            style={{ marginRight: widthPercentageToDP(29) }}
+            style={{
+              height: widthPercentageToDP(28),
+              marginRight: widthPercentageToDP(29)
+            }}
           >
             {props.rightText}
           </NBGText>
