@@ -1,5 +1,5 @@
 import React from 'react';
-import {KeyboardAvoidingView, TextInput, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Platform, View, Text, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, TextInput, TouchableOpacity, SafeAreaView, TouchableWithoutFeedback, Platform, View, Text, Image, StyleSheet} from 'react-native';
 import {widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
@@ -17,39 +17,39 @@ class CertificationScreen extends React.Component {
 
             loading: false,
         }
+
+        this.props.hansunginfo != null && this.props.hansunginfo.status == 'UNVERIFIED' ?
+            this.props.navigation.goBack(null)
+            :
+            null
     }
 
     navigationBack = () => {
         this.props.navigation.goBack(null);
-    }
+    };
 
-    // 수정 및 보완 예정
-    certificationConfirm = async () => {
+    certification_Check = async () => {
+        await HansungInfoActions.getHansungInfo();
 
-        let timeout = setInterval(async ()=>{
-            if( this.props.hansunginfo!=null&&this.props.hansunginfo.status=='UNVERIFIED'){
+        let timeout = setInterval(async () => {
+            if(this.props.hansunginfo != null && this.props.hansunginfo.status == 'UNVERIFIED') {
                 await HansungInfoActions.getHansungInfo();
-            }
-            else if( this.props.hansunginfo!=null&&this.props.hansunginfo.status =='SUCCESS'){
-                // await HansungInfoAction.createHansungInfoNonSubjectPoint();
-                // await HansungInfoAction.createHansungInfoGrades();
+            } else if(this.props.hansunginfo.status == 'SUCCESS') {
 
                 await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-                await HansungInfoActions.gradesLoadingHandle(true);
+                await HansungInfoActions.valueLoadingHandle(true);
 
-                this.props.navigation.goBack(null);
-                clearInterval(timeout);
-                this.setState({loading: false});
-            }
-            else if(this.props.hansunginfo.status =='FAIL'){
-                this.setState({loading: false});
-                clearInterval(timeout);
+                await this.navigationBack();
 
-                // 마이페이지로 가서 재인증
-                this.props.navigation.navigate("Home");
+                clearInterval(timeout);
+            } else if(this.props.hansunginfo.status == 'FAIL') {
+                // 마이 페이지에서 재인증 작업 예정
+                this.setState({loading: false});
+                this.props.navigation.navigate("MyInfo");
+                clearInterval(timeout);
             }
-        } , 5000);
-    }
+        }, 5000);
+    };
 
     renderSubmit = () => {
         if(this.state.hansung_id!=''&&this.state.hansung_pass!=''){
@@ -61,9 +61,9 @@ class CertificationScreen extends React.Component {
 
                     this.setState({loading: true});
 
-                    // 크롤링 서버 켜지면..
-                    // await HansungInfoAction.createHansungInfo(hansunginfo);
-                    this.certificationConfirm();
+                    await HansungInfoActions.createHansungInfo(hansunginfo);
+
+                    await this.certification_Check();
                 }}>
                     <Text style={styles.submitText}>인증하기</Text>
                 </TouchableOpacity>
@@ -82,7 +82,7 @@ class CertificationScreen extends React.Component {
             this.state.loading == false ?
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
                     <TouchableOpacity onPress={async () => {this.navigationBack()}} style={[{alignItems: 'flex-end', marginRight: widthPercentageToDP(20.9), marginTop: widthPercentageToDP(21.8)}]}>
-                        <Text>X</Text>
+                        <Image style={{width: widthPercentageToDP(28), height: widthPercentageToDP(28)}} source={require("../../../assets/image/hansungInfo/close.png")} />
                     </TouchableOpacity>
                     <SafeAreaView style={styles.container}>
                         <TouchableWithoutFeedback >
@@ -199,9 +199,9 @@ const styles = StyleSheet.create({
 });
 
 export default connect((state) => ({
-        hansunginfo: state.hansung.hansunginfo,
-        nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
-        nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
-        grades_status: state.hansung.grades_status,
-        grades_loading: state.hansung.grades_loading,
+    hansunginfo: state.hansung.hansunginfo,
+    nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
+    nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
+    grades_status: state.hansung.grades_status,
+    grades_loading: state.hansung.grades_loading,
 }))(CertificationScreen);

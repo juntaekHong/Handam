@@ -26,6 +26,11 @@ const GRADES_LOADING_HANDLE = 'hansungInfo/GRADES_LOADING_HANDLE';
 const gradesHandleAction = createAction(GRADES_HANDLE);
 const gradesLoadingHandleAction = createAction(GRADES_LOADING_HANDLE);
 
+// 값 들어올 동안 로딩
+const VALUE_LOADING_HANDLE = 'hansunginfo/VALUE_LOADING_HANDLE';
+
+const valueLoadingHandleAction = createAction(VALUE_LOADING_HANDLE);
+
 const initState = {
     hansunginfo: null,
 
@@ -34,6 +39,8 @@ const initState = {
 
     nonSubjectPoint_loading: false,
     grades_loading: false,
+
+    value_loading: false,
 };
 
 export const nonSubjectPointHandle = (bool) => dispatch => {
@@ -52,18 +59,21 @@ export const gradesLoadingHandle = (bool) => dispatch => {
     dispatch(gradesLoadingHandleAction(bool));
 };
 
+export const valueLoadingHandle = (bool) => dispatch => {
+    dispatch(valueLoadingHandleAction(bool));
+};
+
 export const createHansungInfo = (hansunginfo) => async dispatch => {
     const token = await getData('token');
 
     //서버로 전송
-    const jsonData = await api.post(`/hansungInfo`, {token: token});
+    const jsonData = await api.post(`/hansungInfo`, {body: hansunginfo, token: token});
 
     if(jsonData.statusCode == 200){
         await dispatch(createHansungInfoAction(jsonData.result));
 
         //1번 더 요청
-        await api.post(`/hansungInfo`, {token: token});
-
+        await api.post(`/hansungInfo`, {body: hansunginfo, token: token});
 
     } else if (jsonData.statusCode == 403){
         //
@@ -109,7 +119,7 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
         await api.post(`/hansungInfo/nonSubjectPoint`, {token: token});
 
     } else if (jsonData.statusCode == 403){
-        //
+        // 마이페이지로가서 재인증.
     }
 };
 
@@ -126,7 +136,7 @@ export const createHansungInfoGrades = () => async dispatch => {
         await api.post(`/hansungInfo/grades`, {token: token});
 
     } else if (jsonData.statusCode == 403){
-        //
+        // 마이페이지로가서 재인증.
     }
 };
 
@@ -147,7 +157,7 @@ export default handleActions(
             }),
         [NONSUBJECTPOINT_HANDLE]: (state, {payload}) =>
             produce(state, draft => {
-               draft.nonSubjectPoint_status = payload;
+                draft.nonSubjectPoint_status = payload;
             }),
         [GRADES_HANDLE]: (state, {payload}) =>
             produce(state, draft => {
@@ -160,6 +170,10 @@ export default handleActions(
         [GRADES_LOADING_HANDLE]: (state, {payload}) =>
             produce(state, draft => {
                 draft.grades_loading = payload;
+            }),
+        [VALUE_LOADING_HANDLE]: (state,{payload}) =>
+            produce(state, draft => {
+                draft.value_loading = payload;
             }),
     },
     initState
