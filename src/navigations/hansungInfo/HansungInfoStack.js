@@ -1,16 +1,16 @@
 import {createStackNavigator} from "react-navigation";
 import HansungInfoTab from '../hansungInfo/HansungInfoTab';
-import CertificationStack from "../certification/CertificationStack";
+import MyInfoStack from "../myInfo/MyInfoStack";
 
 // 비교과, 성적표, 종정시 인증
 const HansungInfoStack = createStackNavigator(
     {
         HansungInfo : { screen: HansungInfoTab },
-        Certification: {screen: CertificationStack}
+        MyInfo: {screen: MyInfoStack},
     },
     {
         defaultNavigationOptions: {
-            header: null
+            header: null,
         }
     }
 );
