@@ -5,6 +5,7 @@ import { NBGText } from "./Text";
 import FastImage from "react-native-fast-image";
 import navigations from "../../utils/navigators";
 import colors from "../../configs/colors";
+import { ScrollView } from "react-native";
 
 export const LinkView = styled.TouchableOpacity`
   height: 100%;
@@ -48,6 +49,15 @@ export const RowView = styled.View`
   height: ${({ height }) => widthPercentageToDP(height)}
   flex-direction: row
 `;
+
+export const Scroll = props => (
+  <ScrollView
+    style={{ width: "100%" }}
+    contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
+  >
+    {props.children}
+  </ScrollView>
+);
 
 const TitleView = styled.View`
   width: 100%;

@@ -34,9 +34,12 @@ const HomeTitleRight = ({ alarm = false }) => {
   navigateAlarm = useCallback(() => {
     navigators.navigate("alarm");
   }, []);
+  navigateSetting = useCallback(() => {
+    navigators.navigate("setting");
+  }, []);
   return (
     <HomeTitleRightView>
-      <HomeTitleIcon marginRight={8.9}>
+      <HomeTitleIcon marginRight={8.9} onPress={navigateSetting}>
         <Image
           source={require("HandamProject/assets/image/home/settings.png")}
         />
