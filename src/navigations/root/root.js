@@ -5,6 +5,7 @@ import BusStack from "../bus/BusStack";
 import Alarm from "../../containers/alarm/Alarm";
 import CertificationStack from "../certification/CertificationStack";
 import SettingStack from "../setting/SettingStack";
+import TalkStack from "../talk/TalkStack";
 
 const RootStack = createStackNavigator(
   {
@@ -13,7 +14,8 @@ const RootStack = createStackNavigator(
     busstack: { screen: BusStack },
     alarm: { screen: Alarm },
     Certification: { screen: CertificationStack },
-    settingstack: { screen: SettingStack }
+    settingstack: { screen: SettingStack },
+    talk: { screen: TalkStack }
   },
   {
     initialRouteName: "main",

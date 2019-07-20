@@ -1,14 +1,15 @@
 import { createStackNavigator } from "react-navigation";
-import TalkDetailScreen from "../../containers/Community/TalkDetailScreen";
-import TalkWriteScreen from "../../containers/Community/TalkWriteScreen";
+import TalkDetail from "../../containers/community/TalkDetail";
+import TalkWrite from "../../containers/community/TalkWrite";
+import TalkSearch from "../../containers/community/TalkSearch";
 
 const TalkStack = createStackNavigator(
   {
-    TalkDetail: { screen: TalkDetailScreen },
-    TalkWrite: { screen: TalkWriteScreen },
+    TalkDetail: { screen: TalkDetail },
+    TalkWrite: { screen: TalkWrite },
+    TalkSearch: { screen: TalkSearch }
   },
   {
-    // initialRouteName: "TalkWrite",
     defaultNavigationOptions: {
       header: null
     }
