@@ -12,6 +12,7 @@ import home from "./home/home";
 import bus from "./bus/bus";
 import hansung from "./hansungInfo/hansungInfo";
 import alarm from "./alarm/alarm";
+import lock from "./lock/lock";
 export default combineReducers({
   counter,
   auth,
@@ -22,5 +23,6 @@ export default combineReducers({
   home,
   bus,
   hansung,
-  alarm
+  alarm,
+  lock
 });

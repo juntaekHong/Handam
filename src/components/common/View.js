@@ -95,13 +95,15 @@ export const Title = ({
   rightHandler,
   rightInVisible,
   paddingLeft,
-  paddingRight
+  paddingRight,
+  style
 }) => {
   return (
     <TitleView
       height={height}
       paddingLeft={paddingLeft}
       paddingRight={paddingRight}
+      style={style}
     >
       {leftRender ? (
         leftRender()

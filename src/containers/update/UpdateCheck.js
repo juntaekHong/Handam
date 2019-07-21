@@ -6,7 +6,8 @@ import {
   AuthActions,
   SignInActions,
   CommonActions,
-  AlarmActions
+  AlarmActions,
+  LockActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { getData, storeData } from "../../utils/util";
@@ -20,22 +21,25 @@ class UpdateCheck extends PureComponent {
   }
 
   async componentDidMount() {
-    const auth = await AuthActions.checkIntro();
-    await CommonActions.commonInit();
-    CommonActions.getAppVersion();
-    AlarmActions.alarmInit();
-    CommonActions.getTrack();
-    CommonActions.getAdmissionYear();
-    CommonActions.getTerm1();
-    CommonActions.getTerm2();
-    OneSignal.getPermissionSubscriptionState(async status => {
-      await SignInActions.checkToken(status.userId);
-      if (auth) {
-        this.props.navigation.navigate(this.props.signin_navigate);
-      } else {
-        this.props.navigation.navigate("intro");
-      }
-    });
+    await LockActions.lockInit();
+    this.props.navigation.navigate("lockstack");
+    // const auth = await AuthActions.checkIntro();
+    // await CommonActions.commonInit();
+    // await LockActions.lockInit();
+    // CommonActions.getAppVersion();
+    // AlarmActions.alarmInit();
+    // CommonActions.getTrack();
+    // CommonActions.getAdmissionYear();
+    // CommonActions.getTerm1();
+    // CommonActions.getTerm2();
+    // OneSignal.getPermissionSubscriptionState(async status => {
+    //   await SignInActions.checkToken(status.userId);
+    //   if (auth) {
+    //     this.props.navigation.navigate(this.props.signin_navigate);
+    //   } else {
+    //     this.props.navigation.navigate("intro");
+    //   }
+    // });
   }
 
   render() {
