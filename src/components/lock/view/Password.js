@@ -5,13 +5,14 @@ import colors from "../../../configs/colors";
 
 const PasswordView = styled.View`
   width: 100%
+  height: ${widthPercentageToDP(20)}
   flex-direction: row
   justify-content: center
+  margin-bottom: ${widthPercentageToDP(97)}
 `;
 const Word = styled.View`
   width: ${({ active = false }) =>
     active ? widthPercentageToDP(20) : widthPercentageToDP(16)}
-  width: 16
   height: ${({ active = false }) =>
     active ? widthPercentageToDP(20) : widthPercentageToDP(16)}
   border-radius: ${({ active = false }) =>
@@ -19,10 +20,19 @@ const Word = styled.View`
   background-color: ${({ active = false }) =>
     active ? colors.active : colors.disable}
 `;
+export const NumberRow = styled.View`
+  width: 100%
+  flex-direction: row;
+  justify-content: space-between
+  padding-left: ${widthPercentageToDP(22)}
+  padding-right: ${widthPercentageToDP(22)}
+  margin-bottom: ${widthPercentageToDP(20)}
+`;
 export const Password = ({ pass = "" }) => {
   return (
     <PasswordView>
       <Word
+        active={pass.length >= 1}
         style={{
           marginRight:
             pass.length < 1
@@ -31,6 +41,7 @@ export const Password = ({ pass = "" }) => {
         }}
       />
       <Word
+        active={pass.length >= 2}
         style={{
           marginLeft:
             pass.length < 2
@@ -43,6 +54,7 @@ export const Password = ({ pass = "" }) => {
         }}
       />
       <Word
+        active={pass.length >= 3}
         style={{
           marginLeft:
             pass.length < 3
@@ -55,6 +67,7 @@ export const Password = ({ pass = "" }) => {
         }}
       />
       <Word
+        active={pass.length >= 4}
         style={{
           marginLeft:
             pass.length < 4
