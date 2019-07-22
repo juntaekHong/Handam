@@ -1,33 +1,72 @@
 import { createAction, handleActions } from "redux-actions";
-import { getData } from "../../../utils/util";
+import { getData, storeData } from "../../../utils/util";
 import { produce } from "immer";
+import TouchID from "react-native-touch-id";
 
 const LOCK_PASS = "lock/LOCK_PASS";
 const LOCK_BIO = "lock/LOCK_BIO";
 const LOCK_PASSWORD = "lock/LOCK_PASSWORD";
+const LOCK_BIO_OPTION = "lock/LOCK_BIO_OPTION";
 
-export const lockPassAction = createAction(LOCK_PASS);
-export const lockBioAction = createAction(LOCK_BIO);
-export const lockPasswordAction = createAction(LOCK_PASSWORD);
+const lockPassAction = createAction(LOCK_PASS);
+const lockBioAction = createAction(LOCK_BIO);
+const lockPasswordAction = createAction(LOCK_PASSWORD);
+const lockBioOptionAction = createAction(LOCK_BIO_OPTION);
+
+const initState = {
+  passLock: false,
+  bioLock: false,
+  password: "",
+  bioOption: false
+};
+
+const optionalConfigObject = {
+  unifiedErrors: false, // use unified error messages (default false)
+  passcodeFallback: false // if true is passed, itwill allow isSupported to return an error if the device is not enrolled in touch id/face id etc. Otherwise, it will just tell you what method is supported, even if the user is not enrolled.  (default false)
+};
 
 export const lockInit = () => async dispatch => {
   const pass_lock = await getData("pass_locking");
   const bio_lock = await getData("bio_locking");
   const lock_pass = await getData("lock_pass");
 
-  dispatch(
+  TouchID.isSupported(optionalConfigObject)
+    .then(biometryType => {
+      if (biometryType === "FaceID") {
+        console.log("face id", biometryType);
+        dispatch(lockBioOptionAction(true));
+      } else {
+        console.log("touch id", biometryType);
+        dispatch(lockBioOptionAction(true));
+      }
+    })
+    .catch(error => {
+      console.log("error", error);
+      dispatch(lockBioOptionAction(false));
+    });
+
+  await dispatch(
     lockPassAction(pass_lock === null || pass_lock === "false" ? false : true)
   );
-  dispatch(
+  await dispatch(
     lockBioAction(bio_lock === null || bio_lock === "false" ? false : true)
   );
-  dispatch(lockPasswordAction(lock_pass === null ? "" : lock_pass));
+  await dispatch(lockPasswordAction(lock_pass === null ? "" : lock_pass));
 };
 
-const initState = {
-  passLock: false,
-  bioLock: false,
-  password: ""
+export const handlePassLock = value => async dispatch => {
+  await dispatch(lockPassAction(value));
+  await storeData("pass_locking", value + "");
+};
+
+export const handleBioLock = value => async dispatch => {
+  await dispatch(lockPassAction(value));
+  await storeData("bio_locking", value + "");
+};
+
+export const handlePassword = value => async dispatch => {
+  await dispatch(lockPassAction(value));
+  await storeData("lock_pass", value + "");
 };
 
 export default handleActions(
@@ -43,6 +82,10 @@ export default handleActions(
     [LOCK_PASSWORD]: (state, { payload }) =>
       produce(state, draft => {
         draft.password = payload;
+      }),
+    [LOCK_BIO_OPTION]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.bioOption = payload;
       })
   },
   initState

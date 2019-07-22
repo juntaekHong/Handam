@@ -13,22 +13,30 @@ const LockSetting = props => {
   const passRef = useRef(null);
   const bioRef = useRef(null);
 
+  const navigateNewPass = useCallback(() => {
+    navigators.navigate("newpasssetting");
+  }, []);
+
   const setPassLock = useCallback(async value => {
     if (!value) {
       await setBioLock(false);
-      await LockActions.lockPassAction(false);
-      LockActions.lockPasswordAction("");
-      storeData("pass_locking", value + "");
+      await LockActions.handlePassword("");
+      await LockActions.handlePassLock(false);
     } else {
-      await navigators.navigate("passsetting");
+      await navigators.navigate("passsetting", { complete: setPassTrue });
       if (passRef) passRef.current.toggleSwitchToValue(true, false);
     }
   });
+
   const setBioLock = useCallback(async value => {
-    toggleSwitchToValue(true, false);
-    await LockActions.lockBioAction(value);
-    storeData("bio_locking", value + "");
+    await LockActions.handleBioLock(value);
   });
+
+  const setPassTrue = useCallback(async () => {
+    if (passRef) await passRef.current.toggleSwitchToValue(true, true);
+    await LockActions.handlePassLock(true);
+  }, []);
+
   return (
     <HCenterView>
       <Title
@@ -49,6 +57,7 @@ const LockSetting = props => {
         border={false}
         menuDisable={!props.passLock}
         disabled={!props.passLock}
+        onPress={navigateNewPass}
       />
       <View
         style={{
@@ -57,16 +66,18 @@ const LockSetting = props => {
           backgroundColor: "#f8f8f8"
         }}
       />
-      <LockMenu
-        switchRef={bioRef}
-        title={"생체인식 사용"}
-        switch={true}
-        border={false}
-        disabled={true}
-        value={props.bioLock}
-        menuDisable={!props.passLock}
-        toggle={setBioLock}
-      />
+      {props.bioOption ? (
+        <LockMenu
+          switchRef={bioRef}
+          title={"생체인식 사용"}
+          switch={true}
+          border={false}
+          disabled={true}
+          value={props.bioLock}
+          menuDisable={!props.passLock}
+          toggle={setBioLock}
+        />
+      ) : null}
       <NBGText
         style={{ width: "100%", paddingLeft: widthPercentageToDP(29) }}
         fontSize={10}
@@ -81,5 +92,6 @@ const LockSetting = props => {
 
 export default connect(({ lock }) => ({
   passLock: lock.passLock,
-  bioLock: lock.bioLock
+  bioLock: lock.bioLock,
+  bioOption: lock.bioOption
 }))(LockSetting);

@@ -11,17 +11,15 @@ import { LockActions } from "../../store/actionCreator";
 const PassSetting = props => {
   const [firstPass, setFirstPass] = useState("");
   const [secondPass, setSecondPass] = useState("");
-  const [contentText, setContentText] = useState(
-    "새롭게 사용할\n암호 잠금번호를 입력하세요"
-  );
+  const [contentText, setContentText] = useState("새로운 암호를 입력해주세요");
   const [modal, setModal] = useState(false);
   const numberPress = useCallback(
     value => {
       if (firstPass.length < 4) setFirstPass(firstPass + String(value));
       else if (secondPass.length < 4) setSecondPass(secondPass + String(value));
-      if (firstPass.length < 3)
-        setContentText("새롭게 사용할\n암호 잠금번호를 입력하세요");
-      else if (secondPass.length < 3) setContentText("재입력 해주세요");
+      if (firstPass.length < 3) setContentText("새로운 암호를 입력해주세요");
+      else if (secondPass.length < 3)
+        setContentText("새로운 암호를\n재입력해주세요");
     },
     [firstPass, secondPass, contentText]
   );
@@ -32,7 +30,6 @@ const PassSetting = props => {
   }, [firstPass, secondPass]);
 
   const complete = useCallback(async () => {
-    await props.navigation.getParam("complete")();
     setModal(false);
     props.navigation.goBack();
   }, []);
@@ -40,8 +37,8 @@ const PassSetting = props => {
   useEffect(() => {
     if (firstPass.length === 4 && secondPass.length === 4) {
       if (firstPass === secondPass) {
-        setModal(true);
         LockActions.handlePassword(firstPass);
+        setModal(true);
       } else {
         setFirstPass("");
         setSecondPass("");
@@ -57,7 +54,7 @@ const PassSetting = props => {
         footerHandler={complete}
         closeHandler={complete}
       />
-      <Title title={"암호잠금 설정"} rightInVisible={true} />
+      <Title title={"암호잠금 변경"} rightInVisible={true} />
       <NBGText
         style={{
           height: widthPercentageToDP(51),
