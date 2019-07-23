@@ -33,7 +33,8 @@ class UpdateCheck extends PureComponent {
     OneSignal.getPermissionSubscriptionState(async status => {
       await SignInActions.checkToken(status.userId);
       if (auth) {
-        this.props.navigation.navigate(this.props.signin_navigate);
+        if (this.props.passLock) this.props.navigation.navigate("locksolve");
+        else this.props.navigation.navigate(this.props.signin_navigate);
       } else {
         this.props.navigation.navigate("intro");
       }
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(({ auth, signin }) => ({
+export default connect(({ auth, signin, lock }) => ({
+  passLock: lock.passLock,
   signin_navigate: signin.signin_navigate
 }))(UpdateCheck);

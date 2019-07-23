@@ -60,9 +60,10 @@ const PassSetting = props => {
       <Title title={"암호잠금 설정"} rightInVisible={true} />
       <NBGText
         style={{
-          height: widthPercentageToDP(51),
+          height: widthPercentageToDP(56),
           lineHeight: widthPercentageToDP(28)
         }}
+        allowFontScaling={false}
         marginTop={72}
         marginBottom={40}
         align={"center"}

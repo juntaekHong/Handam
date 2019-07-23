@@ -11,7 +11,6 @@ import navigators from "../../utils/navigators";
 
 const LockSetting = props => {
   const passRef = useRef(null);
-  const bioRef = useRef(null);
 
   const navigateNewPass = useCallback(() => {
     navigators.navigate("newpasssetting");
@@ -66,9 +65,8 @@ const LockSetting = props => {
           backgroundColor: "#f8f8f8"
         }}
       />
-      {props.bioOption ? (
+      {props.bioOption.length > 0 ? (
         <LockMenu
-          switchRef={bioRef}
           title={"생체인식 사용"}
           switch={true}
           border={false}

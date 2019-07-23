@@ -42,7 +42,8 @@ class Intro extends Component {
 
   onDone = async () => {
     await AuthActions.storeIntro("true");
-    this.props.navigation.navigate(this.props.signin_navigate);
+    if (this.props.passLock) this.props.navigation.navigate("locksolve");
+    else this.props.navigation.navigate(this.props.signin_navigate);
   };
 
   renderItem = ({ image, content1, content2 }) => (
@@ -106,6 +107,7 @@ class Intro extends Component {
   }
 }
 
-export default connect(({ signin }) => ({
-  signin_navigate: signin.signin_navigate
+export default connect(({ signin, lock }) => ({
+  signin_navigate: signin.signin_navigate,
+  passLock: lock.passLock
 }))(Intro);

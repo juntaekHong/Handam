@@ -17,7 +17,7 @@ const initState = {
   passLock: false,
   bioLock: false,
   password: "",
-  bioOption: false
+  bioOption: ""
 };
 
 const optionalConfigObject = {
@@ -32,17 +32,11 @@ export const lockInit = () => async dispatch => {
 
   TouchID.isSupported(optionalConfigObject)
     .then(biometryType => {
-      if (biometryType === "FaceID") {
-        console.log("face id", biometryType);
-        dispatch(lockBioOptionAction(true));
-      } else {
-        console.log("touch id", biometryType);
-        dispatch(lockBioOptionAction(true));
-      }
+      if (biometryType === "FaceID") dispatch(lockBioOptionAction("FaceId"));
+      else dispatch(lockBioOptionAction("TouchId"));
     })
     .catch(error => {
-      console.log("error", error);
-      dispatch(lockBioOptionAction(false));
+      dispatch(lockBioOptionAction(""));
     });
 
   await dispatch(
@@ -60,12 +54,12 @@ export const handlePassLock = value => async dispatch => {
 };
 
 export const handleBioLock = value => async dispatch => {
-  await dispatch(lockPassAction(value));
+  await dispatch(lockBioAction(value));
   await storeData("bio_locking", value + "");
 };
 
 export const handlePassword = value => async dispatch => {
-  await dispatch(lockPassAction(value));
+  await dispatch(lockPasswordAction(value));
   await storeData("lock_pass", value + "");
 };
 

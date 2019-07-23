@@ -15,6 +15,10 @@
 		00E356F31AD99517003FC87E /* HandamProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HandamProjectTests.m */; };
 		0102E29198784A9A8DFEB7D7 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C6700974B74A35AC90D486 /* libRCTOneSignal.a */; };
 		04859A15293A408CADCD59C9 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1820C92CD9664352B9320A43 /* libRNVectorIcons-tvOS.a */; };
+		07BF5E4422E73C3C0057C9FA /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */; };
+		07BF5E4522E73C3C0057C9FA /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		07BF5E4822E73C460057C9FA /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4722E73C460057C9FA /* QBImagePicker.framework */; };
+		07BF5E4922E73C460057C9FA /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4722E73C460057C9FA /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0FB00F6BCDFE44E9AD8B2BBC /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9E0518A8E9748DE897FFFE0 /* FontAwesome5_Regular.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -497,6 +501,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		07BF5E4622E73C3D0057C9FA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				07BF5E4522E73C3C0057C9FA /* RSKImageCropper.framework in Embed Frameworks */,
+				07BF5E4922E73C460057C9FA /* QBImagePicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -508,6 +527,8 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HandamProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandamProjectTests.m; sourceTree = "<group>"; };
 		02DA2C8A6A4E43A8BBE1F5DA /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCAsyncStorage.a; sourceTree = "<group>"; };
+		07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		07BF5E4722E73C460057C9FA /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D0C3DF22CB7A160016364B /* HandamProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HandamProject.entitlements; path = HandamProject/HandamProject.entitlements; sourceTree = "<group>"; };
 		092986DF34F44D1B9D5E582C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		0C60AE88C4FC4B4E833E916D /* TouchID.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = TouchID.xcodeproj; path = "../node_modules/react-native-touch-id/TouchID.xcodeproj"; sourceTree = "<group>"; };
@@ -598,6 +619,7 @@
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
+				07BF5E4422E73C3C0057C9FA /* RSKImageCropper.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -613,6 +635,7 @@
 				C83B25914BFC4BCFA90568D7 /* libz.tbd in Frameworks */,
 				50FBB553771C4B42999F3AF4 /* libRNVectorIcons.a in Frameworks */,
 				D709A075303246A987B813A7 /* libSplashScreen.a in Frameworks */,
+				07BF5E4822E73C460057C9FA /* QBImagePicker.framework in Frameworks */,
 				1F43B29CF7274CE5A0AE61F8 /* libRNScreens.a in Frameworks */,
 				5CBA5F74E4FD4223B6885E94 /* libRNCAsyncStorage.a in Frameworks */,
 				0102E29198784A9A8DFEB7D7 /* libRCTOneSignal.a in Frameworks */,
@@ -990,6 +1013,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				07BF5E4722E73C460057C9FA /* QBImagePicker.framework */,
+				07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* HandamProject */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* HandamProjectTests */,
@@ -1079,6 +1104,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				07BF5E4622E73C3D0057C9FA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
