@@ -33,22 +33,18 @@ class HansungPointScreen extends React.Component {
     };
 
     nonSubjectPoint_check = async () => {
-
-        await HansungInfoActions.valueLoadingHandle(false);
-
-        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+        await HansungInfoActions.nonSubjectPointValueLoadingHandle(false);
         await HansungInfoActions.createHansungInfoNonSubjectPoint();
-
         await HansungInfoActions.getHansungInfo();
 
         let timeout = setInterval(async ()=>{
-            if(this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){ //아직 값이 안들어옴
+            if(this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
                 await HansungInfoActions.getHansungInfo();
             }
-            else if(this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){ //실패함
+            else if(this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){
                 await HansungInfoActions.nonSubjectPointLoadingHandle(false); clearInterval(timeout);
             }
-            else if(this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){ //성공
+            else if(this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){
                 await HansungInfoActions.nonSubjectPointLoadingHandle(false);
                 await HansungInfoActions.nonSubjectPointHandle(true);
 
@@ -87,8 +83,8 @@ class HansungPointScreen extends React.Component {
     refreshBtn = async () => {
         await HansungInfoActions.nonSubjectPointLoadingHandle(true);
         await HansungInfoActions.createHansungInfoNonSubjectPoint();
-
         await HansungInfoActions.getHansungInfo();
+
         let timeout = setInterval(async ()=>{
             if(this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
                 await this.getHansungInfo();
@@ -103,7 +99,7 @@ class HansungPointScreen extends React.Component {
     };
 
     render() {
-        if(this.props.value_loading == true && this.props.nonSubjectPoint_loading == true) {
+        if(this.props.nonSubjectPoint_value_loading == true && this.props.nonSubjectPoint_loading == true) {
             this.nonSubjectPoint_check();
         }
         return (
@@ -130,7 +126,7 @@ class HansungPointScreen extends React.Component {
                                             <BTText>내 비교과 포인트</BTText>
                                         </View>
                                     </View>
-                                    <TouchableOpacity onPress={ async () => {this.refreshBtn()}}>
+                                    <TouchableOpacity onPress={ async () => {await this.refreshBtn()}}>
                                         <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
@@ -230,5 +226,6 @@ export default connect((state) => ({
     hansunginfo: state.hansung.hansunginfo,
     nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
     nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
-    value_loading: state.hansung.value_loading,
+    nonSubjectPoint_value_loading: state.hansung.nonSubjectPoint_value_loading,
+    grades_status: state.hansung.grades_status,
 }))(HansungPointScreen);

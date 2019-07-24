@@ -16,6 +16,7 @@ class MyInfo extends React.Component {
         this.props.navigation.goBack(null);
     };
 
+    // 작업 예정
     render() {
         return (
             <View>
@@ -28,19 +29,19 @@ class MyInfo extends React.Component {
                     </View>
                 </View>
                 {
-                   this.props.hansunginfo == null?
-                       null
-                       :
-                       this.props.hansunginfo != null && this.props.hansunginfo.status == 'FAIL'?
-                           <TouchableOpacity style={{backgroundColor: '#24a0fa', width:widthPercentageToDP(200), height: widthPercentageToDP(20), borderRadius: widthPercentageToDP(10) }}
-                                             onPress={ async () => { await HansungInfoActions.deleteHansungInfo(); await HansungInfoActions.nonSubjectPointHandle(false); this.navigateBack();}}>
-                               <Text style={{color: 'white'}}>임시 인증 실패 버튼</Text>
-                           </TouchableOpacity>
-                           :
-                           <TouchableOpacity style={{backgroundColor: '#24a0fa', width:widthPercentageToDP(200), height: widthPercentageToDP(20), borderRadius: widthPercentageToDP(10) }}
-                                             onPress={ async () => { await HansungInfoActions.deleteHansungInfo(); await HansungInfoActions.nonSubjectPointLoadingHandle(false); await HansungInfoActions.nonSubjectPointHandle(false); this.navigateBack();}}>
-                               <Text style={{color: 'white'}}>임시 인증서 삭제 버튼</Text>
-                           </TouchableOpacity>
+                    this.props.hansunginfo == null?
+                        null
+                        :
+                        this.props.hansunginfo != null && this.props.hansunginfo.status == 'FAIL'?
+                            <TouchableOpacity style={{backgroundColor: '#24a0fa', width:widthPercentageToDP(200), height: widthPercentageToDP(20), borderRadius: widthPercentageToDP(10) }}
+                                              onPress={ async () => { await HansungInfoActions.deleteHansungInfo(); await HansungInfoActions.nonSubjectPointLoadingHandle(false); await HansungInfoActions.nonSubjectPointHandle(false); await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(false); this.navigateBack();}}>
+                                <Text style={{color: 'white'}}>임시 인증 실패 버튼</Text>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity style={{backgroundColor: '#24a0fa', width:widthPercentageToDP(200), height: widthPercentageToDP(20), borderRadius: widthPercentageToDP(10) }}
+                                              onPress={ async () => { await HansungInfoActions.deleteHansungInfo(); await HansungInfoActions.nonSubjectPointLoadingHandle(false); await HansungInfoActions.nonSubjectPointHandle(false); await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(false); this.navigateBack();}}>
+                                <Text style={{color: 'white'}}>임시 인증서 삭제 버튼</Text>
+                            </TouchableOpacity>
                 }
             </View>
         )

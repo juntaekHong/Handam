@@ -26,10 +26,15 @@ const GRADES_LOADING_HANDLE = 'hansungInfo/GRADES_LOADING_HANDLE';
 const gradesHandleAction = createAction(GRADES_HANDLE);
 const gradesLoadingHandleAction = createAction(GRADES_LOADING_HANDLE);
 
-// 값 들어올 동안 로딩
-const VALUE_LOADING_HANDLE = 'hansunginfo/VALUE_LOADING_HANDLE';
+// 비교과 값 들어올 동안
+const NONSUBJECTPOINT_VALUE_LOADING_HANDLE = 'hansunginfo/NONSUBJECTPOINT_VALUE_LOADING_HANDLE';
 
-const valueLoadingHandleAction = createAction(VALUE_LOADING_HANDLE);
+const nonSubjectPointValueLoadingHandleAction = createAction(NONSUBJECTPOINT_VALUE_LOADING_HANDLE);
+
+// 성적표 값 들어올 동안
+const GRADES_VALUE_LOADING_HANDLE = 'hansunginfo/GRADES_VALUE_LOADING_HANDLE';
+
+const gradesValueLoadingHandleAction = createAction(GRADES_VALUE_LOADING_HANDLE);
 
 const initState = {
     hansunginfo: null,
@@ -40,7 +45,8 @@ const initState = {
     nonSubjectPoint_loading: false,
     grades_loading: false,
 
-    value_loading: false,
+    nonSubjectPoint_value_loading: false,
+    grades_value_loading: false,
 };
 
 export const nonSubjectPointHandle = (bool) => dispatch => {
@@ -59,8 +65,12 @@ export const gradesLoadingHandle = (bool) => dispatch => {
     dispatch(gradesLoadingHandleAction(bool));
 };
 
-export const valueLoadingHandle = (bool) => dispatch => {
-    dispatch(valueLoadingHandleAction(bool));
+export const nonSubjectPointValueLoadingHandle = (bool) => dispatch => {
+    dispatch(nonSubjectPointValueLoadingHandleAction(bool));
+};
+
+export const gradesValueLoadingHandle = (bool) => dispatch => {
+    dispatch(gradesValueLoadingHandleAction(bool));
 };
 
 export const createHansungInfo = (hansunginfo) => async dispatch => {
@@ -171,9 +181,13 @@ export default handleActions(
             produce(state, draft => {
                 draft.grades_loading = payload;
             }),
-        [VALUE_LOADING_HANDLE]: (state,{payload}) =>
+        [NONSUBJECTPOINT_VALUE_LOADING_HANDLE]: (state,{payload}) =>
             produce(state, draft => {
-                draft.value_loading = payload;
+                draft.nonSubjectPoint_value_loading = payload;
+            }),
+        [GRADES_VALUE_LOADING_HANDLE]: (state,{payload}) =>
+            produce(state, draft => {
+                draft.grades_value_loading = payload;
             }),
     },
     initState
