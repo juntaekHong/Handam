@@ -21,6 +21,7 @@ class AbstractAccountInfoScreen extends React.Component {
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB}}>{'XXX'}님 </Text>
+                            {/*인증후 성적표에서만 강의평가~어때요? 보이게 추후 예정*/}
                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic}}>안녕하세요!</Text>
                         </View>
                         <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{'미디어컨텐츠 디자인학부 시각영상디자인'}</Text>

@@ -23,7 +23,7 @@ export default createMaterialTopTabNavigator(
                 width: widthPercentageToDP(90),
                 height: widthPercentageToDP(18),
                 fontSize: widthPercentageToDP(16),
-                fontFamily: fonts.nanumSquareB,
+                fontFamily: fonts.nanumBarunGothicB,
             },
             indicatorStyle: {
                 backgroundColor: "rgb(96, 169, 243)",
@@ -36,7 +36,6 @@ export default createMaterialTopTabNavigator(
             },
             style: {
                 backgroundColor: "white",
-                paddingHorizontal: widthPercentageToDP(16),
                 textAlign: 'center',
                 elevation: 0, // remove shadow on Android
                 shadowOpacity: 0, // remove shadow on iOS
