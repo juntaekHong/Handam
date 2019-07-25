@@ -76,10 +76,3 @@ export const NoticeButton = props => (
     />
   </HomeNavigateButton>
 );
-
-export const CertificateButton = styled(ButtonStyle)`
-  width: ${widthPercentageToDP(128)}
-  height: ${widthPercentageToDP(36)}
-  margin-bottom: ${widthPercentageToDP(97)}
-  background-color: #24a0fa
-`;

@@ -127,3 +127,45 @@ export const secondToMinute = time => {
   result += `${t % 60}초`;
   return result;
 };
+
+export const scheduleContent = value => {
+  const lecture = value.substring(0, value.indexOf(")") + 1);
+  const professor = value.substring(
+    value.indexOf(")") + 1,
+    value.indexOf(")") + 4
+  );
+  const room = value.substring(value.length - 6);
+  return [lecture, professor, room];
+};
+
+export const scheduleTime = time => {
+  const array = time.split(" ");
+  const time1 = array[0];
+  let hour1 = time1.substring(0, time1.indexOf(":"));
+  const minute1 = time1.substring(time1.indexOf(":") + 1);
+  const time2 = array[3];
+  let hour2 = time2.substring(0, time2.indexOf(":"));
+  const minute2 = time2.substring(time2.indexOf(":") + 1);
+  if (array[1] === "PM" && hour1 !== "12") hour1 = Number(hour1) + 12 + "";
+  if (array[4] === "PM") hour2 = Number(hour2) + 12 + "";
+  return [`${hour1}:${minute1}`, `${hour2}:${minute2}`];
+};
+
+export const dayToString = value => {
+  switch (value) {
+    case 0:
+      return "sunday";
+    case 1:
+      return "monday";
+    case 2:
+      return "tuesday";
+    case 3:
+      return "wednesday";
+    case 4:
+      return "thursday";
+    case 5:
+      return "friday";
+    case 6:
+      return "saturday";
+  }
+};

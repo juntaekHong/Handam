@@ -7,13 +7,11 @@ import {
   HomeAd,
   HomeNavigateView,
   TodayLectureTitle,
-  TodayLine,
-  TodayLecture
+  TodayLine
 } from "../../components/home/View";
 import {
   HomeActions,
   CommonActions,
-  HansungInfoActions,
   AlarmActions
 } from "../../store/actionCreator";
 import moment from "moment";
@@ -22,9 +20,11 @@ import {
   BusButton,
   NoticeButton
 } from "../../components/home/Button";
+import TodayLecture from "../../components/home/view/TodayLecture";
+import { dayToString } from "../../utils/util";
 
 const Home = ({ navigation, noticeList, count }) => {
-  const [time, setTime] = useState(moment().format("MM. DD (ddd)"));
+  const [time, setTime] = useState(moment());
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
   }, []);
@@ -35,7 +35,6 @@ const Home = ({ navigation, noticeList, count }) => {
     await AlarmActions.alarmInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
-    await HansungInfoActions.getHansungInfo();
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
@@ -59,14 +58,14 @@ const Home = ({ navigation, noticeList, count }) => {
           <NoticeButton onPress={navigateNotice} />
         </HomeNavigateView>
         <TodayLectureTitle />
-        <TodayLine time={time} />
-        <TodayLecture />
+        <TodayLine time={moment(time).format("MM. DD (ddd)")} />
+        <TodayLecture day={dayToString(moment(time).day())} />
       </CenterScroll>
     </HCenterView>
   );
 };
 
-export default connect(({ home, alarm }) => ({
+export default connect(({ home, alarm, hansung }) => ({
   noticeList: home.noticeList,
   count: alarm.count
 }))(Home);
