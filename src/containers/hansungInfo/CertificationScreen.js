@@ -36,8 +36,10 @@ class CertificationScreen extends React.Component {
                 await HansungInfoActions.getHansungInfo();
             } else if(this.props.hansunginfo.status == 'SUCCESS') {
 
+                await HansungInfoActions.gradesLoadingHandle(true);
+                await HansungInfoActions.gradesValueLoadingHandle(true);
                 await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-                await HansungInfoActions.valueLoadingHandle(true);
+                await HansungInfoActions.nonSubjectPointValueLoadingHandle(true);
 
                 await this.navigationBack();
 
@@ -202,6 +204,8 @@ export default connect((state) => ({
     hansunginfo: state.hansung.hansunginfo,
     nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
     nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
+    nonSubjectPoint_value_loading: state.hansung.nonSubjectPoint_value_loading,
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
+    grades_value_loading: state.hansung.grades_value_loading,
 }))(CertificationScreen);
