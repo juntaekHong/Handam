@@ -7,7 +7,6 @@ import { NBGBText, NBGText } from "../common/Text";
 import colors from "../../configs/colors";
 import FastImage from "react-native-fast-image";
 import Carousel from "react-native-looped-carousel";
-import { CertificateButton } from "./Button";
 import navigators from "../../utils/navigators";
 
 const HomeTitleRightView = styled.View`
@@ -211,32 +210,4 @@ export const TodayLine = props => {
       />
     </TodayLineView>
   );
-};
-
-export const TodayLecture = props => {
-  if (props.lecture) {
-  } else {
-    return (
-      <HCenterView>
-        <Image
-          style={{
-            width: widthPercentageToDP(61),
-            height: widthPercentageToDP(61),
-            marginTop: widthPercentageToDP(22.5),
-            marginBottom: widthPercentageToDP(16)
-          }}
-          source={require("HandamProject/assets/image/home/certificationimage.png")}
-        />
-        <NBGBText fontSize={15} color={"#646464"} marginBottom={7.5}>
-          한성대학교를 인증해주세요!
-        </NBGBText>
-        <NBGText fontSize={13} color={"#9e9e9e"} marginBottom={21.5}>
-          인증을 통해 시간표를 확인할 수 있습니다.
-        </NBGText>
-        <CertificateButton onPress={props.goCertificate}>
-          <NBGBText color={colors.white}>인증하러 가기!</NBGBText>
-        </CertificateButton>
-      </HCenterView>
-    );
-  }
 };

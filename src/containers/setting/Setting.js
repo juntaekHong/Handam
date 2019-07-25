@@ -22,6 +22,9 @@ const Setting = ({ navigation, term1, term2, appVersion }) => {
   const navigationLock = useCallback(() => {
     navigation.navigate("lockstack");
   }, []);
+  const navigationAlarm = useCallback(() => {
+    navigation.navigate("alarmsetting");
+  }, []);
   return (
     <HCenterView>
       <Title title={"설정"} rightInVisible={true} />
@@ -31,6 +34,7 @@ const Setting = ({ navigation, term1, term2, appVersion }) => {
           title={"Settings"}
         />
         <SettingMenu title={"암호잠금 설정"} onPress={navigationLock} />
+        <SettingMenu title={"알림 설정"} onPress={navigationAlarm} />
         <SettingMenu title={"개인정보처리방침"} onPress={navigationTerm1} />
         <SettingMenu title={"이용약관"} onPress={navigationTerm2} />
         <SettingMenu
