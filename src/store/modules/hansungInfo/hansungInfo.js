@@ -59,8 +59,6 @@ const initState = {
 
   nonSubjectPoint_value_loading: false,
   grades_value_loading: false,
-
-  value_loading: false
 };
 
 export const nonSubjectPointHandle = bool => dispatch => {
@@ -75,16 +73,16 @@ export const gradesHandle = bool => dispatch => {
   dispatch(gradesHandleAction(bool));
 };
 
+export const gradesLoadingHandle = bool => dispatch => {
+    dispatch(gradesLoadingHandleAction(bool));
+};
+
 export const nonSubjectPointValueLoadingHandle = bool => dispatch => {
   dispatch(nonSubjectPointValueLoadingHandleAction(bool));
 };
 
 export const gradesValueLoadingHandle = bool => dispatch => {
   dispatch(gradesValueLoadingHandleAction(bool));
-};
-
-export const valueLoadingHandle = bool => dispatch => {
-  dispatch(valueLoadingHandleAction(bool));
 };
 
 export const createHansungInfo = hansunginfo => async dispatch => {
