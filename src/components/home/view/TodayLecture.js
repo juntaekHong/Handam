@@ -129,7 +129,7 @@ const TodayLecture = ({
                     {content[2]}
                   </ScheduleTimeText>
                   <ScheduleTimeText numberOfLines={1}>
-                    {time[0]} - {time[1]}
+                    {`${time[0]}:${time[1]}`} - {`${time[2]}:${time[3]}`}
                   </ScheduleTimeText>
                 </ScheduleTimeView>
               </ScheduleItem>

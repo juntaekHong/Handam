@@ -24,55 +24,41 @@ const shadow = {
 export const HomeNavigate = styled.TouchableOpacity`
   width: ${widthPercentageToDP(80)}
   height: ${widthPercentageToDP(100)}
-  background-color: ${({ backgroundColor }) => backgroundColor}
-  border-radius: ${widthPercentageToDP(8)}
-  padding-top :${widthPercentageToDP(20)}
   align-items: center
 `;
 
 export const HomeNavigateButton = props => {
   return (
-    <HomeNavigate {...props} style={shadow[Platform.OS]}>
-      {props.children}
-      <NBGBText marginTop={7} fontSize={12} color={colors.white}>
-        {props.title}
-      </NBGBText>
+    <HomeNavigate {...props}>
+      <Image
+        style={{
+          top: widthPercentageToDP(-20),
+          width: widthPercentageToDP(100),
+          height: widthPercentageToDP(140)
+        }}
+        source={props.image}
+      />
     </HomeNavigate>
   );
 };
 
 export const ScheduleButton = props => (
-  <HomeNavigateButton {...props} backgroundColor={"#5accff"} title={"시간표"}>
-    <Image
-      style={{
-        width: widthPercentageToDP(47),
-        height: widthPercentageToDP(48)
-      }}
-      source={require("HandamProject/assets/image/home/schedule.png")}
-    />
-  </HomeNavigateButton>
+  <HomeNavigateButton
+    {...props}
+    image={require("HandamProject/assets/image/home/schedule.png")}
+  />
 );
 
 export const BusButton = props => (
-  <HomeNavigateButton {...props} backgroundColor={"#259ffa"} title={"스쿨버스"}>
-    <Image
-      style={{
-        width: widthPercentageToDP(47),
-        height: widthPercentageToDP(48)
-      }}
-      source={require("HandamProject/assets/image/home/bus.png")}
-    />
-  </HomeNavigateButton>
+  <HomeNavigateButton
+    {...props}
+    image={require("HandamProject/assets/image/home/bus.png")}
+  />
 );
 
 export const NoticeButton = props => (
-  <HomeNavigateButton {...props} backgroundColor={"#0dcfe0"} title={"한성공지"}>
-    <Image
-      style={{
-        width: widthPercentageToDP(47),
-        height: widthPercentageToDP(48)
-      }}
-      source={require("HandamProject/assets/image/home/notice.png")}
-    />
-  </HomeNavigateButton>
+  <HomeNavigateButton
+    {...props}
+    image={require("HandamProject/assets/image/home/notice.png")}
+  />
 );
