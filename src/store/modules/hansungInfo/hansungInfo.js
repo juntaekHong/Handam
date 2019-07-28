@@ -1,7 +1,12 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import api from "../../../utils/api";
-import { getData } from "../../../utils/util";
+import {
+  getData,
+  scheduleContent,
+  makeColor,
+  storeData
+} from "../../../utils/util";
 
 // 한성정보
 const CREATE_HANSUNGINFO = "hansungInfo/CREATE_HANSUNGINFO";
@@ -46,21 +51,22 @@ const gradesValueLoadingHandleAction = createAction(
 
 // 시간표
 const SCEDULE_LOADING = "hansungInfo/SCEDULE_LOADING";
+const SCEDULE_COLOR = "hansungInfo/SCEDULE_COLOR";
 
 export const scheduleLoadingAction = createAction(SCEDULE_LOADING);
+const scheduleColorAction = createAction(SCEDULE_COLOR);
 
 const initState = {
   hansunginfo: null,
 
   schedule_loading: false,
+  schedule_color: {},
 
   nonSubjectPoint_status: false,
   grades_status: false,
 
   nonSubjectPoint_value_loading: false,
-  grades_value_loading: false,
-
-  value_loading: false
+  grades_value_loading: false
 };
 
 export const nonSubjectPointHandle = bool => dispatch => {
@@ -75,16 +81,16 @@ export const gradesHandle = bool => dispatch => {
   dispatch(gradesHandleAction(bool));
 };
 
+export const gradesLoadingHandle = bool => dispatch => {
+  dispatch(gradesLoadingHandleAction(bool));
+};
+
 export const nonSubjectPointValueLoadingHandle = bool => dispatch => {
   dispatch(nonSubjectPointValueLoadingHandleAction(bool));
 };
 
 export const gradesValueLoadingHandle = bool => dispatch => {
   dispatch(gradesValueLoadingHandleAction(bool));
-};
-
-export const valueLoadingHandle = bool => dispatch => {
-  dispatch(valueLoadingHandleAction(bool));
 };
 
 export const createHansungInfo = hansunginfo => async dispatch => {
@@ -127,6 +133,25 @@ export const getHansungInfo = () => async dispatch => {
 
   if (jsonData.statusCode == 200) {
     await dispatch(getHansungInfoAction(jsonData.result));
+    // 시간표 색 설정
+    const result = await getData("schedule_color");
+    let color = {};
+    if (result !== null) {
+      color = JSON.parse(result);
+    }
+    const schedule = jsonData.result.schedule;
+    if (schedule !== undefined && schedule.monday !== undefined) {
+      for (let i in schedule) {
+        for (let item of schedule[i]) {
+          const content = scheduleContent(item.content);
+          if (color[`${content[0]}${content[1]}`] === undefined) {
+            color[`${content[0]}${content[1]}`] = makeColor();
+          }
+        }
+      }
+    }
+    await storeData("schedule_color", JSON.stringify(color));
+    await dispatch(scheduleColorAction(color));
   } else if (jsonData.statusCode == 403) {
     //
   }
@@ -163,6 +188,22 @@ export const createHansungInfoGrades = () => async dispatch => {
     await api.post(`/hansungInfo/grades`, { token: token });
   } else if (jsonData.statusCode == 403) {
     // 마이페이지로가서 재인증.
+  }
+};
+
+export const createHansungInfoSchedule = () => async dispatch => {
+  try {
+    const token = await getData("token");
+    const jsonData = await api.post("/hansungInfo/schedule", { token });
+    if (jsonData.statusCode == 200) {
+      await dispatch(createHansungInfoAction(jsonData.result));
+      api.post("/hansungInfo/schedule", { token });
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
   }
 };
 
@@ -208,6 +249,10 @@ export default handleActions(
     [SCEDULE_LOADING]: (state, { payload }) =>
       produce(state, draft => {
         draft.schedule_loading = payload;
+      }),
+    [SCEDULE_COLOR]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.schedule_color = payload;
       })
   },
   initState

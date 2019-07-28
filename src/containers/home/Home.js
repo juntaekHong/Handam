@@ -22,15 +22,30 @@ import {
 } from "../../components/home/Button";
 import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString } from "../../utils/util";
+import { CertModal } from "../../components/home/modal/CertModal";
 
-const Home = ({ navigation, noticeList, count }) => {
+const Home = ({ navigation, noticeList, count, hansunginfo = null }) => {
   const [time, setTime] = useState(moment());
+  const [certModal, setCertModal] = useState(false);
+
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
   }, []);
+
   const navigateBus = useCallback(() => {
     navigation.navigate("busstack");
   }, []);
+
+  const navigateSchedule = useCallback(() => {
+    if (hansunginfo === null) setCertModal(true);
+    else navigation.navigate("schedule");
+  }, [hansunginfo]);
+
+  const navigateCert = useCallback(() => {
+    setCertModal(false);
+    navigation.navigate("Certification");
+  }, []);
+
   const initCall = useCallback(async () => {
     await AlarmActions.alarmInit();
     await CommonActions.handleLoading(true);
@@ -44,6 +59,11 @@ const Home = ({ navigation, noticeList, count }) => {
   return (
     <HCenterView>
       <HomeTitle alarm={count > 0} />
+      <CertModal
+        visible={certModal}
+        closeHandler={() => setCertModal(false)}
+        footerHandler={navigateCert}
+      />
       <CenterScroll
         contentContainerStyle={{
           flexGrow: 1,
@@ -53,7 +73,7 @@ const Home = ({ navigation, noticeList, count }) => {
         <AboutHandam />
         <HomeAd list={noticeList} />
         <HomeNavigateView>
-          <ScheduleButton />
+          <ScheduleButton onPress={navigateSchedule} />
           <BusButton onPress={navigateBus} />
           <NoticeButton onPress={navigateNotice} />
         </HomeNavigateView>
@@ -67,5 +87,6 @@ const Home = ({ navigation, noticeList, count }) => {
 
 export default connect(({ home, alarm, hansung }) => ({
   noticeList: home.noticeList,
-  count: alarm.count
+  count: alarm.count,
+  hansunginfo: hansung.hansunginfo
 }))(Home);

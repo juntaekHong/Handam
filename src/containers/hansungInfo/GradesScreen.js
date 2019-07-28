@@ -171,7 +171,7 @@ class GradesScreen extends React.Component {
                                 </View>
                             </ProgressView>
                             <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                            <DetailView>
+                            <DetailView style={{paddingBottom: widthPercentageToDP(31)}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                     <View style={{flexDirection: 'column', justifyContent: 'center'}}>
@@ -258,7 +258,9 @@ class GradesScreen extends React.Component {
                                         <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredConnectedMajor) + parseInt(this.props.hansunginfo.summaryGrades.optionalConnectedMajor) + parseInt(this.props.hansunginfo.summaryGrades.foundationConnectedMajor)}</VALText>
                                     </View>
                                 </View>
-                                <View style={styles.devisionLine2}/>
+                            </DetailView>
+                            <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
+                            <DetailView>
                                 <View style={{marginTop: widthPercentageToDP(18)}}>
                                     <View style={{flexDirection: 'row'}}>
                                         <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>

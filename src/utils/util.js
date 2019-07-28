@@ -148,7 +148,7 @@ export const scheduleTime = time => {
   const minute2 = time2.substring(time2.indexOf(":") + 1);
   if (array[1] === "PM" && hour1 !== "12") hour1 = Number(hour1) + 12 + "";
   if (array[4] === "PM") hour2 = Number(hour2) + 12 + "";
-  return [`${hour1}:${minute1}`, `${hour2}:${minute2}`];
+  return [hour1, minute1, hour2, minute2];
 };
 
 export const dayToString = value => {
@@ -168,4 +168,27 @@ export const dayToString = value => {
     case 6:
       return "saturday";
   }
+};
+
+export const dayToInt = value => {
+  switch (value) {
+    case "monday":
+      return 0;
+    case "tuesday":
+      return 1;
+    case "wednesday":
+      return 2;
+    case "thursday":
+      return 3;
+    case "friday":
+      return 4;
+    case "saturday":
+    case "sunday":
+      return 5;
+  }
+};
+
+export const makeColor = () => {
+  const hue = Math.floor(Math.random() * 360);
+  return "hsl(" + hue + ", 100%, 87.5%)";
 };
