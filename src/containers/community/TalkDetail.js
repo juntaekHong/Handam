@@ -21,7 +21,7 @@ import {
   ReplyView,
   Re_ReplyView,
   ReportDetailBody
-} from "../../components/talk/View";
+} from "../../components/community/View";
 import {
   CustomModalText,
   CustomModalBlackText,
@@ -29,7 +29,19 @@ import {
   AnonymousONText
 } from "../../components/talk/Text";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
-import { ImageModal, AlertModal } from "../../components/talk/Modal";
+import { ImageModal } from "../../components/talk/Modal";
+import { AlertModal } from "../../components/community/Modal";
+import {
+  WriteContainer,
+  TextInputContainer,
+  SelectedEmojiView,
+  EmojiListView
+} from "../../components/community/View";
+import {
+  WriteButton,
+  EmojiButton,
+  AnonymousButton
+} from "../../components/community/Button";
 
 class TalkDetail extends Component {
   constructor(props) {
@@ -142,6 +154,11 @@ class TalkDetail extends Component {
   handleReportEUindex = index => {
     this.setState({ reportEUindex: index });
   };
+
+  handleSelectedEmoji = index => {
+    this.setState({ selected_emoji: index });
+  };
+
   //사용자가 글쓴이인지 판단
   checkUser = async () => {
     const userId = await getData("userId"); //유저닉네임으로 변경해야함
@@ -256,6 +273,8 @@ class TalkDetail extends Component {
               {/* 댓글 */}
               <ReplyView
                 key={index}
+                isButton={true}
+                isdotsButton={true}
                 handler={async () => {
                   this.checkUser();
                   await this.setState({
@@ -701,92 +720,26 @@ class TalkDetail extends Component {
 
           {this.renderReplyList()}
         </ScrollView>
+
+        {/* 선택된 이모지뷰 */}
         {this.state.selected_emoji != null ? (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              backgroundColor: "#575757",
-              height: widthPercentageToDP(107.3),
-              opacity: 0.5
-            }}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(49),
-                height: widthPercentageToDP(76),
-                marginTop: widthPercentageToDP(20),
-                marginRight: widthPercentageToDP(13)
-              }}
-              source={require("../../../assets/image/community/handamon.png")}
-            />
-            <TouchableOpacity
-              style={{
-                marginTop: widthPercentageToDP(5),
-                marginRight: widthPercentageToDP(8)
-              }}
-              onPress={() => this.setState({ selected_emoji: null })}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={require("../../../assets/image/community/close_white.png")}
-              />
-            </TouchableOpacity>
-          </View>
+          <SelectedEmojiView
+            handler={() => this.setState({ selected_emoji: null })}
+            selectedEmoji={this.state.selected_emoji}
+          />
         ) : null}
 
-        <View
-          style={{
-            backgroundColor: "white",
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            maxHeight: widthPercentageToDP(101),
-            minHeight: widthPercentageToDP(56),
-            alignItems: "center",
-            paddingVertical: widthPercentageToDP(8),
-            borderColor: "#dbdbdb",
-            borderTopWidth: widthPercentageToDP(0.5),
-            borderBottomWidth: widthPercentageToDP(0.5)
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: widthPercentageToDP(324),
-              maxHeight: widthPercentageToDP(85),
-              minHeight: widthPercentageToDP(40),
-              alignItems: "center",
-              paddingVertical: widthPercentageToDP(4.5),
-              marginLeft: widthPercentageToDP(12),
-              borderRadius: widthPercentageToDP(15),
-              borderWidth: widthPercentageToDP(1),
-              borderColor: "#dbdbdb"
-            }}
-          >
+        <WriteContainer>
+          <TextInputContainer>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <TouchableOpacity
-                style={{ marginLeft: widthPercentageToDP(7) }}
-                onPress={async () => {
+              <AnonymousButton
+                handler={async () => {
                   this.state.anonymous == 0
                     ? await this.setState({ anonymous: 1 })
                     : await this.setState({ anonymous: 0 });
                 }}
-              >
-                <Image
-                  style={{
-                    width: widthPercentageToDP(28),
-                    height: widthPercentageToDP(28)
-                  }}
-                  source={
-                    this.state.anonymous == 0
-                      ? require("../../../assets/image/community/anonymous_off.png")
-                      : require("../../../assets/image/community/anonymous_on.png")
-                  }
-                />
-              </TouchableOpacity>
+                anonymous={this.state.anonymous}
+              />
               {this.state.anonymous == 0 ? (
                 <AnonymousOFFText>익명</AnonymousOFFText>
               ) : (
@@ -797,16 +750,7 @@ class TalkDetail extends Component {
               ref={input => {
                 this.TextInput = input;
               }}
-              style={{
-                color: "#000000",
-                width: widthPercentageToDP(216),
-                maxHeight: widthPercentageToDP(76),
-                padding: widthPercentageToDP(0),
-                margin: widthPercentageToDP(0),
-                marginLeft: widthPercentageToDP(5),
-                fontSize: widthPercentageToDP(14),
-                fontFamily: fonts.nanumBarunGothic
-              }}
+              style={styles.textInput}
               underlineColorAndroid="transparent"
               onChangeText={reply => this.setState({ reply })}
               onFocus={() => this.setState({ emoji: false })}
@@ -818,30 +762,18 @@ class TalkDetail extends Component {
               autoCapitalize={"none"}
               multiline={true}
             />
-            <TouchableOpacity
-              onPress={async () => {
+            <EmojiButton
+              handler={async () => {
                 await Keyboard.dismiss();
                 this.state.emoji == false
                   ? this.setState({ emoji: true })
                   : this.setState({ emoji: false });
               }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(21),
-                  height: widthPercentageToDP(21),
-                  marginLeft: widthPercentageToDP(9.5)
-                }}
-                source={
-                  this.state.emoji == false
-                    ? require("../../../assets/image/community/emoji.png")
-                    : require("../../../assets/image/community/emoji_color.png")
-                }
-              />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            onPress={async () => {
+              emoji={this.state.emoji}
+            />
+          </TextInputContainer>
+          <WriteButton
+            handler={async () => {
               if (this.state.reply != "" && this.checkSpace(this.state.reply)) {
                 var reply = new Object();
                 reply.content = this.state.reply;
@@ -873,40 +805,12 @@ class TalkDetail extends Component {
                 );
               }
             }}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(28),
-                height: widthPercentageToDP(28),
-                marginLeft: widthPercentageToDP(5)
-              }}
-              source={require("../../../assets/image/community/reply_write.png")}
-            />
-          </TouchableOpacity>
-        </View>
+          />
+        </WriteContainer>
+
+        {/* 이모지 리스트뷰 */}
         {this.state.emoji == true ? (
-          <View
-            style={{
-              backgroundColor: "white",
-              height: widthPercentageToDP(214)
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                marginTop: widthPercentageToDP(21),
-                marginLeft: widthPercentageToDP(25)
-              }}
-              onPress={() => this.setState({ selected_emoji: 1 })}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(30),
-                  height: widthPercentageToDP(45)
-                }}
-                source={require("../../../assets/image/community/handamon.png")}
-              />
-            </TouchableOpacity>
-          </View>
+          <EmojiListView handler={this.handleSelectedEmoji} />
         ) : null}
       </SafeAreaView>
     );
@@ -963,6 +867,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: "#4a4a4a",
     color: "white"
+  },
+  textInput: {
+    color: "#000000",
+    width: widthPercentageToDP(216),
+    maxHeight: widthPercentageToDP(76),
+    padding: widthPercentageToDP(0),
+    margin: widthPercentageToDP(0),
+    marginLeft: widthPercentageToDP(5),
+    fontSize: widthPercentageToDP(14),
+    fontFamily: fonts.nanumBarunGothic
   }
 });
 

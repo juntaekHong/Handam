@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator } from "react-navigation";
 import Talk from "../../containers/community/Talk";
 import Vote from "../../containers/community/Vote";
 import Restaurant from "../../containers/community/Restaurant";
-import Knowledge from "../../containers/community/Knowledge";
+import Professor from "../../containers/community/Professor";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 
@@ -14,9 +14,9 @@ export default createMaterialTopTabNavigator(
       screen: Restaurant,
       navigationOptions: { tabBarLabel: "한슐랭" }
     },
-    Knowledge: {
-      screen: Knowledge,
-      navigationOptions: { tabBarLabel: "알쓸신한" }
+    Professor: {
+      screen: Professor,
+      navigationOptions: { tabBarLabel: "교수평가" }
     }
   },
   {
