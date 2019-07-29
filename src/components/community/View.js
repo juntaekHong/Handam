@@ -218,6 +218,7 @@ export const ReplyView = props => {
         <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
           <C_ContentText>{props.data.content}</C_ContentText>
         </Hyperlink>
+
         <ButtonView>
           {this.renderReplyButton(props)}
           <C_LikeButton>

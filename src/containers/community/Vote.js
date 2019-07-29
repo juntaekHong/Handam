@@ -359,11 +359,11 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: "#000000",
-    width: widthPercentageToDP(216),
+    width: widthPercentageToDP(265),
     maxHeight: widthPercentageToDP(76),
     padding: widthPercentageToDP(0),
     margin: widthPercentageToDP(0),
-    marginLeft: widthPercentageToDP(5),
+    marginLeft: widthPercentageToDP(13),
     fontSize: widthPercentageToDP(14),
     fontFamily: fonts.nanumBarunGothic
   }
