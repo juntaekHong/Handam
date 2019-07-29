@@ -16,7 +16,8 @@ import colors from "../../configs/colors";
 import {
   SignInActions,
   SignUpActions,
-  CommonActions
+  CommonActions,
+  HansungInfoActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { showMessage } from "../../utils/util";
@@ -82,13 +83,17 @@ const SignIn = ({ navigation }) => {
     setPwd("");
   }, []);
 
-  const postSignIn = useCallback(() => {
+  const postSignIn = useCallback(async () => {
     OneSignal.getPermissionSubscriptionState(async status => {
+      await CommonActions.handleLoading(true);
       const result = await SignInActions.postSingIn(id, pwd, status.userId);
       if (result) {
+        await HansungInfoActions.getHansungInfo();
+        await CommonActions.handleLoading(false);
         navigation.navigate("main");
         initState();
       } else {
+        await CommonActions.handleLoading(false);
         showMessage("로그인에 실패했습니다.");
       }
     });

@@ -157,10 +157,15 @@ class Vote extends Component {
           visible={this.state.oxmodel}
           footerHandler={async () => {
             VoteActions.handleEnable(false);
-            this.setState({ opushed: true, oxmodel: false });
             this.state.ox == "O"
-              ? await this.createVote(0)
-              : await this.createVote(1);
+              ? [
+                  await this.createVote(0),
+                  this.setState({ opushed: true, oxmodel: false })
+                ]
+              : [
+                  await this.createVote(1),
+                  this.setState({ xpushed: true, oxmodel: false })
+                ];
             await VoteActions.getVote();
           }}
           closeHandler={() => this.setState({ oxmodel: false })}
@@ -178,10 +183,6 @@ class Vote extends Component {
               <VoteView
                 handler={async () => {
                   this.setState({ ox: "O", oxmodel: true });
-                  // VoteActions.handleEnable(false);
-                  // this.setState({ opushed: true });
-                  // await this.createVote(0);
-                  // await VoteActions.getVote();
                 }}
                 pushed={this.state.opushed}
                 enabled={this.props.enable}
@@ -192,10 +193,6 @@ class Vote extends Component {
               <VoteView
                 handler={async () => {
                   this.setState({ ox: "X", oxmodel: true });
-                  // VoteActions.handleC_enable(false);
-                  // this.setState({ xpushed: true });
-                  // await this.createVote(1);
-                  // await VoteActions.getVote();
                 }}
                 pushed={this.state.xpushed}
                 enabled={this.props.enable}

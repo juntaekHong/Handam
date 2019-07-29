@@ -40,7 +40,8 @@ const config = {
     "BusFavorite",
     "pass_locking",
     "bio_locking",
-    "lock_pass"
+    "lock_pass",
+    "schedule_color"
   ],
   token:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkluZGV4IjozNTUsInRva2VuSWQiOiJ0bHN3bnN4b0BuYXZlci5jb20iLCJ0b2tlbk5pY2tuYW1lIjoiMHVmOWRmZHNhZmQiLCJ0b2tlbk1ham9yIjoi7ZiE64yA66y07JqpIOyghOqztSIsInRva2VuTWlub3IiOm51bGwsInRva2VuRG91YmxlTWFqb3IiOm51bGwsInRva2VuQ29ubmVjdGVkTWFqb3IiOm51bGwsInRva2VuSW5WYWxpZGF0aW9uIjoxLCJ0b2tlbkF2YXRhciI6bnVsbCwidG9rZW5TdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE1NjIxNTcwMTJ9.0ZP-p-7rv5HpLS6Ny73HcZ9x8wuqO3awu07FwrOuyrM",

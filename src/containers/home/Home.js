@@ -7,13 +7,11 @@ import {
   HomeAd,
   HomeNavigateView,
   TodayLectureTitle,
-  TodayLine,
-  TodayLecture
+  TodayLine
 } from "../../components/home/View";
 import {
   HomeActions,
   CommonActions,
-  HansungInfoActions,
   AlarmActions
 } from "../../store/actionCreator";
 import moment from "moment";
@@ -22,20 +20,36 @@ import {
   BusButton,
   NoticeButton
 } from "../../components/home/Button";
+import TodayLecture from "../../components/home/view/TodayLecture";
+import { dayToString } from "../../utils/util";
+import { CertModal } from "../../components/home/modal/CertModal";
 
-const Home = ({ navigation, noticeList, count }) => {
-  const [time, setTime] = useState(moment().format("MM. DD (ddd)"));
+const Home = ({ navigation, noticeList, count, hansunginfo = null }) => {
+  const [time, setTime] = useState(moment());
+  const [certModal, setCertModal] = useState(false);
+
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
   }, []);
+
   const navigateBus = useCallback(() => {
     navigation.navigate("busstack");
   }, []);
+
+  const navigateSchedule = useCallback(() => {
+    if (hansunginfo === null) setCertModal(true);
+    else navigation.navigate("schedule");
+  }, [hansunginfo]);
+
+  const navigateCert = useCallback(() => {
+    setCertModal(false);
+    navigation.navigate("Certification");
+  }, []);
+
   const initCall = useCallback(async () => {
     await AlarmActions.alarmInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
-    await HansungInfoActions.getHansungInfo();
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
@@ -45,6 +59,11 @@ const Home = ({ navigation, noticeList, count }) => {
   return (
     <HCenterView>
       <HomeTitle alarm={count > 0} />
+      <CertModal
+        visible={certModal}
+        closeHandler={() => setCertModal(false)}
+        footerHandler={navigateCert}
+      />
       <CenterScroll
         contentContainerStyle={{
           flexGrow: 1,
@@ -54,19 +73,20 @@ const Home = ({ navigation, noticeList, count }) => {
         <AboutHandam />
         <HomeAd list={noticeList} />
         <HomeNavigateView>
-          <ScheduleButton />
+          <ScheduleButton onPress={navigateSchedule} />
           <BusButton onPress={navigateBus} />
           <NoticeButton onPress={navigateNotice} />
         </HomeNavigateView>
         <TodayLectureTitle />
-        <TodayLine time={time} />
-        <TodayLecture />
+        <TodayLine time={moment(time).format("MM. DD (ddd)")} />
+        <TodayLecture day={dayToString(moment(time).day())} />
       </CenterScroll>
     </HCenterView>
   );
 };
 
-export default connect(({ home, alarm }) => ({
+export default connect(({ home, alarm, hansung }) => ({
   noticeList: home.noticeList,
-  count: alarm.count
+  count: alarm.count,
+  hansunginfo: hansung.hansunginfo
 }))(Home);

@@ -8,6 +8,7 @@ import {
   CommonActions,
   AlarmActions,
   LockActions,
+  HansungInfoActions,
   VoteActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
@@ -41,7 +42,8 @@ class UpdateCheck extends PureComponent {
     );
     //
     OneSignal.getPermissionSubscriptionState(async status => {
-      await SignInActions.checkToken(status.userId);
+      const result = await SignInActions.checkToken(status.userId);
+      if (result) await HansungInfoActions.getHansungInfo();
       if (auth) {
         if (this.props.passLock) this.props.navigation.navigate("locksolve");
         else this.props.navigation.navigate(this.props.signin_navigate);
