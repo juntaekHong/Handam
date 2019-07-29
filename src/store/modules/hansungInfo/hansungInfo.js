@@ -50,15 +50,18 @@ const gradesValueLoadingHandleAction = createAction(
 );
 
 // 시간표
+const SCEDULE_CALL = "hansungInfo/SCEDULE_CALL";
 const SCEDULE_LOADING = "hansungInfo/SCEDULE_LOADING";
 const SCEDULE_COLOR = "hansungInfo/SCEDULE_COLOR";
 
+export const scheduleCallAction = createAction(SCEDULE_CALL);
 export const scheduleLoadingAction = createAction(SCEDULE_LOADING);
 const scheduleColorAction = createAction(SCEDULE_COLOR);
 
 const initState = {
   hansunginfo: null,
 
+  schedule_call: false,
   schedule_loading: false,
   schedule_color: {},
 
@@ -217,7 +220,7 @@ export default handleActions(
       }),
     [DELETE_HANSUNGINFO]: (state, { payload }) =>
       produce(state, draft => {
-        draft.hansunginfo = payload;
+        draft.hansunginfo = null;
       }),
 
     [GET_HANSUNGINFO]: (state, { payload }) =>
@@ -255,6 +258,10 @@ export default handleActions(
     [SCEDULE_COLOR]: (state, { payload }) =>
       produce(state, draft => {
         draft.schedule_color = payload;
+      }),
+    [SCEDULE_CALL]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.schedule_call = payload;
       })
   },
   initState

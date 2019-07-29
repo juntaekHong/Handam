@@ -12,7 +12,8 @@ import {
 import {
   HomeActions,
   CommonActions,
-  AlarmActions
+  AlarmActions,
+  HansungInfoActions
 } from "../../store/actionCreator";
 import moment from "moment";
 import {
@@ -24,7 +25,14 @@ import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
 
-const Home = ({ navigation, noticeList, count, hansunginfo = null }) => {
+const Home = ({
+  navigation,
+  noticeList,
+  count,
+  hansunginfo = null,
+  schedule_call
+}) => {
+  let scheduleTimeCall;
   const [time, setTime] = useState(moment());
   const [certModal, setCertModal] = useState(false);
 
@@ -53,6 +61,34 @@ const Home = ({ navigation, noticeList, count, hansunginfo = null }) => {
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
+
+  const timeInterval = useCallback(async () => {
+    if (hansunginfo === null) clearInterval(scheduleTimeCall);
+    else if (
+      hansunginfo !== null &&
+      hansunginfo.schedule.monday === undefined
+    ) {
+      console.log(hansunginfo.schedule);
+      await HansungInfoActions.getHansungInfo();
+    } else if (
+      hansunginfo !== null &&
+      hansunginfo.schedule.monday !== undefined
+    ) {
+      console.log("end call");
+      await HansungInfoActions.scheduleLoadingAction(false);
+      clearInterval(scheduleTimeCall);
+    }
+  }, [hansunginfo]);
+
+  const scheduleCall = async () => {
+    await HansungInfoActions.scheduleLoadingAction(true);
+    await HansungInfoActions.createHansungInfoSchedule();
+    await HansungInfoActions.getHansungInfo();
+    console.log("schedule", hansunginfo.schedule);
+    if (scheduleTimeCall === undefined) {
+      scheduleTimeCall = setInterval(timeInterval, 5000);
+    }
+  };
   useEffect(() => {
     initCall();
   }, []);
@@ -88,5 +124,6 @@ const Home = ({ navigation, noticeList, count, hansunginfo = null }) => {
 export default connect(({ home, alarm, hansung }) => ({
   noticeList: home.noticeList,
   count: alarm.count,
-  hansunginfo: hansung.hansunginfo
+  hansunginfo: hansung.hansunginfo,
+  schedule_call: hansung.schedule_call
 }))(Home);

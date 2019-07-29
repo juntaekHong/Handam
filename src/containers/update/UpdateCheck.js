@@ -32,15 +32,7 @@ class UpdateCheck extends PureComponent {
     CommonActions.getAdmissionYear();
     CommonActions.getTerm1();
     CommonActions.getTerm2();
-    // 투표~
-    await VoteActions.getVote();
-    VoteActions.pageListPastVote();
-    VoteActions.checkVote(this.props.getVote.voteTopic.voteTopicIndex, 0);
-    VoteActions.pageListVoteReply(
-      this.props.getVote.voteTopic.voteTopicIndex,
-      0
-    );
-    //
+
     OneSignal.getPermissionSubscriptionState(async status => {
       const result = await SignInActions.checkToken(status.userId);
       if (result) await HansungInfoActions.getHansungInfo();
