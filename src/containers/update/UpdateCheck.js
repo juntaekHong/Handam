@@ -7,7 +7,8 @@ import {
   SignInActions,
   CommonActions,
   AlarmActions,
-  LockActions
+  LockActions,
+  VoteActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 import { getData, storeData } from "../../utils/util";
@@ -30,6 +31,15 @@ class UpdateCheck extends PureComponent {
     CommonActions.getAdmissionYear();
     CommonActions.getTerm1();
     CommonActions.getTerm2();
+    // 투표~
+    await VoteActions.getVote();
+    VoteActions.pageListPastVote();
+    VoteActions.checkVote(this.props.getVote.voteTopic.voteTopicIndex, 0);
+    VoteActions.pageListVoteReply(
+      this.props.getVote.voteTopic.voteTopicIndex,
+      0
+    );
+    //
     OneSignal.getPermissionSubscriptionState(async status => {
       await SignInActions.checkToken(status.userId);
       if (auth) {
@@ -59,7 +69,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(({ auth, signin, lock }) => ({
+export default connect(({ auth, signin, lock, vote }) => ({
   passLock: lock.passLock,
-  signin_navigate: signin.signin_navigate
+  signin_navigate: signin.signin_navigate,
+  getVote: vote.getVote
 }))(UpdateCheck);

@@ -21,7 +21,7 @@ import {
   ReportedPostsListItem
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
-import { AlertModal } from "../../components/talk/Modal";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkAbout extends Component {
   constructor(props) {

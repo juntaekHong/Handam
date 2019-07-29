@@ -8,7 +8,6 @@ import {
   SafeAreaView
 } from "react-native";
 import { CTText, CEText } from "../../components/community/Text";
-import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
@@ -137,5 +136,7 @@ export default connect(state => ({
   categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   filter: state.talk.filter,
-  orderby: state.talk.orderby
+  orderby: state.talk.orderby,
+
+  getVote: state.vote.getVote
 }))(TalkScreen);
