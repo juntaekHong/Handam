@@ -139,13 +139,15 @@ export const getHansungInfo = () => async dispatch => {
     if (result !== null) {
       color = JSON.parse(result);
     }
-    const schedule = jsonData.result.schedule;
-    if (schedule !== undefined && schedule.monday !== undefined) {
-      for (let i in schedule) {
-        for (let item of schedule[i]) {
-          const content = scheduleContent(item.content);
-          if (color[`${content[0]}${content[1]}`] === undefined) {
-            color[`${content[0]}${content[1]}`] = makeColor();
+    if (jsonData.result !== null) {
+      const schedule = jsonData.result.schedule;
+      if (schedule !== undefined && schedule.monday !== undefined) {
+        for (let i in schedule) {
+          for (let item of schedule[i]) {
+            const content = scheduleContent(item.content);
+            if (color[`${content[0]}${content[1]}`] === undefined) {
+              color[`${content[0]}${content[1]}`] = makeColor();
+            }
           }
         }
       }
