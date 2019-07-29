@@ -7,6 +7,7 @@ import auth from "./auth/auth";
 import signin from "./sign/signin";
 import common from "./common/common";
 import talk from "./community/talk";
+import vote from "./community/vote";
 import signup from "./sign/signup";
 import home from "./home/home";
 import bus from "./bus/bus";
@@ -19,6 +20,7 @@ export default combineReducers({
   signin,
   common,
   talk,
+  vote,
   signup,
   home,
   bus,
