@@ -22,7 +22,7 @@ HansungInfoStack.navigationOptions = ({ navigation }) => {
 
     let routeName = navigation.state.routes[navigation.state.index].routeName;
 
-    if ( routeName == "Certification" ) {
+    if ( routeName == "MyInfo" ) {
         tabBarVisible = false
     }
 
