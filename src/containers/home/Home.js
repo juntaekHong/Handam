@@ -32,9 +32,9 @@ const Home = ({
   hansunginfo = null,
   schedule_call
 }) => {
-  let scheduleTimeCall;
   const [time, setTime] = useState(moment());
   const [certModal, setCertModal] = useState(false);
+  const [call, setCall] = useState(0);
 
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
@@ -62,40 +62,44 @@ const Home = ({
     await CommonActions.handleLoading(false);
   }, [count]);
 
-  const timeInterval = useCallback(async () => {
-    if (hansunginfo === null) clearInterval(scheduleTimeCall);
-    else if (
-      hansunginfo !== null &&
-      hansunginfo.schedule.monday === undefined
-    ) {
-      console.log(hansunginfo.schedule);
+  const getSchedule = useCallback(async () => {
+    if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
       await HansungInfoActions.getHansungInfo();
+      setCall(call => call + 1);
     } else if (
       hansunginfo !== null &&
       hansunginfo.schedule.monday !== undefined
     ) {
       console.log("end call");
       await HansungInfoActions.scheduleLoadingAction(false);
-      clearInterval(scheduleTimeCall);
+      setCall(0);
     }
   }, [hansunginfo]);
-
-  const scheduleCall = async () => {
+  scheduleCall = async () => {
+    await HansungInfoActions.scheduleCallAction(false);
     await HansungInfoActions.scheduleLoadingAction(true);
     await HansungInfoActions.createHansungInfoSchedule();
     await HansungInfoActions.getHansungInfo();
-    console.log("schedule", hansunginfo.schedule);
-    if (scheduleTimeCall === undefined) {
-      scheduleTimeCall = setInterval(timeInterval, 5000);
-    }
+    setCall(call => call + 1);
   };
   useEffect(() => {
     initCall();
   }, []);
+  useEffect(() => {
+    if (schedule_call) {
+      scheduleCall();
+    }
+  }, [schedule_call]);
+  useEffect(() => {
+    if (call > 0) {
+      setTimeout(getSchedule, 5000);
+    }
+  }, [call]);
   return (
     <HCenterView>
       <HomeTitle alarm={count > 0} />
       <CertModal
+        height={201.9}
         visible={certModal}
         closeHandler={() => setCertModal(false)}
         footerHandler={navigateCert}
@@ -115,7 +119,10 @@ const Home = ({
         </HomeNavigateView>
         <TodayLectureTitle />
         <TodayLine time={moment(time).format("MM. DD (ddd)")} />
-        <TodayLecture day={dayToString(moment(time).day())} />
+        <TodayLecture
+          day={dayToString(moment(time).day())}
+          goCertificate={navigateCert}
+        />
       </CenterScroll>
     </HCenterView>
   );
