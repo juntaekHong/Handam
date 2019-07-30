@@ -39,7 +39,7 @@ class MyInfo extends React.Component {
                             </TouchableOpacity>
                             :
                             <TouchableOpacity style={{backgroundColor: '#24a0fa', width:widthPercentageToDP(200), height: widthPercentageToDP(20), borderRadius: widthPercentageToDP(10) }}
-                                              onPress={ async () => { await HansungInfoActions.deleteHansungInfo(); await HansungInfoActions.nonSubjectPointLoadingHandle(false); await HansungInfoActions.nonSubjectPointHandle(false); await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(false); this.navigateBack();}}>
+                                              onPress={ async () => { await HansungInfoActions.nonSubjectPointLoadingHandle(false); await HansungInfoActions.nonSubjectPointHandle(false); await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(false); await HansungInfoActions.deleteHansungInfo(); this.navigateBack();}}>
                                 <Text style={{color: 'white'}}>임시 인증서 삭제 버튼</Text>
                             </TouchableOpacity>
                 }
