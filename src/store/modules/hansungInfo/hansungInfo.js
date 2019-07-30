@@ -58,6 +58,11 @@ export const scheduleCallAction = createAction(SCEDULE_CALL);
 export const scheduleLoadingAction = createAction(SCEDULE_LOADING);
 const scheduleColorAction = createAction(SCEDULE_COLOR);
 
+// 마이페이지 종정시 인증 부분 로딩
+const MYINFO_LOADING_HANDLE = "hansungInfo/MYINFO_LOADING_HANDLE";
+
+const myInfoLoadingHandleAction = createAction(MYINFO_LOADING_HANDLE);
+
 const initState = {
   hansunginfo: null,
 
@@ -69,7 +74,10 @@ const initState = {
   grades_status: false,
 
   nonSubjectPoint_value_loading: false,
-  grades_value_loading: false
+  grades_value_loading: false,
+
+  // 마이페이지 종정시 인증 부분 로딩
+  myInfo_loading: false,
 };
 
 export const nonSubjectPointHandle = bool => dispatch => {
@@ -94,6 +102,10 @@ export const nonSubjectPointValueLoadingHandle = bool => dispatch => {
 
 export const gradesValueLoadingHandle = bool => dispatch => {
   dispatch(gradesValueLoadingHandleAction(bool));
+};
+
+export const myInfoLoadingHandle = bool => dispatch => {
+  dispatch(myInfoLoadingHandleAction(bool));
 };
 
 export const createHansungInfo = hansunginfo => async dispatch => {
@@ -262,7 +274,11 @@ export default handleActions(
     [SCEDULE_CALL]: (state, { payload }) =>
       produce(state, draft => {
         draft.schedule_call = payload;
-      })
+      }),
+    [MYINFO_LOADING_HANDLE]: (state, { payload }) =>
+        produce(state, draft => {
+          draft.myInfo_loading = payload;
+        })
   },
   initState
 );

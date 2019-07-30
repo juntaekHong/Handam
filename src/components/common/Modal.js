@@ -20,15 +20,16 @@ const CustomModalView = styled.View`
 
 const HeaderView = styled.View`
   width: 100%
-  padding-top: ${widthPercentageToDP(15)}
-  padding-bottom: ${widthPercentageToDP(10)}
-  padding-right: ${widthPercentageToDP(15)}
+  height: ${widthPercentageToDP(61)}
+  padding-top: ${widthPercentageToDP(19)}
+  padding-bottom: ${widthPercentageToDP(14)}
+  padding-right: ${widthPercentageToDP(19)}
   align-items: flex-end
   justify-content: flex-end
 `;
 const CloseIcon = styled.TouchableOpacity`
-  height: ${widthPercentageToDP(36)};
-  width: ${widthPercentageToDP(36)};
+  height: ${widthPercentageToDP(28)};
+  width: ${widthPercentageToDP(28)};
   justify-content: center;
   align-items: center;
 `;
