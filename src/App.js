@@ -16,7 +16,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     try {
-      OneSignal.init(config.pushKey);
+      OneSignal.init(config.pushKey, { kOSSettingsKeyAutoPrompt: true });
       OneSignal.inFocusDisplaying(2);
     } catch (e) {}
     SplashScreen.hide();
