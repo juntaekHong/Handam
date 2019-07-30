@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { BaseView, Title, Scroll } from "../../components/common/View";
 import { TableHeader } from "../../components/schedule/view/TableHeader";
@@ -10,14 +10,35 @@ import {
 import { ScheduleLoading } from "../../components/schedule/view/SchduleLoading";
 import { ScheduleContent } from "../../components/schedule/view/ScheduleContent";
 import { widthPercentageToDP, dayToInt } from "../../utils/util";
-import { View } from "react-native";
+import { ScheduleFloatButton } from "../../components/schedule/button/ScheduleFloatButton";
+import { HansungInfoActions } from "../../store/actionCreator";
+import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
 
 const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
   const [time, setTime] = useState(new Array(15).fill(0));
+  const [modal, setModal] = useState(false);
+
+  const scheduleCall = useCallback(async () => {
+    closeModal();
+    await HansungInfoActions.scheduleCallAction(true);
+  }, []);
+
+  const visibleModal = useCallback(() => {
+    setModal(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModal(false);
+  }, []);
 
   return (
     <BaseView>
       <Title title={"시간표"} rightInVisible={true} />
+      <ScheduleModal
+        visible={modal}
+        closeHandler={closeModal}
+        footerHandler={scheduleCall}
+      />
       <BaseView>
         <TableHeader />
         <Scroll>
@@ -52,6 +73,7 @@ const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
             </ScheduleView>
           </Absolute>
         </Scroll>
+        <ScheduleFloatButton onPress={visibleModal} />
         {schedule_loading ? (
           <Absolute>
             <ScheduleLoading />

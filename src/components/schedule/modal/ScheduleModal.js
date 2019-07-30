@@ -4,11 +4,13 @@ import { CenterView, BaseView } from "../../common/View";
 import { NBGBText } from "../../common/Text";
 import { widthPercentageToDP } from "../../../utils/util";
 
-export const CertModal = props => {
+export const ScheduleModal = props => {
   return (
-    <CustomModal {...props}>
+    <CustomModal {...props} height={220}>
       <BaseView style={{ paddingTop: widthPercentageToDP(12) }}>
-        <NBGBText>한성대학교를 인증해주세요!</NBGBText>
+        <NBGBText style={{ textAlign: "center" }}>
+          {"시간표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다."}
+        </NBGBText>
       </BaseView>
     </CustomModal>
   );
