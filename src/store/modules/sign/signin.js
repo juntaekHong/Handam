@@ -6,6 +6,7 @@ import { produce } from "immer";
 import { getData, storeData, removeAllData } from "../../../utils/util";
 import api from "../../../utils/api";
 import config from "../../../configs/config";
+import { alarmIsPostsAction } from "../alarm/alarm";
 
 const SIGNIN_NAVIGATE = "signin/SIGNIN_NAVIGATE";
 const SIGNIN_USERDATA = "singin/SIGNIN_USERDATA";
@@ -30,6 +31,7 @@ export const checkToken = appId => async dispatch => {
       const result = jsonData.result;
       storeData("userId", result.userId);
       dispatch(userDataAction(result));
+      dispatch(alarmIsPostsAction(result.isPostsAlarm == 1 ? true : false));
       dispatch(signInNavigateAction("main"));
       return true;
     } else {
@@ -55,6 +57,7 @@ export const postSingIn = (userId, userPw, appId) => async dispatch => {
       await storeData("token", result.token);
       await storeData("userId", result.userId);
       dispatch(userDataAction(result));
+      dispatch(alarmIsPostsAction(result.isPostsAlarm == 1 ? true : false));
       return true;
     } else {
       throw "error";
