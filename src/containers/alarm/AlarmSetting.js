@@ -20,11 +20,12 @@ const AlarmSetting = ({ alarmSet }) => {
     }
     AlarmActions.alarmAllAction(check);
     return check;
-  }, []);
+  }, [alarmSet]);
 
   const handleIsPosts = useCallback(async value => {
-    await AlarmActions.alarmIsPostsAction(value);
-    checkAll();
+    AlarmActions.alarmIsPostsAction(value);
+    AlarmActions.alarmAllAction(value);
+    // checkAll();
     AlarmActions.putUpdateUser(value ? "posts" : "posts_off");
   }, []);
 
@@ -44,9 +45,8 @@ const AlarmSetting = ({ alarmSet }) => {
       <AlarmSetMenu
         title={"전체알림"}
         height={68.5}
-        menuDisable={false}
         value={alarmSet.all}
-        toggle={handleIsPosts}
+        toggle={handleAll}
       />
       <AlarmSetSubject title={"활동알림"} />
       <View style={{ height: widthPercentageToDP(16.5) }} />
@@ -55,7 +55,7 @@ const AlarmSetting = ({ alarmSet }) => {
         height={24}
         menuDisable={false}
         value={alarmSet.isPostsAlarm}
-        toggle={handleAll}
+        toggle={handleIsPosts}
       />
       <View style={{ width: "100%", paddingLeft: widthPercentageToDP(29) }}>
         <NBGBText

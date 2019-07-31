@@ -31,7 +31,6 @@ export const checkToken = appId => async dispatch => {
       const result = jsonData.result;
       storeData("userId", result.userId);
       dispatch(userDataAction(result));
-      dispatch(alarmIsPostsAction(result.isPostsAlarm == 1 ? true : false));
       dispatch(signInNavigateAction("main"));
       return true;
     } else {
@@ -57,7 +56,6 @@ export const postSingIn = (userId, userPw, appId) => async dispatch => {
       await storeData("token", result.token);
       await storeData("userId", result.userId);
       dispatch(userDataAction(result));
-      dispatch(alarmIsPostsAction(result.isPostsAlarm == 1 ? true : false));
       return true;
     } else {
       throw "error";

@@ -26,8 +26,8 @@ class UpdateCheck extends PureComponent {
     const auth = await AuthActions.checkIntro();
     await CommonActions.commonInit();
     await LockActions.lockInit();
+    await AlarmActions.alarmInit();
     CommonActions.getAppVersion();
-    AlarmActions.alarmInit();
     CommonActions.getTrack();
     CommonActions.getAdmissionYear();
     CommonActions.getTerm1();

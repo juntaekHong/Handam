@@ -30,7 +30,8 @@ const Home = ({
   noticeList,
   count,
   hansunginfo = null,
-  schedule_call
+  schedule_call,
+  user
 }) => {
   const [time, setTime] = useState(moment());
   const [certModal, setCertModal] = useState(false);
@@ -58,6 +59,9 @@ const Home = ({
     await AlarmActions.alarmInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
+    await AlarmActions.alarmIsPostsAction(
+      user.isPostsAlarm == 1 ? true : false
+    );
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
@@ -70,7 +74,6 @@ const Home = ({
       hansunginfo !== null &&
       hansunginfo.schedule.monday !== undefined
     ) {
-      console.log("end call");
       await HansungInfoActions.scheduleLoadingAction(false);
       setCall(0);
     }
@@ -128,9 +131,10 @@ const Home = ({
   );
 };
 
-export default connect(({ home, alarm, hansung }) => ({
+export default connect(({ home, alarm, hansung, signin }) => ({
   noticeList: home.noticeList,
   count: alarm.count,
   hansunginfo: hansung.hansunginfo,
-  schedule_call: hansung.schedule_call
+  schedule_call: hansung.schedule_call,
+  user: signin.user
 }))(Home);
