@@ -9,17 +9,25 @@ const ALARM_COUNT = "alarm/ALARM_COUNT";
 const ALARM_READ_LIST = "alarm/ALARM_READ_LIST";
 const ALARM_UNREAD_LIST = "alarm/ALARM_UNREAD_LIST";
 const ALARM_READ = "alarm/ALARM_READ";
+const ALARM_ALL = "alarm/ALARM_ALL";
+const ALARM_IS_POSTS = "alarm/ALARM_IS_POSTS";
 
 export const alarmInit = createAction(ALARM_INIT);
 const alarmCountAction = createAction(ALARM_COUNT);
 const alarmReadListAction = createAction(ALARM_READ_LIST);
 const alarmUnreadAction = createAction(ALARM_UNREAD_LIST);
 const alarmReadAction = createAction(ALARM_READ);
+export const alarmIsPostsAction = createAction(ALARM_IS_POSTS);
+export const alarmAllAction = createAction(ALARM_ALL);
 
 const initState = {
   count: 0,
   readList: [],
-  unreadList: []
+  unreadList: [],
+  alarmSet: {
+    all: false,
+    isPostsAlarm: false
+  }
 };
 
 export const getAlarmList = (isRead, page) => async dispatch => {
@@ -48,7 +56,6 @@ export const getAlarmList = (isRead, page) => async dispatch => {
 export const putUpdateAlarm = alarmIndex => async dispatch => {
   try {
     const token = await getData("token");
-    console.log(alarmIndex);
     const jsonData = await api.put(`/alarm/alarmIndex/${alarmIndex}`, {
       token,
       body: {
@@ -61,7 +68,32 @@ export const putUpdateAlarm = alarmIndex => async dispatch => {
       return true;
     } else return false;
   } catch (err) {
-    console.log(err);
+    return false;
+  }
+};
+
+export const putUpdateUser = type => async dispatch => {
+  try {
+    const userId = await getData("userId");
+    const token = await getData("token");
+    let body = {};
+    if (type === "all_off") {
+      body.isPostsAlarm = 0;
+    } else if (type === "all") {
+      body.isPostsAlarm = 1;
+    } else if (type === "posts") {
+      body.isPostsAlarm = 1;
+    } else if (type === "posts_off") {
+      body.isPostsAlarm = 0;
+    }
+    const jsonData = await api.put(`/user/userId/${userId}`, {
+      token,
+      body
+    });
+    if (jsonData.statusCode == 200) {
+      return true;
+    } else return false;
+  } catch (err) {
     return false;
   }
 };
@@ -87,6 +119,14 @@ export default handleActions(
           item => item.alarmIndex !== payload
         );
         draft.count--;
+      }),
+    [ALARM_ALL]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.alarmSet.all = payload;
+      }),
+    [ALARM_IS_POSTS]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.alarmSet.isPostsAlarm = payload;
       })
   },
   initState
