@@ -34,6 +34,13 @@ const config = {
   seongbuk: "107900003",
   androidVersion: "2.1.0",
   iosVersion: "2.1.0",
+  iosStore: {
+    appID: 1437741744,
+    appName: "한담"
+  },
+  androidStore: {
+    packageName: "com.handamproject"
+  },
   signDataKey: [
     "token",
     "userId",
