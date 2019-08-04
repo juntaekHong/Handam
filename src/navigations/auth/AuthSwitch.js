@@ -5,6 +5,7 @@ import SignStack from "../sign/SignStack";
 import RootStack from "../root/root";
 import LockSolve from "../../containers/lock/LockSolve";
 import LibraryUpdate from "../../containers/update/LibraryUpdate";
+import LiveUpdate from "../../containers/update/LiveUpdate";
 
 const AuthSwitch = createSwitchNavigator(
   {
@@ -13,10 +14,11 @@ const AuthSwitch = createSwitchNavigator(
     update: { screen: UpdateCheck },
     sign: { screen: SignStack },
     locksolve: { screen: LockSolve },
-    library: { screen: LibraryUpdate }
+    library: { screen: LibraryUpdate },
+    liveupdate: { screen: LiveUpdate }
   },
   {
-    initialRouteName: "library"
+    initialRouteName: "liveupdate"
   }
 );
 

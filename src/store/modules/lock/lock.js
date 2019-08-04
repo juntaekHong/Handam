@@ -26,26 +26,28 @@ const optionalConfigObject = {
 };
 
 export const lockInit = () => async dispatch => {
-  const pass_lock = await getData("pass_locking");
-  const bio_lock = await getData("bio_locking");
-  const lock_pass = await getData("lock_pass");
+  try {
+    const pass_lock = await getData("pass_locking");
+    const bio_lock = await getData("bio_locking");
+    const lock_pass = await getData("lock_pass");
 
-  TouchID.isSupported(optionalConfigObject)
-    .then(biometryType => {
-      if (biometryType === "FaceID") dispatch(lockBioOptionAction("FaceId"));
-      else dispatch(lockBioOptionAction("TouchId"));
-    })
-    .catch(error => {
-      dispatch(lockBioOptionAction(""));
-    });
+    TouchID.isSupported(optionalConfigObject)
+      .then(biometryType => {
+        if (biometryType === "FaceID") dispatch(lockBioOptionAction("FaceId"));
+        else dispatch(lockBioOptionAction("TouchId"));
+      })
+      .catch(error => {
+        dispatch(lockBioOptionAction(""));
+      });
 
-  await dispatch(
-    lockPassAction(pass_lock === null || pass_lock === "false" ? false : true)
-  );
-  await dispatch(
-    lockBioAction(bio_lock === null || bio_lock === "false" ? false : true)
-  );
-  await dispatch(lockPasswordAction(lock_pass === null ? "" : lock_pass));
+    await dispatch(
+      lockPassAction(pass_lock === null || pass_lock === "false" ? false : true)
+    );
+    await dispatch(
+      lockBioAction(bio_lock === null || bio_lock === "false" ? false : true)
+    );
+    await dispatch(lockPasswordAction(lock_pass === null ? "" : lock_pass));
+  } catch (e) {}
 };
 
 export const handlePassLock = value => async dispatch => {
