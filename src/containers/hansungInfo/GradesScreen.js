@@ -17,7 +17,7 @@ class GradesScreen extends React.Component {
         super(props);
 
         this.state = {
-
+            selected: true,
         }
     }
 
@@ -32,7 +32,7 @@ class GradesScreen extends React.Component {
                 await HansungInfoActions.getHansungInfo();
             }
             else if(this.props.hansunginfo.summaryGrades.ratedTotal!=undefined){
-                await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); clearInterval(timeout);
+                await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); await HansungInfoActions.professorTextHandle(true); clearInterval(timeout);
             }
         }, 5000);
     };
@@ -118,6 +118,7 @@ class GradesScreen extends React.Component {
             }
             else if(this.props.hansunginfo!=null&&this.props.hansunginfo.summaryGrades.ratedTotal!=undefined &&this.props.hansunginfo.detailGrades!=undefined) {
                 await HansungInfoActions.gradesHandle(true);
+                await HansungInfoActions.professorTextHandle(true);
                 clearInterval(timeout);
             }
         }, 700);
@@ -129,7 +130,7 @@ class GradesScreen extends React.Component {
         }
         return (
             <View style={styles.container}>
-                <AbstractAccountInfoScreen move={this.navigateMyInfo()}/>
+                <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
 
                 {this.props.grades_loading == true ?
                     <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
@@ -327,4 +328,5 @@ export default connect((state) => ({
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
     grades_value_loading: state.hansung.grades_value_loading,
+    professor_text: state.hansung.professor_text,
 }))(GradesScreen);

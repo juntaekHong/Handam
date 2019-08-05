@@ -30,8 +30,8 @@ class CertificationScreen extends React.Component {
 
     this.props.hansunginfo != null &&
     this.props.hansunginfo.status == "UNVERIFIED"
-      ? this.props.navigation.goBack(null)
-      : null;
+        ? this.props.navigation.goBack(null)
+        : null;
   }
 
   navigationBack = () => {
@@ -43,8 +43,8 @@ class CertificationScreen extends React.Component {
 
     let timeout = setInterval(async () => {
       if (
-        this.props.hansunginfo != null &&
-        this.props.hansunginfo.status == "UNVERIFIED"
+          this.props.hansunginfo != null &&
+          this.props.hansunginfo.status == "UNVERIFIED"
       ) {
         await HansungInfoActions.getHansungInfo();
       } else if (this.props.hansunginfo.status == "SUCCESS") {
@@ -70,189 +70,189 @@ class CertificationScreen extends React.Component {
   renderSubmit = () => {
     if (this.state.hansung_id != "" && this.state.hansung_pass != "") {
       return (
-        <TouchableOpacity
-          style={styles.submit}
-          onPress={async () => {
-            let hansunginfo = new Object();
-            hansunginfo.hansungInfoId = this.state.hansung_id;
-            hansunginfo.hansungInfoPw = this.state.hansung_pass;
+          <TouchableOpacity
+              style={styles.submit}
+              onPress={async () => {
+                let hansunginfo = new Object();
+                hansunginfo.hansungInfoId = this.state.hansung_id;
+                hansunginfo.hansungInfoPw = this.state.hansung_pass;
 
-            this.setState({ loading: true });
+                this.setState({ loading: true });
 
-            await HansungInfoActions.createHansungInfo(hansunginfo);
+                await HansungInfoActions.createHansungInfo(hansunginfo);
 
-            await this.certification_Check();
-          }}
-        >
-          <Text style={styles.submitText}>인증하기</Text>
-        </TouchableOpacity>
+                await this.certification_Check();
+              }}
+          >
+            <Text style={styles.submitText}>인증하기</Text>
+          </TouchableOpacity>
       );
     } else {
       return (
-        <View style={styles.submitDisable}>
-          <Text style={styles.submitText}>인증하기</Text>
-        </View>
+          <View style={styles.submitDisable}>
+            <Text style={styles.submitText}>인증하기</Text>
+          </View>
       );
     }
   };
 
   render() {
     return this.state.loading == false ? (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1 }}
-      >
-        <TouchableOpacity
-          onPress={async () => {
-            this.navigationBack();
-          }}
-          style={[
-            {
-              alignItems: "flex-end",
-              marginRight: widthPercentageToDP(20.9),
-              marginTop: widthPercentageToDP(21.8)
-            }
-          ]}
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : null}
+            style={{ flex: 1 }}
         >
-          <Image
-            style={{
-              width: widthPercentageToDP(28),
-              height: widthPercentageToDP(28)
-            }}
-            source={require("../../../assets/image/hansungInfo/close.png")}
-          />
-        </TouchableOpacity>
-        <SafeAreaView style={styles.container}>
-          <TouchableWithoutFeedback>
-            <View style={styles.inner}>
-              <View
+          <TouchableOpacity
+              onPress={async () => {
+                this.navigationBack();
+              }}
+              style={[
+                {
+                  alignItems: "flex-end",
+                  marginRight: widthPercentageToDP(20.9),
+                  marginTop: widthPercentageToDP(21.8)
+                }
+              ]}
+          >
+            <Image
                 style={{
-                  marginTop: widthPercentageToDP(76.9),
-                  marginBottom: widthPercentageToDP(53)
+                  width: widthPercentageToDP(28),
+                  height: widthPercentageToDP(28)
                 }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <Text
+                source={require("../../../assets/image/hansungInfo/close.png")}
+            />
+          </TouchableOpacity>
+          <SafeAreaView style={styles.container}>
+            <TouchableWithoutFeedback>
+              <View style={styles.inner}>
+                <View
                     style={{
-                      backgroundColor: "#24f7ff",
-                      marginLeft: widthPercentageToDP(51),
-                      fontSize: widthPercentageToDP(20),
-                      color: "#000000",
-                      textAlign: "center",
-                      fontFamily: fonts.nanumBarunGothic
+                      marginTop: widthPercentageToDP(76.9),
+                      marginBottom: widthPercentageToDP(53)
                     }}
-                  >
-                    {"종합정보시스템"}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: widthPercentageToDP(20),
-                      color: "#000000",
-                      fontFamily: fonts.nanumBarunGothic
-                    }}
-                  >
-                    을 통한
-                  </Text>
+                >
+                  <View style={{ flexDirection: "row" }}>
+                    <Text
+                        style={{
+                          backgroundColor: "#24f7ff",
+                          marginLeft: widthPercentageToDP(51),
+                          fontSize: widthPercentageToDP(20),
+                          color: "#000000",
+                          textAlign: "center",
+                          fontFamily: fonts.nanumBarunGothic
+                        }}
+                    >
+                      {"종합정보시스템"}
+                    </Text>
+                    <Text
+                        style={{
+                          fontSize: widthPercentageToDP(20),
+                          color: "#000000",
+                          fontFamily: fonts.nanumBarunGothic
+                        }}
+                    >
+                      을 통한
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                        style={{
+                          fontSize: widthPercentageToDP(20),
+                          color: "#000000",
+                          textAlign: "center",
+                          fontFamily: fonts.nanumBarunGothic
+                        }}
+                    >
+                      인증입니다.
+                    </Text>
+                  </View>
                 </View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: widthPercentageToDP(20),
-                      color: "#000000",
-                      textAlign: "center",
-                      fontFamily: fonts.nanumBarunGothic
+
+                <Text
+                    style={
+                      this.state.hansung_id != ""
+                          ? styles.hiddenText
+                          : [styles.emptyText]
+                    }
+                >
+                  {this.state.hansung_id != "" ? "종합정보시스템 학번" : ""}
+                </Text>
+                <TextInput
+                    autoCapitalize={"none"}
+                    onChangeText={hansung_id => {
+                      this.setState({ hansung_id });
                     }}
-                  >
-                    인증입니다.
-                  </Text>
-                </View>
+                    value={this.state.hansung_id}
+                    style={
+                      this.state.hansung_id != ""
+                          ? styles.inputText
+                          : styles.notInputText
+                    }
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor={"#9e9e9e"}
+                    placeholder={"종합정보시스템 학번"}
+                    selectionColor={"#24a0fa"}
+                    keyboardType={"number-pad"}
+                />
+
+                <Text
+                    style={
+                      this.state.hansung_pass != ""
+                          ? styles.hiddenText
+                          : styles.emptyText
+                    }
+                >
+                  {this.state.hansung_pass != "" ? "종합정보시스템 비밀번호" : ""}
+                </Text>
+                <TextInput
+                    autoCapitalize={"none"}
+                    onChangeText={hansung_pass => {
+                      this.setState({ hansung_pass });
+                    }}
+                    value={this.state.hansung_pass}
+                    style={
+                      this.state.hansung_pass != ""
+                          ? styles.inputText
+                          : styles.notInputText
+                    }
+                    underlineColorAndroid="transparent"
+                    placeholder={"종합정보시스템 비밀번호"}
+                    placeholderTextColor={"#9e9e9e"}
+                    selectionColor={"#24a0fa"}
+                    secureTextEntry={true}
+                />
+
+                {this.renderSubmit()}
+                <View style={{ flex: 1 }} />
               </View>
-
-              <Text
-                style={
-                  this.state.hansung_id != ""
-                    ? styles.hiddenText
-                    : [styles.emptyText]
-                }
-              >
-                {this.state.hansung_id != "" ? "종합정보시스템 학번" : ""}
-              </Text>
-              <TextInput
-                autoCapitalize={"none"}
-                onChangeText={hansung_id => {
-                  this.setState({ hansung_id });
-                }}
-                value={this.state.hansung_id}
-                style={
-                  this.state.hansung_id != ""
-                    ? styles.inputText
-                    : styles.notInputText
-                }
-                underlineColorAndroid="transparent"
-                placeholderTextColor={"#9e9e9e"}
-                placeholder={"종합정보시스템 학번"}
-                selectionColor={"#24a0fa"}
-                keyboardType={"number-pad"}
-              />
-
-              <Text
-                style={
-                  this.state.hansung_pass != ""
-                    ? styles.hiddenText
-                    : styles.emptyText
-                }
-              >
-                {this.state.hansung_pass != "" ? "종합정보시스템 비밀번호" : ""}
-              </Text>
-              <TextInput
-                autoCapitalize={"none"}
-                onChangeText={hansung_pass => {
-                  this.setState({ hansung_pass });
-                }}
-                value={this.state.hansung_pass}
-                style={
-                  this.state.hansung_pass != ""
-                    ? styles.inputText
-                    : styles.notInputText
-                }
-                underlineColorAndroid="transparent"
-                placeholder={"종합정보시스템 비밀번호"}
-                placeholderTextColor={"#9e9e9e"}
-                selectionColor={"#24a0fa"}
-                secureTextEntry={true}
-              />
-
-              {this.renderSubmit()}
-              <View style={{ flex: 1 }} />
-            </View>
-          </TouchableWithoutFeedback>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
     ) : (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "white"
-        }}
-      >
         <View
-          style={{
-            height: widthPercentageToDP(40),
-            marginBottom: widthPercentageToDP(10)
-          }}
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "white"
+            }}
         >
-          <UIActivityIndicator color={"grey"} />
+          <View
+              style={{
+                height: widthPercentageToDP(40),
+                marginBottom: widthPercentageToDP(10)
+              }}
+          >
+            <UIActivityIndicator color={"grey"} />
+          </View>
+          <Text
+              style={{
+                fontSize: widthPercentageToDP(12),
+                textAlign: "center",
+                fontFamily: fonts.nanumBarunGothicB
+              }}
+          >{`인증을 확인중입니다.\n잠시만 기다려주세요.`}</Text>
         </View>
-        <Text
-          style={{
-            fontSize: widthPercentageToDP(12),
-            textAlign: "center",
-            fontFamily: fonts.nanumBarunGothicB
-          }}
-        >{`인증을 확인중입니다.\n잠시만 기다려주세요.`}</Text>
-      </View>
     );
   }
 }
