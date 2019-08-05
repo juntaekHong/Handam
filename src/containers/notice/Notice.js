@@ -45,9 +45,6 @@ const Notice = ({}) => {
       scalesPageToFit: true
     });
   }, []);
-  useEffect(() => {
-    console.log(state.url);
-  }, []);
   return (
     <View style={{ flex: 1 }}>
       <WebView

@@ -64,27 +64,31 @@ export const getTerm2 = () => async dispatch => {
 };
 
 export const getTrack = () => async dispatch => {
-  const jsonData = await api.get(`/track`);
-  if (jsonData.statusCode == 200) {
-    const data = jsonData.result;
-    dispatch(majorListAction(data));
-    dispatch(trackListAction(data));
-  } else {
-    dispatch({ type: TRACK_LIST, payload: [] });
-  }
+  try {
+    const jsonData = await api.get(`/track`);
+    if (jsonData.statusCode == 200) {
+      const data = jsonData.result;
+      dispatch(majorListAction(data));
+      dispatch(trackListAction(data));
+    } else {
+      dispatch({ type: TRACK_LIST, payload: [] });
+    }
+  } catch (e) {}
 };
 
 export const getAdmissionYear = () => async dispatch => {
-  const jsonData = await api.get(`/admissionYear`);
-  if (jsonData.statusCode == 200) {
-    const data = jsonData.result;
-    dispatch(admissionYearAction(data));
-    const reverse = data.reverse();
-    dispatch(semesterAction(reverse));
-  } else {
-    dispatch(admissionYearAction([]));
-    dispatch(semesterAction([]));
-  }
+  try {
+    const jsonData = await api.get(`/admissionYear`);
+    if (jsonData.statusCode == 200) {
+      const data = jsonData.result;
+      dispatch(admissionYearAction(data));
+      const reverse = data.reverse();
+      dispatch(semesterAction(reverse));
+    } else {
+      dispatch(admissionYearAction([]));
+      dispatch(semesterAction([]));
+    }
+  } catch (e) {}
 };
 
 export const getAppVersion = () => async dispatch => {

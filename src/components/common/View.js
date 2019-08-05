@@ -62,7 +62,7 @@ export const Scroll = props => (
 
 const TitleView = styled.View`
   width: 100%;
-  height: ${({ height = 55 }) => widthPercentageToDP(height)};
+  height: ${({ height = 60 }) => widthPercentageToDP(height)};
   flex-direction: row;
   align-items: center;
   padding-left: ${({ paddingLeft = 8 }) => widthPercentageToDP(paddingLeft)};

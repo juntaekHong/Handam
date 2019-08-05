@@ -6,6 +6,7 @@ import { produce } from "immer";
 import { getData, storeData, removeAllData } from "../../../utils/util";
 import api from "../../../utils/api";
 import config from "../../../configs/config";
+import { alarmIsPostsAction } from "../alarm/alarm";
 
 const SIGNIN_NAVIGATE = "signin/SIGNIN_NAVIGATE";
 const SIGNIN_USERDATA = "singin/SIGNIN_USERDATA";

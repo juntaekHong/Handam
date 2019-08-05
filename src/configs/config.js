@@ -17,8 +17,8 @@ const init = {
     prod: "http://shuttle.handam.tk.s3-website.ap-northeast-2.amazonaws.com"
   },
   pushKey: {
-    dev: "6e80b31a-035d-4e06-a1d4-f5a6dc2dc03e",
-    prod: "387bb36c-0500-4ede-8a9a-64492267cfae"
+    dev: "4f682cdd-46b2-470f-976c-e61a359fc147",
+    prod: "73a21036-6f4c-47d8-8ecb-d86aa26de4aa"
   }
 };
 
@@ -34,6 +34,13 @@ const config = {
   seongbuk: "107900003",
   androidVersion: "2.1.0",
   iosVersion: "2.1.0",
+  iosStore: {
+    appID: 1437741744,
+    appName: "한담"
+  },
+  androidStore: {
+    packageName: "com.handamproject"
+  },
   signDataKey: [
     "token",
     "userId",
