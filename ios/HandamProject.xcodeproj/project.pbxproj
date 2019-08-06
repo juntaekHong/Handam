@@ -1174,6 +1174,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = XS5MCXNWJU;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1990,6 +1991,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
@@ -2018,6 +2021,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HandamProject;
 				PRODUCT_NAME = HandamProject;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2027,6 +2031,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
 				HEADER_SEARCH_PATHS = (
@@ -2054,6 +2060,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HandamProject;
 				PRODUCT_NAME = HandamProject;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
