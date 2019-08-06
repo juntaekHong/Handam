@@ -1,17 +1,28 @@
 import React from 'react';
-import {SafeAreaView, View, TouchableOpacity, Text, Image, TextInput, StyleSheet} from 'react-native';
+import {
+    KeyboardAvoidingView,
+    SafeAreaView,
+    View,
+    TouchableOpacity,
+    Text,
+    Image,
+    TextInput,
+    StyleSheet,
+    TouchableWithoutFeedback, Platform, Button
+} from 'react-native';
 import { widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
-import {SECText} from '../../components/myInfo/Text';
-import { CustomModal } from "../../components/common/Modal";
+import {CustomModalText, SECText} from '../../components/myInfo/Text';
+// import { CustomModal } from "../../components/common/Modal";
+import {connect} from "react-redux";
 
 class SecessionScreen extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            failmodal: false,
             passwordCheck: '',
+            test: false,
         }
     }
 
@@ -22,7 +33,7 @@ class SecessionScreen extends React.Component {
                     <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: 'white' }}>한담탈퇴하기</Text>
                 </View>
                 :
-                <TouchableOpacity style={styles.secessionBtnOk} onPress={ () => {this.setState({failmodal: true})}}>
+                <TouchableOpacity style={styles.secessionBtnOk} onPress={ () => {}} >
                     <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: 'white' }}>한담탈퇴하기</Text>
                 </TouchableOpacity>
         )
@@ -34,37 +45,50 @@ class SecessionScreen extends React.Component {
 
     render() {
         return (
-            // 작업중
-            <SafeAreaView>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                style={{ flex: 1 }}
+            >
                 <View style={{height: widthPercentageToDP(120.5), borderBottomWidth: widthPercentageToDP(0.5), borderBottomColor: '#888888'}}>
                     <TouchableOpacity style={{alignItems: 'flex-end', marginTop: widthPercentageToDP(16), marginRight: widthPercentageToDP(14)}}
-                      onPress={ () => {this.navigategoBack()}}>
+                                      onPress={ () => {this.navigategoBack()}}>
                         <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/close.png")}/>
                     </TouchableOpacity>
                     <View style={{alignItems: 'flex-start', marginTop: widthPercentageToDP(45), marginLeft: widthPercentageToDP(25)}}>
                         <SECText>회원탈퇴</SECText>
                     </View>
                 </View>
-                <View style={{paddingTop: widthPercentageToDP(106.5)}}>
-                    <SECText style={{textAlign: 'center', marginBottom: widthPercentageToDP(31)}}>본인 확인을 위해 비밀번호를 확인합니다</SECText>
-                    <TextInput
-                        style={styles.textInput}
-                        value={this.state.passwordCheck}
-                        onChangeText={passwordCheck => {
-                            this.setState({ passwordCheck });}}
-                        maxLength={16}
-                        underlineColorAndroid={'transparent'}
-                        secureTextEntry={true}
-                        placeholder={'비밀번호'}
-                    />
-                    {this.secessionBtn()}
-                </View>
-            </SafeAreaView>
+                <View style={{paddingTop: widthPercentageToDP(106.5)}} />
+                <SafeAreaView style={styles.container}>
+                    <TouchableWithoutFeedback>
+                        <View style={styles.inner}>
+                            <SECText style={{textAlign: 'center', marginBottom: widthPercentageToDP(31)}}>본인 확인을 위해 비밀번호를 확인합니다</SECText>
+                            <TextInput
+                                style={this.state.test == false ? styles.textInput : styles.textInput2}
+                                value={this.state.passwordCheck}
+                                onChangeText={passwordCheck => {
+                                    this.setState({ passwordCheck });}}
+                                maxLength={16}
+                                underlineColorAndroid={'transparent'}
+                                secureTextEntry={true}
+                                placeholder={'비밀번호'}
+                                onFocus={ () => {this.setState({test: true})}}
+                                onEndEditing={ () => {this.setState({test:false})}}
+                            />
+                            {this.secessionBtn()}
+                            <View style={{ flex : 1 }} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
    textInput: {
        marginHorizontal: widthPercentageToDP(48),
        paddingLeft: widthPercentageToDP(13),
@@ -73,6 +97,14 @@ const styles = StyleSheet.create({
        borderRadius: widthPercentageToDP(8),
        borderColor: '#dbdbdb'
    },
+    textInput2: {
+        marginHorizontal: widthPercentageToDP(48),
+        paddingLeft: widthPercentageToDP(13),
+        marginBottom: widthPercentageToDP(50),
+        borderWidth: widthPercentageToDP(1),
+        borderRadius: widthPercentageToDP(8),
+        borderColor: '#dbdbdb'
+    },
     secessionBtn: {
        justifyContent: 'center',
        marginHorizontal: widthPercentageToDP(43),
@@ -86,7 +118,12 @@ const styles = StyleSheet.create({
         height: widthPercentageToDP(53),
         borderRadius: widthPercentageToDP(8),
         backgroundColor: '#24a0fa'
-    }
+    },
+
+    inner: {
+        justifyContent: "flex-end",
+    },
 });
 
-export default SecessionScreen;
+export default connect(state => ({
+}))(SecessionScreen);

@@ -34,21 +34,6 @@ const GRADES_LOADING_HANDLE = "hansungInfo/GRADES_LOADING_HANDLE";
 const gradesHandleAction = createAction(GRADES_HANDLE);
 const gradesLoadingHandleAction = createAction(GRADES_LOADING_HANDLE);
 
-// 비교과 값 들어올 동안
-const NONSUBJECTPOINT_VALUE_LOADING_HANDLE =
-    "hansunginfo/NONSUBJECTPOINT_VALUE_LOADING_HANDLE";
-
-const nonSubjectPointValueLoadingHandleAction = createAction(
-    NONSUBJECTPOINT_VALUE_LOADING_HANDLE
-);
-
-// 성적표 값 들어올 동안
-const GRADES_VALUE_LOADING_HANDLE = "hansunginfo/GRADES_VALUE_LOADING_HANDLE";
-
-const gradesValueLoadingHandleAction = createAction(
-    GRADES_VALUE_LOADING_HANDLE
-);
-
 // 시간표
 const SCEDULE_CALL = "hansungInfo/SCEDULE_CALL";
 const SCEDULE_LOADING = "hansungInfo/SCEDULE_LOADING";
@@ -78,9 +63,6 @@ const initState = {
     nonSubjectPoint_status: false,
     grades_status: false,
 
-    nonSubjectPoint_value_loading: false,
-    grades_value_loading: false,
-
     // 마이페이지 종정시 인증 부분 로딩
     myInfo_loading: false,
 
@@ -101,14 +83,6 @@ export const gradesHandle = bool => dispatch => {
 
 export const gradesLoadingHandle = bool => dispatch => {
     dispatch(gradesLoadingHandleAction(bool));
-};
-
-export const nonSubjectPointValueLoadingHandle = bool => dispatch => {
-    dispatch(nonSubjectPointValueLoadingHandleAction(bool));
-};
-
-export const gradesValueLoadingHandle = bool => dispatch => {
-    dispatch(gradesValueLoadingHandleAction(bool));
 };
 
 export const myInfoLoadingHandle = bool => dispatch => {
@@ -265,14 +239,6 @@ export default handleActions(
         [GRADES_LOADING_HANDLE]: (state, { payload }) =>
             produce(state, draft => {
                 draft.grades_loading = payload;
-            }),
-        [NONSUBJECTPOINT_VALUE_LOADING_HANDLE]: (state, { payload }) =>
-            produce(state, draft => {
-                draft.nonSubjectPoint_value_loading = payload;
-            }),
-        [GRADES_VALUE_LOADING_HANDLE]: (state, { payload }) =>
-            produce(state, draft => {
-                draft.grades_value_loading = payload;
             }),
         [SCEDULE_LOADING]: (state, { payload }) =>
             produce(state, draft => {

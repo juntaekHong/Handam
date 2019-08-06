@@ -22,8 +22,7 @@ class GradesScreen extends React.Component {
     }
 
     grades_check = async () => {
-        await HansungInfoActions.gradesValueLoadingHandle(false);
-
+        await HansungInfoActions.gradesLoadingHandle(true);
         await HansungInfoActions.createHansungInfoGrades();
         await HansungInfoActions.getHansungInfo();
 
@@ -125,9 +124,6 @@ class GradesScreen extends React.Component {
     }
 
     render() {
-        if(this.props.grades_value_loading == true && this.props.grades_loading == true) {
-            this.grades_check();
-        }
         return (
             <View style={styles.container}>
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
@@ -274,7 +270,16 @@ class GradesScreen extends React.Component {
                             </DetailView>
                         </ScrollView>
                         :
-                        this.certification_check()
+                        this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS"  ?
+                            this.certification_check()
+                            :
+                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                                <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(128), height: widthPercentageToDP(36), borderRadius: widthPercentageToDP(8), backgroundColor: '#24a0fa', marginTop: widthPercentageToDP(26.5)}} onPress={ async () => {
+                                    await this.grades_check();
+                                }}>
+                                    <Text style={{fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: '#ffffff', textAlign: 'center'}}>불러오기</Text>
+                                </TouchableOpacity>
+                            </View>
                 }
             </View>
         )
@@ -327,6 +332,5 @@ export default connect((state) => ({
     hansunginfo: state.hansung.hansunginfo,
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
-    grades_value_loading: state.hansung.grades_value_loading,
     professor_text: state.hansung.professor_text,
 }))(GradesScreen);

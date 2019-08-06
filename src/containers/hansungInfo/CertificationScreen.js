@@ -48,10 +48,6 @@ class CertificationScreen extends React.Component {
       ) {
         await HansungInfoActions.getHansungInfo();
       } else if (this.props.hansunginfo.status == "SUCCESS") {
-        await HansungInfoActions.gradesLoadingHandle(true);
-        await HansungInfoActions.gradesValueLoadingHandle(true);
-        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-        await HansungInfoActions.nonSubjectPointValueLoadingHandle(true);
         // 시간표 호출
         await HansungInfoActions.scheduleCallAction(true);
 
@@ -131,41 +127,8 @@ class CertificationScreen extends React.Component {
                       marginBottom: widthPercentageToDP(53)
                     }}
                 >
-                  <View style={{ flexDirection: "row" }}>
-                    <Text
-                        style={{
-                          backgroundColor: "#24f7ff",
-                          marginLeft: widthPercentageToDP(51),
-                          fontSize: widthPercentageToDP(20),
-                          color: "#000000",
-                          textAlign: "center",
-                          fontFamily: fonts.nanumBarunGothic
-                        }}
-                    >
-                      {"종합정보시스템"}
-                    </Text>
-                    <Text
-                        style={{
-                          fontSize: widthPercentageToDP(20),
-                          color: "#000000",
-                          fontFamily: fonts.nanumBarunGothic
-                        }}
-                    >
-                      을 통한
-                    </Text>
-                  </View>
-                  <View>
-                    <Text
-                        style={{
-                          fontSize: widthPercentageToDP(20),
-                          color: "#000000",
-                          textAlign: "center",
-                          fontFamily: fonts.nanumBarunGothic
-                        }}
-                    >
-                      인증입니다.
-                    </Text>
-                  </View>
+                  <Text style={{position: 'absolute', left: widthPercentageToDP(48), fontSize: widthPercentageToDP(20), fontFamily: fonts.nanumBarunGothic, color: 'black', textAlign: 'center'}}>{'종합정보시스템을 통한\n인증입니다.'}</Text>
+                  <View style={{width: widthPercentageToDP(125), height: widthPercentageToDP(7), position: 'relative', left: widthPercentageToDP(48), top: widthPercentageToDP(15), backgroundColor: '#2fd7ff', opacity: 0.3, borderRadius: widthPercentageToDP(5)}}/>
                 </View>
 
                 <Text
@@ -262,8 +225,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   inner: {
-    marginLeft: widthPercentageToDP(43),
-    marginRight: widthPercentageToDP(43),
+    marginHorizontal: widthPercentageToDP(43),
     flex: 1,
     justifyContent: "flex-end"
   },
@@ -314,10 +276,4 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   hansunginfo: state.hansung.hansunginfo,
-  nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
-  nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
-  nonSubjectPoint_value_loading: state.hansung.nonSubjectPoint_value_loading,
-  grades_status: state.hansung.grades_status,
-  grades_loading: state.hansung.grades_loading,
-  grades_value_loading: state.hansung.grades_value_loading
 }))(CertificationScreen);
