@@ -69,6 +69,7 @@ class MyInfo extends React.Component {
   };
 
   renderLogout = async () => {
+    // 수정 대기.
     await LockActions.handleBioLock(false);
     await LockActions.handlePassLock(false);
     await LockActions.handlePassword(false);

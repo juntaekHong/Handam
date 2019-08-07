@@ -23,13 +23,13 @@ export const AccountDetailText = styled.Text`
 `;
 
 export const CustomModalBlackText = styled.Text`
-  color: ${"#000000"};
+  color: #000000;
   font-size: ${widthPercentageToDP(20)};
   font-family: ${fonts.nanumBarunGothic};
 `;
 
 export const CustomModalBlackSmallText = styled.Text`
-  color: ${"#000000"};
+  color: #000000;
   font-size: ${widthPercentageToDP(14)};
   textAlign: center;
   font-family: ${fonts.nanumBarunGothic};

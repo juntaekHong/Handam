@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import { widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
-import {CustomModalText, SECText} from '../../components/myInfo/Text';
+import {CustomModalSmallText, SECText} from '../../components/myInfo/Text';
+import { showMessage } from "../../utils/util";
 // import { CustomModal } from "../../components/common/Modal";
+import { MyInfoActions} from "../../store/actionCreator";
 import {connect} from "react-redux";
+import {CustomModal} from "../../components/common/Modal";
 
 class SecessionScreen extends React.Component {
     constructor(props) {
@@ -22,7 +25,7 @@ class SecessionScreen extends React.Component {
 
         this.state = {
             passwordCheck: '',
-            test: false,
+            paddingNull: false,
         }
     }
 
@@ -33,14 +36,24 @@ class SecessionScreen extends React.Component {
                     <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: 'white' }}>한담탈퇴하기</Text>
                 </View>
                 :
-                <TouchableOpacity style={styles.secessionBtnOk} onPress={ () => {}} >
+                <TouchableOpacity style={styles.secessionBtnOk} onPress={ async () => {
+                    let check = await MyInfoActions.passwordCheck(this.state.passwordCheck);
+
+                    if(check) {
+                        await MyInfoActions.failModalHandle(true);
+                    } else {
+                        await MyInfoActions.failModalHandle(false);
+                        await this.setState({passwordCheck: ''});
+                        showMessage("한담탈퇴를 실패하였습니다.\n비밀번호를 다시 입력하세요.");
+                    }
+                }} >
                     <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: 'white' }}>한담탈퇴하기</Text>
                 </TouchableOpacity>
         )
     };
 
     navigategoBack = () => {
-      this.props.navigation.goBack();
+        this.props.navigation.goBack();
     };
 
     render() {
@@ -49,6 +62,18 @@ class SecessionScreen extends React.Component {
                 behavior={Platform.OS === "ios" ? "padding" : null}
                 style={{ flex: 1 }}
             >
+                <CustomModal
+                    width={widthPercentageToDP(295)}
+                    height={widthPercentageToDP(311)}
+                    children={<CustomModalSmallText black={"한담을 이용해주셔서 감사합니다.\n탈퇴 절차가 완료되었습니다."} />}
+                    visible={this.props.failmodal}
+                    footerHandler={async () => {
+                        await MyInfoActions.secessionDeleteHandle();
+                        await MyInfoActions.failModalHandle(false);
+                        this.props.navigation.navigate("signIn");
+                    }}
+                    closeHandler={async () => { await MyInfoActions.failModalHandle(false)}}
+                />
                 <View style={{height: widthPercentageToDP(120.5), borderBottomWidth: widthPercentageToDP(0.5), borderBottomColor: '#888888'}}>
                     <TouchableOpacity style={{alignItems: 'flex-end', marginTop: widthPercentageToDP(16), marginRight: widthPercentageToDP(14)}}
                                       onPress={ () => {this.navigategoBack()}}>
@@ -64,7 +89,7 @@ class SecessionScreen extends React.Component {
                         <View style={styles.inner}>
                             <SECText style={{textAlign: 'center', marginBottom: widthPercentageToDP(31)}}>본인 확인을 위해 비밀번호를 확인합니다</SECText>
                             <TextInput
-                                style={this.state.test == false ? styles.textInput : styles.textInput2}
+                                style={this.state.paddingNull == false ? styles.textInput : styles.textInput2}
                                 value={this.state.passwordCheck}
                                 onChangeText={passwordCheck => {
                                     this.setState({ passwordCheck });}}
@@ -72,8 +97,8 @@ class SecessionScreen extends React.Component {
                                 underlineColorAndroid={'transparent'}
                                 secureTextEntry={true}
                                 placeholder={'비밀번호'}
-                                onFocus={ () => {this.setState({test: true})}}
-                                onEndEditing={ () => {this.setState({test:false})}}
+                                onFocus={ () => {this.setState({paddingNull: true})}}
+                                onEndEditing={ () => {this.setState({paddingNull:false})}}
                             />
                             {this.secessionBtn()}
                             <View style={{ flex : 1 }} />
@@ -89,14 +114,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-   textInput: {
-       marginHorizontal: widthPercentageToDP(48),
-       paddingLeft: widthPercentageToDP(13),
-       marginBottom: widthPercentageToDP(206),
-       borderWidth: widthPercentageToDP(1),
-       borderRadius: widthPercentageToDP(8),
-       borderColor: '#dbdbdb'
-   },
+    textInput: {
+        marginHorizontal: widthPercentageToDP(48),
+        paddingLeft: widthPercentageToDP(13),
+        marginBottom: widthPercentageToDP(206),
+        borderWidth: widthPercentageToDP(1),
+        borderRadius: widthPercentageToDP(8),
+        borderColor: '#dbdbdb'
+    },
     textInput2: {
         marginHorizontal: widthPercentageToDP(48),
         paddingLeft: widthPercentageToDP(13),
@@ -106,11 +131,11 @@ const styles = StyleSheet.create({
         borderColor: '#dbdbdb'
     },
     secessionBtn: {
-       justifyContent: 'center',
-       marginHorizontal: widthPercentageToDP(43),
-       height: widthPercentageToDP(53),
-       borderRadius: widthPercentageToDP(8),
-       backgroundColor: '#cad5dd'
+        justifyContent: 'center',
+        marginHorizontal: widthPercentageToDP(43),
+        height: widthPercentageToDP(53),
+        borderRadius: widthPercentageToDP(8),
+        backgroundColor: '#cad5dd'
     },
     secessionBtnOk: {
         justifyContent: 'center',
@@ -126,4 +151,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
+    failmodal: state.myInfo.failmodal,
 }))(SecessionScreen);
