@@ -14,6 +14,7 @@ import * as bus from "./modules/bus/bus";
 import * as alarm from "./modules/alarm/alarm";
 import * as lock from "./modules/lock/lock";
 import * as hansungInfo from "./modules/hansungInfo/hansungInfo";
+import * as myInfo from './modules/myInfo/myInfo';
 
 const { dispatch } = store;
 
@@ -28,3 +29,4 @@ export const BusActions = bindActionCreators(bus, dispatch);
 export const AlarmActions = bindActionCreators(alarm, dispatch);
 export const LockActions = bindActionCreators(lock, dispatch);
 export const HansungInfoActions = bindActionCreators(hansungInfo, dispatch);
+export const MyInfoActions = bindActionCreators(myInfo, dispatch);

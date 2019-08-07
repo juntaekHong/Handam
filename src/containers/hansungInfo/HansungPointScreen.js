@@ -33,7 +33,7 @@ class HansungPointScreen extends React.Component {
     };
 
     nonSubjectPoint_check = async () => {
-        await HansungInfoActions.nonSubjectPointValueLoadingHandle(false);
+        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
         await HansungInfoActions.createHansungInfoNonSubjectPoint();
         await HansungInfoActions.getHansungInfo();
 
@@ -99,9 +99,6 @@ class HansungPointScreen extends React.Component {
     };
 
     render() {
-        if(this.props.nonSubjectPoint_value_loading == true && this.props.nonSubjectPoint_loading == true) {
-            this.nonSubjectPoint_check();
-        }
         return (
             <View style={styles.container}>
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()}/>
@@ -203,7 +200,16 @@ class HansungPointScreen extends React.Component {
                             </DetailView>
                         </View>
                         :
-                        this.certification_check()
+                        this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ?
+                            this.certification_check()
+                            :
+                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                                <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(128), height: widthPercentageToDP(36), borderRadius: widthPercentageToDP(8), backgroundColor: '#24a0fa', marginTop: widthPercentageToDP(26.5)}} onPress={ async () => {
+                                    await this.nonSubjectPoint_check();
+                                }}>
+                                    <Text style={{fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothicB, color: '#ffffff', textAlign: 'center'}}>불러오기</Text>
+                                </TouchableOpacity>
+                            </View>
                 }
             </View>
         )
@@ -226,6 +232,5 @@ export default connect((state) => ({
     hansunginfo: state.hansung.hansunginfo,
     nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
     nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
-    nonSubjectPoint_value_loading: state.hansung.nonSubjectPoint_value_loading,
     grades_status: state.hansung.grades_status,
 }))(HansungPointScreen);

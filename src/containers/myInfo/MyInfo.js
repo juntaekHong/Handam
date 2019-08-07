@@ -9,7 +9,11 @@ import {
   Platform,
   StyleSheet
 } from "react-native";
-import { widthPercentageToDP } from "../../utils/util";
+import {
+  removeData,
+  widthPercentageToDP,
+  removeAllData
+} from "../../utils/util";
 import {
   TitleView,
   AccountInfoView,
@@ -21,17 +25,27 @@ import { StandText, AccountDetailText } from "../../components/myInfo/Text";
 import fonts from "../../configs/fonts";
 import { CustomModal } from "../../components/common/Modal";
 import { connect } from "react-redux";
-import { CustomModalText } from "../../components/talk/Text";
+import {
+  CustomModalText,
+  CustomModalSmallText
+} from "../../components/myInfo/Text";
 import { UIActivityIndicator } from "react-native-indicators";
-import { HansungInfoActions } from "../../store/actionCreator";
+import { HansungInfoActions, LockActions } from "../../store/actionCreator";
 
 class MyInfo extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      deletemodal: false
+      // 인증서 삭제, 로그아웃, 회원탈퇴 모달
+      deletemodal: false,
+      logoutmodal: false,
+      secessionmodal: false
     };
+  }
+
+  componentWillMount() {
+    this.setState({ logoutmodal: false });
   }
 
   navigateCertification = () => {
@@ -58,7 +72,12 @@ class MyInfo extends React.Component {
       } else {
         await HansungInfoActions.deleteHansungInfo();
       }
-    }, 1000);
+    }, 500);
+  };
+
+  renderLogout = async () => {
+    await removeAllData();
+    this.props.navigation.navigate("signIn");
   };
 
   render() {
@@ -66,15 +85,46 @@ class MyInfo extends React.Component {
       <SafeAreaView>
         <ScrollView>
           <CustomModal
+            width={widthPercentageToDP(295)}
             height={widthPercentageToDP(311)}
-            children={<CustomModalText black1={"인증을 삭제하시겠습니까?"} />}
+            children={<CustomModalText black={"인증을 삭제하시겠습니까?"} />}
             visible={this.state.deletemodal}
             footerHandler={async () => {
               await HansungInfoActions.myInfoLoadingHandle(true);
+              await HansungInfoActions.professorTextHandle(false);
               this.setState({ deletemodal: false });
               await this.deletehansungInfo();
             }}
             closeHandler={() => this.setState({ deletemodal: false })}
+          />
+          <CustomModal
+            width={widthPercentageToDP(295)}
+            height={widthPercentageToDP(311)}
+            children={<CustomModalText black={"로그아웃 하시겠습니까?"} />}
+            visible={this.state.logoutmodal}
+            footerHandler={async () => {
+              await this.renderLogout();
+              this.setState({ logoutmodal: false });
+            }}
+            closeHandler={() => this.setState({ logoutmodal: false })}
+          />
+          <CustomModal
+            width={widthPercentageToDP(325)}
+            height={widthPercentageToDP(311)}
+            children={
+              <CustomModalSmallText
+                black={
+                  "탈퇴 시 모든 정보가 즉시 삭제되며 복구할 수 없습니다.\n모든 정보 삭제에 동의하시면 탈퇴를 진행하세요."
+                }
+              />
+            }
+            visible={this.state.secessionmodal}
+            footerHandler={async () => {
+              this.setState({ secessionmodal: false });
+              this.props.navigation.navigate("Secession");
+            }}
+            footerText={"계속하기"}
+            closeHandler={() => this.setState({ secessionmodal: false })}
           />
 
           <TitleView>
@@ -389,7 +439,9 @@ class MyInfo extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <AccountDetailText>내가 쓴 글</AccountDetailText>
+              <TouchableOpacity onPress={() => {}}>
+                <AccountDetailText>내가 쓴 글</AccountDetailText>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {}}
@@ -411,7 +463,9 @@ class MyInfo extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <AccountDetailText>내가 스크랩한 글</AccountDetailText>
+              <TouchableOpacity onPress={() => {}}>
+                <AccountDetailText>내가 스크랩한 글</AccountDetailText>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {}}
@@ -433,7 +487,9 @@ class MyInfo extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <AccountDetailText>계정 정보</AccountDetailText>
+              <TouchableOpacity onPress={() => {}}>
+                <AccountDetailText>계정정보</AccountDetailText>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {}}
@@ -455,10 +511,18 @@ class MyInfo extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <AccountDetailText>로그아웃</AccountDetailText>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ logoutmodal: true });
+                }}
+              >
+                <AccountDetailText>로그아웃</AccountDetailText>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
-                onPress={() => {}}
+                onPress={() => {
+                  this.setState({ logoutmodal: true });
+                }}
               >
                 <Image
                   style={{
@@ -477,10 +541,18 @@ class MyInfo extends React.Component {
                 justifyContent: "space-between"
               }}
             >
-              <AccountDetailText>회원탈퇴</AccountDetailText>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ secessionmodal: true });
+                }}
+              >
+                <AccountDetailText>회원탈퇴</AccountDetailText>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
-                onPress={() => {}}
+                onPress={() => {
+                  this.setState({ secessionmodal: true });
+                }}
               >
                 <Image
                   style={{
@@ -542,6 +614,7 @@ const styles = StyleSheet.create({
 export default connect(state => ({
   hansunginfo: state.hansung.hansunginfo,
   myInfo_loading: state.hansung.myInfo_loading,
+  professor_text: state.hansung.professor_text,
 
   userNickName: state.signin.user.userNickName,
   userId: state.signin.user.userId,
