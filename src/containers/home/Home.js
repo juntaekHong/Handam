@@ -13,7 +13,8 @@ import {
   HomeActions,
   CommonActions,
   AlarmActions,
-  HansungInfoActions
+  HansungInfoActions,
+  LockActions
 } from "../../store/actionCreator";
 import moment from "moment";
 import {
@@ -57,6 +58,8 @@ const Home = ({
 
   const initCall = useCallback(async () => {
     await AlarmActions.alarmInit();
+    await CommonActions.commonInit();
+    await LockActions.lockInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
     await AlarmActions.alarmIsPostsAction(
