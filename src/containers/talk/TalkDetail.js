@@ -30,7 +30,6 @@ import {
 } from "../../components/talk/Text";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { ImageModal } from "../../components/talk/Modal";
-import { AlertModal } from "../../components/community/Modal";
 import {
   WriteContainer,
   TextInputContainer,
@@ -451,11 +450,6 @@ class TalkDetail extends Component {
                 ];
           }}
           closeHandler={() => this.setState({ scrapmodal: false })}
-        />
-
-        <AlertModal
-          visible={this.props.alertModal}
-          text={this.props.alertText}
         />
 
         <View
@@ -893,7 +887,5 @@ export default connect(state => ({
 
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,
-  imageIndex: state.talk.imageIndex,
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText
+  imageIndex: state.talk.imageIndex
 }))(TalkDetail);

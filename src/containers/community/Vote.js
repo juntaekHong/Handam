@@ -40,6 +40,7 @@ import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 class Vote extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       form: "reply",
       replyIndex: null,

@@ -15,7 +15,7 @@ import {
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
-import { TalkActions } from "../../store/actionCreator";
+import { RestaurantActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 
 import ImageCropPicker from "react-native-image-crop-picker";
@@ -26,40 +26,36 @@ import {
   AnonymousONText
 } from "../../components/talk/Text";
 import { CustomModal } from "../../components/common/Modal";
-import { AlertModal } from "../../components/talk/Modal";
 
-class TalkWrite extends Component {
+class RestaurantWrite extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       title:
         this.props.navigation.state.params.form == "update"
-          ? this.props.getPosts.title
+          ? this.props.getRestaurantReply.title
           : "",
       content:
         this.props.navigation.state.params.form == "update"
-          ? this.props.getPosts.content
+          ? this.props.getRestaurantReply.content
           : "",
-      category: this.props.categoryList[this.props.categoryIndex].str,
-      categoryExplain: this.props.categoryList[this.props.categoryIndex]
-        .explain,
       clicked: false,
-      imageTEMPArray:
-        this.props.getPosts.imagePath != undefined &&
-        this.props.getPosts.imagePath.length > 0
-          ? eval("(" + this.props.getPosts.imagePath[0].path + ")").image
-          : [],
-      imageArray:
-        this.props.getPosts.imagePath != undefined &&
-        this.props.getPosts.imagePath.length > 0
-          ? eval("(" + this.props.getPosts.imagePath[0].path + ")").image
-          : [],
-      imageNumber:
-        this.props.getPosts.imagePath != undefined &&
-        this.props.getPosts.imagePath.length > 0
-          ? this.props.getPosts.imagePath.length
-          : 0,
+      // imageTEMPArray:
+      //   this.props.getRestaurantReply.imagePath != undefined &&
+      //   this.props.getRestaurantReply.imagePath.length > 0
+      //     ? eval("(" + this.props.getRestaurantReply.imagePath[0].path + ")").image
+      //     : [],
+      // imageArray:
+      //   this.props.getRestaurantReply.imagePath != undefined &&
+      //   this.props.getRestaurantReply.imagePath.length > 0
+      //     ? eval("(" + this.props.getRestaurantReply.imagePath[0].path + ")").image
+      //     : [],
+      // imageNumber:
+      //   this.props.getRestaurantReply.imagePath != undefined &&
+      //   this.props.getRestaurantReply.imagePath.length > 0
+      //     ? this.props.getRestaurantReply.imagePath.length
+      //     : 0,
       imageSize: 0,
       deletemodal: false,
       imageinfo: null,
@@ -68,12 +64,8 @@ class TalkWrite extends Component {
     };
   }
 
-  navigationBack = () => {
-    this.props.navigation.goBack();
-  };
-
-  navigateTalkAbout = () => {
-    this.props.navigation.navigate("TalkAbout");
+  navigateRestaurantDetail = () => {
+    this.props.navigation.navigate("RestaurantDetail");
   };
 
   checkSpace = str => {
@@ -96,10 +88,6 @@ class TalkWrite extends Component {
         cropperToolbarTitle: ""
       });
 
-      // console.log('posts >> ')
-      // console.log(Object.keys(image));
-      // console.log('posts end')
-
       await this.setState({ imageSize: this.state.imageSize + image.size });
 
       if (this.state.imageSize < 10000000) {
@@ -118,10 +106,10 @@ class TalkWrite extends Component {
   };
 
   renderAlertModal = rendertext => {
-    TalkActions.handleAlertModal(true);
-    TalkActions.handleAlertText(rendertext);
+    RestaurantActions.handleAlertModal(true);
+    RestaurantActions.handleAlertText(rendertext);
     setTimeout(() => {
-      TalkActions.handleAlertModal(false);
+      RestaurantActions.handleAlertModal(false);
     }, 1000);
   };
 
@@ -129,7 +117,6 @@ class TalkWrite extends Component {
     if (
       this.state.title != "" &&
       this.state.content != "" &&
-      this.state.category != "" &&
       this.checkSpace(this.state.title) &&
       this.checkSpace(this.state.content) &&
       this.state.clicked == false
@@ -141,77 +128,76 @@ class TalkWrite extends Component {
           onPress={async () => {
             this.setState({ clicked: true });
 
-            const formData = new FormData();
-            const prevImage = new Array(); //유지 이미지 배열
-            const removedImage = new Array(); //삭제 이미지 배열
+            // const formData = new FormData();
+            // const prevImage = new Array(); //유지 이미지 배열
+            // const removedImage = new Array(); //삭제 이미지 배열
 
-            if (this.state.imageArray != null) {
-              this.state.imageArray.map((item, i) => {
-                if (typeof item == "string") {
-                  this.state.imageTEMPArray.splice(
-                    this.state.imageTEMPArray.indexOf(item),
-                    1
-                  ); //삭제된 s3 이미지 걸러내기
-                  prevImage.push(item);
-                } else {
-                  formData.append("upload", {
-                    uri: item.path,
-                    type: `${item.mime}`,
-                    name: `${i}.${item.mime.substr(
-                      item.mime.indexOf("/") + 1,
-                      item.mime.length - 1
-                    )}`
-                  });
-                }
-              });
-              if (this.state.imageTEMPArray != null) {
-                this.state.imageTEMPArray.map(item => {
-                  removedImage.push(item);
-                });
-              }
-              if (prevImage.length != 0)
-                formData.append(
-                  "prevPath",
-                  JSON.stringify({ image: prevImage })
-                );
-              if (removedImage.length != 0)
-                formData.append(
-                  "removedPath",
-                  JSON.stringify({ image: removedImage })
-                );
-            }
-            formData.append("postsCategoryIndex", this.props.categoryIndex);
-            formData.append("title", this.state.title);
-            formData.append("content", this.state.content);
-            formData.append("isAnonymous", this.state.anonymous);
+            // if (this.state.imageArray != null) {
+            //   this.state.imageArray.map((item, i) => {
+            //     if (typeof item == "string") {
+            //       this.state.imageTEMPArray.splice(
+            //         this.state.imageTEMPArray.indexOf(item),
+            //         1
+            //       ); //삭제된 s3 이미지 걸러내기
+            //       prevImage.push(item);
+            //     } else {
+            //       formData.append("upload", {
+            //         uri: item.path,
+            //         type: `${item.mime}`,
+            //         name: `${i}.${item.mime.substr(
+            //           item.mime.indexOf("/") + 1,
+            //           item.mime.length - 1
+            //         )}`
+            //       });
+            //     }
+            //   });
+            //   if (this.state.imageTEMPArray != null) {
+            //     this.state.imageTEMPArray.map(item => {
+            //       removedImage.push(item);
+            //     });
+            //   }
+            //   if (prevImage.length != 0)
+            //     formData.append(
+            //       "prevPath",
+            //       JSON.stringify({ image: prevImage })
+            //     );
+            //   if (removedImage.length != 0)
+            //     formData.append(
+            //       "removedPath",
+            //       JSON.stringify({ image: removedImage })
+            //     );
+            // }
+
+            // formData.append("title", this.state.title);
+            // formData.append("content", this.state.content);
+            // formData.append("isAnonymous", this.state.anonymous);
+
+            const body = new Object();
+            body.title = this.state.title;
+            body.content = this.state.content;
 
             if (this.props.navigation.state.params.form == "update") {
-              await TalkActions.updatePosts(
-                formData,
-                this.props.getPosts.postsIndex
-              );
+              // await RestaurantActions.updateRestaurantReply(
+              //   formData,
+              //   this.props.getRestaurant.restaurantIndex
+              // );
             } else {
-              await TalkActions.createPosts(formData);
+              // await RestaurantActions.createRestaurantReply(
+              //   formData,
+              //   this.props.getRestaurant.restaurantIndex
+              // );
+              await RestaurantActions.createRestaurantReply(
+                body,
+                this.props.getRestaurant.restaurantIndex
+              );
             }
 
-            await TalkActions.initPostList();
-            await TalkActions.handleFilter(
-              `postsCategoryIndex eq ${this.props.categoryIndex}`
+            await RestaurantActions.pageListRestaurantReply(
+              this.props.getRestaurant.restaurantIndex
             );
-            await TalkActions.pageListPosts(
-              this.props.filter,
-              this.props.orderby,
-              this.props.postsList.length / 6,
-              6
-            );
-            await TalkActions.pageListPosts(
-              this.props.filter,
-              "count DESC",
-              1,
-              2
-            );
-            this.navigateTalkAbout();
-            this.renderAlertModal("게시글을 업로드했습니다.");
+
+            this.navigateRestaurantDetail();
+            this.renderAlertModal("리뷰를 업로드했습니다.");
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>
@@ -255,10 +241,6 @@ class TalkWrite extends Component {
             this.setState({ deletemodal: false });
           }}
           closeHandler={() => this.setState({ deletemodal: false })}
-        />
-        <AlertModal
-          visible={this.state.alertmodal}
-          text={this.state.alerttext}
         />
         <View
           style={{
@@ -339,7 +321,7 @@ class TalkWrite extends Component {
                   multiline={true}
                 />
               </View>
-              {this.state.imageArray.length != 0 ? (
+              {/* {this.state.imageArray.length != 0 ? (
                 <FlatList
                   style={{
                     flexGrow: 1,
@@ -388,86 +370,10 @@ class TalkWrite extends Component {
                     );
                   }}
                 />
-              ) : null}
+              ) : null} */}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <View
-          style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(58),
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
-              style={{
-                marginLeft: widthPercentageToDP(16),
-                marginRight: widthPercentageToDP(10)
-              }}
-              onPress={() => this.onClickSelectPicture()}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={require("../../../assets/image/community/image.png")}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: "#c3c3c3",
-                fontSize: widthPercentageToDP(13),
-                fontFamily: fonts.nanumBarunGothic
-              }}
-            >
-              사진추가 {this.state.imageNumber}/5 최대 10MB
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
-              onPress={async () => {
-                this.state.anonymous == 0
-                  ? await this.setState({ anonymous: 1 })
-                  : await this.setState({ anonymous: 0 });
-              }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={
-                  this.state.anonymous == 0
-                    ? require("../../../assets/image/community/anonymous_off.png")
-                    : require("../../../assets/image/community/anonymous_on.png")
-                }
-              />
-            </TouchableOpacity>
-            {this.state.anonymous == 0 ? (
-              <AnonymousOFFText
-                style={{
-                  marginRight: widthPercentageToDP(18),
-                  marginLeft: widthPercentageToDP(2)
-                }}
-              >
-                익명
-              </AnonymousOFFText>
-            ) : (
-              <AnonymousONText
-                style={{
-                  marginRight: widthPercentageToDP(18),
-                  marginLeft: widthPercentageToDP(2)
-                }}
-              >
-                익명
-              </AnonymousONText>
-            )}
-          </View>
-        </View>
       </SafeAreaView>
     );
   }
@@ -521,15 +427,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  categoryList: state.talk.categoryList,
-  categoryIndex: state.talk.categoryIndex,
-  postsList: state.talk.postsList,
-
-  getPosts: state.talk.getPosts,
-
-  filter: state.talk.filter,
-  orderby: state.talk.orderby,
-
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText
-}))(TalkWrite);
+  getRestaurant: state.restaurant.getRestaurant,
+  getRestaurantReply: state.restaurant.getRestaurantReply
+}))(RestaurantWrite);

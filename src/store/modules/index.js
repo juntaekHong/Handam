@@ -8,6 +8,7 @@ import signin from "./sign/signin";
 import common from "./common/common";
 import talk from "./community/talk";
 import vote from "./community/vote";
+import restaurant from "./community/restaurant";
 import signup from "./sign/signup";
 import home from "./home/home";
 import bus from "./bus/bus";
@@ -21,6 +22,7 @@ export default combineReducers({
   common,
   talk,
   vote,
+  restaurant,
   signup,
   home,
   bus,

@@ -95,15 +95,21 @@ export const PostsListItem = props => {
           <ImageImage
             source={require("../../../assets/image/community/images.png")}
           />
-          <ImageCountText>{props.data.imageCount}</ImageCountText>
+          <ImageCountText>
+            {props.data.imageCount}
+          </ImageCountText>
           <LikeImage
             source={require("../../../assets/image/community/likes.png")}
           />
-          <ImageCountText>{props.data.goodCount}</ImageCountText>
+          <ImageCountText>
+            {props.data.goodCount}
+          </ImageCountText>
           <ReplyImage
             source={require("../../../assets/image/community/replys.png")}
           />
-          <ImageCountText>{props.data.postsReplyCount}</ImageCountText>
+          <ImageCountText>
+            {props.data.postsReplyCount}
+          </ImageCountText>
         </ImageContainer>
       </BottomContainer>
     </Post>
