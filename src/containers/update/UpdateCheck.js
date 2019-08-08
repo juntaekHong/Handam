@@ -11,7 +11,6 @@ import {
   HansungInfoActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
-import { getData, storeData } from "../../utils/util";
 
 class UpdateCheck extends PureComponent {
   constructor(props) {
@@ -22,26 +21,28 @@ class UpdateCheck extends PureComponent {
   }
 
   async componentDidMount() {
-    const auth = await AuthActions.checkIntro();
-    await CommonActions.commonInit();
-    await LockActions.lockInit();
-    CommonActions.getAppVersion();
-    AlarmActions.alarmInit();
-    CommonActions.getTrack();
-    CommonActions.getAdmissionYear();
-    CommonActions.getTerm1();
-    CommonActions.getTerm2();
+    try {
+      const auth = await AuthActions.checkIntro();
+      await CommonActions.commonInit();
+      await LockActions.lockInit();
+      await AlarmActions.alarmInit();
+      CommonActions.getAppVersion();
+      CommonActions.getTrack();
+      CommonActions.getAdmissionYear();
+      CommonActions.getTerm1();
+      CommonActions.getTerm2();
 
-    OneSignal.getPermissionSubscriptionState(async status => {
-      const result = await SignInActions.checkToken(status.userId);
-      // if (result) await HansungInfoActions.getHansungInfo();
-      if (auth) {
-        if (this.props.passLock) this.props.navigation.navigate("locksolve");
-        else this.props.navigation.navigate(this.props.signin_navigate);
-      } else {
-        this.props.navigation.navigate("intro");
-      }
-    });
+      OneSignal.getPermissionSubscriptionState(async status => {
+        const result = await SignInActions.checkToken(status.userId);
+        if (result) await HansungInfoActions.getHansungInfo();
+        if (auth) {
+          if (this.props.passLock) this.props.navigation.navigate("locksolve");
+          else this.props.navigation.navigate(this.props.signin_navigate);
+        } else {
+          this.props.navigation.navigate("intro");
+        }
+      });
+    } catch (e) {}
   }
 
   render() {

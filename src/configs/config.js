@@ -17,8 +17,8 @@ const init = {
     prod: "http://shuttle.handam.tk.s3-website.ap-northeast-2.amazonaws.com"
   },
   pushKey: {
-    dev: "6e80b31a-035d-4e06-a1d4-f5a6dc2dc03e",
-    prod: "387bb36c-0500-4ede-8a9a-64492267cfae"
+    dev: "4f682cdd-46b2-470f-976c-e61a359fc147",
+    prod: "73a21036-6f4c-47d8-8ecb-d86aa26de4aa"
   }
 };
 
@@ -34,6 +34,13 @@ const config = {
   seongbuk: "107900003",
   androidVersion: "2.1.0",
   iosVersion: "2.1.0",
+  iosStore: {
+    appID: 1437741744,
+    appName: "한담"
+  },
+  androidStore: {
+    packageName: "com.handamproject"
+  },
   signDataKey: [
     "token",
     "userId",
@@ -42,10 +49,7 @@ const config = {
     "bio_locking",
     "lock_pass",
     "schedule_color"
-  ],
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkluZGV4IjozNTUsInRva2VuSWQiOiJ0bHN3bnN4b0BuYXZlci5jb20iLCJ0b2tlbk5pY2tuYW1lIjoiMHVmOWRmZHNhZmQiLCJ0b2tlbk1ham9yIjoi7ZiE64yA66y07JqpIOyghOqztSIsInRva2VuTWlub3IiOm51bGwsInRva2VuRG91YmxlTWFqb3IiOm51bGwsInRva2VuQ29ubmVjdGVkTWFqb3IiOm51bGwsInRva2VuSW5WYWxpZGF0aW9uIjoxLCJ0b2tlbkF2YXRhciI6bnVsbCwidG9rZW5TdGF0dXMiOiJBQ1RJVkUiLCJpYXQiOjE1NjIxNTcwMTJ9.0ZP-p-7rv5HpLS6Ny73HcZ9x8wuqO3awu07FwrOuyrM",
-  userId: "tlswnsxo@naver.com"
+  ]
 };
 
 export default config;

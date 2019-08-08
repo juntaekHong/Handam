@@ -15,6 +15,8 @@
 		00E356F31AD99517003FC87E /* HandamProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* HandamProjectTests.m */; };
 		0102E29198784A9A8DFEB7D7 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C6700974B74A35AC90D486 /* libRCTOneSignal.a */; };
 		04859A15293A408CADCD59C9 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1820C92CD9664352B9320A43 /* libRNVectorIcons-tvOS.a */; };
+		07AB8B3122F081A700132A9D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB8AF722F081A700132A9D /* UIKit.framework */; };
+		07AB8B3322F081B500132A9D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AB8B3222F081B500132A9D /* SystemConfiguration.framework */; };
 		07BF5E4422E73C3C0057C9FA /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */; };
 		07BF5E4522E73C3C0057C9FA /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		07BF5E4822E73C460057C9FA /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BF5E4722E73C460057C9FA /* QBImagePicker.framework */; };
@@ -527,6 +529,8 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HandamProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandamProjectTests.m; sourceTree = "<group>"; };
 		02DA2C8A6A4E43A8BBE1F5DA /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCAsyncStorage.a; sourceTree = "<group>"; };
+		07AB8AF722F081A700132A9D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		07AB8B3222F081B500132A9D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		07BF5E4322E73C3C0057C9FA /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BF5E4722E73C460057C9FA /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D0C3DF22CB7A160016364B /* HandamProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HandamProject.entitlements; path = HandamProject/HandamProject.entitlements; sourceTree = "<group>"; };
@@ -616,6 +620,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07AB8B3322F081B500132A9D /* SystemConfiguration.framework in Frameworks */,
+				07AB8B3122F081A700132A9D /* UIKit.framework in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -935,6 +941,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07AB8B3222F081B500132A9D /* SystemConfiguration.framework */,
+				07AB8AF722F081A700132A9D /* UIKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
@@ -1166,6 +1174,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = XS5MCXNWJU;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1982,6 +1991,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
@@ -2010,6 +2021,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HandamProject;
 				PRODUCT_NAME = HandamProject;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2019,6 +2031,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
 				HEADER_SEARCH_PATHS = (
@@ -2046,6 +2060,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HandamProject;
 				PRODUCT_NAME = HandamProject;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
