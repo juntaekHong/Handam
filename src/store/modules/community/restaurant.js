@@ -21,11 +21,13 @@ const RESTAURANTCATEGORY = "restaurant/RESTAURANTCATEGORY";
 const INIT_RESTAURANTLIST = "restaurant/INIT_RESTAURANTLIST";
 const RESTAURANTLIST = "restaurant/RESTAURANTLIST";
 const GETRESTAURANT = "restaurant/GETRESTAURANT";
+const PUTSUBSCRIBER = "restaurant/PUTSUBSCRIBER";
 
 const restaurantCategoryAction = createAction(RESTAURANTCATEGORY);
 const init_restaurantlistAction = createAction(INIT_RESTAURANTLIST);
 const restaurantListAction = createAction(RESTAURANTLIST);
 const getRestaurantAction = createAction(GETRESTAURANT);
+const putSubscriberAction = createAction(PUTSUBSCRIBER);
 
 //식당 댓글
 const RESTAURANT_REPLYLIST = "restaurant/RESTAURANT_REPLYLIST";
@@ -48,6 +50,7 @@ const initState = {
   categoryList: [{ restaurantCategoryName: "전체 맛집", order: 0 }],
   restaurantList: [],
   getRestaurant: null,
+  isGood: null,
 
   //식당 댓글
   restaurantReplyList: [],
@@ -117,6 +120,22 @@ export const getRestaurant = restaurantIndex => async dispatch => {
 
   if (jsonData.statusCode == 200) {
     dispatch(getRestaurantAction(jsonData.result));
+    return true;
+  } else {
+    throw "error";
+  }
+};
+
+export const putRestaurantSubscriber = good => async dispatch => {
+  const token = await getData("token");
+  const jsonData = await api.put(
+    `/restaurantSubscriber/restaurantIndex/${good.restaurantIndex}`,
+    { body: good, token: token }
+  );
+
+  console.log(jsonData.result);
+  if (jsonData.statusCode == 200) {
+    dispatch(putSubscriberAction(jsonData.result));
     return true;
   } else {
     throw "error";
@@ -239,6 +258,11 @@ export default handleActions(
     [GETRESTAURANT]: (state, { payload }) =>
       produce(state, draft => {
         draft.getRestaurant = payload;
+        draft.isGood = payload.isGood;
+      }),
+    [PUTSUBSCRIBER]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.isGood = payload.isGood;
       }),
 
     //식당 댓글

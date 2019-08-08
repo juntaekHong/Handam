@@ -22,7 +22,8 @@ class RestaurantDetail extends Component {
     this.state = {
       form: "write",
       deletemodal: false,
-      who: "me"
+      who: "me",
+      isGood: this.props.isGood
     };
 
     this.MenuOrder();
@@ -44,6 +45,11 @@ class RestaurantDetail extends Component {
       else if (b.priority == null) return -1;
       return a.priority - b.priority;
     });
+  };
+
+  putLike = bool => {
+    this.setState({ isGood: bool }),
+      this.props.navigation.state.params.handler({ isGood: bool });
   };
 
   render() {
@@ -197,13 +203,26 @@ class RestaurantDetail extends Component {
               </View>
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const good = new Object();
+                this.state.isGood == 0
+                  ? [(good.isGood = 1), this.putLike(1)]
+                  : [(good.isGood = 0), this.putLike(0)];
+                good.restaurantIndex = this.props.getRestaurant.restaurantIndex;
+                RestaurantActions.putRestaurantSubscriber(good);
+              }}
+            >
               <Image
                 style={{
                   width: widthPercentageToDP(21),
                   height: widthPercentageToDP(21)
                 }}
-                source={require("../../../assets/image/community/heart.png")}
+                source={
+                  this.state.isGood == 1
+                    ? require("../../../assets/image/community/heart_color.png")
+                    : require("../../../assets/image/community/heart.png")
+                }
               />
             </TouchableOpacity>
           </View>
@@ -591,6 +610,7 @@ class RestaurantDetail extends Component {
 
 export default connect(state => ({
   getRestaurant: state.restaurant.getRestaurant,
+  isGood: state.restaurant.isGood,
   restaurantReplyList: state.restaurant.restaurantReplyList,
   bottomModal: state.restaurant.bottomModal
 }))(RestaurantDetail);
