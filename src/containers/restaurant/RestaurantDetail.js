@@ -35,7 +35,8 @@ class RestaurantDetail extends Component {
 
   navigateRestaurantWrite = () => {
     this.props.navigation.navigate("RestaurantWrite", {
-      form: this.state.form
+      form: this.state.form,
+      handler: this.props.navigation.state.params.handler
     });
   };
 

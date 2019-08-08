@@ -14,7 +14,10 @@ import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
-import { PostsListItem } from "../../components/talk/Button";
+import {
+  PostsListItem,
+  ReportedPostsListItem
+} from "../../components/talk/Button";
 
 class TalkSearch extends Component {
   constructor(props) {
@@ -49,7 +52,7 @@ class TalkSearch extends Component {
   };
 
   navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail");
+    this.props.navigation.navigate("TalkDetail", { from: "search" });
   };
 
   pageListPosts = async () => {
@@ -73,7 +76,7 @@ class TalkSearch extends Component {
   };
 
   renderPostslist = () => {
-    if (this.state.text !== "" && this.props.total !== 0) {
+    if (this.props.total !== 0) {
       return (
         <FlatList
           style={styles.flatlist}
@@ -88,19 +91,30 @@ class TalkSearch extends Component {
           ListFooterComponent={this.renderListFooter}
           data={this.props.postsList}
           renderItem={({ item, index }) => {
-            return (
-              <PostsListItem
-                handler={async () => {
-                  await TalkActions.getPosts(item.postsIndex);
-                  await TalkActions.pageListPostsReply(
-                    "page=1&count=100",
-                    item.postsIndex
-                  );
-                  this.navigateTalkDetail();
-                }}
-                data={item}
-              />
-            );
+            if (item.status == "ACTIVE") {
+              return (
+                <PostsListItem
+                  handler={async () => {
+                    await TalkActions.getPosts(item.postsIndex);
+                    await TalkActions.pageListPostsReply(
+                      "page=1&count=100",
+                      item.postsIndex
+                    );
+                    this.navigateTalkDetail();
+                  }}
+                  data={item}
+                />
+              );
+            } else {
+              return (
+                <ReportedPostsListItem
+                  handler={() => {
+                    console.log("신고당한 댓글은 핸들러가 없지요.");
+                  }}
+                  data={item}
+                />
+              );
+            }
           }}
         />
       );

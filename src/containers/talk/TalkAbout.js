@@ -53,7 +53,7 @@ class TalkAbout extends Component {
   };
 
   navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail");
+    this.props.navigation.navigate("TalkDetail", { from: "about" });
   };
 
   navigateTalkWrite = () => {

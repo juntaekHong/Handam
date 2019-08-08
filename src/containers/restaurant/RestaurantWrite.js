@@ -65,7 +65,9 @@ class RestaurantWrite extends Component {
   }
 
   navigateRestaurantDetail = () => {
-    this.props.navigation.navigate("RestaurantDetail");
+    this.props.navigation.navigate("RestaurantDetail", {
+      handler: this.props.navigation.state.params.handler
+    });
   };
 
   checkSpace = str => {
@@ -77,41 +79,41 @@ class RestaurantWrite extends Component {
   };
 
   //이미지 선택
-  onClickSelectPicture = async () => {
-    try {
-      let image = await ImageCropPicker.openPicker({
-        width: 200,
-        height: 200,
-        mediaType: "photo",
-        // cropping: true,
-        includeBase64: true,
-        cropperToolbarTitle: ""
-      });
+  // onClickSelectPicture = async () => {
+  //   try {
+  //     let image = await ImageCropPicker.openPicker({
+  //       width: 200,
+  //       height: 200,
+  //       mediaType: "photo",
+  //       // cropping: true,
+  //       includeBase64: true,
+  //       cropperToolbarTitle: ""
+  //     });
 
-      await this.setState({ imageSize: this.state.imageSize + image.size });
+  //     await this.setState({ imageSize: this.state.imageSize + image.size });
 
-      if (this.state.imageSize < 10000000) {
-        //이미지 총 합이 10MB보다 작으면
-        await this.state.imageArray.push(image);
-        await this.setState({ imageNumber: this.state.imageNumber + 1 });
-      } else {
-        this.setState({ imageSize: this.state.imageSize - image.size });
-      }
+  //     if (this.state.imageSize < 10000000) {
+  //       //이미지 총 합이 10MB보다 작으면
+  //       await this.state.imageArray.push(image);
+  //       await this.setState({ imageNumber: this.state.imageNumber + 1 });
+  //     } else {
+  //       this.setState({ imageSize: this.state.imageSize - image.size });
+  //     }
 
-      this.renderAlertModal("선택하신 이미지가 첨부되었습니다.");
-    } catch (err) {
-      // err.code : E_PICKER_CANCELLED,
-      console.log(err);
-    }
-  };
+  //     this.renderAlertModal("선택하신 이미지가 첨부되었습니다.");
+  //   } catch (err) {
+  //     // err.code : E_PICKER_CANCELLED,
+  //     console.log(err);
+  //   }
+  // };
 
-  renderAlertModal = rendertext => {
-    RestaurantActions.handleAlertModal(true);
-    RestaurantActions.handleAlertText(rendertext);
-    setTimeout(() => {
-      RestaurantActions.handleAlertModal(false);
-    }, 1000);
-  };
+  // renderAlertModal = rendertext => {
+  //   RestaurantActions.handleAlertModal(true);
+  //   RestaurantActions.handleAlertText(rendertext);
+  //   setTimeout(() => {
+  //     RestaurantActions.handleAlertModal(false);
+  //   }, 1000);
+  // };
 
   renderSubmit = () => {
     if (
@@ -197,7 +199,7 @@ class RestaurantWrite extends Component {
             );
 
             this.navigateRestaurantDetail();
-            this.renderAlertModal("리뷰를 업로드했습니다.");
+            // this.renderAlertModal("리뷰를 업로드했습니다.");
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>

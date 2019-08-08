@@ -168,7 +168,7 @@ export const pageListRestaurantReply = restaurantIndex => async dispatch => {
   );
 
   if (jsonData.statusCode == 200) {
-    dispatch(pageListRestaurantReplyAction(jsonData.result));
+    dispatch(pageListRestaurantReplyAction(jsonData.result.reverse()));
     return true;
   } else {
     throw "error";

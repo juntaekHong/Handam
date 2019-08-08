@@ -206,7 +206,11 @@ class TalkWrite extends Component {
               2
             );
             this.navigateTalkAbout();
-            this.renderAlertModal("게시글을 업로드했습니다.");
+            if (this.props.navigation.state.params.form == "update") {
+              this.renderAlertModal("게시글을 업데이트했습니다.");
+            } else {
+              this.renderAlertModal("게시글을 업로드했습니다.");
+            }
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>

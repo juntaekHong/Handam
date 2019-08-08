@@ -91,15 +91,6 @@ class Vote extends Component {
     }
   };
 
-  checkUser = async () => {
-    // const userId = await getData("userId"); //유저닉네임으로 변경해야함
-    // if (this.props.getPosts.userNickName == userId) {
-    //   this.setState({ who: "me" });
-    // } else {
-    //   this.setState({ who: "you" });
-    // }
-  };
-
   createVote = async index => {
     const vote = new Object();
     vote.voteTopicIndex = this.props.getVote.voteTopic.voteTopicIndex;
@@ -137,7 +128,7 @@ class Vote extends Component {
           height={widthPercentageToDP(201.9)}
           children={
             <CustomModalBlackText>
-              해당 글을 삭제하겠습니까?
+              해당 댓글을 삭제하겠습니까?
             </CustomModalBlackText>
           }
           visible={this.state.deletemodal}
@@ -247,9 +238,12 @@ class Vote extends Component {
                     <ReplyView
                       key={index}
                       isButton={false}
-                      isdotsButton={false}
+                      isdotsButton={
+                        item.userNickName == this.props.userNickName
+                          ? true
+                          : false
+                      }
                       handler={async () => {
-                        this.checkUser();
                         await this.setState({
                           replyinfo: item,
                           temp_reply: item.content,
@@ -375,5 +369,7 @@ export default connect(state => ({
   voteReplyList: state.vote.voteReplyList,
   c_checkVote: state.vote.c_checkVote,
   enable: state.vote.enable,
-  bottomModal: state.vote.bottomModal
+  bottomModal: state.vote.bottomModal,
+
+  userNickName: state.signin.user.userNickName
 }))(Vote);
