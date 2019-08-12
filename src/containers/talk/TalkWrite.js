@@ -26,7 +26,6 @@ import {
   AnonymousONText
 } from "../../components/talk/Text";
 import { CustomModal } from "../../components/common/Modal";
-import { AlertModal } from "../../components/talk/Modal";
 
 class TalkWrite extends Component {
   constructor(props) {
@@ -41,9 +40,6 @@ class TalkWrite extends Component {
         this.props.navigation.state.params.form == "update"
           ? this.props.getPosts.content
           : "",
-      category: this.props.categoryList[this.props.categoryIndex].str,
-      categoryExplain: this.props.categoryList[this.props.categoryIndex]
-        .explain,
       clicked: false,
       imageTEMPArray:
         this.props.getPosts.imagePath != undefined &&
@@ -129,7 +125,6 @@ class TalkWrite extends Component {
     if (
       this.state.title != "" &&
       this.state.content != "" &&
-      this.state.category != "" &&
       this.checkSpace(this.state.title) &&
       this.checkSpace(this.state.content) &&
       this.state.clicked == false
@@ -211,7 +206,11 @@ class TalkWrite extends Component {
               2
             );
             this.navigateTalkAbout();
-            this.renderAlertModal("게시글을 업로드했습니다.");
+            if (this.props.navigation.state.params.form == "update") {
+              this.renderAlertModal("게시글을 업데이트했습니다.");
+            } else {
+              this.renderAlertModal("게시글을 업로드했습니다.");
+            }
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>
@@ -255,10 +254,6 @@ class TalkWrite extends Component {
             this.setState({ deletemodal: false });
           }}
           closeHandler={() => this.setState({ deletemodal: false })}
-        />
-        <AlertModal
-          visible={this.state.alertmodal}
-          text={this.state.alerttext}
         />
         <View
           style={{
@@ -528,8 +523,5 @@ export default connect(state => ({
   getPosts: state.talk.getPosts,
 
   filter: state.talk.filter,
-  orderby: state.talk.orderby,
-
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText
+  orderby: state.talk.orderby
 }))(TalkWrite);

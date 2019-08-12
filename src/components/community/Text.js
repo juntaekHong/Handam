@@ -78,3 +78,10 @@ export const C_LikeText = styled.Text`
   font-family: ${fonts.nanumBarunGothic};
   margin-left: ${widthPercentageToDP(4)};
 `;
+
+//alert
+export const AlertText = styled.Text`
+  color: ${"#000000"};
+  font-size: ${widthPercentageToDP(18)};
+  font-family: ${fonts.nanumBarunGothic};
+`;

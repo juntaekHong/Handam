@@ -29,6 +29,17 @@ const emojiList = [
   { index: 8, emoji: require("../../../assets/image/community/emoji/8.png") }
 ];
 
+export const AlertModalView = styled.View`
+  background-color: ${"#ffffff"};
+  width: ${widthPercentageToDP(295)};
+  height: ${widthPercentageToDP(70)};
+  justify-content: center;
+  align-items: center;
+  border-color: ${"#ffffff"};
+  border-radius: ${widthPercentageToDP(14)};
+  border-width: ${widthPercentageToDP(1)};
+`;
+
 export const WriteContainer = styled.View`
   background-color: ${"#ffffff"};
   flex-direction: row;

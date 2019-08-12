@@ -48,16 +48,6 @@ export const ImageContainer = styled.View`
 `;
 
 //Modal
-export const AlertModalView = styled.View`
-  background-color: ${"#ffffff"};
-  width: ${widthPercentageToDP(295)};
-  height: ${widthPercentageToDP(70)};
-  justify-content: center";
-  align-items: center;
-  border-color: ${"#ffffff"};
-  border-radius: ${widthPercentageToDP(14)};
-  border-width: ${widthPercentageToDP(1)};
-`;
 
 export const ImageModalFooterView = styled.View`
   flex-direction: row;
