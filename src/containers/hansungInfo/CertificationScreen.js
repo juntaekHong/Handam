@@ -24,44 +24,37 @@ class CertificationScreen extends React.Component {
         this.state = {
             hansung_id: "",
             hansung_pass: "",
-
-            loading: false
         };
-
-        this.props.hansunginfo != null &&
-        this.props.hansunginfo.status == "UNVERIFIED"
-            ? this.props.navigation.goBack(null)
-            : null;
     }
 
     navigationBack = () => {
         this.props.navigation.goBack(null);
     };
 
-    certification_Check = async () => {
-        await HansungInfoActions.getHansungInfo();
-
-        let timeout = setInterval(async () => {
-            if (
-                this.props.hansunginfo != null &&
-                this.props.hansunginfo.status == "UNVERIFIED"
-            ) {
-                await HansungInfoActions.getHansungInfo();
-            } else if (this.props.hansunginfo.status == "SUCCESS") {
-                // 시간표 호출
-                await HansungInfoActions.scheduleCallAction(true);
-
-                await this.navigationBack();
-
-                clearInterval(timeout);
-            } else if (this.props.hansunginfo.status == "FAIL") {
-                // 마이 페이지에서 재인증 작업 예정
-                this.setState({ loading: false });
-                this.props.navigation.navigate("MyInfo");
-                clearInterval(timeout);
-            }
-        }, 5000);
-    };
+    // certification_Check = async () => {
+    //     await HansungInfoActions.getHansungInfo();
+    //
+    //     let timeout = setInterval(async () => {
+    //         if (
+    //             this.props.hansunginfo != null &&
+    //             this.props.hansunginfo.status == "UNVERIFIED"
+    //         ) {
+    //             await HansungInfoActions.getHansungInfo();
+    //         } else if (this.props.hansunginfo.status == "SUCCESS") {
+    //             // 시간표 호출
+    //             await HansungInfoActions.scheduleCallAction(true);
+    //
+    //             await this.navigationBack();
+    //
+    //             clearInterval(timeout);
+    //         } else if (this.props.hansunginfo.status == "FAIL") {
+    //             // 마이 페이지에서 재인증 작업 예정
+    //             this.setState({ loading: false });
+    //             this.props.navigation.navigate("MyInfo");
+    //             clearInterval(timeout);
+    //         }
+    //     }, 5000);
+    // };
 
     renderSubmit = () => {
         if (this.state.hansung_id != "" && this.state.hansung_pass != "") {
@@ -76,8 +69,10 @@ class CertificationScreen extends React.Component {
                         this.setState({ loading: true });
 
                         await HansungInfoActions.createHansungInfo(hansunginfo);
-
-                        await this.certification_Check();
+                        // await this.certification_Check();
+                        await HansungInfoActions.myInfoLoadingHandle(true);
+                        await HansungInfoActions.loadingHandle(true);
+                        this.props.navigation.navigate("MyInfo");
                     }}
                 >
                     <Text style={styles.submitText}>인증하기</Text>
@@ -103,7 +98,7 @@ class CertificationScreen extends React.Component {
     };
 
     render() {
-        return this.state.loading == false ? (
+        return (
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : null}
                 style={{ flex: 1 }}
@@ -204,31 +199,6 @@ class CertificationScreen extends React.Component {
                     </TouchableWithoutFeedback>
                 </SafeAreaView>
             </KeyboardAvoidingView>
-        ) : (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "white"
-                }}
-            >
-                <View
-                    style={{
-                        height: widthPercentageToDP(40),
-                        marginBottom: widthPercentageToDP(10)
-                    }}
-                >
-                    <UIActivityIndicator color={"grey"} />
-                </View>
-                <Text
-                    style={{
-                        fontSize: widthPercentageToDP(12),
-                        textAlign: "center",
-                        fontFamily: fonts.nanumBarunGothicB
-                    }}
-                >{`인증을 확인중입니다.\n잠시만 기다려주세요.`}</Text>
-            </View>
         );
     }
 }
