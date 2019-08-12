@@ -7,6 +7,7 @@ import CertificationStack from "../certification/CertificationStack";
 import SettingStack from "../setting/SettingStack";
 import TalkStack from "../talk/TalkStack";
 import Schedule from "../../containers/schedule/Schedule";
+import RestaurantStack_noTab from "../restaurant/RestaurantStack_noTab";
 
 const RootStack = createStackNavigator(
   {
@@ -17,7 +18,8 @@ const RootStack = createStackNavigator(
     Certification: { screen: CertificationStack },
     settingstack: { screen: SettingStack },
     talk: { screen: TalkStack },
-    schedule: { screen: Schedule }
+    schedule: { screen: Schedule },
+    RestaurantStack_noTab: { screen: RestaurantStack_noTab }
   },
   {
     initialRouteName: "main",

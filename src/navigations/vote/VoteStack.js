@@ -1,6 +1,6 @@
 import { createStackNavigator } from "react-navigation";
-import VotePast from "../../containers/community/VotePast";
-import VotePastResult from "../../containers/community/VotePastResult";
+import VotePast from "../../containers/vote/VotePast";
+import VotePastResult from "../../containers/vote/VotePastResult";
 
 const VoteStack = createStackNavigator(
   {

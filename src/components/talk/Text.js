@@ -107,10 +107,3 @@ export const AnonymousOFFText = styled.Text`
 export const AnonymousONText = styled(AnonymousOFFText)`
   color: ${"#24a0fa"};
 `;
-
-//Alert
-export const AlertText = styled.Text`
-  color: ${"#000000"};
-  font-size: ${widthPercentageToDP(18)};
-  font-family: ${fonts.nanumBarunGothic};
-`;
