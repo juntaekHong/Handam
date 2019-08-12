@@ -9,7 +9,7 @@ import {
   FlatList,
   BackHandler
 } from "react-native";
-import { widthPercentageToDP, timeSince } from "../../utils/util";
+import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
@@ -21,7 +21,6 @@ import {
   ReportedPostsListItem
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
-import { AlertModal } from "../../components/community/Modal";
 
 class TalkAbout extends Component {
   constructor(props) {
@@ -54,7 +53,7 @@ class TalkAbout extends Component {
   };
 
   navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail");
+    this.props.navigation.navigate("TalkDetail", { from: "about" });
   };
 
   navigateTalkWrite = () => {
@@ -67,8 +66,8 @@ class TalkAbout extends Component {
     this.props.navigation.navigate("TalkSearch");
   };
 
-  pageListPosts = () => {
-    TalkActions.pageListPosts(
+  pageListPosts = async () => {
+    await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
       this.props.postsList.length / 6 + 1,
@@ -112,22 +111,16 @@ class TalkAbout extends Component {
   };
 
   renderListFooter = () => {
-    return this.props.loading ? (
+    return this.state.loading ? (
       <View style={styles.listFooterContainer}>
         <UIActivityIndicator size={widthPercentageToDP(20)} color={"#727272"} />
       </View>
-    ) : (
-      <View>{null}</View>
-    );
+    ) : null;
   };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <AlertModal
-          visible={this.state.alertmodal}
-          text={this.state.alerttext}
-        />
         <View
           style={{
             flexDirection: "row",
@@ -184,11 +177,11 @@ class TalkAbout extends Component {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0.01}
-          onEndReached={() =>
+          onEndReached={() => {
             this.props.postsList.length < this.props.total
               ? this.pageListPosts()
-              : null
-          }
+              : null;
+          }}
           ListHeaderComponent={this.renderListHeader}
           ListFooterComponent={this.renderListFooter}
           data={this.props.postsList}
@@ -248,7 +241,5 @@ export default connect(state => ({
   hotpostsList: state.talk.hotpostsList,
   total: state.talk.total,
   filter: state.talk.filter,
-  orderby: state.talk.orderby,
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText
+  orderby: state.talk.orderby
 }))(TalkAbout);

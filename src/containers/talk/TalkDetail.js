@@ -13,7 +13,7 @@ import {
   BackHandler
 } from "react-native";
 import Hyperlink from "react-native-hyperlink";
-import { widthPercentageToDP, timeSince, getData } from "../../utils/util";
+import { widthPercentageToDP, timeSince } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
@@ -30,7 +30,6 @@ import {
 } from "../../components/talk/Text";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { ImageModal } from "../../components/talk/Modal";
-import { AlertModal } from "../../components/community/Modal";
 import {
   WriteContainer,
   TextInputContainer,
@@ -92,8 +91,19 @@ class TalkDetail extends Component {
     this.backHandler.remove();
   }
 
-  navigateTalkAbout = () => {
-    this.props.navigation.navigate("TalkAbout");
+  navigateTalkAbout = async () => {
+    if (this.props.navigation.state.params.from == "about") {
+      this.props.navigation.navigate("TalkAbout");
+    } else {
+      await TalkActions.initPostList();
+      await TalkActions.pageListPosts(
+        this.props.filter,
+        this.props.orderby,
+        this.props.postsList.length / 6,
+        6
+      );
+      this.props.navigation.navigate("TalkAbout");
+    }
   };
 
   navigateTalkWrite = () => {
@@ -160,9 +170,8 @@ class TalkDetail extends Component {
   };
 
   //사용자가 글쓴이인지 판단
-  checkUser = async () => {
-    const userId = await getData("userId"); //유저닉네임으로 변경해야함
-    if (this.props.getPosts.userNickName == userId) {
+  checkUser = async nick => {
+    if (nick == this.props.userNickName) {
       this.setState({ who: "me" });
     } else {
       this.setState({ who: "you" });
@@ -276,7 +285,7 @@ class TalkDetail extends Component {
                 isButton={true}
                 isdotsButton={true}
                 handler={async () => {
-                  this.checkUser();
+                  this.checkUser(item.userNickName);
                   await this.setState({
                     replyinfo: item,
                     temp_reply: item.content,
@@ -303,7 +312,7 @@ class TalkDetail extends Component {
                       <Re_ReplyView
                         key={index}
                         handler={async () => {
-                          this.checkUser();
+                          this.checkUser(item2.userNickName);
                           await this.setState({
                             replyinfo: item2,
                             temp_reply: item2.content,
@@ -453,11 +462,6 @@ class TalkDetail extends Component {
           closeHandler={() => this.setState({ scrapmodal: false })}
         />
 
-        <AlertModal
-          visible={this.props.alertModal}
-          text={this.props.alertText}
-        />
-
         <View
           style={{
             backgroundColor: "white",
@@ -584,7 +588,7 @@ class TalkDetail extends Component {
                 <TouchableOpacity
                   style={{ marginHorizontal: widthPercentageToDP(4) }}
                   onPress={async () => {
-                    this.checkUser();
+                    this.checkUser(this.props.getPosts.userNickName);
                     this.setState({ type: "posts" });
                     TalkActions.handleBottomModal(true);
                   }}
@@ -894,6 +898,6 @@ export default connect(state => ({
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,
   imageIndex: state.talk.imageIndex,
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText
+
+  userNickName: state.signin.user.userNickName
 }))(TalkDetail);

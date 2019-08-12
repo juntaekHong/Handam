@@ -10,15 +10,25 @@ import {
 import { CTText, CEText } from "../../components/community/Text";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
-import { TalkActions } from "../../store/actionCreator";
+import { TalkActions, VoteActions } from "../../store/actionCreator";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkScreen extends Component {
   constructor(props) {
     super(props);
 
     this.state = {};
-
     this.start = false; // 버튼 중복 방지
+  }
+
+  async componentDidMount() {
+    await VoteActions.getVote();
+    VoteActions.pageListPastVote();
+    VoteActions.checkVote(this.props.getVote.voteTopic.voteTopicIndex, 0);
+    VoteActions.pageListVoteReply(
+      this.props.getVote.voteTopic.voteTopicIndex,
+      0
+    );
   }
 
   navigateTalkAbout = () => {
@@ -28,6 +38,10 @@ class TalkScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <AlertModal
+          visible={this.props.alertModal}
+          text={this.props.alertText}
+        />
         <FlatList
           ref={ref => {
             this.flatListRef = ref;
@@ -135,6 +149,8 @@ export default connect(state => ({
   categoryList: state.talk.categoryList,
   categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
+  alertModal: state.talk.alertModal,
+  alertText: state.talk.alertText,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
 
