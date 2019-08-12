@@ -58,7 +58,6 @@ const Home = ({
 
   const initCall = useCallback(async () => {
     await AlarmActions.alarmInit();
-    await CommonActions.commonInit();
     await LockActions.lockInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
