@@ -35,20 +35,19 @@ export default createMaterialTopTabNavigator(
         fontSize: widthPercentageToDP(16),
         fontFamily: fonts.nanumBarunGothicB
       },
-      indicatorStyle: {
-        backgroundColor: "rgb(96, 169, 243)",
-        // width: widthPercentageToDP(85.8),
-        height: widthPercentageToDP(2),
-        paddingLeft: widthPercentageToDP(10)
-      },
       tabStyle: {
         backgroundColor: "transparent"
+      },
+      indicatorStyle: {
+        backgroundColor: "rgb(96, 169, 243)",
+        height: widthPercentageToDP(2)
       },
       style: {
         backgroundColor: "white",
         height: widthPercentageToDP(60),
         justifyContent: "flex-end",
-        // paddingHorizontal: widthPercentageToDP(16)
+        borderBottomColor: "#dbdbdb",
+        borderBottomWidth: widthPercentageToDP(1),
         elevation: 0, // remove shadow on Android
         shadowOpacity: 0 // remove shadow on iOS
       }
