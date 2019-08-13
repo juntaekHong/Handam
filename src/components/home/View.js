@@ -38,7 +38,7 @@ const HomeTitleRight = ({ alarm = false }) => {
   }, []);
   return (
     <HomeTitleRightView>
-      <HomeTitleIcon marginRight={8.9} onPress={navigateSetting}>
+      <HomeTitleIcon marginRight={21.4} onPress={navigateSetting}>
         <Image
           source={require("HandamProject/assets/image/home/settings.png")}
         />

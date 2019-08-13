@@ -25,6 +25,7 @@ import {
 import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
+import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
 
 const Home = ({
   navigation,
@@ -32,11 +33,13 @@ const Home = ({
   count,
   hansunginfo = null,
   schedule_call,
+  schedule_loading,
   user
 }) => {
   const [time, setTime] = useState(moment());
   const [certModal, setCertModal] = useState(false);
   const [call, setCall] = useState(0);
+  const [scheduleModal, setScheduleModal] = useState(false);
 
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
@@ -47,8 +50,13 @@ const Home = ({
   }, []);
 
   const navigateSchedule = useCallback(() => {
-    if (hansunginfo === null) setCertModal(true);
-    else navigation.navigate("schedule");
+    if (hansunginfo === null) return setCertModal(true);
+    if (
+      hansunginfo !== null &&
+      (hansunginfo.name === undefined || hansunginfo.name.length < 1)
+    )
+      return;
+    navigation.navigate("schedule");
   }, [hansunginfo]);
 
   const navigateCert = useCallback(() => {
@@ -67,6 +75,31 @@ const Home = ({
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
+
+  const onPressRefresh = useCallback(() => {
+    if (schedule_loading) return;
+    if (
+      hansunginfo !== null &&
+      (hansunginfo.name === undefined || hansunginfo.name.length < 1)
+    )
+      return;
+
+    if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
+      return setScheduleModal(true);
+    } else if (
+      hansunginfo !== null &&
+      hansunginfo.schedule.monday !== undefined
+    ) {
+      setScheduleModal(true);
+    } else {
+      setCertModal(true);
+    }
+  }, [hansunginfo, schedule_loading]);
+
+  const callSchedule = useCallback(async () => {
+    await setScheduleModal(false);
+    await HansungInfoActions.scheduleCallAction(true);
+  }, []);
 
   const getSchedule = useCallback(async () => {
     if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
@@ -109,20 +142,24 @@ const Home = ({
         closeHandler={() => setCertModal(false)}
         footerHandler={navigateCert}
       />
+      <ScheduleModal
+        closeHandler={() => setScheduleModal(false)}
+        visible={scheduleModal}
+        footerHandler={callSchedule}
+      />
       <CenterScroll
         contentContainerStyle={{
           flexGrow: 1,
           alignItems: "center"
         }}
       >
-        <AboutHandam />
         <HomeAd list={noticeList} />
         <HomeNavigateView>
           <ScheduleButton onPress={navigateSchedule} />
           <BusButton onPress={navigateBus} />
           <NoticeButton onPress={navigateNotice} />
         </HomeNavigateView>
-        <TodayLectureTitle />
+        <TodayLectureTitle onPress={onPressRefresh} />
         <TodayLine time={moment(time).format("MM. DD (ddd)")} />
         <TodayLecture
           day={dayToString(moment(time).day())}
@@ -138,5 +175,6 @@ export default connect(({ home, alarm, hansung, signin }) => ({
   count: alarm.count,
   hansunginfo: hansung.hansunginfo,
   schedule_call: hansung.schedule_call,
+  schedule_loading: hansung.schedule_loading,
   user: signin.user
 }))(Home);
