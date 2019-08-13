@@ -4,6 +4,8 @@ import SecessionScreen from "../../containers/myInfo/SecessionScreen";
 import AccountInfoScreen from "../../containers/myInfo/AccountInfoScreen";
 import MyPostListScreen from "../../containers/myInfo/MyPostListScreen";
 import MyScrapListScreen from "../../containers/myInfo/MyScrapListScreen";
+import ChangePasswordScreen from "../../containers/myInfo/ChangePasswordScreen";
+import TeamInfoScreen from "../../containers/myInfo/TeamInfoScreen";
 
 const MyInfoStack = createStackNavigator(
     {
@@ -11,7 +13,9 @@ const MyInfoStack = createStackNavigator(
         Secession: {screen: SecessionScreen},
         AccountInfo: {screen: AccountInfoScreen},
         MyPost: {screen: MyPostListScreen},
-        MyScrap: {screen: MyScrapListScreen}
+        MyScrap: {screen: MyScrapListScreen},
+        ChangePass: {screen: ChangePasswordScreen},
+        TeamInfo: {screen: TeamInfoScreen}
     },
     {
         initialRouteName: null,

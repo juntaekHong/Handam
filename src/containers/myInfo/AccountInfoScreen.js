@@ -25,6 +25,10 @@ class AccountInfoScreen extends React.Component {
         this.props.navigation.goBack();
     };
 
+    navigateChangePass = () => {
+        this.props.navigation.navigate("ChangePass");
+    };
+
     // render 전에 major_list, 앱 버전 불러오기
     componentWillMount = async () => {
         await CommonActions.getTrack();
@@ -45,6 +49,8 @@ class AccountInfoScreen extends React.Component {
             }
         }, 300);
         this.setState({majorModal: false});
+
+
     };
 
     // 복수 전공(2트랙) 항목 값 변경
@@ -111,41 +117,47 @@ class AccountInfoScreen extends React.Component {
         this.setState({admissionYearModal: false});
     };
 
+    lengthCheck = (aboutLength) => {
+        let charactors = aboutLength.length > 8 ? aboutLength.slice(0,8) + ".." : aboutLength;
+
+        return charactors;
+    };
+
     render() {
         return (
             <SafeAreaView>
                 <WheelPicker
                     visible={this.state.majorModal}
                     data={this.props.major_list}
-                    value={this.props.changeMajor}
+                    value={this.props.changeMajor == null ? this.props.major : this.props.changeMajor}
                     closeHandler={() => {this.setState({majorModal: false})}}
                     footerHandler={this.major_value_change}
                 />
                 <WheelPicker
                     visible={this.state.doublemajorModal}
                     data={this.props.track_list}
-                    value={this.props.changeDoubleMajor}
+                    value={this.props.changeDoubleMajor == null ? this.props.doubleMajor : this.props.changeDoubleMajor}
                     closeHandler={() => {this.setState({doublemajorModal: false})}}
                     footerHandler={this.doublemajor_value_change}
                 />
                 <WheelPicker
                     visible={this.state.minorModal}
                     data={this.props.track_list}
-                    value={this.props.changeMinor}
+                    value={this.props.changeMinor == null ? this.props.minor : this.props.changeMinor}
                     closeHandler={() => {this.setState({minorModal: false})}}
                     footerHandler={this.minor_value_change}
                 />
                 <WheelPicker
                     visible={this.state.connectedMajorModal}
                     data={this.props.track_list}
-                    value={this.props.changeConnectedMajor}
+                    value={this.props.changeConnectedMajor == null ? this.props.connectedMajor : this.props.changeConnectedMajor }
                     closeHandler={() => {this.setState({connectedMajorModal: false})}}
                     footerHandler={this.connectedMajor_value_change}
                 />
                 <WheelPicker
                     visible={this.state.admissionYearModal}
                     data={this.props.admission_list}
-                    value={this.props.changeAdmissionYear}
+                    value={this.props.changeAdmissionYear == null ? this.props.admissionYear : this.props.changeAdmissionYear}
                     closeHandler={() => {this.setState({admissionYearModal: false})}}
                     footerHandler={this.admissionYear_value_change}
                 />
@@ -171,10 +183,10 @@ class AccountInfoScreen extends React.Component {
                     </AccountView>
                     <View style={styles.divisionLine}/>
                     <AccountView>
-                        <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {}}>
+                        <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.navigateChangePass()}}>
                             <ACCOUNTINFOText>비밀번호 변경</ACCOUNTINFOText>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {}}>
+                        <TouchableOpacity onPress={() => {this.navigateChangePass()}}>
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </TouchableOpacity>
                     </AccountView>
@@ -190,7 +202,7 @@ class AccountInfoScreen extends React.Component {
                         </View>
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({majorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMajor != null ? this.props.changeMajor : this.props.major}</ACCOUNTINFOText>
+                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMajor != null ? this.lengthCheck(this.props.changeMajor) : this.lengthCheck(this.props.major)}</ACCOUNTINFOText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {this.setState({majorModal: true})}}>
                                 <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
@@ -204,7 +216,7 @@ class AccountInfoScreen extends React.Component {
                         </View>
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.setState({doublemajorModal: true})}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeDoubleMajor != null ? this.props.changeDoubleMajor : this.props.doubleMajor}</ACCOUNTINFOText>
+                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeDoubleMajor != null ? this.lengthCheck(this.props.changeDoubleMajor) : this.lengthCheck(this.props.doubleMajor)}</ACCOUNTINFOText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.setState({doublemajorModal: true})}>
                                 <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
@@ -218,7 +230,7 @@ class AccountInfoScreen extends React.Component {
                         </View>
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({minorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMinor != null ? this.props.changeMinor : this.props.minor}</ACCOUNTINFOText>
+                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMinor != null ? this.lengthCheck(this.props.changeMinor) : this.lengthCheck(this.props.minor)}</ACCOUNTINFOText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {this.setState({minorModal: true})}}>
                                 <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
@@ -232,7 +244,7 @@ class AccountInfoScreen extends React.Component {
                         </View>
                         <View style={{flexDirection: 'row'}}>
                             <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({connectedMajorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeConnectedMajor != null ? this.props.changeConnectedMajor : this.props.connectedMajor}</ACCOUNTINFOText>
+                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeConnectedMajor != null ? this.lengthCheck(this.props.changeConnectedMajor) : this.lengthCheck(this.props.connectedMajor)}</ACCOUNTINFOText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {this.setState({connectedMajorModal: true})}}>
                                 <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>

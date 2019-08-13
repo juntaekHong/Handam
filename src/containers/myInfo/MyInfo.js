@@ -26,11 +26,11 @@ import fonts from "../../configs/fonts";
 import { CustomModal } from "../../components/common/Modal";
 import { connect } from "react-redux";
 import {
-  CustomModalText,
-  CustomModalSmallText
+  CustomModalBlackSmallText,
+  CustomModalBlackText
 } from "../../components/myInfo/Text";
 import { UIActivityIndicator } from "react-native-indicators";
-import { HansungInfoActions, LockActions } from "../../store/actionCreator";
+import { HansungInfoActions } from "../../store/actionCreator";
 import {myInfoLoadingHandle} from "../../store/modules/hansungInfo/hansungInfo";
 
 class MyInfo extends React.Component {
@@ -92,9 +92,13 @@ class MyInfo extends React.Component {
       this.props.navigation.navigate("MyPost");
   };
 
-    navigateMyScrap = () => {
-        this.props.navigation.navigate("MyScrap");
-    };
+  navigateMyScrap = () => {
+      this.props.navigation.navigate("MyScrap");
+  };
+
+  navigateTeamInfo = () => {
+      this.props.navigation.navigate("TeamInfo");
+  };
 
   navigateBack = () => {
     this.props.navigation.goBack(null);
@@ -129,9 +133,9 @@ class MyInfo extends React.Component {
         <SafeAreaView>
           <ScrollView>
             <CustomModal
-                width={widthPercentageToDP(295)}
-                height={widthPercentageToDP(311)}
-                children={<CustomModalText black={"인증을 삭제하시겠습니까?"} />}
+                width={295}
+                height={311}
+                children={<CustomModalBlackText>인증을 삭제하시겠습니까?</CustomModalBlackText>}
                 visible={this.state.deletemodal}
                 footerHandler={async () => {
                   await HansungInfoActions.myInfoLoadingHandle(true);
@@ -142,9 +146,9 @@ class MyInfo extends React.Component {
                 closeHandler={() => this.setState({ deletemodal: false })}
             />
             <CustomModal
-                width={widthPercentageToDP(295)}
-                height={widthPercentageToDP(311)}
-                children={<CustomModalText black={"로그아웃 하시겠습니까?"} />}
+                width={295}
+                height={311}
+                children={<CustomModalBlackText> 로그아웃 하시겠습니까?</CustomModalBlackText>}
                 visible={this.state.logoutmodal}
                 footerHandler={async () => {
                   await this.renderLogout();
@@ -153,14 +157,13 @@ class MyInfo extends React.Component {
                 closeHandler={() => this.setState({ logoutmodal: false })}
             />
             <CustomModal
-                width={widthPercentageToDP(325)}
-                height={widthPercentageToDP(311)}
+                width={325}
+                height={311}
                 children={
-                  <CustomModalSmallText
-                      black={
-                        "탈퇴 시 모든 정보가 즉시 삭제되며 복구할 수 없습니다.\n모든 정보 삭제에 동의하시면 탈퇴를 진행하세요."
-                      }
-                  />
+                  <CustomModalBlackSmallText>
+                      탈퇴 시 모든 정보가 즉시 삭제되며 복구할 수 없습니다.
+                      모든 정보 삭제에 동의하시면 탈퇴를 진행하세요.
+                  </CustomModalBlackSmallText>
                 }
                 visible={this.state.secessionmodal}
                 footerHandler={async () => {
@@ -607,6 +610,36 @@ class MyInfo extends React.Component {
                   />
                 </TouchableOpacity>
               </View>
+              <View style={styles.devisionLine} />
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.navigateTeamInfo();
+                        }}
+                    >
+                        <AccountDetailText>팀 정보</AccountDetailText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                        onPress={() => {
+                            this.navigateTeamInfo();
+                        }}
+                    >
+                        <Image
+                            style={{
+                                width: widthPercentageToDP(28),
+                                height: widthPercentageToDP(28)
+                            }}
+                            source={require("../../../assets/image/myInfo/grayarrow.png")}
+                        />
+                    </TouchableOpacity>
+                </View>
             </AccountDetailView>
           </ScrollView>
         </SafeAreaView>
