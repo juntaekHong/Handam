@@ -43,3 +43,11 @@ export const AccountDetailView = styled.View`
   marginBottom: ${widthPercentageToDP(51)};
 `;
 
+// 계정정보 페이지 뷰
+export const AccountView = styled.View`
+  flexDirection: row;
+  justifyContent: space-between;
+  background-color: white;
+  marginTop: ${widthPercentageToDP(18)};
+  marginHorizontal: ${widthPercentageToDP(29)};
+`;

@@ -27,7 +27,7 @@ export const TableHeader = props => {
     <HeaderView>
       {header.map((item, index) => {
         return (
-          <Header width={index == 0 ? 62 : 60}>
+          <Header key={item} width={index == 0 ? 62 : 60}>
             <NBGBText fontSize={15}>{item}</NBGBText>
           </Header>
         );
