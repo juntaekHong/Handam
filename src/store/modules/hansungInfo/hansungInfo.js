@@ -53,6 +53,11 @@ const PROFESSOR_TEXT_HANDLE = "hansungInfo/PROFESSOR_TEXT_HANDLE";
 
 const professorTextHandleAction = createAction(PROFESSOR_TEXT_HANDLE);
 
+// 종정시에서 로딩 수정
+const LOADING_HANDLE = "hansungInfo/LOADING_HANDLE";
+
+const LoadingHandleAction = createAction(LOADING_HANDLE);
+
 const initState = {
     hansunginfo: null,
 
@@ -63,6 +68,8 @@ const initState = {
     nonSubjectPoint_status: false,
     grades_status: false,
 
+    // 종정시 인증 페이지에서 로딩하지 않기 위해
+    loading:false,
     // 마이페이지 종정시 인증 부분 로딩
     myInfo_loading: false,
 
@@ -83,6 +90,10 @@ export const gradesHandle = bool => dispatch => {
 
 export const gradesLoadingHandle = bool => dispatch => {
     dispatch(gradesLoadingHandleAction(bool));
+};
+
+export const loadingHandle = bool => dispatch => {
+    dispatch(LoadingHandleAction(bool));
 };
 
 export const myInfoLoadingHandle = bool => dispatch => {
@@ -131,6 +142,7 @@ export const getHansungInfo = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.get(`/hansungInfo`, { token: token });
 
+    console.log(jsonData);
     if (jsonData.statusCode == 200) {
         await dispatch(getHansungInfoAction(jsonData.result));
         // 시간표 색 설정
@@ -251,6 +263,10 @@ export default handleActions(
         [SCEDULE_CALL]: (state, { payload }) =>
             produce(state, draft => {
                 draft.schedule_call = payload;
+            }),
+        [LOADING_HANDLE]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.loading = payload;
             }),
         [MYINFO_LOADING_HANDLE]: (state, { payload }) =>
             produce(state, draft => {

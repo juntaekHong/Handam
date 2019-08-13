@@ -58,3 +58,10 @@ export const SECText = styled.Text`
   color: ${"black"};
 `;
 
+// 계정정보 페이지 기본 텍스트
+export const ACCOUNTINFOText = styled.Text`
+  font-size: ${widthPercentageToDP(16)};
+  fontFamily: ${fonts.nanumBarunGothic};
+  color: ${"black"};
+`;
+

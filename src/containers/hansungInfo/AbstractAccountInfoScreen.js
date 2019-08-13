@@ -21,7 +21,7 @@ class AbstractAccountInfoScreen extends React.Component {
                     </View>
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.userNickName}님 </Text>
+                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
                             {
                                 this.props.selected == true && this.props.professor_text == true ?
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>교수평가를 남겨보는건 어때요?</Text>
@@ -29,7 +29,7 @@ class AbstractAccountInfoScreen extends React.Component {
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                             }
                         </View>
-                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.major}</Text>
+                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.major : this.props.hansunginfo.department}</Text>
                         <TouchableOpacity style={{marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
                                           onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                             <Image source={require("../../../assets/image/hansungInfo/my.png")}/>
