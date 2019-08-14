@@ -4,7 +4,24 @@ import { widthPercentageToDP } from "../../utils/util";
 import { NBGText, NBGBText } from "../common/Text";
 import colors from "../../configs/colors";
 import navigators from "../../utils/navigators";
+import { Platform } from "react-native";
 
+const shadow = {
+  ...Platform.select({
+    ios: {
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84
+    },
+    android: {
+      elevation: 5
+    }
+  })
+};
 const TabBarButton = styled.TouchableOpacity`
   width: ${widthPercentageToDP(49)}
   height: ${widthPercentageToDP(49)}
@@ -24,6 +41,7 @@ const TabBarView = styled.View`
   height: ${widthPercentageToDP(49)}
   align-items: center
   justify-content: center
+  background-color: white
 `;
 
 const TabBar = ({ active, onPress, source, label = "", style }) => (
@@ -51,7 +69,7 @@ export const TabView = ({ navigationState }) => {
     navigators.navigate("Community");
   }, []);
   return (
-    <TabBarView>
+    <TabBarView style={shadow}>
       <TabBar
         onPress={navigateGrade}
         source={
