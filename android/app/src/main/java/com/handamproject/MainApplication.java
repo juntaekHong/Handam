@@ -3,6 +3,7 @@ package com.handamproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.codepush.react.CodePush;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
@@ -16,7 +17,6 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.microsoft.codepush.react.CodePush;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -44,6 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new ExtraDimensionsPackage(),
             new FingerprintAuthPackage(),
             new ReanimatedPackage(),
@@ -57,7 +58,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNScreensPackage(),
             new SplashScreenReactPackage(),
             new VectorIconsPackage(),
-            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new RNGestureHandlerPackage()
       );
     }
