@@ -3,13 +3,14 @@
  * widthPercentageToDp: 디바이스 크기에 따라 크기 변환
  * storeData, getData, removeData: Local Data 읽기, 쓰기
  */
-import { Dimensions, PixelRatio } from "react-native";
+import { Dimensions, PixelRatio, Platform } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import config from "../configs/config";
 import Toast from "react-native-root-toast";
 import moment from "moment";
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
-const screenWidth = Dimensions.get("window").width;
+const screenWidth = Platform.OS === "android" ?  ExtraDimensions.getRealWindowWidth() : Dimensions.get("window").width;
 
 const getWidthPercent = dp => {
   let percent = (dp / 375) * 100;
