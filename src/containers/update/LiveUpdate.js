@@ -8,60 +8,25 @@ import { StatusBar, Platform } from "react-native";
 import OneSignal from "react-native-onesignal";
 import config from "../../configs/config";
 
-const LiveUpdate = props => {
-  const [progress, setProgress] = useState(true);
-  const [message, setMessage] = useState("");
+const codepushOption = {
+  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+  deploymentKey:
+    Platform.OS === "android"
+      ? "mTIqF8zXQzV0GBCyfbAxe-K-lcaf615b4c2f-cc19-4f37-a800-d03f0b3a5157"
+      : "eQ2W-17w3tP32pUyr0NVniuQ1LpU615b4c2f-cc19-4f37-a800-d03f0b3a5157"
+};
 
-  checkCodePush = useCallback(() => {
-    try {
-      CodePush.sync(
-        {
-          installMode: CodePush.InstallMode.IMMEDIATE
-        },
-        syncStatus => {
-          switch (syncStatus) {
-            case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-              setMessage("최신 업데이트를 확인합니다.");
-              break;
-            case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-              setMessage("최신 업데이트를 다운로드 합니다.");
-              break;
-            // case CodePush.SyncStatus.AWAITING_USER_ACTION:
-            //  setMessage("Awaiting user action.");
-            //  break;
-            case CodePush.SyncStatus.INSTALLING_UPDATE:
-              setMessage("최신 업데이트를 설치합니다.");
-              break;
-            case CodePush.SyncStatus.UP_TO_DATE:
-              setMessage("앱이 최신버전 입니다.");
-              setProgress(false);
-              break;
-            // case codePush.SyncStatus.UPDATE_IGNORED:
-            //  setMessage("Update cancelled by user.");
-            //  break;
-            case CodePush.SyncStatus.UPDATE_INSTALLED:
-              setMessage("최신 업데이트가 설치되었습니다.");
-              setProgress(true);
-              break;
-            case CodePush.SyncStatus.UNKNOWN_ERROR:
-              setMessage("오류가 발생했습니다. 앱을 다시 실행해주세요.");
-              break;
-          }
-        },
-        progress => {
-          setMessage(
-            `${((progress.receivedBytes / progress.totalBytes) * 100).toFixed(
-              0
-            )}%`
-          );
-        }
-      );
-    } catch (error) {
-      codePush.log(error);
-    }
-  }, []);
+class LiveUpdate extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      progress: true,
+      message: ""
+    };
+  }
 
-  useEffect(() => {
+  componentDidMount() {
     try {
       moment.lang("ko", {
         weekdays: [
@@ -80,21 +45,53 @@ const LiveUpdate = props => {
       OneSignal.init(config.pushKey, { kOSSettingsKeyAutoPrompt: true });
       OneSignal.inFocusDisplaying(2);
     } catch (e) {}
-    checkCodePush();
-  }, []);
+  }
 
-  useEffect(() => {
-    if (!progress) {
-      props.navigation.navigate("library");
+  codePushStatusDidChange(status) {
+    switch (status) {
+      case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+        this.setState({ message: "최신 업데이트를 확인합니다." });
+        break;
+      case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+        this.setState({ message: "최신 업데이트를 다운로드 합니다." });
+        break;
+      case CodePush.SyncStatus.INSTALLING_UPDATE:
+        this.setState({ message: "최신 업데이트를 설치합니다." });
+        break;
+      case CodePush.SyncStatus.UP_TO_DATE:
+        this.setState({ message: "앱이 최신버전 입니다.", process: false });
+        this.props.navigation.navigate("library");
+        break;
+      case CodePush.SyncStatus.UPDATE_INSTALLED:
+        this.setState({
+          message: "최신 업데이트가 설치되었습니다.",
+          process: true
+        });
+        break;
+      case CodePush.SyncStatus.UNKNOWN_ERROR:
+        this.setState({
+          message: "오류가 발생했습니다. 앱을 다시 실행해주세요."
+        });
+        break;
     }
-  }, [progress]);
+  }
 
-  return (
-    <CenterView>
-      <LoadingUpdate />
-      <NBGText fontSize={12}>{message}</NBGText>
-    </CenterView>
-  );
-};
+  codePushDownloadDidProgress(progress) {
+    this.setState({
+      message: `${(
+        (progress.receivedBytes / progress.totalBytes) *
+        100
+      ).toFixed(0)}%`
+    });
+  }
 
-export default LiveUpdate;
+  render() {
+    return (
+      <CenterView>
+        <LoadingUpdate />
+        <NBGText fontSize={12}>{this.state.message}</NBGText>
+      </CenterView>
+    );
+  }
+}
+export default CodePush(codepushOption)(LiveUpdate);
