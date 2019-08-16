@@ -2,14 +2,17 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import api from "../../../utils/api";
 import { getData } from "../../../utils/util";
+
 //핸들러
 const BOTTOMMODAL_HANDLE = "vote/BOTTOMMODAL_HANDLE";
 const ALERTMODAL_HANDLE = "vote/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "vote/ALERTTEXT_HANDLE";
+const LOADING_HANDLE = "vote/LOADING_HANDLE";
 
 const bottomModalHandleAction = createAction(BOTTOMMODAL_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
+const loadingHandleAction = createAction(LOADING_HANDLE);
 
 //투표
 const GETVOTE = "vote/GETVOTE";
@@ -18,6 +21,7 @@ const GETPASTVOTE = "vote/GETPASTVOTE";
 const C_CHECKVOTE = "vote/C_CHECKVOTE";
 const P_CHECKVOTE = "vote/P_CHECKVOTE";
 const ENABLE = "vote/ENABLE";
+const DUE_DATE_TIME = "vote/DUEDATETIME";
 
 const getVoteAction = createAction(GETVOTE);
 const pageListPastVoteAction = createAction(PASTVOTELIST);
@@ -25,6 +29,7 @@ const getPastVoteAction = createAction(GETPASTVOTE);
 const C_checkVoteAction = createAction(C_CHECKVOTE);
 const P_checkVoteAction = createAction(P_CHECKVOTE);
 const enbaleAction = createAction(ENABLE);
+const dueDateTimeAction = createAction(DUE_DATE_TIME);
 
 //투표 댓글
 const C_VOTE_REPLYLIST = "vote/C_VOTE_REPLYLIST";
@@ -41,16 +46,20 @@ const initState = {
   c_checkVote: [],
   p_checkVote: [],
   enable: true,
+  loading: false,
+
   //투표
   getVote: [],
   pastVoteList: [],
   getPastVote: [],
+  dueDate: null,
   //투표 댓글
   voteReplyList: [],
   pastVoteReplyList: []
 };
 
 //핸들러
+
 export const handleBottomModal = bool => dispatch => {
   dispatch(bottomModalHandleAction(bool));
 };
@@ -67,7 +76,16 @@ export const handleEnable = bool => dispatch => {
   dispatch(enbaleAction(bool));
 };
 
+export const handleLoading = bool => dispatch => {
+  dispatch(loadingHandleAction(bool));
+};
+
 //투표
+
+export const handleDueDateTime = value => dispatch => {
+  dispatch(dueDateTimeAction(value));
+};
+
 export const createVote = vote => async dispatch => {
   const token = await getData("token");
   const userId = await getData("userId");
@@ -87,6 +105,13 @@ export const getVote = () => async dispatch => {
       token: token
     });
     if (jsonData.statusCode == 200) {
+      //종료기한
+      const dueDate = jsonData.result.voteTopic.dueDate
+        .replace(/-/gi, "")
+        .replace(/:/gi, "")
+        .replace("T", "")
+        .slice(0, 14);
+      dispatch(dueDateTimeAction(dueDate));
       dispatch(getVoteAction(jsonData.result));
       return true;
     } else {
@@ -108,7 +133,7 @@ export const pageListPastVote = () => async dispatch => {
   }
 };
 
-export const getPastVote = pastVoteTopicIndex => async dispatch => {
+export const getPastVote = (pastVoteTopicIndex, form) => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.get(
     `/pastVote/pastVoteTopicIndex/${pastVoteTopicIndex}`,
@@ -117,7 +142,12 @@ export const getPastVote = pastVoteTopicIndex => async dispatch => {
     }
   );
   if (jsonData.statusCode == 200) {
-    dispatch(getPastVoteAction(jsonData.result));
+    if (form == 0) {
+      //현재
+      dispatch(getVoteAction(jsonData.result));
+    } else {
+      dispatch(getPastVoteAction(jsonData.result));
+    }
     return true;
   } else {
     throw "error";
@@ -225,6 +255,10 @@ export default handleActions(
       produce(state, draft => {
         draft.alertText = payload;
       }),
+    [LOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.loading = payload;
+      }),
     //투표
     [GETVOTE]: (state, { payload }) =>
       produce(state, draft => {
@@ -249,6 +283,10 @@ export default handleActions(
     [ENABLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.enable = payload;
+      }),
+    [DUE_DATE_TIME]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.dueDate = payload;
       }),
     //투표 댓글
     [C_VOTE_REPLYLIST]: (state, { payload }) =>

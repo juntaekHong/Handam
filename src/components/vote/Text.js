@@ -22,6 +22,7 @@ export const SubjectText = styled.Text`
   width: ${widthPercentageToDP(255)};
   height: ${widthPercentageToDP(55)};
   margin-top: ${widthPercentageToDP(19.5)};
+  margin-bottom: ${widthPercentageToDP(10)};
 `;
 
 export const DaText = styled.Text`
@@ -63,9 +64,11 @@ export const PersonText = styled.Text`
 `;
 
 export const PercentText = styled.Text`
-  color: ${"#000000"}  
-  font-size: ${widthPercentageToDP(13)}
-  font-family: ${fonts.nanumBarunGothic}
+  color: ${"#000000"};
+  font-size: ${widthPercentageToDP(13)};
+  font-family: ${fonts.nanumBarunGothic};
+  text-align: center;
+  width: ${widthPercentageToDP(35)};
 `;
 
 export const PreVoteText = styled.Text`

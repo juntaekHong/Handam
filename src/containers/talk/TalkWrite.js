@@ -10,21 +10,21 @@ import {
   ScrollView,
   Image,
   FlatList,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
-
 import ImageCropPicker from "react-native-image-crop-picker";
-
 import {
   CustomModalBlackText,
   AnonymousOFFText,
   AnonymousONText
 } from "../../components/talk/Text";
+import { TitleView } from "../../components/community/View";
 import { CustomModal } from "../../components/common/Modal";
 
 class TalkWrite extends Component {
@@ -64,9 +64,18 @@ class TalkWrite extends Component {
     };
   }
 
-  navigationBack = () => {
-    this.props.navigation.goBack();
-  };
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      this.navigateTalkAbout();
+      return true;
+    });
+  }
+
+  // navigateTalkDetail = () => {
+  //   this.props.navigation.navigate("TalkDetail", {
+  //     from: "about"
+  //   });
+  // };
 
   navigateTalkAbout = () => {
     this.props.navigation.navigate("TalkAbout");
@@ -255,31 +264,12 @@ class TalkWrite extends Component {
           }}
           closeHandler={() => this.setState({ deletemodal: false })}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            justifyContent: "flex-end",
-            alignItems: "center",
-            paddingTop: widthPercentageToDP(11),
-            paddingBottom: widthPercentageToDP(14)
-          }}
-        >
-          <Text
-            style={{
-              position: "absolute",
-              width: widthPercentageToDP(375),
-              color: "#000000",
-              fontSize: widthPercentageToDP(17),
-              fontFamily: fonts.nanumBarunGothicB,
-              textAlign: "center"
-            }}
-          >
-            글쓰기
-          </Text>
-          {this.renderSubmit()}
-        </View>
+        <TitleView
+          titleName={"글쓰기"}
+          leftChild={true}
+          handler={this.navigateTalkAbout}
+          rightChild={this.renderSubmit()}
+        />
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : null}

@@ -7,8 +7,10 @@ import {
   Image,
   ScrollView,
   FlatList,
-  Keyboard
+  Keyboard,
+  BackHandler
 } from "react-native";
+import { UIActivityIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
 import { VoteActions } from "../../store/actionCreator";
 import { widthPercentageToDP } from "../../utils/util";
@@ -49,24 +51,109 @@ class Vote extends Component {
       replyinfo: {}, //댓글정보 저장
       placeholder: "댓글을 입력해주세요",
       parentIndex: null,
-      opushed:
-        this.props.getVote.voteItem[0].voteItemIndex ===
-        this.props.c_checkVote.voteItemIndex
-          ? true
-          : false,
-      xpushed:
-        this.props.getVote.voteItem[1].voteItemIndex ===
-        this.props.c_checkVote.voteItemIndex
-          ? true
-          : false,
+      opushed: false,
+      xpushed: false,
       who: "me",
       deletemodal: false,
       oxmodel: false,
       ox: null,
       selected_emoji: null,
-      emoji: false
+      emoji: false,
+      dueTime: "loading"
     };
   }
+
+  async componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      VoteActions.handleBottomModal(false);
+
+      return true;
+    });
+
+    const currentVote = await VoteActions.getVote();
+    await VoteActions.pageListPastVote();
+    if (currentVote) {
+      //현재 진행중인 투표가 있으면
+      await VoteActions.checkVote(
+        this.props.getVote.voteTopic.voteTopicIndex,
+        0
+      );
+      VoteActions.pageListVoteReply(
+        this.props.getVote.voteTopic.voteTopicIndex,
+        0
+      );
+    } else {
+      //없으면
+      VoteActions.getPastVote(this.props.pastVoteList[0].voteTopicIndex, 0);
+      await VoteActions.checkVote(this.props.pastVoteList[0].voteTopicIndex, 0);
+      VoteActions.pageListVoteReply(
+        this.props.pastVoteList[0].voteTopicIndex,
+        0
+      );
+    }
+    this.IsPushed("o");
+    this.IsPushed("x");
+    if (this.props.dueDate != null) {
+      Duetimeset = setInterval(() => this.DueTime(), 1000);
+      this.DueTime();
+    }
+    VoteActions.handleLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  IsPushed = ox => {
+    if (ox == "o") {
+      this.props.getVote.voteItem[0].voteItemIndex ===
+      this.props.c_checkVote.voteItemIndex
+        ? this.setState({ opushed: true })
+        : this.setState({ opushed: false });
+    } else {
+      this.props.getVote.voteItem[1].voteItemIndex ===
+      this.props.c_checkVote.voteItemIndex
+        ? this.setState({ xpushed: true })
+        : this.setState({ xpushed: false });
+    }
+  };
+
+  DueTime = () => {
+    const today = new Date();
+    const dueDay = new Date(
+      parseInt(this.props.dueDate.substring(0, 4), 10),
+      parseInt(this.props.dueDate.substring(4, 6) - 1, 10),
+      parseInt(this.props.dueDate.substring(6, 8), 10),
+      parseInt(this.props.dueDate.substring(8, 10), 10),
+      parseInt(this.props.dueDate.substring(10, 12), 10),
+      parseInt(this.props.dueDate.substring(12, 14), 10)
+    );
+    const day_gap = dueDay.getTime() - today.getTime(); //날짜 차이
+    const day_gap_time = Math.floor(day_gap / (1000 * 60 * 60)); //날짜차이 -> 시간차이
+    const time_gap = new Date(0, 0, 0, 0, 0, 0, dueDay - today); //시간 차이
+
+    let hour_gap = day_gap_time + time_gap.getHours();
+    let minute_gap = time_gap.getMinutes();
+    let second_gap = time_gap.getSeconds();
+
+    if (day_gap < 0) {
+      clearInterval(Duetimeset);
+      VoteActions.handleEnable(false);
+      VoteActions.handleDueDateTime(null);
+    }
+
+    if (hour_gap < 10) {
+      hour_gap = "0" + hour_gap;
+    }
+    if (minute_gap < 10) {
+      minute_gap = "0" + minute_gap;
+    }
+    if (second_gap < 10) {
+      second_gap = "0" + second_gap;
+    }
+    const gap = hour_gap + ":" + minute_gap + ":" + second_gap;
+    this.setState({ dueTime: gap });
+  };
 
   navigateVotePre = () => {
     this.props.navigation.navigate("VotePast");
@@ -115,232 +202,247 @@ class Vote extends Component {
   };
 
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-        <BottomMenuModal
-          visible={this.props.bottomModal}
-          handler={() => VoteActions.handleBottomModal(false)}
-          updateHandler={this.updateReply}
-          deleteHandler={() => this.setState({ deletemodal: true })}
-          who={this.state.who}
-        />
-        <CustomModal
-          height={widthPercentageToDP(201.9)}
-          children={
-            <CustomModalBlackText>
-              해당 댓글을 삭제하겠습니까?
-            </CustomModalBlackText>
-          }
-          visible={this.state.deletemodal}
-          footerHandler={() => {
-            this.deleteReply();
-            this.setState({ deletemodal: false });
-          }}
-          closeHandler={() => this.setState({ deletemodal: false })}
-        />
-
-        <CustomModal
-          height={widthPercentageToDP(201.9)}
-          children={
-            <CustomModalBlackText>
-              {`${this.state.ox}에 투표하시겠습니까?`}
-            </CustomModalBlackText>
-          }
-          visible={this.state.oxmodel}
-          footerHandler={async () => {
-            VoteActions.handleEnable(false);
-            this.state.ox == "O"
-              ? [
-                  await this.createVote(0),
-                  this.setState({ opushed: true, oxmodel: false })
-                ]
-              : [
-                  await this.createVote(1),
-                  this.setState({ xpushed: true, oxmodel: false })
-                ];
-            await VoteActions.getVote();
-          }}
-          closeHandler={() => this.setState({ oxmodel: false })}
-        />
-
-        <ScrollView>
-          <Image
-            style={styles.background}
-            source={require("../../../assets/image/community/vote_pung.png")}
+    if (this.props.loading == true) {
+      return <UIActivityIndicator color={"gray"} />;
+    } else
+      return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+          <BottomMenuModal
+            visible={this.props.bottomModal}
+            handler={() => VoteActions.handleBottomModal(false)}
+            updateHandler={this.updateReply}
+            deleteHandler={() => this.setState({ deletemodal: true })}
+            who={this.state.who}
           />
-          <TopView>
-            <NoticeText>{`투표 종료까지 ${"00:00:00"}\n제출된 선택은 수정이 안됩니다. 신중히 선택해주세요.`}</NoticeText>
-            <SubjectText>{this.props.getVote.voteTopic.topicName}</SubjectText>
-            <View style={{ flexDirection: "row" }}>
-              <VoteView
-                handler={async () => {
-                  this.setState({ ox: "O", oxmodel: true });
-                }}
-                pushed={this.state.opushed}
-                enabled={this.props.enable}
-                text="O"
-                oText={this.props.getVote.voteItem[0].itemName}
-              />
-              <View style={{ width: widthPercentageToDP(23) }} />
-              <VoteView
-                handler={async () => {
-                  this.setState({ ox: "X", oxmodel: true });
-                }}
-                pushed={this.state.xpushed}
-                enabled={this.props.enable}
-                text="X"
-                xText={this.props.getVote.voteItem[1].itemName}
-              />
-            </View>
-            <PercentView
-              number={this.props.getVote.voteTopic.totalCount}
-              oPercent={this.percent(this.props.getVote.voteItem[0].count)}
-              xPercent={this.percent(this.props.getVote.voteItem[1].count)}
+          <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                해당 댓글을 삭제하겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={this.state.deletemodal}
+            footerHandler={() => {
+              this.deleteReply();
+              this.setState({ deletemodal: false });
+            }}
+            closeHandler={() => this.setState({ deletemodal: false })}
+          />
+
+          <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                {`${this.state.ox}에 투표하시겠습니까?`}
+              </CustomModalBlackText>
+            }
+            visible={this.state.oxmodel}
+            footerHandler={async () => {
+              VoteActions.handleEnable(false);
+              this.state.ox == "O"
+                ? [
+                    await this.createVote(0),
+                    this.setState({ opushed: true, oxmodel: false })
+                  ]
+                : [
+                    await this.createVote(1),
+                    this.setState({ xpushed: true, oxmodel: false })
+                  ];
+              await VoteActions.getVote();
+            }}
+            closeHandler={() => this.setState({ oxmodel: false })}
+          />
+
+          <ScrollView>
+            <Image
+              style={styles.background}
+              source={require("../../../assets/image/community/vote_pung.png")}
             />
-          </TopView>
+            <TopView>
+              {this.props.dueDate != null ? (
+                <NoticeText>{`투표 종료까지 ${this.state.dueTime}\n제출된 선택은 수정이 안됩니다. 신중히 선택해주세요.`}</NoticeText>
+              ) : (
+                <NoticeText>{`투표가 종료되었습니다.`}</NoticeText>
+              )}
+              <SubjectText>
+                {this.props.getVote.voteTopic.topicName}
+              </SubjectText>
+              <View style={{ flexDirection: "row" }}>
+                <VoteView
+                  handler={async () => {
+                    this.setState({ ox: "O", oxmodel: true });
+                  }}
+                  pushed={this.state.opushed}
+                  enabled={this.props.enable}
+                  text="O"
+                  oText={this.props.getVote.voteItem[0].itemName}
+                />
+                <View style={{ width: widthPercentageToDP(23) }} />
+                <VoteView
+                  handler={async () => {
+                    this.setState({ ox: "X", oxmodel: true });
+                  }}
+                  pushed={this.state.xpushed}
+                  enabled={this.props.enable}
+                  text="X"
+                  xText={this.props.getVote.voteItem[1].itemName}
+                />
+              </View>
+              <PercentView
+                number={this.props.getVote.voteTopic.totalCount}
+                oPercent={this.percent(this.props.getVote.voteItem[0].count)}
+                xPercent={this.percent(this.props.getVote.voteItem[1].count)}
+              />
+            </TopView>
 
-          <PreVoteView handler={this.navigateVotePre} />
+            <PreVoteView handler={this.navigateVotePre} />
 
-          <BottomView>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingLeft: widthPercentageToDP(16)
-              }}
-            >
-              <TotalReText>전체 댓글</TotalReText>
-              <Image
+            <BottomView>
+              <View
                 style={{
-                  width: widthPercentageToDP(10.2),
-                  height: widthPercentageToDP(9.9)
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: widthPercentageToDP(16)
                 }}
-                source={require("../../../assets/image/community/replys.png")}
+              >
+                <TotalReText>전체 댓글</TotalReText>
+                <Image
+                  style={{
+                    width: widthPercentageToDP(10.2),
+                    height: widthPercentageToDP(9.9)
+                  }}
+                  source={require("../../../assets/image/community/replys.png")}
+                />
+                <TotalReplyText>
+                  {this.props.voteReplyList.length}
+                </TotalReplyText>
+              </View>
+              {/* 투표댓글 */}
+              <FlatList
+                scrollEnabled={false}
+                style={{
+                  flexGrow: 1,
+                  width: "100%",
+                  height: "100%",
+                  padding: widthPercentageToDP(16)
+                }}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item, index) => index.toString()}
+                data={this.props.voteReplyList}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View>
+                      {/* 댓글 */}
+                      <ReplyView
+                        key={index}
+                        isGoodButton={false}
+                        isReplyButton={false}
+                        isdotsButton={
+                          item.userNickName == this.props.userNickName
+                            ? true
+                            : false
+                        }
+                        handler={async () => {
+                          await this.setState({
+                            replyinfo: item,
+                            temp_reply: item.content,
+                            replyIndex: item.voteReplyIndex
+                          });
+                          VoteActions.handleBottomModal(true);
+                        }}
+                        data={item}
+                        // writerName={this.props.getPosts.userNickName}
+                      />
+                    </View>
+                  );
+                }}
               />
-              <TotalReplyText>{this.props.voteReplyList.length}</TotalReplyText>
-            </View>
-            {/* 투표댓글 */}
-            <FlatList
-              scrollEnabled={false}
-              style={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                padding: widthPercentageToDP(16)
-              }}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
-              data={this.props.voteReplyList}
-              renderItem={({ item, index }) => {
-                return (
-                  <View>
-                    {/* 댓글 */}
-                    <ReplyView
-                      key={index}
-                      isButton={false}
-                      isdotsButton={
-                        item.userNickName == this.props.userNickName
-                          ? true
-                          : false
-                      }
-                      handler={async () => {
-                        await this.setState({
-                          replyinfo: item,
-                          temp_reply: item.content,
-                          replyIndex: item.voteReplyIndex
-                        });
-                        VoteActions.handleBottomModal(true);
-                      }}
-                      data={item}
-                      // writerName={this.props.getPosts.userNickName}
-                    />
-                  </View>
-                );
-              }}
-            />
-          </BottomView>
-        </ScrollView>
+            </BottomView>
+          </ScrollView>
 
-        {/* 선택된 이모지뷰 */}
-        {this.state.selected_emoji != null ? (
+          {/* 선택된 이모지뷰 */}
+          {/* {this.state.selected_emoji != null ? (
           <SelectedEmojiView
             handler={() => this.setState({ selected_emoji: null })}
             selectedEmoji={this.state.selected_emoji}
           />
-        ) : null}
+        ) : null} */}
 
-        <WriteContainer>
-          <TextInputContainer>
-            <TextInput
-              ref={input => {
-                this.TextInput = input;
-              }}
-              style={styles.textInput}
-              underlineColorAndroid="transparent"
-              onChangeText={reply => this.setState({ reply })}
-              onFocus={() => this.setState({ emoji: false })}
-              placeholder={this.state.placholder}
-              placeholderTextColor={"#929292"}
-              value={this.state.reply}
-              maxLength={1000}
-              numberOfLines={1}
-              autoCapitalize={"none"}
-              multiline={true}
-            />
-            <EmojiButton
+          <WriteContainer>
+            <TextInputContainer>
+              <TextInput
+                ref={input => {
+                  this.TextInput = input;
+                }}
+                style={styles.textInput}
+                underlineColorAndroid="transparent"
+                onChangeText={reply => this.setState({ reply })}
+                onFocus={() => this.setState({ emoji: false })}
+                placeholder={this.state.placholder}
+                placeholderTextColor={"#929292"}
+                value={this.state.reply}
+                maxLength={1000}
+                numberOfLines={1}
+                autoCapitalize={"none"}
+                multiline={true}
+              />
+              <EmojiButton
+                handler={async () => {
+                  await Keyboard.dismiss();
+                  this.state.emoji == false
+                    ? this.setState({ emoji: true })
+                    : this.setState({ emoji: false });
+                }}
+                emoji={this.state.emoji}
+              />
+            </TextInputContainer>
+            <WriteButton
               handler={async () => {
-                await Keyboard.dismiss();
-                this.state.emoji == false
-                  ? this.setState({ emoji: true })
-                  : this.setState({ emoji: false });
-              }}
-              emoji={this.state.emoji}
-            />
-          </TextInputContainer>
-          <WriteButton
-            handler={async () => {
-              if (this.state.reply != "" && this.checkSpace(this.state.reply)) {
-                var reply = new Object();
-                reply.content = this.state.reply;
-                reply.voteTopicIndex = this.props.getVote.voteTopic.voteTopicIndex;
+                if (
+                  this.state.reply != "" &&
+                  this.checkSpace(this.state.reply)
+                ) {
+                  var reply = new Object();
+                  reply.content = this.state.reply;
+                  reply.voteTopicIndex = this.props.getVote.voteTopic.voteTopicIndex;
 
-                if (this.state.form == "reply") {
-                  //댓글 작성
-                  await VoteActions.createVoteReply(reply);
-                } else if (this.state.form == "update") {
-                  //댓글 수정
-                  reply.voteReplyIndex = this.state.replyIndex;
-                  await VoteActions.updateVoteReply(reply);
-                  await this.setState({ form: "reply" });
-                } else {
-                  //대댓글 작성
-                  // reply.parentsVoteReplyIndex = this.state.parentIndex;
-                  // await TalkActions.createPostsReply(reply);
-                  // await this.setState({ form: "reply" });
+                  if (this.state.form == "reply") {
+                    //댓글 작성
+                    await VoteActions.createVoteReply(reply);
+                  } else if (this.state.form == "update") {
+                    //댓글 수정
+                    reply.voteReplyIndex = this.state.replyIndex;
+                    await VoteActions.updateVoteReply(reply);
+                    await this.setState({ form: "reply" });
+                  } else {
+                    //대댓글 작성
+                    // reply.parentsVoteReplyIndex = this.state.parentIndex;
+                    // await TalkActions.createPostsReply(reply);
+                    // await this.setState({ form: "reply" });
+                  }
+
+                  Keyboard.dismiss();
+                  await this.setState({
+                    reply: "",
+                    emoji: false,
+                    selected_emoji: null
+                  });
+
+                  await VoteActions.pageListVoteReply(
+                    this.props.getVote.voteTopic.voteTopicIndex,
+                    0
+                  );
                 }
+              }}
+            />
+          </WriteContainer>
 
-                Keyboard.dismiss();
-                await this.setState({
-                  reply: "",
-                  emoji: false,
-                  selected_emoji: null
-                });
-
-                await VoteActions.pageListVoteReply(
-                  this.props.getVote.voteTopic.voteTopicIndex,
-                  0
-                );
-              }
-            }}
-          />
-        </WriteContainer>
-
-        {/* 이모지 리스트뷰 */}
-        {this.state.emoji == true ? (
+          {/* 이모지 리스트뷰 */}
+          {/* {this.state.emoji == true ? (
           <EmojiListView handler={this.handleSelectedEmoji} />
-        ) : null}
-      </SafeAreaView>
-    );
+        ) : null} */}
+        </SafeAreaView>
+      );
   }
 }
 
@@ -366,10 +468,15 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   getVote: state.vote.getVote,
+  pastVoteList: state.vote.pastVoteList,
   voteReplyList: state.vote.voteReplyList,
   c_checkVote: state.vote.c_checkVote,
   enable: state.vote.enable,
   bottomModal: state.vote.bottomModal,
+  loading: state.vote.loading,
+
+  dueDate: state.vote.dueDate,
+  dueTime: state.vote.dueTime,
 
   userNickName: state.signin.user.userNickName
 }))(Vote);

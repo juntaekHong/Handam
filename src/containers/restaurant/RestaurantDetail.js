@@ -1,19 +1,33 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
+  StyleSheet,
   ScrollView,
   SafeAreaView,
+  Text,
   Image,
-  TouchableOpacity,
-  FlatList
+  FlatList,
+  BackHandler
 } from "react-native";
-import { widthPercentageToDP, timeSince } from "../../utils/util";
-import fonts from "../../configs/fonts";
+import { UIActivityIndicator } from "react-native-indicators";
+import Swiper from "react-native-swiper";
+import call from "react-native-phone-call";
+import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
+import { TitleView } from "../../components/community/View";
 import { CustomModalBlackText } from "../../components/talk/Text";
+import { D_Name } from "../../components/restaurant/Text";
+import {
+  RestaurantInfo,
+  OneLineReview,
+  LocationInfo,
+  LeaveReview,
+  RestaurantReviewItem,
+  Pagenation
+} from "../../components/restaurant/View";
+import fonts from "../../configs/fonts";
 
 class RestaurantDetail extends Component {
   constructor(props) {
@@ -21,12 +35,38 @@ class RestaurantDetail extends Component {
 
     this.state = {
       form: "write",
+      replyIndex: null,
+      imageIndex: 1,
       deletemodal: false,
+      dialmodal: false,
       who: "me",
-      isGood: this.props.isGood
+      isGood: null
     };
 
+    // this.MenuOrder();
+  }
+
+  async componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      RestaurantActions.handleBottomModal(false);
+      this.navigateRestaurant();
+
+      return true;
+    });
+
+    await RestaurantActions.getRestaurant(
+      this.props.navigation.state.params.index
+    );
+    await RestaurantActions.pageListRestaurantReply(
+      this.props.navigation.state.params.index
+    );
+    this.setState({ isGood: this.props.getRestaurant.isGood });
     this.MenuOrder();
+    RestaurantActions.handleLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
 
   navigateRestaurant = () => {
@@ -36,7 +76,8 @@ class RestaurantDetail extends Component {
   navigateRestaurantWrite = () => {
     this.props.navigation.navigate("RestaurantWrite", {
       form: this.state.form,
-      handler: this.props.navigation.state.params.handler
+      handler: this.props.navigation.state.params.handler,
+      replyIndex: this.state.replyIndex
     });
   };
 
@@ -48,570 +89,232 @@ class RestaurantDetail extends Component {
     });
   };
 
-  putLike = bool => {
-    this.setState({ isGood: bool }),
-      this.props.navigation.state.params.handler({ isGood: bool });
+  putLike = async bool => {
+    await this.setState({ isGood: bool });
+    const good = new Object();
+    good.isGood = bool;
+    good.restaurantIndex = this.props.getRestaurant.restaurantIndex;
+    RestaurantActions.putRestaurantSubscriber(good);
+    this.props.navigation.state.params.handler(bool);
   };
 
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <BottomMenuModal
-          visible={this.props.bottomModal}
-          handler={() => RestaurantActions.handleBottomModal(false)}
-          updateHandler={async () => {
-            await this.setState({ form: "update" });
-            this.navigateRestaurantWrite();
-          }}
-          deleteHandler={() => this.setState({ deletemodal: true })}
-          reportHandler={null}
-          who={this.state.who}
-        />
-        <CustomModal
-          height={widthPercentageToDP(201.9)}
-          children={
-            <CustomModalBlackText>
-              해당 리뷰를 삭제하시겠습니까?
-            </CustomModalBlackText>
-          }
-          visible={this.state.deletemodal}
-          footerHandler={() => {
-            // RestaurantActions.deleteRestaurantReply(); //reply인덱스 넣어야댐
-          }}
-          closeHandler={() => this.setState({ deletemodal: false })}
-        />
-        <View
-          style={{
-            backgroundColor: "white",
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: widthPercentageToDP(11),
-            paddingBottom: widthPercentageToDP(14)
-          }}
-        >
-          <Text
-            style={{
-              position: "absolute",
-              width: widthPercentageToDP(375),
-              color: "#000000",
-              fontSize: widthPercentageToDP(18),
-              fontFamily: fonts.nanumBarunGothic,
-              textAlign: "center"
+    if (this.props.loading == true) {
+      return <UIActivityIndicator color={"gray"} />;
+    } else
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <BottomMenuModal
+            visible={this.props.bottomModal}
+            handler={() => RestaurantActions.handleBottomModal(false)}
+            updateHandler={async () => {
+              await RestaurantActions.getRestaurantReply(this.state.replyIndex);
+              await this.setState({ form: "update" });
+              this.navigateRestaurantWrite();
+              await this.setState({ form: "write" });
             }}
-          >
-            한슐랭
-          </Text>
-          <TouchableOpacity
-            style={{ marginLeft: widthPercentageToDP(8) }}
-            onPress={() => this.navigateRestaurant()}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(28),
-                height: widthPercentageToDP(28)
-              }}
-              source={require("../../../assets/image/community/back.png")}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView>
-          <Text
-            style={{
-              color: "#0b0b0b",
-              fontSize: widthPercentageToDP(18),
-              fontFamily: fonts.nanumBarunGothicB,
-              marginTop: widthPercentageToDP(18),
-              marginLeft: widthPercentageToDP(21),
-              marginBottom: widthPercentageToDP(17)
+            deleteHandler={() => this.setState({ deletemodal: true })}
+            reportHandler={null}
+            who={this.state.who}
+          />
+          <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                해당 리뷰를 삭제하시겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={this.state.deletemodal}
+            footerHandler={async () => {
+              this.setState({ deletemodal: false });
+              await RestaurantActions.deleteRestaurantReply(
+                this.state.replyIndex
+              );
+              RestaurantActions.pageListRestaurantReply(
+                this.props.getRestaurant.restaurantIndex
+              );
             }}
-          >
-            {this.props.getRestaurant.name}
-          </Text>
-
-          {/* 이미지 */}
-          <View
-            style={{
-              backgroundColor: "red",
-              width: widthPercentageToDP(375),
-              height: widthPercentageToDP(207)
+            closeHandler={() => this.setState({ deletemodal: false })}
+          />
+          <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                {this.props.getRestaurant.tel}
+              </CustomModalBlackText>
+            }
+            visible={this.state.dialmodal}
+            footerText={"전화걸기"}
+            footerDisabled={
+              this.props.getRestaurant.tel == "준비중" ? true : false
+            }
+            footerHandler={() => {
+              this.setState({ dialmodal: false });
+              const telInfo = {
+                number: this.props.getRestaurant.tel,
+                prompt: false
+              };
+              call(telInfo).catch(console.log(error));
             }}
+            closeHandler={() => this.setState({ dialmodal: false })}
           />
 
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: widthPercentageToDP(16),
-              paddingHorizontal: widthPercentageToDP(22)
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center"
+          <TitleView
+            titleName={"한슐랭"}
+            leftChild={true}
+            handler={this.navigateRestaurant}
+          />
+
+          <ScrollView>
+            <D_Name>{this.props.getRestaurant.name}</D_Name>
+            <Swiper
+              horizontal={true}
+              removeClippedSubviews={false}
+              width={widthPercentageToDP(375)}
+              height={widthPercentageToDP(207)}
+              loop={false}
+              autoplay={false}
+              onIndexChanged={async index => {
+                await this.setState({ imageIndex: index + 1 });
+              }}
+              showsPagination={true}
+              scrollEnabled={true}
+              renderPagination={() => {
+                return (
+                  <Pagenation
+                    index={this.state.imageIndex}
+                    total={
+                      this.props.getRestaurant.resultRestaurantImage.subImage
+                        .length
+                    }
+                  />
+                );
               }}
             >
-              <Text
-                style={{
-                  color: "#0b0b0b",
-                  fontSize: widthPercentageToDP(15),
-                  fontFamily: fonts.nanumBarunGothicB
-                }}
-              >
-                {this.props.getRestaurant.name}
-              </Text>
+              {this.props.getRestaurant.resultRestaurantImage.subImage.map(
+                (item, index) => {
+                  return (
+                    <Image
+                      key={index}
+                      style={{
+                        width: widthPercentageToDP(375),
+                        height: widthPercentageToDP(207)
+                      }}
+                      source={{ uri: item }}
+                    />
+                  );
+                }
+              )}
+            </Swiper>
 
+            <RestaurantInfo
+              scrapHandler={() => {
+                this.state.isGood == 1 ? this.putLike(0) : this.putLike(1);
+              }}
+              phoneHandler={() => this.setState({ dialmodal: true })}
+              restaurantInfo={this.props.getRestaurant}
+              isGood={this.state.isGood}
+            />
+
+            <View style={styles.line} />
+
+            <OneLineReview
+              review={this.props.getRestaurant.review}
+              restaurantMenuList={this.props.getRestaurant.restaurantMenu}
+            />
+
+            <View style={styles.line} />
+
+            <LocationInfo
+              latitude={this.props.getRestaurant.latitude}
+              longitude={this.props.getRestaurant.longitude}
+            />
+
+            <LeaveReview
+              writeHandler={this.navigateRestaurantWrite}
+              goodCount={this.props.getRestaurant.goodCount}
+              restaurantReplyListCount={this.props.restaurantReplyList.length}
+            />
+
+            {this.props.restaurantReplyList.length == 0 ? (
               <View
                 style={{
-                  flexDirection: "row",
-                  marginLeft: widthPercentageToDP(12)
+                  height: widthPercentageToDP(284),
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: widthPercentageToDP(11),
+                  borderTopColor: "#dbdbdb",
+                  borderTopWidth: widthPercentageToDP(0.5)
                 }}
               >
-                {this.props.getRestaurant.resultRestaurantTag.map(
-                  (item, index) => {
-                    return (
-                      <View
-                        key={index}
-                        style={{
-                          backgroundColor: "#f5f5f5",
-                          width: widthPercentageToDP(34),
-                          height: widthPercentageToDP(15),
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderColor: "#ffffff",
-                          borderWidth: widthPercentageToDP(1),
-                          borderRadius: widthPercentageToDP(10)
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#404040",
-                            fontSize: widthPercentageToDP(8),
-                            fontFamily: fonts.nanumBarunGothicB
-                          }}
-                        >
-                          {item.tag}
-                        </Text>
-                      </View>
-                    );
-                  }
-                )}
+                <Text
+                  style={{
+                    color: "#b2b2b2",
+                    fontSize: widthPercentageToDP(12),
+                    fontFamily: fonts.nanumBarunGothicB
+                  }}
+                >
+                  해당 맛집의 첫 리뷰를 남겨보세요!
+                </Text>
               </View>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => {
-                const good = new Object();
-                this.state.isGood == 0
-                  ? [(good.isGood = 1), this.putLike(1)]
-                  : [(good.isGood = 0), this.putLike(0)];
-                good.restaurantIndex = this.props.getRestaurant.restaurantIndex;
-                RestaurantActions.putRestaurantSubscriber(good);
-              }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(21),
-                  height: widthPercentageToDP(21)
-                }}
-                source={
-                  this.state.isGood == 1
-                    ? require("../../../assets/image/community/heart_color.png")
-                    : require("../../../assets/image/community/heart.png")
-                }
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ marginHorizontal: widthPercentageToDP(19) }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: widthPercentageToDP(13)
-              }}
-            >
-              <TouchableOpacity onPress={() => {}}>
-                <Image
-                  style={{
-                    width: widthPercentageToDP(18),
-                    height: widthPercentageToDP(18),
-                    marginRight: widthPercentageToDP(16)
-                  }}
-                  source={require("../../../assets/image/community/phone.png")}
-                />
-              </TouchableOpacity>
-              <Text
-                style={{
-                  color: "#404040",
-                  fontSize: widthPercentageToDP(14),
-                  fontFamily: fonts.nanumBarunGothicB
-                }}
-              >
-                {this.props.getRestaurant.tel}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: widthPercentageToDP(13)
-              }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: widthPercentageToDP(20),
-                  marginRight: widthPercentageToDP(14)
-                }}
-                source={require("../../../assets/image/community/clock.png")}
-              />
-              <Text
-                style={{
-                  color: "#404040",
-                  fontSize: widthPercentageToDP(14),
-                  fontFamily: fonts.nanumBarunGothicB
-                }}
-              >
-                {this.props.getRestaurant.openingHours}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "#dbdbdb",
-              height: widthPercentageToDP(0.5),
-              marginVertical: widthPercentageToDP(16)
-            }}
-          />
-
-          <View
-            style={{
-              paddingHorizontal: widthPercentageToDP(22),
-              marginBottom: widthPercentageToDP(10)
-            }}
-          >
-            <Text
-              style={{
-                color: "#0b0b0b",
-                fontSize: widthPercentageToDP(15),
-                fontFamily: fonts.nanumBarunGothicB
-              }}
-            >
-              한줄평
-            </Text>
-            <Text
-              style={{
-                color: "#404040",
-                fontSize: widthPercentageToDP(12),
-                fontFamily: fonts.nanumBarunGothic,
-                lineHeight: widthPercentageToDP(18),
-                marginTop: widthPercentageToDP(10)
-              }}
-            >
-              {this.props.getRestaurant.review}
-            </Text>
-          </View>
-
-          <View style={{ paddingHorizontal: widthPercentageToDP(22) }}>
-            <Text
-              style={{
-                color: "#0b0b0b",
-                fontSize: widthPercentageToDP(15),
-                fontFamily: fonts.nanumBarunGothicB
-              }}
-            >
-              대표메뉴
-            </Text>
-
-            {this.props.getRestaurant.restaurantMenu.map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: widthPercentageToDP(10)
-                  }}
-                >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text
-                      style={{
-                        color: "#404040",
-                        fontSize: widthPercentageToDP(12),
-                        fontFamily: fonts.nanumBarunGothic
+            ) : (
+              <FlatList
+                style={styles.replyList}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item, index) => index.toString()}
+                onEndReachedThreshold={0.01}
+                onEndReached={() => {}}
+                ListHeaderComponent={() => (
+                  <View style={{ height: widthPercentageToDP(11) }} />
+                )}
+                data={this.props.restaurantReplyList}
+                renderItem={({ item, index }) => {
+                  return (
+                    <RestaurantReviewItem
+                      key={index}
+                      data={item}
+                      handler={async () => {
+                        await this.setState({
+                          replyIndex: item.restaurantReplyIndex
+                        });
+                        RestaurantActions.handleBottomModal(true);
                       }}
-                    >
-                      {item.name}
-                    </Text>
-                    <View
-                      style={{
-                        backgroundColor: "#dbdbdb",
-                        width: widthPercentageToDP(101),
-                        height: widthPercentageToDP(0.5),
-                        marginLeft: widthPercentageToDP(8)
-                      }}
+                      isDots={
+                        item.userNickName == this.props.userNickName
+                          ? true
+                          : false
+                      }
                     />
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {item.priority != null ? (
-                      <View
-                        style={{
-                          backgroundColor: "#ff000d",
-                          width: widthPercentageToDP(32),
-                          height: widthPercentageToDP(12),
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderWidth: widthPercentageToDP(1),
-                          borderRadius: widthPercentageToDP(10),
-                          borderColor: "#ff000d"
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#ffffff",
-                            fontSize: widthPercentageToDP(8),
-                            fontFamily: fonts.nanumBarunGothicB
-                          }}
-                        >
-                          추천
-                        </Text>
-                      </View>
-                    ) : null}
-
-                    <Text
-                      style={{
-                        color: "#404040",
-                        fontSize: widthPercentageToDP(12),
-                        fontFamily: fonts.nanumBarunGothic,
-                        marginLeft: widthPercentageToDP(10)
-                      }}
-                    >
-                      {item.price}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "#dbdbdb",
-              height: widthPercentageToDP(0.5),
-              marginVertical: widthPercentageToDP(16)
-            }}
-          />
-
-          <View
-            style={{
-              paddingHorizontal: widthPercentageToDP(22),
-              marginBottom: widthPercentageToDP(16)
-            }}
-          >
-            <Text
-              style={{
-                color: "#0b0b0b",
-                fontSize: widthPercentageToDP(15),
-                fontFamily: fonts.nanumBarunGothicB
-              }}
-            >
-              위치정보
-            </Text>
-          </View>
-          {/* 지도 */}
-          <View
-            style={{
-              backgroundColor: "red",
-              width: widthPercentageToDP(375),
-              height: widthPercentageToDP(207)
-            }}
-          />
-
-          <View
-            style={{
-              alignItems: "center",
-              marginTop: widthPercentageToDP(27)
-            }}
-          >
-            <Text
-              style={{
-                color: "#0b0b0b",
-                fontSize: widthPercentageToDP(15),
-                fontFamily: fonts.nanumBarunGothicB
-              }}
-            >
-              리뷰를 남겨보세요!
-            </Text>
-          </View>
-          <View style={{ alignItems: "flex-end" }}>
-            <Image
-              style={{
-                width: widthPercentageToDP(33.6),
-                height: widthPercentageToDP(16.8),
-                marginRight: widthPercentageToDP(12)
-              }}
-              source={require("../../../assets/image/community/review.png")}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              paddingHorizontal: widthPercentageToDP(16)
-            }}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{
-                  width: widthPercentageToDP(21),
-                  height: widthPercentageToDP(21),
-                  marginRight: widthPercentageToDP(8)
+                  );
                 }}
-                source={require("../../../assets/image/community/heart.png")}
               />
-              <Text
-                style={{
-                  color: "#404040",
-                  fontSize: widthPercentageToDP(12),
-                  fontFamily: fonts.nanumBarunGothic,
-                  marginRight: widthPercentageToDP(19.6)
-                }}
-              >
-                {this.props.getRestaurant.goodCount}
-              </Text>
-              <Image
-                style={{
-                  width: widthPercentageToDP(17),
-                  height: widthPercentageToDP(17),
-                  marginRight: widthPercentageToDP(8)
-                }}
-                source={require("../../../assets/image/community/bigtalk.png")}
-              />
-              <Text
-                style={{
-                  color: "#404040",
-                  fontSize: widthPercentageToDP(12),
-                  fontFamily: fonts.nanumBarunGothic
-                }}
-              >
-                {this.props.restaurantReplyList.length}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                this.navigateRestaurantWrite();
-              }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={require("../../../assets/image/community/writeicon.png")}
-              />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            style={{
-              flexGrow: 1,
-              backgroundColor: "#ffffff",
-              width: "100%",
-              height: "100%"
-            }}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReachedThreshold={0.01}
-            onEndReached={() => {}}
-            ListHeaderComponent={() => (
-              <View style={{ height: widthPercentageToDP(11) }} />
             )}
-            // ListFooterComponent={this.renderListFooter}
-            data={this.props.restaurantReplyList}
-            renderItem={({ item, index }) => {
-              return (
-                <View
-                  style={{
-                    height: widthPercentageToDP(81),
-                    paddingLeft: widthPercentageToDP(16),
-                    paddingVertical: widthPercentageToDP(12),
-                    borderTopWidth: widthPercentageToDP(1),
-                    borderTopColor: "#dbdbdb"
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#101010",
-                      fontSize: widthPercentageToDP(13),
-                      fontFamily: fonts.nanumBarunGothicB,
-                      width: widthPercentageToDP(288),
-                      marginBottom: widthPercentageToDP(8)
-                    }}
-                  >
-                    {item.title != undefined ? item.title : "제목"}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#000000",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothic,
-                      width: widthPercentageToDP(288),
-                      marginBottom: widthPercentageToDP(10)
-                    }}
-                  >
-                    {item.content}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#646464",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothicB
-                    }}
-                  >
-                    {timeSince(item.createdAt)}
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      position: "absolute",
-                      marginTop: widthPercentageToDP(12),
-                      marginLeft: widthPercentageToDP(332)
-                    }}
-                    onPress={() => {
-                      console.log(item);
-                      // RestaurantActions.getRestaurantReply(item.)  //reply인덱스 넣어야함
-                      RestaurantActions.handleBottomModal(true);
-                    }}
-                  >
-                    <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/community/dots.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </ScrollView>
-      </SafeAreaView>
-    );
+          </ScrollView>
+        </SafeAreaView>
+      );
   }
 }
 
+const styles = StyleSheet.create({
+  line: {
+    backgroundColor: "#dbdbdb",
+    height: widthPercentageToDP(0.5),
+    marginVertical: widthPercentageToDP(16)
+  },
+  replyList: {
+    flexGrow: 1,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: "100%"
+  }
+});
+
 export default connect(state => ({
   getRestaurant: state.restaurant.getRestaurant,
-  isGood: state.restaurant.isGood,
+  getRestaurantReply: state.restaurant.getRestaurantReply,
   restaurantReplyList: state.restaurant.restaurantReplyList,
-  bottomModal: state.restaurant.bottomModal
+  bottomModal: state.restaurant.bottomModal,
+  loading: state.restaurant.loading,
+
+  userNickName: state.signin.user.userNickName
 }))(RestaurantDetail);

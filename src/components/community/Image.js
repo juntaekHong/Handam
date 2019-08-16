@@ -6,6 +6,11 @@ export const DefaultImage = styled.Image`
   height: ${widthPercentageToDP(28)};
 `;
 
+export const DefaultImage2 = styled.Image`
+  width: ${widthPercentageToDP(21)};
+  height: ${widthPercentageToDP(21)};
+`;
+
 export const SelectedEmojiImage = styled.Image`
   width: ${widthPercentageToDP(49)};
   height: ${widthPercentageToDP(76)};

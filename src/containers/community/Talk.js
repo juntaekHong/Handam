@@ -7,10 +7,14 @@ import {
   Image,
   SafeAreaView
 } from "react-native";
-import { CTText, CEText } from "../../components/community/Text";
+import { CategoryName, CategoryExplain } from "../../components/community/Text";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
-import { TalkActions, VoteActions } from "../../store/actionCreator";
+import {
+  TalkActions,
+  VoteActions,
+  RestaurantActions
+} from "../../store/actionCreator";
 import { AlertModal } from "../../components/community/Modal";
 
 class TalkScreen extends Component {
@@ -22,17 +26,13 @@ class TalkScreen extends Component {
   }
 
   async componentDidMount() {
-    await VoteActions.getVote();
-    VoteActions.pageListPastVote();
-    VoteActions.checkVote(this.props.getVote.voteTopic.voteTopicIndex, 0);
-    VoteActions.pageListVoteReply(
-      this.props.getVote.voteTopic.voteTopicIndex,
-      0
-    );
+    VoteActions.handleLoading(true);
+    RestaurantActions.handleLoading(true);
   }
 
-  navigateTalkAbout = () => {
-    this.props.navigation.navigate("TalkAbout");
+  navigateTalkAbout = index => {
+    TalkActions.handleLoading(true);
+    this.props.navigation.navigate("TalkAbout", { index: index });
   };
 
   render() {
@@ -61,27 +61,7 @@ class TalkScreen extends Component {
               <TouchableOpacity
                 style={styles.category}
                 onPress={async () => {
-                  if (this.start) return;
-                  this.start = true;
-                  await TalkActions.handleCategoryIndex(index + 1);
-                  await TalkActions.handleFilter(
-                    `postsCategoryIndex eq ${this.props.categoryIndex}`
-                  );
-                  // await TalkActions.initPostList();
-                  await TalkActions.pageListPosts(
-                    this.props.filter,
-                    this.props.orderby,
-                    this.props.postsList.length / 6,
-                    6
-                  );
-                  await TalkActions.pageListPosts(
-                    this.props.filter,
-                    "count DESC",
-                    1,
-                    2
-                  );
-                  this.navigateTalkAbout();
-                  this.start = false;
+                  this.navigateTalkAbout(index + 1);
                 }}
               >
                 <Image
@@ -100,7 +80,7 @@ class TalkScreen extends Component {
                   source={require("../../../assets/image/community/quotation_color.png")}
                 />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <CTText>{item.str}</CTText>
+                  <CategoryName>{item.str}</CategoryName>
                   <Image
                     style={{
                       width: widthPercentageToDP(13),
@@ -110,7 +90,7 @@ class TalkScreen extends Component {
                     source={require("../../../assets/image/community/new.png")}
                   />
                 </View>
-                <CEText>{item.explain}</CEText>
+                <CategoryExplain>{item.explain}</CategoryExplain>
               </TouchableOpacity>
             );
           }}
@@ -147,12 +127,11 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
-  categoryIndex: state.talk.categoryIndex,
-  postsList: state.talk.postsList,
   alertModal: state.talk.alertModal,
   alertText: state.talk.alertText,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
 
-  getVote: state.vote.getVote
+  getVote: state.vote.getVote,
+  pastVoteList: state.vote.pastVoteList
 }))(TalkScreen);

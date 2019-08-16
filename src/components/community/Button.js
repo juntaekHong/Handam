@@ -2,6 +2,20 @@ import React from "react";
 import { TouchableOpacity, Image } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
+import { DefaultImage, DefaultImage2 } from "./Image";
+
+export const BackBtn = props => {
+  return (
+    <TouchableOpacity
+      style={{ marginLeft: widthPercentageToDP(10) }}
+      onPress={() => props.handler()}
+    >
+      <DefaultImage
+        source={require("../../../assets/image/community/back.png")}
+      />
+    </TouchableOpacity>
+  );
+};
 
 export const WriteButton = props => {
   return (
@@ -9,11 +23,7 @@ export const WriteButton = props => {
       style={{ marginLeft: widthPercentageToDP(5) }}
       onPress={() => props.handler()}
     >
-      <Image
-        style={{
-          width: widthPercentageToDP(28),
-          height: widthPercentageToDP(28)
-        }}
+      <DefaultImage
         source={require("../../../assets/image/community/reply_write.png")}
       />
     </TouchableOpacity>
@@ -28,11 +38,7 @@ export const AnonymousButton = props => {
         props.handler();
       }}
     >
-      <Image
-        style={{
-          width: widthPercentageToDP(28),
-          height: widthPercentageToDP(28)
-        }}
+      <DefaultImage
         source={
           props.anonymous == 0
             ? require("../../../assets/image/community/anonymous_off.png")
@@ -51,11 +57,7 @@ export const EmojiButton = props => {
         props.handler();
       }}
     >
-      <Image
-        style={{
-          width: widthPercentageToDP(21),
-          height: widthPercentageToDP(21)
-        }}
+      <DefaultImage2
         source={
           props.emoji == false
             ? require("../../../assets/image/community/emoji.png")
