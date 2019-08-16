@@ -3,11 +3,17 @@ import styled from "styled-components";
 import { FlatList } from "react-native";
 import { AlarmListItem } from "../listItem/AlarmListItem";
 import { AlarmActions } from "../../../store/actionCreator";
+import navigators from "../../../utils/navigators";
 
 export const AlarmList = props => {
   const onPress = useCallback(
-    alarmIndex => {
-      if (props.index == 0) AlarmActions.putUpdateAlarm(alarmIndex);
+    alarm => {
+      if (props.index == 0) AlarmActions.putUpdateAlarm(alarm.alarmIndex);
+
+      navigators.navigate("TalkDetail", {
+        from: "alarm",
+        postsIndex: alarm.data.postsIndex
+      });
     },
     [props.index]
   );
@@ -24,9 +30,7 @@ export const AlarmList = props => {
       data={props.list}
       extraData={props}
       renderItem={({ item, index }) => {
-        return (
-          <AlarmListItem item={item} onPress={() => onPress(item.alarmIndex)} />
-        );
+        return <AlarmListItem item={item} onPress={() => onPress(item)} />;
       }}
     />
   );
