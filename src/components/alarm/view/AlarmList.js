@@ -2,17 +2,18 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import { FlatList } from "react-native";
 import { AlarmListItem } from "../listItem/AlarmListItem";
-import { AlarmActions } from "../../../store/actionCreator";
+import { AlarmActions, TalkActions } from "../../../store/actionCreator";
 import navigators from "../../../utils/navigators";
 
 export const AlarmList = props => {
   const onPress = useCallback(
     alarm => {
       if (props.index == 0) AlarmActions.putUpdateAlarm(alarm.alarmIndex);
-
+      TalkActions.handleLoading(false);
+      const postsIndex = JSON.parse(alarm.data).postsIndex;
       navigators.navigate("TalkDetail", {
         from: "alarm",
-        postsIndex: alarm.data.postsIndex
+        postsIndex
       });
     },
     [props.index]
