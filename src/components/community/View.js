@@ -16,7 +16,7 @@ import {
   C_LikeText
 } from "./Text";
 import { DefaultImage, SelectedEmojiImage, C_LikeImage } from "./Image";
-import { C_ReplyButton, C_LikeButton } from "./Button";
+import { BackBtn, C_ReplyButton, C_LikeButton } from "./Button";
 
 const emojiList = [
   { index: 1, emoji: require("../../../assets/image/community/emoji/1.png") },
@@ -28,6 +28,36 @@ const emojiList = [
   { index: 7, emoji: require("../../../assets/image/community/emoji/7.png") },
   { index: 8, emoji: require("../../../assets/image/community/emoji/8.png") }
 ];
+
+const Title = styled.View`
+  background-color: ${"#ffffff"};
+  flex-direction: row;
+  width: ${widthPercentageToDP(375)};
+  height: ${widthPercentageToDP(60)};
+  justify-content: space-between;
+  align-items: center;
+  padding-top: ${widthPercentageToDP(11)};
+  padding-bottom: ${widthPercentageToDP(14)};
+`;
+
+const TitleText = styled.Text`
+  position: absolute;
+  color: ${"#000000"};
+  font-size: ${widthPercentageToDP(18)};
+  font-family: ${fonts.nanumBarunGothic};
+  text-align: center;
+  width: ${widthPercentageToDP(375)};
+`;
+
+export const TitleView = props => {
+  return (
+    <Title>
+      <TitleText>{props.titleName}</TitleText>
+      {props.leftChild ? <BackBtn handler={props.handler} /> : <View />}
+      {props.rightChild ? props.rightChild : null}
+    </Title>
+  );
+};
 
 export const AlertModalView = styled.View`
   background-color: ${"#ffffff"};
@@ -174,8 +204,21 @@ renderWriterName = props => {
   }
 };
 
+renderGoodButton = props => {
+  if (props.isGoodButton == true) {
+    return (
+      <C_LikeButton>
+        <C_LikeImage
+          source={require("../../../assets/image/community/likes.png")}
+        />
+        <C_LikeText>0</C_LikeText>
+      </C_LikeButton>
+    );
+  }
+};
+
 renderReplyButton = props => {
-  if (props.isButton == true) {
+  if (props.isReplyButton == true) {
     return (
       <C_ReplyButton onPress={() => props.re_replyHandler()}>
         <C_ReplyText>답글</C_ReplyText>
@@ -232,12 +275,7 @@ export const ReplyView = props => {
 
         <ButtonView>
           {this.renderReplyButton(props)}
-          <C_LikeButton>
-            <C_LikeImage
-              source={require("../../../assets/image/community/likes.png")}
-            />
-            <C_LikeText>0</C_LikeText>
-          </C_LikeButton>
+          {this.renderGoodButton(props)}
         </ButtonView>
       </ReplyContainer>
     );
@@ -314,7 +352,7 @@ export const ReplyView = props => {
             >
               <C_ReplyText>답글</C_ReplyText>
             </C_ReplyButton>
-            <C_LikeButton
+            {/* <C_LikeButton
               style={{
                 opacity: 0.2
               }}
@@ -323,7 +361,7 @@ export const ReplyView = props => {
                 source={require("../../../assets/image/community/likes.png")}
               />
               <C_LikeText>0</C_LikeText>
-            </C_LikeButton>
+            </C_LikeButton> */}
           </View>
         </View>
       </ReplyContainer>
@@ -410,12 +448,12 @@ export const Re_ReplyView = props => {
               marginTop: widthPercentageToDP(10)
             }}
           >
-            <C_LikeButton>
+            {/* <C_LikeButton>
               <C_LikeImage
                 source={require("../../../assets/image/community/likes.png")}
               />
               <C_LikeText>0</C_LikeText>
-            </C_LikeButton>
+            </C_LikeButton> */}
           </View>
         </ReReplyContainer>
       </View>
@@ -494,7 +532,7 @@ export const Re_ReplyView = props => {
             }}
           >
             <C_ReportText>* 신고된 답글입니다.</C_ReportText>
-            <C_LikeButton
+            {/* <C_LikeButton
               style={{
                 opacity: 0.2
               }}
@@ -503,7 +541,7 @@ export const Re_ReplyView = props => {
                 source={require("../../../assets/image/community/likes.png")}
               />
               <C_LikeText>0</C_LikeText>
-            </C_LikeButton>
+            </C_LikeButton> */}
           </View>
         </ReReplyContainer>
       </View>

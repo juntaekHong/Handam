@@ -117,25 +117,61 @@ export const VoteView = props => {
   }
 };
 
-export const PercentView = props => {
-  return (
-    <View style={{ alignItems: "center" }}>
-      <PersonText>{`총 ${props.number}명 참여`}</PersonText>
-      <View style={{ flexDirection: "row", marginTop: widthPercentageToDP(9) }}>
-        <PercentText>{props.oPercent}%</PercentText>
+const PercentContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: ${widthPercentageToDP(9)};
+`;
+
+const PercentBar = styled.View`
+  background-color: ${"#dbdbdb"};
+  width: ${widthPercentageToDP(160)};
+  height: ${widthPercentageToDP(11)};
+  margin-horizontal: ${widthPercentageToDP(13)};
+  border-radius: ${widthPercentageToDP(15)};
+  border-width: ${widthPercentageToDP(1)};
+  border-color: ${"#dbdbdb"};
+`;
+
+const PercentBarContainer = props => {
+  if (props.oPercent != props.xPercent) {
+    return (
+      <View>
+        <PercentBar />
         <View
           style={{
-            backgroundColor: "#dbdbdb",
-            width: widthPercentageToDP(162),
+            position: "absolute",
+            backgroundColor: "#848484",
+            width: widthPercentageToDP(
+              parseInt(
+                props.oPercent > props.xPercent
+                  ? props.oPercent
+                  : props.xPercent
+              ) * 1.6
+            ),
             height: widthPercentageToDP(11),
             marginHorizontal: widthPercentageToDP(13),
             borderRadius: widthPercentageToDP(15),
             borderWidth: widthPercentageToDP(1),
-            borderColor: "#dbdbdb"
+            borderColor: "#848484"
           }}
         />
-        <PercentText>{props.xPercent}%</PercentText>
       </View>
+    );
+  } else {
+    return <PercentBar />;
+  }
+};
+
+export const PercentView = props => {
+  return (
+    <View style={{ alignItems: "center" }}>
+      <PersonText>{`총 ${props.number}명 참여`}</PersonText>
+      <PercentContainer>
+        <PercentText>{props.oPercent}%</PercentText>
+        <PercentBarContainer {...props} />
+        <PercentText>{props.xPercent}%</PercentText>
+      </PercentContainer>
     </View>
   );
 };
