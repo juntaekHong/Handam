@@ -12,9 +12,8 @@ import {
 } from 'react-native';
 import { widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
-import {CustomModalSmallText, SECText} from '../../components/myInfo/Text';
+import {CustomModalBlackSmallText, SECText} from '../../components/myInfo/Text';
 import { showMessage } from "../../utils/util";
-// import { CustomModal } from "../../components/common/Modal";
 import { MyInfoActions} from "../../store/actionCreator";
 import {connect} from "react-redux";
 import {CustomModal} from "../../components/common/Modal";
@@ -63,9 +62,13 @@ class SecessionScreen extends React.Component {
                 style={{ flex: 1 }}
             >
                 <CustomModal
-                    width={widthPercentageToDP(295)}
-                    height={widthPercentageToDP(311)}
-                    children={<CustomModalSmallText black={"한담을 이용해주셔서 감사합니다.\n탈퇴 절차가 완료되었습니다."} />}
+                    width={295}
+                    height={311}
+                    children={
+                        <CustomModalBlackSmallText>
+                            한담을 이용해주셔서 감사합니다.
+                            탈퇴 절차가 완료되었습니다
+                        </CustomModalBlackSmallText>}
                     visible={this.props.failmodal}
                     footerHandler={async () => {
                         await MyInfoActions.secessionDeleteHandle();

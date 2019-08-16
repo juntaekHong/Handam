@@ -45,6 +45,7 @@ const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
           {time.map((item, index) => {
             return (
               <TableBody
+                key={index}
                 index={index + 1}
                 content={`${
                   parseInt((index + 1) / 3) == 0 ? "0" + (index + 9) : index + 9
@@ -57,9 +58,10 @@ const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
               {hansunginfo !== null
                 ? hansunginfo.schedule.monday !== undefined
                   ? Object.keys(hansunginfo.schedule).map((item, index) => {
-                      return hansunginfo.schedule[item].map(schedule => {
+                      return hansunginfo.schedule[item].map((schedule, i) => {
                         return (
                           <ScheduleContent
+                            key={i}
                             color={schedule_color}
                             left={dayToInt(item)}
                             content={schedule.content}
