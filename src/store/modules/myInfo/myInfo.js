@@ -28,6 +28,10 @@ export const userConnectedMajorHandleAction = createAction(USER_CONNECTEDMAJOR_H
 const USER_ADMISSION_YEAR_HANDLE = "myInfo/USER_ADMISSION_YEAR_HANDLE";
 export const userAdmissionYearHandleAction = createAction(USER_ADMISSION_YEAR_HANDLE);
 
+// 비밀번호 변경
+const USER_PASS_HANDLE = "myInfo/USER_PASS_HANDLE";
+export const userPassHandleAction = createAction(USER_PASS_HANDLE);
+
 const initState = {
     failmodal: false,
     password: '',
@@ -36,6 +40,7 @@ const initState = {
     userMinor: null,
     userConnectedMajor: null,
     userAdmissionYear: null,
+    userPass: '',
 };
 
 export const failModalHandle = bool => dispatch => {
@@ -154,6 +159,25 @@ export const changeAdmissionYearHandle = (admissionYear) => async dispatch => {
     }
 };
 
+// 비밀번호 변경 대기
+export const changePassHandle = (pass, newPass) => async dispatch => {
+    const token = await getData('token');
+    const userId = await getData('userId');
+
+    const data = {
+        userPw: pass,
+        userNewPw:newPass
+    };
+    const changeData = await api.put(`/user/userId/${userId}/password`,{token: token, body: data});
+
+    console.log(changeData);
+    if(changeData.statusCode == 200){
+        dispatch(userPassHandleAction(pass));
+    }
+    if(changeData.statusCode == 403){
+    }
+};
+
 export default handleActions(
     {
         [FAIL_MODAL_HANDLE]: (state, { payload }) =>
@@ -179,6 +203,10 @@ export default handleActions(
         [USER_ADMISSION_YEAR_HANDLE]: (state, { payload }) =>
             produce(state, draft => {
                 draft.userAdmissionYear = payload;
+            }),
+        [USER_PASS_HANDLE]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.userPass = payload;
             }),
     },
     initState

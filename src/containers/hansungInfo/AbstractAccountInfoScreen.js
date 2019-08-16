@@ -2,14 +2,12 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
 import React from "react";
-import {HansungInfoActions} from "../../store/actionCreator";
 import {connect} from "react-redux";
 
 class AbstractAccountInfoScreen extends React.Component {
 
     constructor(props) {
         super(props);
-
     }
 
     render() {
@@ -29,7 +27,7 @@ class AbstractAccountInfoScreen extends React.Component {
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                             }
                         </View>
-                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.major : this.props.hansunginfo.department}</Text>
+                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.changeMajor != null ? this.props.changeMajor : this.props.major : this.props.hansunginfo.department}</Text>
                         <TouchableOpacity style={{marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
                                           onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                             <Image source={require("../../../assets/image/hansungInfo/my.png")}/>
@@ -67,5 +65,6 @@ export default connect(state => ({
     professor_text: state.hansung.professor_text,
 
     userNickName: state.signin.user.userNickName,
-    major: state.signin.user.major
+    major: state.signin.user.major,
+    changeMajor: state.myInfo.userMajor,
 }))(AbstractAccountInfoScreen);

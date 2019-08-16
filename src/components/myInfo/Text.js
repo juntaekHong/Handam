@@ -35,22 +35,6 @@ export const CustomModalBlackSmallText = styled.Text`
   font-family: ${fonts.nanumBarunGothic};
 `;
 
-export const CustomModalText = props => {
-    return (
-        <View style={{ flexDirection: "row" }}>
-            <CustomModalBlackText>{props.black}</CustomModalBlackText>
-        </View>
-    );
-};
-
-export const CustomModalSmallText = props => {
-    return (
-        <View style={{ flexDirection: "row" }}>
-            <CustomModalBlackSmallText>{props.black}</CustomModalBlackSmallText>
-        </View>
-    );
-};
-
 // 회원탈퇴 페이지 기본 텍스트
 export const SECText = styled.Text`
   font-size: ${widthPercentageToDP(18)};
@@ -65,3 +49,20 @@ export const ACCOUNTINFOText = styled.Text`
   color: ${"black"};
 `;
 
+// 비밀번호 변경 페이지 기본 텍스트
+export const PassStandText = styled.Text`
+  textAlign: center;
+  font-size: ${widthPercentageToDP(16)};
+  fontFamily: ${fonts.nanumBarunGothic};
+  color: ${"black"};
+  marginBottom: ${widthPercentageToDP(11)}
+`;
+
+// 비밀번호 변경 페이지 - 비밀번호 조건 만족 체크 텍스트
+export const PassCheckText = styled.Text`
+  textAlign: center;
+  font-size: ${widthPercentageToDP(8)};
+  fontFamily: ${fonts.nanumBarunGothic};
+  color: ${"red"};
+  marginBottom: ${widthPercentageToDP(26)}
+`;
