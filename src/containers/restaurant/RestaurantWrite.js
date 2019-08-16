@@ -10,22 +10,23 @@ import {
   ScrollView,
   Image,
   FlatList,
-  Platform
+  Platform,
+  BackHandler
 } from "react-native";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
-
 import ImageCropPicker from "react-native-image-crop-picker";
-
+import { TitleView } from "../../components/community/View";
 import {
   CustomModalBlackText,
   AnonymousOFFText,
   AnonymousONText
 } from "../../components/talk/Text";
 import { CustomModal } from "../../components/common/Modal";
+import { LineView } from "../../components/restaurant/View";
 
 class RestaurantWrite extends Component {
   constructor(props) {
@@ -62,6 +63,18 @@ class RestaurantWrite extends Component {
       imageindex: null,
       anonymous: 1
     };
+  }
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      this.navigateRestaurantDetail();
+
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
   }
 
   navigateRestaurantDetail = () => {
@@ -183,6 +196,10 @@ class RestaurantWrite extends Component {
               //   formData,
               //   this.props.getRestaurant.restaurantIndex
               // );
+              await RestaurantActions.updateRestaurantReply(
+                body,
+                this.props.navigation.state.params.replyIndex
+              );
             } else {
               // await RestaurantActions.createRestaurantReply(
               //   formData,
@@ -244,31 +261,12 @@ class RestaurantWrite extends Component {
           }}
           closeHandler={() => this.setState({ deletemodal: false })}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            justifyContent: "flex-end",
-            alignItems: "center",
-            paddingTop: widthPercentageToDP(11),
-            paddingBottom: widthPercentageToDP(14)
-          }}
-        >
-          <Text
-            style={{
-              position: "absolute",
-              width: widthPercentageToDP(375),
-              color: "#000000",
-              fontSize: widthPercentageToDP(17),
-              fontFamily: fonts.nanumBarunGothicB,
-              textAlign: "center"
-            }}
-          >
-            글쓰기
-          </Text>
-          {this.renderSubmit()}
-        </View>
+        <TitleView
+          titleName={"글쓰기"}
+          leftChild={true}
+          handler={this.navigateRestaurantDetail}
+          rightChild={this.renderSubmit()}
+        />
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : null}
@@ -279,16 +277,10 @@ class RestaurantWrite extends Component {
             keyboardShouldPersistTaps="never"
           >
             <View style={{ flex: 1 }}>
-              <View style={styles.line} />
+              <LineView />
               <View style={styles.titleContainer}>
                 <TextInput
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(335),
-                    // height: util.widthPercentageToDP(20),
-                    fontSize: widthPercentageToDP(16),
-                    padding: 0
-                  }}
+                  style={styles.titleInput}
                   underlineColorAndroid="transparent"
                   onChangeText={title => this.setState({ title })}
                   placeholder={"제목"}
@@ -301,17 +293,12 @@ class RestaurantWrite extends Component {
                   multiline={false}
                 />
               </View>
-              <View style={styles.line} />
+
+              <LineView />
+
               <View style={styles.contentContainer}>
                 <TextInput
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(335),
-                    //height: util.widthPercentageToDP(20),
-                    fontSize: widthPercentageToDP(16),
-                    padding: 0,
-                    textAlignVertical: "top"
-                  }}
+                  style={styles.contentInput}
                   underlineColorAndroid="transparent"
                   onChangeText={content => this.setState({ content })}
                   value={this.state.content}
@@ -323,6 +310,7 @@ class RestaurantWrite extends Component {
                   multiline={true}
                 />
               </View>
+
               {/* {this.state.imageArray.length != 0 ? (
                 <FlatList
                   style={{
@@ -421,10 +409,18 @@ const styles = StyleSheet.create({
     marginTop: widthPercentageToDP(20),
     marginHorizontal: widthPercentageToDP(16)
   },
-  line: {
-    backgroundColor: "#dbdbdb",
-    width: widthPercentageToDP(375),
-    height: widthPercentageToDP(1)
+  titleInput: {
+    color: "#000000",
+    width: widthPercentageToDP(335),
+    fontSize: widthPercentageToDP(16),
+    padding: 0
+  },
+  contentInput: {
+    color: "#000000",
+    width: widthPercentageToDP(335),
+    fontSize: widthPercentageToDP(16),
+    padding: 0,
+    textAlignVertical: "top"
   }
 });
 

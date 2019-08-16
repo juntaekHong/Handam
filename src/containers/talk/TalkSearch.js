@@ -10,6 +10,7 @@ import {
   FlatList,
   BackHandler
 } from "react-native";
+import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
@@ -24,7 +25,10 @@ class TalkSearch extends Component {
     super(props);
 
     this.state = {
-      text: "",
+      text:
+        this.props.navigation.state.params.searchtext != ""
+          ? this.props.navigation.state.params.searchtext
+          : "",
       filter: `postsCategoryIndex eq ${this.props.categoryIndex}`
     };
   }
@@ -41,6 +45,8 @@ class TalkSearch extends Component {
   }
 
   navigateTalkAbout = async () => {
+    TalkActions.handleLoading(true);
+    this.props.navigation.navigate("TalkAbout");
     await TalkActions.initPostList();
     await TalkActions.pageListPosts(
       this.props.filter,
@@ -48,11 +54,16 @@ class TalkSearch extends Component {
       this.props.postsList.length / 6 + 1,
       6
     );
-    this.props.navigation.navigate("TalkAbout");
+    TalkActions.handleLoading(false);
   };
 
-  navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", { from: "search" });
+  navigateTalkDetail = postsIndex => {
+    TalkActions.handleLoading(true);
+    this.props.navigation.navigate("TalkDetail", {
+      from: "search",
+      postsIndex: postsIndex,
+      searchtext: this.state.text
+    });
   };
 
   pageListPosts = async () => {
@@ -76,7 +87,9 @@ class TalkSearch extends Component {
   };
 
   renderPostslist = () => {
-    if (this.props.total !== 0) {
+    if (this.props.loading == true) {
+      return <UIActivityIndicator color={"gray"} />;
+    } else if (this.props.total !== 0) {
       return (
         <FlatList
           style={styles.flatlist}
@@ -94,26 +107,14 @@ class TalkSearch extends Component {
             if (item.status == "ACTIVE") {
               return (
                 <PostsListItem
-                  handler={async () => {
-                    await TalkActions.getPosts(item.postsIndex);
-                    await TalkActions.pageListPostsReply(
-                      "page=1&count=100",
-                      item.postsIndex
-                    );
-                    this.navigateTalkDetail();
+                  handler={() => {
+                    this.navigateTalkDetail(item.postsIndex);
                   }}
                   data={item}
                 />
               );
             } else {
-              return (
-                <ReportedPostsListItem
-                  handler={() => {
-                    console.log("신고당한 댓글은 핸들러가 없지요.");
-                  }}
-                  data={item}
-                />
-              );
+              return <ReportedPostsListItem handler={() => {}} data={item} />;
             }
           }}
         />
@@ -196,6 +197,7 @@ class TalkSearch extends Component {
               returnKeyType={"search"}
               onSubmitEditing={async () => {
                 // ` AND  ((title LIKE ${this.state.text}) OR (content LIKE ${this.state.text}))`
+                TalkActions.handleLoading(true);
                 await TalkActions.initPostList();
                 await TalkActions.pageListPosts(
                   this.state.filter +
@@ -204,7 +206,7 @@ class TalkSearch extends Component {
                   this.props.postsList.length / 7,
                   7
                 );
-                console.log(this.props.postsList);
+                TalkActions.handleLoading(false);
               }}
             />
           </View>
@@ -253,5 +255,6 @@ export default connect(state => ({
   postsList: state.talk.postsList,
   total: state.talk.total,
   filter: state.talk.filter,
-  orderby: state.talk.orderby
+  orderby: state.talk.orderby,
+  loading: state.talk.loading
 }))(TalkSearch);

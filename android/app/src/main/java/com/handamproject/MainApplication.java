@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.microsoft.codepush.react.CodePush;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new ExtraDimensionsPackage(),
+            new MapsPackage(),
             new FingerprintAuthPackage(),
             new ReanimatedPackage(),
             new RNCWebViewPackage(),

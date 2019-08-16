@@ -3,20 +3,22 @@ import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
 
 //기본
-export const CText = styled.Text`
+export const C_Text = styled.Text`
   font-size: ${widthPercentageToDP(16)};
   font-family: ${fonts.nanumBarunGothicB};
   height: ${widthPercentageToDP(18)};
   color: ${props => (props.selected == true ? "#259ffa" : "#dbdbdb")};
 `;
-//카테고리 제목
-export const CTText = styled(CText)`
+//
+
+//community
+
+export const CategoryName = styled(C_Text)`
   height: ${widthPercentageToDP(18)};
   color: ${"#101010"};
   margin-vertical: ${widthPercentageToDP(8)};
 `;
-//카테고리 설명
-export const CEText = styled(CText)`
+export const CategoryExplain = styled(C_Text)`
   font-size: ${widthPercentageToDP(12)};
   width: ${widthPercentageToDP(200)};
   height: ${widthPercentageToDP(13)};
@@ -80,6 +82,7 @@ export const C_LikeText = styled.Text`
 `;
 
 //alert
+
 export const AlertText = styled.Text`
   color: ${"#000000"};
   font-size: ${widthPercentageToDP(18)};

@@ -11,6 +11,7 @@ const IMAGEMODAL_HANDLE = "talk/IMAGEMODAL_HANDLE";
 const IMAGEINDEX_HANDLE = "talk/IMAGEINDEX_HANDLE";
 const ALERTMODAL_HANDLE = "talk/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "talk/ALERTTEXT_HANDLE";
+const LOADING_HANDLE = "talk/LOADING_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
 const categoryIndexHandleAcation = createAction(CATEGORYINDEX_HANDLE);
@@ -19,6 +20,7 @@ const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
 const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
+const loadingHandleAction = createAction(LOADING_HANDLE);
 
 //게시물
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
@@ -67,6 +69,7 @@ const initState = {
   imageIndex: 0,
   alertModal: false,
   alertText: "호로록 칼국수",
+  loading: false,
 
   //게시물
   total: 0,
@@ -110,6 +113,10 @@ export const handleAlertText = text => dispatch => {
   dispatch(alertTextHandleAction(text));
 };
 
+export const handleLoading = bool => dispatch => {
+  dispatch(loadingHandleAction(bool));
+};
+
 //게시물
 export const initPostList = () => dispatch => {
   dispatch(postsTotalAction(0));
@@ -131,7 +138,7 @@ export const pageListPosts = (
     if (orderby == "createdAt DESC") {
       dispatch(postsTotalAction(jsonData.resultCount));
       dispatch(postsListAction(jsonData.result));
-    } else if (orderby == "count DESC") {
+    } else if (orderby == "goodCount DESC") {
       dispatch(hostpostsListAction(jsonData.result));
     }
     return true;
@@ -363,6 +370,10 @@ export default handleActions(
     [ALERTTEXT_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.alertText = payload;
+      }),
+    [LOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.loading = payload;
       }),
 
     //게시물
