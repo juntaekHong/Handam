@@ -19,6 +19,10 @@ class AccountInfoScreen extends React.Component {
             connectedMajorModal:false,
             admissionYearModal: false,
         }
+
+        CommonActions.getTrack();
+        CommonActions.getAdmissionYear();
+        CommonActions.getAppVersion();
     }
 
     navigategoBack = () => {
@@ -30,11 +34,11 @@ class AccountInfoScreen extends React.Component {
     };
 
     // render 전에 major_list, 앱 버전 불러오기
-    componentWillMount = async () => {
-        await CommonActions.getTrack();
-        await CommonActions.getAdmissionYear();
-        await CommonActions.getAppVersion();
-    };
+    // componentWillMount = async () => {
+    //     await CommonActions.getTrack();
+    //     await CommonActions.getAdmissionYear();
+    //     await CommonActions.getAppVersion();
+    // };
 
     // 전공(1트랙) 항목 값 변경
     major_value_change = async (major) => {
@@ -49,8 +53,6 @@ class AccountInfoScreen extends React.Component {
             }
         }, 300);
         this.setState({majorModal: false});
-
-
     };
 
     // 복수 전공(2트랙) 항목 값 변경
@@ -118,6 +120,9 @@ class AccountInfoScreen extends React.Component {
     };
 
     lengthCheck = (aboutLength) => {
+        if (aboutLength == null) return "해당없음";
+
+
         let charactors = aboutLength.length > 8 ? aboutLength.slice(0,8) + ".." : aboutLength;
 
         return charactors;
@@ -272,12 +277,12 @@ class AccountInfoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-   divisionLine: {
-       marginHorizontal: widthPercentageToDP(29),
-       marginTop: widthPercentageToDP(11.5),
-       height: widthPercentageToDP(1),
-       backgroundColor: '#f8f8f8'
-   }
+    divisionLine: {
+        marginHorizontal: widthPercentageToDP(29),
+        marginTop: widthPercentageToDP(11.5),
+        height: widthPercentageToDP(1),
+        backgroundColor: '#f8f8f8'
+    }
 });
 
 export default connect(state => ({

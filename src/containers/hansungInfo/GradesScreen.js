@@ -10,6 +10,7 @@ import {UIActivityIndicator} from "react-native-indicators";
 import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
 import GradesDetailScreen from "./GradesDetailScreen";
+import {GradesModal} from "../../components/hansungInfo/Modal";
 
 class GradesScreen extends React.Component {
 
@@ -18,6 +19,7 @@ class GradesScreen extends React.Component {
 
         this.state = {
             selected: true,
+            refreshModal: false,
         }
     }
 
@@ -126,6 +128,14 @@ class GradesScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <GradesModal
+                    visible={this.state.refreshModal}
+                    footerHandler={async () => {
+                        this.setState({refreshModal: false});
+                        await this.refreshBtn();
+                    }}
+                    closeHandler={() => this.setState({ refreshModal: false })}
+                />
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
 
                 {this.props.grades_loading == true ?
@@ -148,7 +158,7 @@ class GradesScreen extends React.Component {
                                             <BTText>총 학점</BTText>
                                         </View>
                                     </View>
-                                    <TouchableOpacity onPress={ async () => {await this.refreshBtn()}}>
+                                    <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
                                         <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
