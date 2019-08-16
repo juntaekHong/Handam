@@ -128,7 +128,7 @@ export const HomeAd = ({ list = [] }) => {
         return (
           <FastImage
             key={index}
-            resizeMode={FastImage.resizeMode.cover}
+            resizeMode={FastImage.resizeMode.stretch}
             style={{
               width: widthPercentageToDP(375),
               height: widthPercentageToDP(170)
