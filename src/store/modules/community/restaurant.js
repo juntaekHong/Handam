@@ -9,12 +9,14 @@ const TOTAL_HANDLE = "restaurant/TOTAL_HANDLE";
 const BOTTOMMODAL_HANDLE = "restaurant/BOTTOMMODAL_HANDLE";
 const ALERTMODAL_HANDLE = "restaurant/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "restaurant/ALERTTEXT_HANDLE";
+const LOADING_HANDLE = "restaurant/LOADING_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
 const totalHandleAction = createAction(TOTAL_HANDLE);
 const bottomModalHandleAction = createAction(BOTTOMMODAL_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
+const loadingHandleAction = createAction(LOADING_HANDLE);
 
 //식당
 const RESTAURANTCATEGORY = "restaurant/RESTAURANTCATEGORY";
@@ -45,12 +47,12 @@ const initState = {
   bottomModal: false,
   alertModal: false,
   alertText: "호로록 칼국수",
+  loading: false,
 
   //삭당
   categoryList: [{ restaurantCategoryName: "전체 맛집", order: 0 }],
   restaurantList: [],
   getRestaurant: null,
-  isGood: null,
 
   //식당 댓글
   restaurantReplyList: [],
@@ -72,6 +74,10 @@ export const handleAlertModal = bool => dispatch => {
 
 export const handleAlertText = text => dispatch => {
   dispatch(alertTextHandleAction(text));
+};
+
+export const handleLoading = bool => dispatch => {
+  dispatch(loadingHandleAction(bool));
 };
 
 //식당
@@ -133,7 +139,6 @@ export const putRestaurantSubscriber = good => async dispatch => {
     { body: good, token: token }
   );
 
-  console.log(jsonData.result);
   if (jsonData.statusCode == 200) {
     dispatch(putSubscriberAction(jsonData.result));
     return true;
@@ -168,7 +173,7 @@ export const pageListRestaurantReply = restaurantIndex => async dispatch => {
   );
 
   if (jsonData.statusCode == 200) {
-    dispatch(pageListRestaurantReplyAction(jsonData.result.reverse()));
+    dispatch(pageListRestaurantReplyAction(jsonData.result));
     return true;
   } else {
     throw "error";
@@ -177,12 +182,13 @@ export const pageListRestaurantReply = restaurantIndex => async dispatch => {
 
 export const getRestaurantReply = restaurantReplyIndex => async dispatch => {
   const token = await getData("token");
-  const jsonData = await api.put(
+  const jsonData = await api.get(
     `/restaurantReply/restaurantReplyIndex/${restaurantReplyIndex}`,
     { token: token }
   );
 
   if (jsonData.statusCode == 200) {
+    console.log(jsonData.result);
     dispatch(getRestaurantReplyAction(jsonData.result));
     return true;
   } else {
@@ -190,11 +196,14 @@ export const getRestaurantReply = restaurantReplyIndex => async dispatch => {
   }
 };
 
-export const updateRestaurantReply = () => async dispatch => {
+export const updateRestaurantReply = (
+  restaurantReply,
+  restaurantReplyIndex
+) => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.put(
     `/restaurantReply/restaurantReplyIndex/${restaurantReplyIndex}`,
-    { token: token }
+    { body: restaurantReply, token: token }
   );
 
   if (jsonData.statusCode == 200) {
@@ -204,7 +213,7 @@ export const updateRestaurantReply = () => async dispatch => {
   }
 };
 
-export const deleteRestaurantReply = () => async dispatch => {
+export const deleteRestaurantReply = restaurantReplyIndex => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.delete(
     `/restaurantReply/restaurantReplyIndex/${restaurantReplyIndex}`,
@@ -241,7 +250,10 @@ export default handleActions(
       produce(state, draft => {
         draft.alertText = payload;
       }),
-
+    [LOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.loading = payload;
+      }),
     //식당
     [RESTAURANTCATEGORY]: (state, { payload }) =>
       produce(state, draft => {
@@ -258,7 +270,6 @@ export default handleActions(
     [GETRESTAURANT]: (state, { payload }) =>
       produce(state, draft => {
         draft.getRestaurant = payload;
-        draft.isGood = payload.isGood;
       }),
     [PUTSUBSCRIBER]: (state, { payload }) =>
       produce(state, draft => {

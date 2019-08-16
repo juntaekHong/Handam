@@ -1,11 +1,18 @@
 import React, { Component } from "react";
-import { SafeAreaView, View, FlatList, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  FlatList,
+  TouchableOpacity,
+  BackHandler
+} from "react-native";
 import { connect } from "react-redux";
 import { widthPercentageToDP } from "../../utils/util";
 import { VoteActions } from "../../store/actionCreator";
 import { PastVoteItem } from "../../components/vote/Button";
 import { PastVoteName, PastVote } from "../../components/vote/Text";
 import { DefaultImage } from "../../components/community/Image";
+import { TitleView } from "../../components/community/View";
 
 class VotePast extends Component {
   constructor(props) {
@@ -13,12 +20,25 @@ class VotePast extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      this.navigateVote();
+
+      return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   navigateVote = () => {
     this.props.navigation.navigate("Vote");
   };
 
-  navigateVotePastResult = () => {
-    this.props.navigation.navigate("VotePastResult");
+  navigateVotePastResult = voteindex => {
+    VoteActions.handleLoading(true);
+    this.props.navigation.navigate("VotePastResult", { index: voteindex });
   };
 
   renderListComponent = h => {
@@ -28,27 +48,12 @@ class VotePast extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            alignItems: "center"
-          }}
-        >
-          <PastVote>지난투표</PastVote>
-          <TouchableOpacity
-            style={{ marginLeft: widthPercentageToDP(10) }}
-            onPress={() => {
-              this.navigateVote();
-            }}
-          >
-            <DefaultImage
-              source={require("../../../assets/image/community/back.png")}
-            />
-          </TouchableOpacity>
-        </View>
+        <TitleView
+          titleName={"지난투표"}
+          leftChild={true}
+          handler={this.navigateVote}
+        />
+
         <FlatList
           style={{
             flexGrow: 1,
@@ -65,9 +70,7 @@ class VotePast extends Component {
             return (
               <PastVoteItem
                 onPress={async () => {
-                  await VoteActions.getPastVote(item.voteTopicIndex);
-                  await VoteActions.pageListVoteReply(item.voteTopicIndex, 1);
-                  this.navigateVotePastResult();
+                  this.navigateVotePastResult(item.voteTopicIndex);
                 }}
               >
                 <PastVoteName>{`Q. ${item.topicName}`}</PastVoteName>
@@ -81,5 +84,6 @@ class VotePast extends Component {
 }
 
 export default connect(state => ({
+  getVote: state.vote.getVote,
   pastVoteList: state.vote.pastVoteList
 }))(VotePast);

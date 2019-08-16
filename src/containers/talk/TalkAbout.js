@@ -9,11 +9,11 @@ import {
   FlatList,
   BackHandler
 } from "react-native";
+import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
-import { UIActivityIndicator } from "react-native-indicators";
 import {
   WritePostBtn,
   HotPostsListItem,
@@ -21,6 +21,7 @@ import {
   ReportedPostsListItem
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
+import { TitleView } from "../../components/community/View";
 
 class TalkAbout extends Component {
   constructor(props) {
@@ -33,14 +34,38 @@ class TalkAbout extends Component {
       }
     );
 
-    this.state = {};
+    this.state = {
+      loading: false
+    };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       this.navigateBack();
       return true;
     });
+
+    await TalkActions.handleCategoryIndex(
+      this.props.navigation.state.params.index
+    );
+    await TalkActions.handleFilter(
+      `postsCategoryIndex eq ${this.props.categoryIndex}`
+    );
+    await TalkActions.initPostList();
+    await TalkActions.pageListPosts(
+      this.props.filter,
+      this.props.orderby,
+      this.props.postsList.length / 6,
+      6
+    );
+    await TalkActions.pageListPosts(
+      this.props.filter + ` AND status eq ACTIVE`,
+      "goodCount DESC",
+      1,
+      2
+    );
+
+    TalkActions.handleLoading(false);
   }
 
   componentWillUnmount() {
@@ -48,12 +73,15 @@ class TalkAbout extends Component {
   }
 
   navigateBack = async () => {
-    await TalkActions.initPostList();
     this.props.navigation.goBack();
   };
 
-  navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", { from: "about" });
+  navigateTalkDetail = postsIndex => {
+    TalkActions.handleLoading(true);
+    this.props.navigation.navigate("TalkDetail", {
+      from: "about",
+      postsIndex: postsIndex
+    });
   };
 
   navigateTalkWrite = () => {
@@ -63,16 +91,18 @@ class TalkAbout extends Component {
   };
 
   navigateTalkSearch = () => {
-    this.props.navigation.navigate("TalkSearch");
+    this.props.navigation.navigate("TalkSearch", { searchtext: "" });
   };
 
   pageListPosts = async () => {
+    await this.setState({ loading: true });
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
       this.props.postsList.length / 6 + 1,
       6
     );
+    await this.setState({ loading: false });
   };
 
   renderAlertModal = rendertext => {
@@ -93,13 +123,8 @@ class TalkAbout extends Component {
         renderItem={({ item, index }) => {
           return (
             <HotPostsListItem
-              handler={async () => {
-                await TalkActions.getPosts(item.postsIndex);
-                await TalkActions.pageListPostsReply(
-                  "page=1&count=100",
-                  item.postsIndex
-                );
-                this.navigateTalkDetail();
+              handler={() => {
+                this.navigateTalkDetail(item.postsIndex);
               }}
               data={item}
               index={index}
@@ -113,110 +138,81 @@ class TalkAbout extends Component {
   renderListFooter = () => {
     return this.state.loading ? (
       <View style={styles.listFooterContainer}>
-        <UIActivityIndicator size={widthPercentageToDP(20)} color={"#727272"} />
+        <UIActivityIndicator size={widthPercentageToDP(30)} color={"#727272"} />
       </View>
     ) : null;
   };
 
-  render() {
+  renderSearchBtn = () => {
     return (
-      <SafeAreaView style={styles.container}>
-        <View
+      <TouchableOpacity
+        onPress={async () => {
+          await TalkActions.initPostList();
+          this.navigateTalkSearch();
+        }}
+      >
+        <Image
           style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingTop: widthPercentageToDP(11),
-            paddingBottom: widthPercentageToDP(14)
+            width: widthPercentageToDP(21),
+            height: widthPercentageToDP(21),
+            marginRight: widthPercentageToDP(16)
           }}
-        >
-          <TouchableOpacity
-            style={{ marginLeft: widthPercentageToDP(8) }}
-            onPress={() => this.navigateBack()}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(28),
-                height: widthPercentageToDP(28)
-              }}
-              source={require("../../../assets/image/community/back.png")}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: "#000000",
-              fontSize: widthPercentageToDP(17),
-              fontFamily: fonts.nanumBarunGothicB
-            }}
-          >
-            {this.props.categoryList[this.props.categoryIndex - 1].str}
-          </Text>
-          <TouchableOpacity
-            onPress={async () => {
-              await TalkActions.initPostList();
-              this.navigateTalkSearch();
-            }}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(21),
-                height: widthPercentageToDP(21),
-                marginRight: widthPercentageToDP(16)
-              }}
-              source={require("../../../assets/image/community/search.png")}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <LineView />
-
-        <FlatList
-          style={styles.flatlist}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          onEndReachedThreshold={0.01}
-          onEndReached={() => {
-            this.props.postsList.length < this.props.total
-              ? this.pageListPosts()
-              : null;
-          }}
-          ListHeaderComponent={this.renderListHeader}
-          ListFooterComponent={this.renderListFooter}
-          data={this.props.postsList}
-          renderItem={({ item, index }) => {
-            if (item.status == "ACTIVE") {
-              return (
-                <PostsListItem
-                  handler={async () => {
-                    await TalkActions.getPosts(item.postsIndex);
-                    await TalkActions.pageListPostsReply(
-                      "page=1&count=100",
-                      item.postsIndex
-                    );
-                    this.navigateTalkDetail();
-                  }}
-                  data={item}
-                />
-              );
-            } else {
-              return (
-                <ReportedPostsListItem
-                  handler={() => {
-                    console.log("신고당한 댓글은 핸들러가 없지요.");
-                  }}
-                  data={item}
-                />
-              );
-            }
-          }}
+          source={require("../../../assets/image/community/search.png")}
         />
-        <WritePostView>
-          <WritePostBtn handler={this.navigateTalkWrite} />
-        </WritePostView>
-      </SafeAreaView>
+      </TouchableOpacity>
     );
+  };
+
+  render() {
+    if (this.props.loading == true) {
+      return <UIActivityIndicator color={"gray"} />;
+    } else
+      return (
+        <SafeAreaView style={styles.container}>
+          <TitleView
+            titleName={
+              this.props.categoryList[this.props.categoryIndex - 1].str
+            }
+            leftChild={true}
+            handler={this.navigateBack}
+            rightChild={this.renderSearchBtn()}
+          />
+
+          <LineView />
+
+          <FlatList
+            style={styles.flatlist}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0.01}
+            onEndReached={() => {
+              this.props.postsList.length < this.props.total
+                ? this.pageListPosts()
+                : null;
+            }}
+            ListHeaderComponent={this.renderListHeader}
+            ListFooterComponent={this.renderListFooter}
+            data={this.props.postsList}
+            renderItem={({ item, index }) => {
+              if (item.status == "ACTIVE") {
+                return (
+                  <PostsListItem
+                    handler={() => {
+                      this.navigateTalkDetail(item.postsIndex);
+                    }}
+                    data={item}
+                  />
+                );
+              } else {
+                return <ReportedPostsListItem handler={() => {}} data={item} />;
+              }
+            }}
+          />
+          <WritePostView>
+            <WritePostBtn handler={this.navigateTalkWrite} />
+          </WritePostView>
+        </SafeAreaView>
+      );
   }
 }
 
@@ -231,6 +227,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     width: "100%",
     height: "100%"
+  },
+  listFooterContainer: {
+    height: widthPercentageToDP(122),
+    width: widthPercentageToDP(375),
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
@@ -241,5 +243,6 @@ export default connect(state => ({
   hotpostsList: state.talk.hotpostsList,
   total: state.talk.total,
   filter: state.talk.filter,
-  orderby: state.talk.orderby
+  orderby: state.talk.orderby,
+  loading: state.talk.loading
 }))(TalkAbout);

@@ -6,9 +6,12 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  FlatList
+  FlatList,
+  BackHandler
 } from "react-native";
+import { UIActivityIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
+import { VoteActions } from "../../store/actionCreator";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
 import {
@@ -23,7 +26,7 @@ import {
   VoteView,
   PercentView
 } from "../../components/vote/View";
-import { ReplyView } from "../../components/community/View";
+import { TitleView, ReplyView } from "../../components/community/View";
 import { PastVote } from "../../components/vote/Text";
 
 class VotePastResult extends Component {
@@ -31,18 +34,44 @@ class VotePastResult extends Component {
     super(props);
     this.state = {
       replyIndex: null,
-      opushed:
-        this.props.getPastVote.voteItem[0].voteItemIndex ===
-        this.props.p_checkVote.voteItemIndex
-          ? true
-          : false,
-      xpushed:
-        this.props.getPastVote.voteItem[1].voteItemIndex ===
-        this.props.p_checkVote.voteItemIndex
-          ? true
-          : false
+      opushed: false,
+      xpushed: false
     };
   }
+
+  async componentDidMount() {
+    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      this.navigateVotePast();
+
+      return true;
+    });
+
+    await VoteActions.getPastVote(this.props.navigation.state.params.index);
+    VoteActions.checkVote(this.props.navigation.state.params.index, 1);
+    VoteActions.pageListVoteReply(this.props.navigation.state.params.index, 1);
+    this.IsPushed("o");
+    this.IsPushed("x");
+
+    VoteActions.handleLoading(false);
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  IsPushed = ox => {
+    if (ox == "o") {
+      this.props.getPastVote.voteItem[0].voteItemIndex ===
+      this.props.p_checkVote.voteItemIndex
+        ? this.setState({ opushed: true })
+        : this.setState({ opushed: false });
+    } else {
+      this.props.getPastVote.voteItem[1].voteItemIndex ===
+      this.props.p_checkVote.voteItemIndex
+        ? this.setState({ xpushed: true })
+        : this.setState({ xpushed: false });
+    }
+  };
 
   navigateVotePast = () => {
     this.props.navigation.navigate("VotePast");
@@ -60,111 +89,98 @@ class VotePastResult extends Component {
   };
 
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            alignItems: "center"
-          }}
-        >
-          <PastVote>지난투표 결과</PastVote>
-          <TouchableOpacity
-            style={{ marginLeft: widthPercentageToDP(10) }}
-            onPress={() => {
-              this.navigateVotePast();
-            }}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(28),
-                height: widthPercentageToDP(28)
-              }}
-              source={require("../../../assets/image/community/back.png")}
-            />
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView>
-          <Image
-            style={styles.background}
-            source={require("../../../assets/image/community/vote_pung.png")}
+    if (this.props.loading == true) {
+      return <UIActivityIndicator color={"gray"} />;
+    } else
+      return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+          <TitleView
+            titleName={"지난투표 결과"}
+            leftChild={true}
+            handler={this.navigateVotePast}
           />
-          <TopView>
-            <NoticeText>{`투표가 종료되었습니다.`}</NoticeText>
-            <SubjectText>
-              {this.props.getPastVote.voteTopic.topicName}
-            </SubjectText>
-            <View style={{ flexDirection: "row" }}>
-              <VoteView
-                pushed={this.state.opushed}
-                enabled={false}
-                text="O"
-                oText={this.props.getPastVote.voteItem[0].itemName}
-              />
-              <View style={{ width: widthPercentageToDP(23) }} />
-              <VoteView
-                pushed={this.state.xpushed}
-                enabled={false}
-                text="X"
-                xText={this.props.getPastVote.voteItem[1].itemName}
-              />
-            </View>
-            <PercentView
-              number={this.props.getPastVote.voteTopic.totalCount}
-              oPercent={this.percent(this.props.getPastVote.voteItem[0].count)}
-              xPercent={this.percent(this.props.getPastVote.voteItem[1].count)}
+
+          <ScrollView>
+            <Image
+              style={styles.background}
+              source={require("../../../assets/image/community/vote_pung.png")}
             />
-          </TopView>
-          <BottomView>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingLeft: widthPercentageToDP(16),
-                paddingTop: widthPercentageToDP(16)
-              }}
-            >
-              <TotalReText>전체 댓글</TotalReText>
-              <Image
+            <TopView>
+              <NoticeText>{`투표가 종료되었습니다.`}</NoticeText>
+              <SubjectText>
+                {this.props.getPastVote.voteTopic.topicName}
+              </SubjectText>
+              <View style={{ flexDirection: "row" }}>
+                <VoteView
+                  pushed={this.state.opushed}
+                  enabled={false}
+                  text="O"
+                  oText={this.props.getPastVote.voteItem[0].itemName}
+                />
+                <View style={{ width: widthPercentageToDP(23) }} />
+                <VoteView
+                  pushed={this.state.xpushed}
+                  enabled={false}
+                  text="X"
+                  xText={this.props.getPastVote.voteItem[1].itemName}
+                />
+              </View>
+              <PercentView
+                number={this.props.getPastVote.voteTopic.totalCount}
+                oPercent={this.percent(
+                  this.props.getPastVote.voteItem[0].count
+                )}
+                xPercent={this.percent(
+                  this.props.getPastVote.voteItem[1].count
+                )}
+              />
+            </TopView>
+            <BottomView>
+              <View
                 style={{
-                  width: widthPercentageToDP(10.2),
-                  height: widthPercentageToDP(9.9)
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: widthPercentageToDP(16),
+                  paddingTop: widthPercentageToDP(30)
                 }}
-                source={require("../../../assets/image/community/replys.png")}
+              >
+                <TotalReText>전체 댓글</TotalReText>
+                <Image
+                  style={{
+                    width: widthPercentageToDP(10.2),
+                    height: widthPercentageToDP(9.9)
+                  }}
+                  source={require("../../../assets/image/community/replys.png")}
+                />
+                <TotalReplyText>
+                  {this.props.pastVoteReplyList.length}
+                </TotalReplyText>
+              </View>
+              {/* 투표댓글 */}
+              <FlatList
+                scrollEnabled={false}
+                style={{
+                  flexGrow: 1,
+                  width: "100%",
+                  height: "100%",
+                  padding: widthPercentageToDP(16)
+                }}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item, index) => index.toString()}
+                data={this.props.pastVoteReplyList}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View>
+                      {/* 댓글 */}
+                      <ReplyView key={index} data={item} />
+                    </View>
+                  );
+                }}
               />
-              <TotalReplyText>
-                {this.props.pastVoteReplyList.length}
-              </TotalReplyText>
-            </View>
-            {/* 투표댓글 */}
-            <FlatList
-              scrollEnabled={false}
-              style={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                padding: widthPercentageToDP(16)
-              }}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
-              data={this.props.pastVoteReplyList}
-              renderItem={({ item, index }) => {
-                return (
-                  <View>
-                    {/* 댓글 */}
-                    <ReplyView key={index} data={item} />
-                  </View>
-                );
-              }}
-            />
-          </BottomView>
-        </ScrollView>
-      </SafeAreaView>
-    );
+            </BottomView>
+          </ScrollView>
+        </SafeAreaView>
+      );
   }
 }
 
@@ -191,5 +207,6 @@ const styles = StyleSheet.create({
 export default connect(state => ({
   getPastVote: state.vote.getPastVote,
   pastVoteReplyList: state.vote.pastVoteReplyList,
-  p_checkVote: state.vote.p_checkVote
+  p_checkVote: state.vote.p_checkVote,
+  loading: state.vote.loading
 }))(VotePastResult);
