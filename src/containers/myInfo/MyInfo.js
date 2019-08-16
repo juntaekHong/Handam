@@ -60,9 +60,6 @@ class MyInfo extends React.Component {
         await this.setState({ certCheck: false });
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
-        // 시간표 호출
-        // await HansungInfoActions.scheduleCallAction(true);
-
         clearInterval(timeout);
       } else if (this.props.hansunginfo.status == "FAIL") {
         await this.setState({ certCheck: false });
