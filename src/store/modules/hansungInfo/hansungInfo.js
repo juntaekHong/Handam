@@ -140,8 +140,7 @@ export const getHansungInfo = () => async dispatch => {
 
     //서버로 전송
     const jsonData = await api.get(`/hansungInfo`, { token: token });
-    // 데이터 값 확인용 임시.
-    console.log(jsonData);
+
     if (jsonData.statusCode == 200) {
         await dispatch(getHansungInfoAction(jsonData.result));
         // 시간표 색 설정
@@ -180,7 +179,6 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
     if (jsonData.statusCode == 200) {
         await dispatch(createHansungInfoAction(jsonData.result));
         //1번 더 요청
-        console.log(jsonData);
         await api.post(`/hansungInfo/nonSubjectPoint`, { token: token });
         return true;
     } else if (jsonData.statusCode == 403) {

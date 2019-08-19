@@ -44,9 +44,16 @@ class MyInfo extends React.Component {
       deletemodal: false,
       logoutmodal: false,
       secessionmodal: false,
-      certCheck: this.props.loading,
+      certCheck: false,
       bottomModal: false,
     };
+
+      didBlurSubscription = this.props.navigation.addListener(
+          'didFocus',
+          async payload => {
+              this.certification_Check();
+          }
+      );
   }
 
     // 여기서 네비게이션을 뒤로 이동 안하면 이후 백프레스 작동 안함.
@@ -63,23 +70,20 @@ class MyInfo extends React.Component {
     }
 
   certification_Check = async () => {
-    await HansungInfoActions.myInfoLoadingHandle(false);
     await HansungInfoActions.getHansungInfo();
+    await HansungInfoActions.loadingHandle(false);
 
     let timeout = setInterval(async () => {
       if (
           this.props.hansunginfo != null &&
-          this.props.hansunginfo.status == "UNVERIFIED" &&
-          this.state.certCheck == true
+          this.props.hansunginfo.status == "UNVERIFIED"
       ) {
         await HansungInfoActions.getHansungInfo();
       } else if (this.props.hansunginfo.status == "SUCCESS") {
-        await this.setState({ certCheck: false });
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
       } else if (this.props.hansunginfo.status == "FAIL") {
-        await this.setState({ certCheck: false });
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
@@ -122,12 +126,13 @@ class MyInfo extends React.Component {
 
     let timeout = setInterval(async () => {
       if (this.props.hansunginfo == null) {
+        await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
       } else {
         await HansungInfoActions.deleteHansungInfo();
       }
-    }, 500);
+    }, 1000);
   };
 
   renderLogout = async () => {
@@ -195,11 +200,6 @@ class MyInfo extends React.Component {
     };
 
   render() {
-      {
-          if (this.props.loading == true && this.props.myInfo_loading == true) {
-              this.certification_Check();
-          }
-      }
     return (
         <SafeAreaView>
           <ScrollView>
@@ -213,6 +213,7 @@ class MyInfo extends React.Component {
                 }
                 visible={this.state.deletemodal}
                 footerHandler={async () => {
+                  await HansungInfoActions.loadingHandle(true);
                   await HansungInfoActions.myInfoLoadingHandle(true);
                   await HansungInfoActions.professorTextHandle(false);
                   this.setState({ deletemodal: false });
@@ -572,155 +573,128 @@ class MyInfo extends React.Component {
               <StandText>Account</StandText>
             </SubTitleView>
             <AccountDetailView>
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
+                  onPress={() => {
+                      this.navigateMyPost();
+                  }}
               >
-                <TouchableOpacity
+                <AccountDetailText>내가 쓴 글</AccountDetailText>
+                <View
+                    style={{ flexDirection: "row", alignItems: "center" }}
                     onPress={() => {
                       this.navigateMyPost();
                     }}
                 >
-                  <AccountDetailText>내가 쓴 글</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateMyPost();
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
                     }}
-                >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.navigateMyScrap();
-                    }}
-                >
-                  <AccountDetailText>내가 스크랩한 글</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  }}
+              >
+                <AccountDetailText>내가 스크랩한 글</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateMyScrap();
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.navigateAccountInfo();
-                    }}
-                >
-                  <AccountDetailText>계정정보</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  }}
+              >
+                <AccountDetailText>계정정보</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateAccountInfo();
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
+                  onPress={() => {
+                      this.setState({ logoutmodal: true });
+                  }}
               >
-                <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ logoutmodal: true });
-                    }}
-                >
-                  <AccountDetailText>로그아웃</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                <AccountDetailText>로그아웃</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.setState({ logoutmodal: true });
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
+                  onPress={() => {
+                      this.setState({ secessionmodal: true });
+                  }}
               >
-                <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ secessionmodal: true });
-                    }}
-                >
-                  <AccountDetailText>회원탈퇴</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                <AccountDetailText>회원탈퇴</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.setState({ secessionmodal: true });
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
             </AccountDetailView>
           </ScrollView>

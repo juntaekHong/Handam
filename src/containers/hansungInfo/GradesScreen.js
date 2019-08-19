@@ -136,10 +136,11 @@ class GradesScreen extends React.Component {
                     }}
                     closeHandler={() => this.setState({ refreshModal: false })}
                 />
+                <ScrollView style={this.props.grades_loading == true ? {backgroundColor: 'white'} : null}>
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
 
                 {this.props.grades_loading == true ?
-                    <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
+                    <View style={{flex:1, marginTop: widthPercentageToDP(151), alignItems: 'center', backgroundColor: 'white'}}>
                         <View style={{height: widthPercentageToDP(40), marginBottom: widthPercentageToDP(10)}}>
                             <UIActivityIndicator color={'grey'}/>
                         </View>
@@ -147,7 +148,7 @@ class GradesScreen extends React.Component {
                     </View>
                     :
                     this.props.grades_status == true ?
-                        <ScrollView>
+                        <View>
                             <ProgressView>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
                                     <View style={{flexDirection: 'row'}}>
@@ -278,12 +279,12 @@ class GradesScreen extends React.Component {
                                     {this.bySemesterView()}
                                 </View>
                             </DetailView>
-                        </ScrollView>
+                        </View>
                         :
                         this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS"  ?
                             this.certification_check()
                             :
-                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{flex: 1, alignItems: 'center', marginTop: widthPercentageToDP(151)}}>
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(128), height: widthPercentageToDP(36), borderRadius: widthPercentageToDP(8), backgroundColor: '#24a0fa', marginTop: widthPercentageToDP(26.5)}} onPress={ async () => {
                                     await this.grades_check();
                                 }}>
@@ -291,6 +292,7 @@ class GradesScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                 }
+                </ScrollView>
             </View>
         )
     }

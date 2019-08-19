@@ -22,13 +22,13 @@ class AbstractAccountInfoScreen extends React.Component {
                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
                             {
                                 this.props.selected == true && this.props.professor_text == true ?
-                                    <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>성적표 불러오기 이후 텍스트</Text>
+                                    <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                                     :
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                             }
                         </View>
                         <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.changeMajor != null ? this.props.changeMajor : this.props.major : this.props.hansunginfo.department}</Text>
-                        <TouchableOpacity style={{marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
+                        <TouchableOpacity style={{position: 'relative', left: widthPercentageToDP(-5), marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
                                           onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                             <Image source={require("../../../assets/image/hansungInfo/my.png")}/>
                         </TouchableOpacity>
@@ -36,12 +36,13 @@ class AbstractAccountInfoScreen extends React.Component {
                 </View>
                 {
                     this.props.selected == true && this.props.professor_text == true ?
-                        <View style={{position: 'relative', bottom: widthPercentageToDP(12.5), alignItems: 'flex-end'}}>
-                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', width: widthPercentageToDP(120), height: widthPercentageToDP(20), marginRight: widthPercentageToDP(12.4)}}
-                                              onPress = { () => {}}>
-                                <Text style={{color: '#259ffa', fontSize: widthPercentageToDP(12)}}>교수평가 남기러 가기</Text>
-                                <Image width={widthPercentageToDP(20)} height={widthPercentageToDP(20)} source={require("../../../assets/image/hansungInfo/arrow.png")}/>
-                            </TouchableOpacity>
+                        // 교수평가 페이지 만들어지면 작업.
+                        <View style={{position: 'relative', bottom: widthPercentageToDP(20), alignItems: 'flex-end'}}>
+                            {/*<TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', width: widthPercentageToDP(120), height: widthPercentageToDP(20), marginRight: widthPercentageToDP(12.4)}}*/}
+                            {/*                  onPress = { () => {}}>*/}
+                            {/*    <Text style={{color: '#259ffa', fontSize: widthPercentageToDP(12)}}>교수평가 남기러 가기</Text>*/}
+                            {/*    <Image width={widthPercentageToDP(20)} height={widthPercentageToDP(20)} source={require("../../../assets/image/hansungInfo/arrow.png")}/>*/}
+                            {/*</TouchableOpacity>*/}
                         </View>
                         :
                         null
