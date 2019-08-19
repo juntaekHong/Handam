@@ -15,14 +15,14 @@ class AbstractAccountInfoScreen extends React.Component {
             <View style={styles.member}>
                 <View style={{marginTop: widthPercentageToDP(35), marginLeft: widthPercentageToDP(26), flexDirection: 'row'}}>
                     <View>
-                        <Image style={{width: widthPercentageToDP(60), height: widthPercentageToDP(60)}} source={require("../../../assets/image/hansungInfo/myicon.png")}/>
+                        <Image style={{width: widthPercentageToDP(60), height: widthPercentageToDP(60), borderRadius: widthPercentageToDP(90)}} source={ this.props.userAvatar ? {uri: this.props.userAvatar} : this.props.avatarDelete == false && this.props.avatar ? {uri: this.props.avatar} : require("../../../assets/image/hansungInfo/myicon.png")}/>
                     </View>
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
                             {
                                 this.props.selected == true && this.props.professor_text == true ?
-                                    <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>교수평가를 남겨보는건 어때요?</Text>
+                                    <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>성적표 불러오기 이후 텍스트</Text>
                                     :
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                             }
@@ -67,4 +67,8 @@ export default connect(state => ({
     userNickName: state.signin.user.userNickName,
     major: state.signin.user.major,
     changeMajor: state.myInfo.userMajor,
+
+    userAvatar: state.myInfo.userAvatar,
+    avatar: state.signin.user.avatar,
+    avatarDelete: state.myInfo.avatarDelete,
 }))(AbstractAccountInfoScreen);

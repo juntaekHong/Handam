@@ -22,7 +22,7 @@ class AccountInfoScreen extends React.Component {
 
         CommonActions.getTrack();
         CommonActions.getAdmissionYear();
-        CommonActions.getAppVersion();
+        // CommonActions.getAppVersion();
     }
 
     navigategoBack = () => {
@@ -195,11 +195,11 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </TouchableOpacity>
                     </AccountView>
-                    <View style={styles.divisionLine}/>
-                    <AccountView>
-                        <ACCOUNTINFOText>앱 버전</ACCOUNTINFOText>
-                        <ACCOUNTINFOText style={{color: '#646464'}}>{Platform.OS === 'ios' ? this.props.appVersion.ios : this.props.appVersion.android}({timeFormat(this.props.appVersion.updatedAt, 'YYYYMMDD')})</ACCOUNTINFOText>
-                    </AccountView>
+                    {/*<View style={styles.divisionLine}/>*/}
+                    {/*<AccountView>*/}
+                    {/*    <ACCOUNTINFOText>앱 버전</ACCOUNTINFOText>*/}
+                    {/*    <ACCOUNTINFOText style={{color: '#646464'}}>{Platform.OS === 'ios' ? this.props.appVersion.ios : this.props.appVersion.android}({timeFormat(this.props.appVersion.updatedAt, 'YYYYMMDD')})</ACCOUNTINFOText>*/}
+                    {/*</AccountView>*/}
                     <View style={{marginVertical: widthPercentageToDP(18), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
                     <AccountView>
                         <View style={{justifyContent: 'center'}}>
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
 export default connect(state => ({
     userNickName: state.signin.user.userNickName,
     userId: state.signin.user.userId,
-    appVersion: state.common.appVersion,
+    // appVersion: state.common.appVersion,
 
     major_list: state.common.major_list,
     major: state.signin.user.major,

@@ -80,6 +80,8 @@ class HansungPointScreen extends React.Component {
     };
 
     refreshBtn = async () => {
+        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+        await HansungInfoActions.createHansungInfoNonSubjectPoint();
         await HansungInfoActions.getHansungInfo();
 
         let timeout = setInterval(async ()=>{
@@ -105,9 +107,6 @@ class HansungPointScreen extends React.Component {
                     visible={this.state.refreshModal}
                     footerHandler={async () => {
                         this.setState({refreshModal: false});
-                        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-                        await HansungInfoActions.nonSubjectPointHandle(false);
-                        await HansungInfoActions.createHansungInfoNonSubjectPoint();
                         await this.refreshBtn();
                     }}
                     closeHandler={() => this.setState({ refreshModal: false })}
