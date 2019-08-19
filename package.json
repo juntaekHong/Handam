@@ -38,6 +38,7 @@
     "react-native-render-html": "^4.1.2",
     "react-native-root-toast": "^3.1.1",
     "react-native-screens": "^1.0.0-alpha.22",
+    "react-native-snap-carousel": "^3.8.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-swiper": "^1.5.14",
     "react-native-switch-pro": "^1.0.4",
