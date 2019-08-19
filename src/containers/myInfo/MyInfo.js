@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  Platform,
-  StyleSheet
+    SafeAreaView,
+    ScrollView,
+    View,
+    TouchableOpacity,
+    Text,
+    Image,
+    Platform,
+    StyleSheet, BackHandler
 } from "react-native";
 import {
   removeData,
@@ -24,45 +24,66 @@ import {
 import { StandText, AccountDetailText } from "../../components/myInfo/Text";
 import fonts from "../../configs/fonts";
 import { CustomModal } from "../../components/common/Modal";
+import {BottomMenuModal} from "../../components/myInfo/Modal";
 import { connect } from "react-redux";
 import {
   CustomModalBlackSmallText,
   CustomModalBlackText
 } from "../../components/myInfo/Text";
 import { UIActivityIndicator } from "react-native-indicators";
-import { HansungInfoActions } from "../../store/actionCreator";
+import {HansungInfoActions, MyInfoActions, TalkActions} from "../../store/actionCreator";
 import { myInfoLoadingHandle } from "../../store/modules/hansungInfo/hansungInfo";
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 class MyInfo extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // 인증서 삭제, 로그아웃, 회원탈퇴 모달
+      // 인증서 삭제, 로그아웃, 회원탈퇴 모달,
       deletemodal: false,
       logoutmodal: false,
       secessionmodal: false,
-      certCheck: this.props.loading
+      certCheck: false,
+      bottomModal: false,
     };
+
+      didBlurSubscription = this.props.navigation.addListener(
+          'didFocus',
+          async payload => {
+              this.certification_Check();
+          }
+      );
   }
+
+    // 여기서 네비게이션을 뒤로 이동 안하면 이후 백프레스 작동 안함.
+    async componentDidMount() {
+        this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+            this.setState({bottomModal:false});
+            this.navigateBack();
+            return true;
+        });
+    }
+
+    componentWillUnmount = async () => {
+        this.backHandler.remove();
+    }
 
   certification_Check = async () => {
     await HansungInfoActions.getHansungInfo();
+    await HansungInfoActions.loadingHandle(false);
 
     let timeout = setInterval(async () => {
       if (
           this.props.hansunginfo != null &&
-          this.props.hansunginfo.status == "UNVERIFIED" &&
-          this.state.certCheck == true
+          this.props.hansunginfo.status == "UNVERIFIED"
       ) {
         await HansungInfoActions.getHansungInfo();
       } else if (this.props.hansunginfo.status == "SUCCESS") {
-        await this.setState({ certCheck: false });
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
       } else if (this.props.hansunginfo.status == "FAIL") {
-        await this.setState({ certCheck: false });
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
@@ -72,10 +93,6 @@ class MyInfo extends React.Component {
 
   componentWillMount = async () => {
     this.setState({ logoutmodal: false });
-
-    if (this.state.certCheck == true && this.props.myInfo_loading == true) {
-      await this.certification_Check();
-    }
   };
 
   navigateCertification = () => {
@@ -94,10 +111,6 @@ class MyInfo extends React.Component {
     this.props.navigation.navigate("MyScrap");
   };
 
-  navigateTeamInfo = () => {
-    this.props.navigation.navigate("TeamInfo");
-  };
-
   navigateBack = () => {
     this.props.navigation.goBack(null);
   };
@@ -113,18 +126,78 @@ class MyInfo extends React.Component {
 
     let timeout = setInterval(async () => {
       if (this.props.hansunginfo == null) {
+        await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
       } else {
         await HansungInfoActions.deleteHansungInfo();
       }
-    }, 500);
+    }, 1000);
   };
 
   renderLogout = async () => {
     await removeAllData();
     this.props.navigation.navigate("signIn");
   };
+
+    // 사진찍고 선택
+   takePicture = async () => {
+        try {
+            let image = await ImageCropPicker.openCamera({
+                width: 200,
+                height: 200,
+                cropping: true,
+                cropperToolbarTitle: '',
+            });
+
+            const formData = new FormData();
+            formData.append('avatar', {
+                uri: image.path,
+                type: 'image/png',
+                name: 'avatar.png',
+            });
+            await MyInfoActions.deleteAvatar();
+            await MyInfoActions.uploadAvatar(formData);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await ImageCropPicker.clean();
+        }
+
+    };
+
+    // 앨범에서 선택
+    SelectedPicture = async () => {
+        try {
+            let image = await ImageCropPicker.openPicker({
+                width: 200,
+                height: 200,
+                mediaType: 'photo',
+                // cropping: true,
+                cropperToolbarTitle: '',
+            });
+
+            let crop = await ImageCropPicker.openCropper({
+                path: image.path,
+                width: 200,
+                height: 200,
+                cropperToolbarTitle: '',
+            });
+
+            const formData = new FormData();
+            formData.append('avatar', {
+                uri: crop.path,
+                type: 'image/png',
+                name: 'avatar.png',
+            });
+            await MyInfoActions.deleteAvatar();
+            await MyInfoActions.uploadAvatar(formData);
+        } catch (err) {
+
+        } finally {
+            await ImageCropPicker.clean();
+        }
+    };
 
   render() {
     return (
@@ -140,6 +213,7 @@ class MyInfo extends React.Component {
                 }
                 visible={this.state.deletemodal}
                 footerHandler={async () => {
+                  await HansungInfoActions.loadingHandle(true);
                   await HansungInfoActions.myInfoLoadingHandle(true);
                   await HansungInfoActions.professorTextHandle(false);
                   this.setState({ deletemodal: false });
@@ -179,7 +253,24 @@ class MyInfo extends React.Component {
                 footerText={"계속하기"}
                 closeHandler={() => this.setState({ secessionmodal: false })}
             />
-
+              <BottomMenuModal
+                  visible={this.state.bottomModal}
+                  handler={() => {this.setState({bottomModal: false})}}
+                  takeHandler={async () => {
+                      await this.takePicture();
+                      this.setState({bottomModal: false});
+                  }}
+                  uploadHandler={async () => {
+                      await this.SelectedPicture();
+                      await MyInfoActions.avatarDeleteHandle(false);
+                      this.setState({bottomModal: false})
+                  }}
+                  deleteHandler={ async () => {
+                      await MyInfoActions.avatarDeleteHandle(true);
+                      await MyInfoActions.deleteAvatar();
+                      this.setState({bottomModal: false});
+                  }}
+              />
             <TitleView>
               <TouchableOpacity onPress={() => this.navigateBack()}>
                 <Image
@@ -206,14 +297,10 @@ class MyInfo extends React.Component {
             </TitleView>
 
             <AccountInfoView>
-              <Image
-                  style={{
-                    position: "absolute",
-                    width: widthPercentageToDP(66),
-                    height: widthPercentageToDP(66)
-                  }}
-                  source={require("../../../assets/image/hansungInfo/myicon.png")}
-              />
+                <Image
+                    style={styles.profile}
+                    source={ this.props.userAvatar ? {uri: this.props.userAvatar} : this.props.avatarDelete == false && this.props.avatar ? {uri: this.props.avatar} : require("../../../assets/image/hansungInfo/myicon.png")}
+                />
               {/* 클릭시 사진 추가 기능 */}
               <TouchableOpacity
                   style={{
@@ -221,6 +308,7 @@ class MyInfo extends React.Component {
                     left: widthPercentageToDP(20.3),
                     top: widthPercentageToDP(33.2)
                   }}
+                  onPress={ () => {this.setState({bottomModal: true})}}
               >
                 <Image
                     style={{
@@ -485,185 +573,129 @@ class MyInfo extends React.Component {
               <StandText>Account</StandText>
             </SubTitleView>
             <AccountDetailView>
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
+                  onPress={() => {
+                      this.navigateMyPost();
+                  }}
               >
-                <TouchableOpacity
+                <AccountDetailText>내가 쓴 글</AccountDetailText>
+                <View
+                    style={{ flexDirection: "row", alignItems: "center" }}
                     onPress={() => {
                       this.navigateMyPost();
                     }}
                 >
-                  <AccountDetailText>내가 쓴 글</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateMyPost();
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
                     }}
-                >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.navigateMyScrap();
-                    }}
-                >
-                  <AccountDetailText>내가 스크랩한 글</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  }}
+              >
+                <AccountDetailText>내가 스크랩한 글</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateMyScrap();
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.navigateAccountInfo();
-                    }}
-                >
-                  <AccountDetailText>계정정보</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  }}
+              >
+                <AccountDetailText>계정정보</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateAccountInfo();
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.setState({ logoutmodal: true });
-                    }}
-                >
-                  <AccountDetailText>로그아웃</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                  }}
+              >
+                <AccountDetailText>로그아웃</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.setState({ logoutmodal: true });
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
               <View style={styles.devisionLine} />
-              <View
+              <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between"
                   }}
-              >
-                <TouchableOpacity
-                    onPress={() => {
+                  onPress={() => {
                       this.setState({ secessionmodal: true });
-                    }}
-                >
-                  <AccountDetailText>회원탈퇴</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.setState({ secessionmodal: true });
-                    }}
-                >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.devisionLine} />
-              <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between"
                   }}
               >
-                <TouchableOpacity
-                    onPress={() => {
-                      this.navigateTeamInfo();
-                    }}
-                >
-                  <AccountDetailText>팀 정보</AccountDetailText>
-                </TouchableOpacity>
-                <TouchableOpacity
+                <AccountDetailText>회원탈퇴</AccountDetailText>
+                <View
                     style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => {
-                      this.navigateTeamInfo();
-                    }}
                 >
-                  <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/myInfo/grayarrow.png")}
-                  />
-                </TouchableOpacity>
-              </View>
+                <Image
+                    style={{
+                      width: widthPercentageToDP(28),
+                      height: widthPercentageToDP(28)
+                    }}
+                    source={require("../../../assets/image/myInfo/grayarrow.png")}
+                />
+                </View>
+              </TouchableOpacity>
+              <View style={styles.devisionLine} />
             </AccountDetailView>
           </ScrollView>
         </SafeAreaView>
@@ -709,6 +741,12 @@ const styles = StyleSheet.create({
     marginTop: widthPercentageToDP(11.5),
     marginBottom: widthPercentageToDP(13.5),
     backgroundColor: "#f8f8f8"
+  },
+  profile: {
+    position: "absolute",
+    width: widthPercentageToDP(60),
+    height: widthPercentageToDP(60),
+    borderRadius: widthPercentageToDP(90)
   }
 });
 
@@ -720,5 +758,9 @@ export default connect(state => ({
 
   userNickName: state.signin.user.userNickName,
   userId: state.signin.user.userId,
-  major: state.signin.user.major
+  major: state.signin.user.major,
+
+  userAvatar: state.myInfo.userAvatar,
+  avatar: state.signin.user.avatar,
+  avatarDelete: state.myInfo.avatarDelete,
 }))(MyInfo);

@@ -80,6 +80,8 @@ class HansungPointScreen extends React.Component {
     };
 
     refreshBtn = async () => {
+        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+        await HansungInfoActions.createHansungInfoNonSubjectPoint();
         await HansungInfoActions.getHansungInfo();
 
         let timeout = setInterval(async ()=>{
@@ -105,17 +107,15 @@ class HansungPointScreen extends React.Component {
                     visible={this.state.refreshModal}
                     footerHandler={async () => {
                         this.setState({refreshModal: false});
-                        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-                        await HansungInfoActions.nonSubjectPointHandle(false);
-                        await HansungInfoActions.createHansungInfoNonSubjectPoint();
                         await this.refreshBtn();
                     }}
                     closeHandler={() => this.setState({ refreshModal: false })}
                 />
+                <ScrollView style={this.props.nonSubjectPoint_loading == true ? {backgroundColor: 'white'} : null}>
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()}/>
 
                 {this.props.nonSubjectPoint_loading == true ?
-                    <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
+                    <View style={{flex:1, marginTop: widthPercentageToDP(151), alignItems: 'center', backgroundColor: 'white'}}>
                         <View style={{height: widthPercentageToDP(40), marginBottom: widthPercentageToDP(10)}}>
                             <UIActivityIndicator color={'grey'}/>
                         </View>
@@ -154,7 +154,7 @@ class HansungPointScreen extends React.Component {
                                 </View>
                             </ProgressView>
                             <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                            <DetailView>
+                            <DetailView style={{paddingBottom: widthPercentageToDP(42)}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                     <View style={{flexDirection: 'column', justifyContent: 'center'}}>
@@ -214,7 +214,7 @@ class HansungPointScreen extends React.Component {
                         this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ?
                             this.certification_check()
                             :
-                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{flex: 1, alignItems: 'center', marginTop: widthPercentageToDP(151)}}>
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(128), height: widthPercentageToDP(36), borderRadius: widthPercentageToDP(8), backgroundColor: '#24a0fa', marginTop: widthPercentageToDP(26.5)}} onPress={ async () => {
                                     await this.nonSubjectPoint_check();
                                 }}>
@@ -222,6 +222,7 @@ class HansungPointScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                 }
+                </ScrollView>
             </View>
         )
     }
