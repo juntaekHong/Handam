@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Image, Text } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import Hyperlink from "react-native-hyperlink";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
@@ -17,6 +17,7 @@ import {
 } from "./Text";
 import { DefaultImage, SelectedEmojiImage, C_LikeImage } from "./Image";
 import { BackBtn, C_ReplyButton, C_LikeButton } from "./Button";
+import ImageCapInset from "rn-imagecapinsets";
 
 const emojiList = [
   { index: 1, emoji: require("../../../assets/image/community/emoji/1.png") },
@@ -174,24 +175,17 @@ export const EmojiListView = props => {
 };
 
 const ReplyContainer = styled.View`
-  width: ${widthPercentageToDP(343)};
-  height: ${widthPercentageToDP(114)};
-  padding-top: ${widthPercentageToDP(16)};
-  padding-horizontal: ${widthPercentageToDP(12)};
-  margin-bottom: ${widthPercentageToDP(8)};
-`;
-
-const ReplyContainer2 = styled.View`
   flex-direction: row;
   height: ${widthPercentageToDP(12)};
   justify-content: space-between;
   align-items: center;
+  margin-bottom: ${widthPercentageToDP(12)};
 `;
 
 const ButtonView = styled.View`
   flex-direction: row;
+  height: ${widthPercentageToDP(22)};
   justify-content: flex-end;
-  margin-top: ${widthPercentageToDP(16)};
 `;
 
 renderWriterName = props => {
@@ -242,17 +236,25 @@ renderDotButton = props => {
 export const ReplyView = props => {
   if (props.data.status == "ACTIVE") {
     return (
-      <ReplyContainer>
-        <Image
-          style={{
-            position: "absolute",
-            width: widthPercentageToDP(343),
-            height: widthPercentageToDP(114)
-          }}
-          source={require("../../../assets/image/community/reply.png")}
-        />
-        <ReplyContainer2>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <ImageCapInset
+        style={{
+          width: widthPercentageToDP(343),
+          paddingTop: widthPercentageToDP(16),
+          paddingLeft: widthPercentageToDP(12),
+          paddingRight: widthPercentageToDP(6),
+          paddingBottom: widthPercentageToDP(21),
+          marginBottom: widthPercentageToDP(10)
+        }}
+        source={require("../../../assets/image/community/reply.png")}
+        capInsets={{
+          top: widthPercentageToDP(12),
+          right: widthPercentageToDP(12),
+          bottom: widthPercentageToDP(22),
+          left: widthPercentageToDP(12)
+        }}
+      >
+        <ReplyContainer>
+          <View style={{ flexDirection: "row" }}>
             <Image
               style={{
                 width: widthPercentageToDP(16.4),
@@ -268,7 +270,7 @@ export const ReplyView = props => {
             <C_CreatedAtText>{timeSince(props.data.createdAt)}</C_CreatedAtText>
           </View>
           {this.renderDotButton(props)}
-        </ReplyContainer2>
+        </ReplyContainer>
         <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
           <C_ContentText>{props.data.content}</C_ContentText>
         </Hyperlink>
@@ -277,25 +279,33 @@ export const ReplyView = props => {
           {this.renderReplyButton(props)}
           {this.renderGoodButton(props)}
         </ButtonView>
-      </ReplyContainer>
+      </ImageCapInset>
     );
   } else {
     return (
-      <ReplyContainer>
-        <Image
-          style={{
-            position: "absolute",
-            width: widthPercentageToDP(343),
-            height: widthPercentageToDP(114)
-          }}
-          source={require("../../../assets/image/community/reply.png")}
-        />
-        <ReplyContainer2
+      <ImageCapInset
+        style={{
+          width: widthPercentageToDP(343),
+          paddingTop: widthPercentageToDP(16),
+          paddingLeft: widthPercentageToDP(12),
+          paddingRight: widthPercentageToDP(6),
+          paddingBottom: widthPercentageToDP(21),
+          marginBottom: widthPercentageToDP(10)
+        }}
+        source={require("../../../assets/image/community/reply.png")}
+        capInsets={{
+          top: widthPercentageToDP(12),
+          right: widthPercentageToDP(12),
+          bottom: widthPercentageToDP(22),
+          left: widthPercentageToDP(12)
+        }}
+      >
+        <ReplyContainer
           style={{
             opacity: 0.2
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
             <Image
               style={{
                 width: widthPercentageToDP(16.4),
@@ -316,7 +326,7 @@ export const ReplyView = props => {
             )}
             <C_CreatedAtText>{timeSince(props.data.createdAt)}</C_CreatedAtText>
           </View>
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity>
             <Image
               style={{
                 width: widthPercentageToDP(28),
@@ -325,7 +335,7 @@ export const ReplyView = props => {
               source={require("../../../assets/image/community/dots.png")}
             />
           </TouchableOpacity>
-        </ReplyContainer2>
+        </ReplyContainer>
 
         <C_ContentText
           style={{
@@ -364,20 +374,12 @@ export const ReplyView = props => {
             </C_LikeButton> */}
           </View>
         </View>
-      </ReplyContainer>
+      </ImageCapInset>
     );
   }
 };
 
 const ReReplyContainer = styled.View`
-  width: ${widthPercentageToDP(283)};
-  height: ${widthPercentageToDP(100)};
-  padding-top: ${widthPercentageToDP(4)};
-  padding-horizontal: ${widthPercentageToDP(12)};
-  margin-bottom: ${widthPercentageToDP(8)};
-`;
-
-const ReReplyContainer2 = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -397,17 +399,25 @@ export const Re_ReplyView = props => {
           }}
           source={require("../../../assets/image/community/reply_arrow.png")}
         />
-        <ReReplyContainer>
-          <Image
-            style={{
-              position: "absolute",
-              width: widthPercentageToDP(283),
-              height: widthPercentageToDP(100)
-            }}
-            source={require("../../../assets/image/community/re_reply.png")}
-          />
-          <ReReplyContainer2>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <ImageCapInset
+          style={{
+            width: widthPercentageToDP(283),
+            paddingTop: widthPercentageToDP(4),
+            paddingLeft: widthPercentageToDP(12),
+            paddingRight: widthPercentageToDP(6),
+            paddingBottom: widthPercentageToDP(21),
+            marginBottom: widthPercentageToDP(10)
+          }}
+          source={require("../../../assets/image/community/reply.png")}
+          capInsets={{
+            top: widthPercentageToDP(12),
+            right: widthPercentageToDP(12),
+            bottom: widthPercentageToDP(22),
+            left: widthPercentageToDP(12)
+          }}
+        >
+          <ReReplyContainer>
+            <View style={{ flexDirection: "row" }}>
               <Image
                 style={{
                   width: widthPercentageToDP(16.4),
@@ -427,17 +437,19 @@ export const Re_ReplyView = props => {
                   {props.data.displayName}
                 </AnonymousWriterName>
               )}
-
               <C_CreatedAtText>
                 {timeSince(props.data.createdAt)}
               </C_CreatedAtText>
             </View>
-            <TouchableOpacity style={{}} onPress={() => props.handler()}>
+            <TouchableOpacity
+              style={{ marginTop: widthPercentageToDP(5) }}
+              onPress={() => props.handler()}
+            >
               <DefaultImage
                 source={require("../../../assets/image/community/dots.png")}
               />
             </TouchableOpacity>
-          </ReReplyContainer2>
+          </ReReplyContainer>
           <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
             <C_ReContentText>{props.data.content}</C_ReContentText>
           </Hyperlink>
@@ -445,7 +457,7 @@ export const Re_ReplyView = props => {
           <View
             style={{
               alignItems: "flex-end",
-              marginTop: widthPercentageToDP(10)
+              height: widthPercentageToDP(22)
             }}
           >
             {/* <C_LikeButton>
@@ -455,7 +467,7 @@ export const Re_ReplyView = props => {
               <C_LikeText>0</C_LikeText>
             </C_LikeButton> */}
           </View>
-        </ReReplyContainer>
+        </ImageCapInset>
       </View>
     );
   } else {
@@ -471,21 +483,29 @@ export const Re_ReplyView = props => {
           }}
           source={require("../../../assets/image/community/reply_arrow.png")}
         />
-        <ReReplyContainer>
-          <Image
-            style={{
-              position: "absolute",
-              width: widthPercentageToDP(283),
-              height: widthPercentageToDP(100)
-            }}
-            source={require("../../../assets/image/community/re_reply.png")}
-          />
-          <ReReplyContainer2
+        <ImageCapInset
+          style={{
+            width: widthPercentageToDP(283),
+            paddingTop: widthPercentageToDP(4),
+            paddingLeft: widthPercentageToDP(12),
+            paddingRight: widthPercentageToDP(6),
+            paddingBottom: widthPercentageToDP(21),
+            marginBottom: widthPercentageToDP(10)
+          }}
+          source={require("../../../assets/image/community/reply.png")}
+          capInsets={{
+            top: widthPercentageToDP(12),
+            right: widthPercentageToDP(12),
+            bottom: widthPercentageToDP(22),
+            left: widthPercentageToDP(12)
+          }}
+        >
+          <ReReplyContainer
             style={{
               opacity: 0.2
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
               <Image
                 style={{
                   width: widthPercentageToDP(16.4),
@@ -513,7 +533,7 @@ export const Re_ReplyView = props => {
                 source={require("../../../assets/image/community/dots.png")}
               />
             </TouchableOpacity>
-          </ReReplyContainer2>
+          </ReReplyContainer>
 
           <C_ReContentText
             style={{
@@ -528,7 +548,7 @@ export const Re_ReplyView = props => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              marginTop: widthPercentageToDP(10)
+              height: widthPercentageToDP(22)
             }}
           >
             <C_ReportText>* 신고된 답글입니다.</C_ReportText>
@@ -543,7 +563,7 @@ export const Re_ReplyView = props => {
               <C_LikeText>0</C_LikeText>
             </C_LikeButton> */}
           </View>
-        </ReReplyContainer>
+        </ImageCapInset>
       </View>
     );
   }

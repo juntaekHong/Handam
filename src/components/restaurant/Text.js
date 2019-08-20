@@ -116,6 +116,7 @@ export const D_ReviewContent = styled.Text`
   font-family: ${fonts.nanumBarunGothic};
   width: ${widthPercentageToDP(288)};
   margin-bottom: ${widthPercentageToDP(10)};
+  line-height: ${widthPercentageToDP(15)};
 `;
 
 export const D_ReviewCreatedAt = styled.Text`
