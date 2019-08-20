@@ -77,7 +77,7 @@ export const TabView = ({ navigationState }) => {
             ? require("HandamProject/assets/image/navigation/gradecardblue.png")
             : require("HandamProject/assets/image/navigation/gradecardgrey.png")
         }
-        label={"성적표"}
+        label={"마이페이지"}
         active={navigationState.index === 0}
       />
       <TabBar
