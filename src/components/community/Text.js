@@ -16,10 +16,12 @@ export const C_Text = styled.Text`
 export const CategoryName = styled(C_Text)`
   height: ${widthPercentageToDP(18)};
   color: ${"#101010"};
-  margin-vertical: ${widthPercentageToDP(8)};
+  margin-top: ${widthPercentageToDP(8)};
+  margin-bottom: ${widthPercentageToDP(6)};
 `;
 export const CategoryExplain = styled(C_Text)`
   font-size: ${widthPercentageToDP(12)};
+  font-family: ${fonts.nanumBarunGothic};
   width: ${widthPercentageToDP(200)};
   height: ${widthPercentageToDP(13)};
   color: ${"#646464"};
@@ -47,7 +49,7 @@ export const C_CreatedAtText = styled.Text`
   color: ${"#9e9e9e"};
   font-size: ${widthPercentageToDP(8)};
   font-family: ${fonts.nanumBarunGothic};
-  margin-left: ${widthPercentageToDP(8.5)};
+  margin-left: ${widthPercentageToDP(4)};
 `;
 
 export const C_ContentText = styled.Text`
@@ -55,11 +57,13 @@ export const C_ContentText = styled.Text`
   width: ${widthPercentageToDP(309)};
   font-size: ${widthPercentageToDP(13)};
   font-family: ${fonts.nanumBarunGothic};
-  margin-top: ${widthPercentageToDP(12)};
+  margin-bottom: ${widthPercentageToDP(16)};
+  line-height: ${widthPercentageToDP(17)};
 `;
 
 export const C_ReContentText = styled(C_ContentText)`
-  margin-top: ${widthPercentageToDP(0)};
+  width: ${widthPercentageToDP(251)};
+  margin-bottom: ${widthPercentageToDP(10)};
 `;
 
 export const C_ReplyText = styled.Text`

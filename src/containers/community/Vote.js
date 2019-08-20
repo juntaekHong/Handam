@@ -7,8 +7,7 @@ import {
   Image,
   ScrollView,
   FlatList,
-  Keyboard,
-  BackHandler
+  Keyboard
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import { connect } from "react-redux";
@@ -57,6 +56,7 @@ class Vote extends Component {
       deletemodal: false,
       oxmodel: false,
       ox: null,
+      check: false,
       selected_emoji: null,
       emoji: false,
       dueTime: "loading"
@@ -64,61 +64,70 @@ class Vote extends Component {
   }
 
   async componentDidMount() {
-    this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      VoteActions.handleBottomModal(false);
-
-      return true;
-    });
-
     const currentVote = await VoteActions.getVote();
     await VoteActions.pageListPastVote();
     if (currentVote) {
       //현재 진행중인 투표가 있으면
-      await VoteActions.checkVote(
+      const promise1 = VoteActions.checkVote(
         this.props.getVote.voteTopic.voteTopicIndex,
         0
       );
-      VoteActions.pageListVoteReply(
+      const promise2 = VoteActions.pageListVoteReply(
         this.props.getVote.voteTopic.voteTopicIndex,
         0
       );
+      Promise.all([promise1, promise2]).then(() => {
+        this.IsPushed();
+        if (this.props.dueDate != null) {
+          Duetimeset = setInterval(() => this.DueTime(), 1000);
+          this.DueTime();
+        }
+        VoteActions.handleLoading(false);
+      });
     } else {
       //없으면
-      VoteActions.getPastVote(this.props.pastVoteList[0].voteTopicIndex, 0);
-      await VoteActions.checkVote(this.props.pastVoteList[0].voteTopicIndex, 0);
-      VoteActions.pageListVoteReply(
+      const promise1 = VoteActions.getPastVote(
         this.props.pastVoteList[0].voteTopicIndex,
         0
       );
+      const promise2 = VoteActions.checkVote(
+        this.props.pastVoteList[0].voteTopicIndex,
+        0
+      );
+      const promise3 = VoteActions.pageListVoteReply(
+        this.props.pastVoteList[0].voteTopicIndex,
+        0
+      );
+      Promise.all([promise1, promise2, promise3]).then(() => {
+        VoteActions.handleEnable(false);
+        this.IsPushed();
+        if (this.props.dueDate != null) {
+          Duetimeset = setInterval(() => this.DueTime(), 1000);
+          this.DueTime();
+        }
+        VoteActions.handleLoading(false);
+      });
     }
-    this.IsPushed("o");
-    this.IsPushed("x");
-    if (this.props.dueDate != null) {
-      Duetimeset = setInterval(() => this.DueTime(), 1000);
-      this.DueTime();
-    }
-    VoteActions.handleLoading(false);
   }
 
   componentWillUnmount() {
-    this.backHandler.remove();
+    clearInterval(Duetimeset);
   }
 
-  IsPushed = ox => {
-    if (ox == "o") {
-      this.props.getVote.voteItem[0].voteItemIndex ===
-      this.props.c_checkVote.voteItemIndex
-        ? this.setState({ opushed: true })
-        : this.setState({ opushed: false });
-    } else {
-      this.props.getVote.voteItem[1].voteItemIndex ===
-      this.props.c_checkVote.voteItemIndex
-        ? this.setState({ xpushed: true })
-        : this.setState({ xpushed: false });
-    }
+  IsPushed = () => {
+    this.props.getVote.voteItem[0].voteItemIndex ===
+    this.props.c_checkVote.voteItemIndex
+      ? this.setState({ opushed: true, check: true })
+      : this.setState({ opushed: false });
+
+    this.props.getVote.voteItem[1].voteItemIndex ===
+    this.props.c_checkVote.voteItemIndex
+      ? this.setState({ xpushed: true, check: true })
+      : this.setState({ xpushed: false });
   };
 
   DueTime = () => {
+    console.log("돌고~~");
     const today = new Date();
     const dueDay = new Date(
       parseInt(this.props.dueDate.substring(0, 4), 10),
@@ -128,11 +137,11 @@ class Vote extends Component {
       parseInt(this.props.dueDate.substring(10, 12), 10),
       parseInt(this.props.dueDate.substring(12, 14), 10)
     );
-    const day_gap = dueDay.getTime() - today.getTime(); //날짜 차이
-    const day_gap_time = Math.floor(day_gap / (1000 * 60 * 60)); //날짜차이 -> 시간차이
-    const time_gap = new Date(0, 0, 0, 0, 0, 0, dueDay - today); //시간 차이
 
-    let hour_gap = day_gap_time + time_gap.getHours();
+    const day_gap = dueDay.getTime() - today.getTime();
+    const time_gap = new Date(0, 0, 0, 0, 0, 0, dueDay - today);
+
+    let hour_gap = time_gap.getHours();
     let minute_gap = time_gap.getMinutes();
     let second_gap = time_gap.getSeconds();
 
@@ -151,6 +160,7 @@ class Vote extends Component {
     if (second_gap < 10) {
       second_gap = "0" + second_gap;
     }
+
     const gap = hour_gap + ":" + minute_gap + ":" + second_gap;
     this.setState({ dueTime: gap });
   };
@@ -240,14 +250,9 @@ class Vote extends Component {
             footerHandler={async () => {
               VoteActions.handleEnable(false);
               this.state.ox == "O"
-                ? [
-                    await this.createVote(0),
-                    this.setState({ opushed: true, oxmodel: false })
-                  ]
-                : [
-                    await this.createVote(1),
-                    this.setState({ xpushed: true, oxmodel: false })
-                  ];
+                ? [await this.createVote(0), this.setState({ opushed: true })]
+                : [await this.createVote(1), this.setState({ xpushed: true })];
+              this.setState({ oxmodel: false, check: true });
               await VoteActions.getVote();
             }}
             closeHandler={() => this.setState({ oxmodel: false })}
@@ -277,7 +282,6 @@ class Vote extends Component {
                   text="O"
                   oText={this.props.getVote.voteItem[0].itemName}
                 />
-                <View style={{ width: widthPercentageToDP(23) }} />
                 <VoteView
                   handler={async () => {
                     this.setState({ ox: "X", oxmodel: true });
@@ -292,6 +296,7 @@ class Vote extends Component {
                 number={this.props.getVote.voteTopic.totalCount}
                 oPercent={this.percent(this.props.getVote.voteItem[0].count)}
                 xPercent={this.percent(this.props.getVote.voteItem[1].count)}
+                check={this.state.check}
               />
             </TopView>
 
@@ -378,7 +383,7 @@ class Vote extends Component {
                 underlineColorAndroid="transparent"
                 onChangeText={reply => this.setState({ reply })}
                 onFocus={() => this.setState({ emoji: false })}
-                placeholder={this.state.placholder}
+                placeholder={this.state.placeholder}
                 placeholderTextColor={"#929292"}
                 value={this.state.reply}
                 maxLength={1000}
@@ -386,7 +391,7 @@ class Vote extends Component {
                 autoCapitalize={"none"}
                 multiline={true}
               />
-              <EmojiButton
+              {/* <EmojiButton
                 handler={async () => {
                   await Keyboard.dismiss();
                   this.state.emoji == false
@@ -394,7 +399,7 @@ class Vote extends Component {
                     : this.setState({ emoji: false });
                 }}
                 emoji={this.state.emoji}
-              />
+              /> */}
             </TextInputContainer>
             <WriteButton
               handler={async () => {
@@ -456,7 +461,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: "#000000",
-    width: widthPercentageToDP(265),
+    // width: widthPercentageToDP(265), 이모지 버튼 있을때 넓이
+    width: widthPercentageToDP(295), //이모지 버튼 없을때 넓이
     maxHeight: widthPercentageToDP(76),
     padding: widthPercentageToDP(0),
     margin: widthPercentageToDP(0),

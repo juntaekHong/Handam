@@ -54,7 +54,7 @@ class TalkDetail extends Component {
       reply: "",
       temp_reply: "", //댓글내용 임시저장
       replyinfo: {}, //댓글정보 저장
-      placholder: "댓글을 입력하세요.",
+      placeholder: "댓글을 입력하세요.",
       goodCount: null,
       isGood: null,
       isScrap: null,
@@ -84,19 +84,21 @@ class TalkDetail extends Component {
       "didFocus",
       async payload => {
         //게시물 목록 초기화(전체게시물)
-        await TalkActions.getPosts(
+        const promise1 = TalkActions.getPosts(
           this.props.navigation.state.params.postsIndex
         );
-        await TalkActions.pageListPostsReply(
+        const promise2 = TalkActions.pageListPostsReply(
           "page=1&count=100",
           this.props.navigation.state.params.postsIndex
         );
-        this.setState({
-          goodCount: this.props.getPosts.goodCount,
-          isGood: this.props.getPosts.isGood,
-          isScrap: this.props.getPosts.isScrap
+        Promise.all([promise1, promise2]).then(() => {
+          this.setState({
+            goodCount: this.props.getPosts.goodCount,
+            isGood: this.props.getPosts.isGood,
+            isScrap: this.props.getPosts.isScrap
+          });
+          TalkActions.handleLoading(false);
         });
-        TalkActions.handleLoading(false);
       }
     );
   }
@@ -316,7 +318,7 @@ class TalkDetail extends Component {
                 re_replyHandler={async () => {
                   await this.setState({
                     form: "re_reply",
-                    placholder: "답글을 입력하세요.",
+                    placeholder: "답글을 입력하세요.",
                     replyIndex: item.postsReplyIndex
                   });
                   this.TextInput.focus();
@@ -512,7 +514,7 @@ class TalkDetail extends Component {
                   alignItems: "center"
                 }}
               >
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
                     style={{
                       width: widthPercentageToDP(19.3),
@@ -525,7 +527,9 @@ class TalkDetail extends Component {
                       color: "#171717",
                       fontSize: widthPercentageToDP(12),
                       fontFamily: fonts.nanumBarunGothicB,
-                      marginLeft: widthPercentageToDP(9)
+                      marginLeft: widthPercentageToDP(6),
+                      paddingBottom: 0,
+                      marginBottom: 0
                     }}
                   >
                     {this.props.getPosts.displayName}
@@ -755,7 +759,7 @@ class TalkDetail extends Component {
                 underlineColorAndroid="transparent"
                 onChangeText={reply => this.setState({ reply })}
                 onFocus={() => this.setState({ emoji: false })}
-                placeholder={this.state.placholder}
+                placeholder={this.state.placeholder}
                 placeholderTextColor={"#929292"}
                 value={this.state.reply}
                 maxLength={1000}
@@ -763,7 +767,7 @@ class TalkDetail extends Component {
                 autoCapitalize={"none"}
                 multiline={true}
               />
-              <EmojiButton
+              {/* <EmojiButton
                 handler={async () => {
                   await Keyboard.dismiss();
                   this.state.emoji == false
@@ -771,7 +775,7 @@ class TalkDetail extends Component {
                     : this.setState({ emoji: false });
                 }}
                 emoji={this.state.emoji}
-              />
+              /> */}
             </TextInputContainer>
             <WriteButton
               handler={async () => {
@@ -874,7 +878,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     color: "#000000",
-    width: widthPercentageToDP(216),
+    // width: widthPercentageToDP(216), //이모지 버튼 없을 경우에
+    width: widthPercentageToDP(246), //이모지 버튼 있는 경우
     maxHeight: widthPercentageToDP(76),
     padding: widthPercentageToDP(0),
     margin: widthPercentageToDP(0),

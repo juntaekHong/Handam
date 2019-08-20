@@ -81,14 +81,14 @@ class TalkScreen extends Component {
                 />
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <CategoryName>{item.str}</CategoryName>
-                  <Image
+                  {/* <Image
                     style={{
                       width: widthPercentageToDP(13),
                       height: widthPercentageToDP(14),
                       marginLeft: widthPercentageToDP(5)
                     }}
                     source={require("../../../assets/image/community/new.png")}
-                  />
+                  /> */}
                 </View>
                 <CategoryExplain>{item.explain}</CategoryExplain>
               </TouchableOpacity>

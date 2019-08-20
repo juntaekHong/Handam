@@ -342,7 +342,6 @@ export const LeaveReview = props => {
 };
 
 const ReviewView = styled.View`
-  height: ${widthPercentageToDP(81)};
   padding-left: ${widthPercentageToDP(16)};
   padding-vertical: ${widthPercentageToDP(12)};
   border-top-width: ${widthPercentageToDP(1)};
