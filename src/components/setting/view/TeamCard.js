@@ -66,12 +66,11 @@ const Profile = styled.View`
   margin-right: ${widthPercentageToDP(12)}
   align-items: center
 `;
-const ProfileImg = styled.View`
+const ProfileImg = styled.Image`
   width: ${widthPercentageToDP(50)}
   height: ${widthPercentageToDP(50)}
   margin-bottom: ${widthPercentageToDP(7)}
   border-radius: ${widthPercentageToDP(25)}
-  border-width: 1
 `;
 const ProfileText = styled(NBGULText)`
   font-size: ${widthPercentageToDP(12)};
@@ -87,7 +86,7 @@ export const TeamCard = props => {
             {props.data.people.map((item, index) => {
               return (
                 <Profile key={index}>
-                  <ProfileImg />
+                  <ProfileImg source={item.image} />
                   <ProfileText>{item.name}</ProfileText>
                 </Profile>
               );
