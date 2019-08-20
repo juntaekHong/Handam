@@ -19,9 +19,10 @@ class AbstractAccountInfoScreen extends React.Component {
                     </View>
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
+                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name == '' ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
                             {
                                 this.props.selected == true && this.props.professor_text == true ?
+                                    // 교수평가 페이지 완성시 텍스트 변경 예정
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                                     :
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
@@ -36,7 +37,7 @@ class AbstractAccountInfoScreen extends React.Component {
                 </View>
                 {
                     this.props.selected == true && this.props.professor_text == true ?
-                        // 교수평가 페이지 만들어지면 작업.
+                        // 교수평가 페이지 만들어지면 작업 예정.
                         <View style={{position: 'relative', bottom: widthPercentageToDP(20), alignItems: 'flex-end'}}>
                             {/*<TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', width: widthPercentageToDP(120), height: widthPercentageToDP(20), marginRight: widthPercentageToDP(12.4)}}*/}
                             {/*                  onPress = { () => {}}>*/}
