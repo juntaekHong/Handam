@@ -10,6 +10,7 @@ import {UIActivityIndicator} from "react-native-indicators";
 import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
 import GradesDetailScreen from "./GradesDetailScreen";
+import {GradesModal} from "../../components/hansungInfo/Modal";
 
 class GradesScreen extends React.Component {
 
@@ -18,6 +19,7 @@ class GradesScreen extends React.Component {
 
         this.state = {
             selected: true,
+            refreshModal: false,
         }
     }
 
@@ -126,10 +128,19 @@ class GradesScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <GradesModal
+                    visible={this.state.refreshModal}
+                    footerHandler={async () => {
+                        this.setState({refreshModal: false});
+                        await this.refreshBtn();
+                    }}
+                    closeHandler={() => this.setState({ refreshModal: false })}
+                />
+                <ScrollView style={this.props.grades_loading == true ? {backgroundColor: 'white'} : null}>
                 <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
 
                 {this.props.grades_loading == true ?
-                    <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
+                    <View style={{flex:1, marginTop: widthPercentageToDP(151), alignItems: 'center', backgroundColor: 'white'}}>
                         <View style={{height: widthPercentageToDP(40), marginBottom: widthPercentageToDP(10)}}>
                             <UIActivityIndicator color={'grey'}/>
                         </View>
@@ -137,7 +148,7 @@ class GradesScreen extends React.Component {
                     </View>
                     :
                     this.props.grades_status == true ?
-                        <ScrollView>
+                        <View>
                             <ProgressView>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
                                     <View style={{flexDirection: 'row'}}>
@@ -148,7 +159,7 @@ class GradesScreen extends React.Component {
                                             <BTText>총 학점</BTText>
                                         </View>
                                     </View>
-                                    <TouchableOpacity onPress={ async () => {await this.refreshBtn()}}>
+                                    <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
                                         <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
@@ -268,12 +279,12 @@ class GradesScreen extends React.Component {
                                     {this.bySemesterView()}
                                 </View>
                             </DetailView>
-                        </ScrollView>
+                        </View>
                         :
                         this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS"  ?
                             this.certification_check()
                             :
-                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{flex: 1, alignItems: 'center', marginTop: widthPercentageToDP(151)}}>
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center', width: widthPercentageToDP(128), height: widthPercentageToDP(36), borderRadius: widthPercentageToDP(8), backgroundColor: '#24a0fa', marginTop: widthPercentageToDP(26.5)}} onPress={ async () => {
                                     await this.grades_check();
                                 }}>
@@ -281,6 +292,7 @@ class GradesScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                 }
+                </ScrollView>
             </View>
         )
     }

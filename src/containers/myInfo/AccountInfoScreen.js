@@ -19,6 +19,9 @@ class AccountInfoScreen extends React.Component {
             connectedMajorModal:false,
             admissionYearModal: false,
         }
+
+        CommonActions.getTrack();
+        CommonActions.getAdmissionYear();
     }
 
     navigategoBack = () => {
@@ -30,11 +33,10 @@ class AccountInfoScreen extends React.Component {
     };
 
     // render 전에 major_list, 앱 버전 불러오기
-    componentWillMount = async () => {
-        await CommonActions.getTrack();
-        await CommonActions.getAdmissionYear();
-        await CommonActions.getAppVersion();
-    };
+    // componentWillMount = async () => {
+    //     await CommonActions.getTrack();
+    //     await CommonActions.getAdmissionYear();
+    // };
 
     // 전공(1트랙) 항목 값 변경
     major_value_change = async (major) => {
@@ -49,8 +51,6 @@ class AccountInfoScreen extends React.Component {
             }
         }, 300);
         this.setState({majorModal: false});
-
-
     };
 
     // 복수 전공(2트랙) 항목 값 변경
@@ -118,6 +118,9 @@ class AccountInfoScreen extends React.Component {
     };
 
     lengthCheck = (aboutLength) => {
+        if (aboutLength == null) return "해당없음";
+
+
         let charactors = aboutLength.length > 8 ? aboutLength.slice(0,8) + ".." : aboutLength;
 
         return charactors;
@@ -182,89 +185,64 @@ class AccountInfoScreen extends React.Component {
                         <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.userNickName}</ACCOUNTINFOText>
                     </AccountView>
                     <View style={styles.divisionLine}/>
-                    <AccountView>
-                        <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.navigateChangePass()}}>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.navigateChangePass()}}>
+                        <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>비밀번호 변경</ACCOUNTINFOText>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {this.navigateChangePass()}}>
+                        </View>
+                        <View>
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                        </TouchableOpacity>
-                    </AccountView>
-                    <View style={styles.divisionLine}/>
-                    <AccountView>
-                        <ACCOUNTINFOText>앱 버전</ACCOUNTINFOText>
-                        <ACCOUNTINFOText style={{color: '#646464'}}>{Platform.OS === 'ios' ? this.props.appVersion.ios : this.props.appVersion.android}({timeFormat(this.props.appVersion.updatedAt, 'YYYYMMDD')})</ACCOUNTINFOText>
-                    </AccountView>
+                        </View>
+                    </TouchableOpacity>
                     <View style={{marginVertical: widthPercentageToDP(18), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
-                    <AccountView>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({majorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>전공(제 1트랙)</ACCOUNTINFOText>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({majorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMajor != null ? this.lengthCheck(this.props.changeMajor) : this.lengthCheck(this.props.major)}</ACCOUNTINFOText>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {this.setState({majorModal: true})}}>
-                                <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMajor != null ? this.lengthCheck(this.props.changeMajor) : this.lengthCheck(this.props.major)}</ACCOUNTINFOText>
+                            <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
-                    </AccountView>
+                    </TouchableOpacity>
                     <View style={styles.divisionLine}/>
-                    <AccountView>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({doublemajorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>복수전공(제 2트랙)</ACCOUNTINFOText>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => this.setState({doublemajorModal: true})}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeDoubleMajor != null ? this.lengthCheck(this.props.changeDoubleMajor) : this.lengthCheck(this.props.doubleMajor)}</ACCOUNTINFOText>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.setState({doublemajorModal: true})}>
-                                <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeDoubleMajor != null ? this.lengthCheck(this.props.changeDoubleMajor) : this.lengthCheck(this.props.doubleMajor)}</ACCOUNTINFOText>
+                            <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
-                    </AccountView>
+                    </TouchableOpacity>
                     <View style={styles.divisionLine}/>
-                    <AccountView>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({minorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>부전공</ACCOUNTINFOText>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({minorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMinor != null ? this.lengthCheck(this.props.changeMinor) : this.lengthCheck(this.props.minor)}</ACCOUNTINFOText>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {this.setState({minorModal: true})}}>
-                                <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeMinor != null ? this.lengthCheck(this.props.changeMinor) : this.lengthCheck(this.props.minor)}</ACCOUNTINFOText>
+                            <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
-                    </AccountView>
+                    </TouchableOpacity>
                     <View style={styles.divisionLine}/>
-                    <AccountView>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({connectedMajorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>연계전공</ACCOUNTINFOText>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({connectedMajorModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeConnectedMajor != null ? this.lengthCheck(this.props.changeConnectedMajor) : this.lengthCheck(this.props.connectedMajor)}</ACCOUNTINFOText>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {this.setState({connectedMajorModal: true})}}>
-                                <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeConnectedMajor != null ? this.lengthCheck(this.props.changeConnectedMajor) : this.lengthCheck(this.props.connectedMajor)}</ACCOUNTINFOText>
+                            <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
-                    </AccountView>
+                    </TouchableOpacity>
                     <View style={styles.divisionLine}/>
-                    <AccountView style={{marginBottom: widthPercentageToDP(118)}}>
+                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({admissionYearModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>입학년도</ACCOUNTINFOText>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => {this.setState({admissionYearModal: true})}}>
-                                <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeAdmissionYear != null ? this.props.changeAdmissionYear : this.props.admissionYear}</ACCOUNTINFOText>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {this.setState({admissionYearModal: true})}}>
-                                <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.changeAdmissionYear != null ? this.props.changeAdmissionYear : this.props.admissionYear}</ACCOUNTINFOText>
+                            <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
-                    </AccountView>
+                    </TouchableOpacity>
                 </ScrollView>
             </SafeAreaView>
         )
@@ -272,18 +250,25 @@ class AccountInfoScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-   divisionLine: {
-       marginHorizontal: widthPercentageToDP(29),
-       marginTop: widthPercentageToDP(11.5),
-       height: widthPercentageToDP(1),
-       backgroundColor: '#f8f8f8'
-   }
+    divisionLine: {
+        marginHorizontal: widthPercentageToDP(29),
+        marginTop: widthPercentageToDP(11.5),
+        height: widthPercentageToDP(1),
+        backgroundColor: '#f8f8f8'
+    },
+    account: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: 'white',
+        marginTop: widthPercentageToDP(18),
+        marginHorizontal: widthPercentageToDP(29)
+    }
 });
 
 export default connect(state => ({
     userNickName: state.signin.user.userNickName,
     userId: state.signin.user.userId,
-    appVersion: state.common.appVersion,
 
     major_list: state.common.major_list,
     major: state.signin.user.major,

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -55,6 +56,7 @@
 		529D70A140EB4490B04CD0BB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDF5AE9471E4C9387D35826 /* Octicons.ttf */; };
 		5AFDEA35508143CAB9F1E09C /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF42EA68102542D68D71B232 /* AntDesign.ttf */; };
 		5CBA5F74E4FD4223B6885E94 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02DA2C8A6A4E43A8BBE1F5DA /* libRNCAsyncStorage.a */; };
+		5D0224BAFED8426F90492C53 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 726E32D50A6F49549EE85168 /* libz.tbd */; };
 		6183557A0AAA46859C736AE7 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21D629930E449F582A3A4F6 /* libAirMaps.a */; };
 		6802EDBEDDF84FDABD8E9BFF /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */; };
 		6C554CFB206A49DEBC3A070E /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5090815A48BB46A69C0AE0A3 /* Entypo.ttf */; };
@@ -70,6 +72,7 @@
 		AF47141041134522ACEC66D7 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A85E6C4A93C0488388EA34E9 /* EvilIcons.ttf */; };
 		B248003EA0DD46FEB52EF1A9 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 534A21F8A9734DD3A1148447 /* FontAwesome.ttf */; };
 		B79E1101987F4DBB84355897 /* NanumBarunGothicLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 79D3ACCE49934889A9538811 /* NanumBarunGothicLight.otf */; };
+		BE18764147BE4F4BB2D2F27A /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 877E3A87C3E848A8850D2DC1 /* libCodePush.a */; };
 		C7FC4A919A514E218B77146A /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 941D5CA5EF4D417FAFD5498D /* libRNGestureHandler.a */; };
 		D709A075303246A987B813A7 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E086AA8D544915812BCF4E /* libSplashScreen.a */; };
 		D7B817CCBAF44FD9B5F51018 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B11480A34EC94F35BA14C05E /* Zocial.ttf */; };
@@ -275,16 +278,37 @@
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
 		};
-		07DFE91323044A7800B7BBF6 /* PBXContainerItemProxy */ = {
+		07DFEA082306E5C700B7BBF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 867E6976064843BB812753BC /* AirMaps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
+			remoteInfo = AirMaps;
+		};
+		07DFEAF02306E99C00B7BBF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8D67E854747441BA580BF82 /* CodePush.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = CodePush;
 		};
-		07DFE91523044A7800B7BBF6 /* PBXContainerItemProxy */ = {
+		07DFEAF22306E99C00B7BBF6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8D67E854747441BA580BF82 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F886647B1F4ADB500036D01B;
+			remoteInfo = "CodePush-tvOS";
+		};
+		07DFEB2F2306E99D00B7BBF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81CF95EE569B4E7AA373A0F3 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
+		07DFEB312306E99D00B7BBF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81CF95EE569B4E7AA373A0F3 /* CodePush.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = F886647B1F4ADB500036D01B;
 			remoteInfo = "CodePush-tvOS";
@@ -587,17 +611,18 @@
 		5A8E0DA01AF543B9A02615E0 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
-		6D34BABEA55946F48F7835D3 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
-		6E2B135DB6174F8093536F86 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		726E32D50A6F49549EE85168 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		75E5DC09829E49898C7742B0 /* NanumBarunGothicBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumBarunGothicBold.otf; path = ../assets/fonts/NanumBarunGothicBold.otf; sourceTree = "<group>"; };
 		776CD417EF6F458B887CBD00 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		79D3ACCE49934889A9538811 /* NanumBarunGothicLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumBarunGothicLight.otf; path = ../assets/fonts/NanumBarunGothicLight.otf; sourceTree = "<group>"; };
 		7CD62E34E42C40258EB975B6 /* RNCWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCWebView.xcodeproj; path = "../node_modules/react-native-webview/ios/RNCWebView.xcodeproj"; sourceTree = "<group>"; };
+		81CF95EE569B4E7AA373A0F3 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		84711010F678444E9B237628 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		867E6976064843BB812753BC /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		874BEC8A13494214A4DB89C7 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
+		877E3A87C3E848A8850D2DC1 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
 		8A74A9A5A83945B89EAC2F6E /* libRNReanimated-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNReanimated-tvOS.a"; sourceTree = "<group>"; };
 		8EDB9DD7BADB497699C37C20 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		91DEB2AFEA1740B88CA7AABC /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
@@ -672,6 +697,8 @@
 				3C754D895096469BA5B6D3DD /* libRNReanimated.a in Frameworks */,
 				76B86F7C4D8E416D98877D96 /* libTouchID.a in Frameworks */,
 				6183557A0AAA46859C736AE7 /* libAirMaps.a in Frameworks */,
+				BE18764147BE4F4BB2D2F27A /* libCodePush.a in Frameworks */,
+				5D0224BAFED8426F90492C53 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,8 +855,8 @@
 				C30F1C94316D4062BF944FCA /* libRNReanimated.a */,
 				8A74A9A5A83945B89EAC2F6E /* libRNReanimated-tvOS.a */,
 				4AD402310830453C9409B542 /* libTouchID.a */,
-				6D34BABEA55946F48F7835D3 /* libCodePush.a */,
 				A21D629930E449F582A3A4F6 /* libAirMaps.a */,
+				877E3A87C3E848A8850D2DC1 /* libCodePush.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -896,8 +923,25 @@
 		07DFE90F23044A7800B7BBF6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				07DFE91423044A7800B7BBF6 /* libCodePush.a */,
-				07DFE91623044A7800B7BBF6 /* libCodePush.a */,
+				07DFEAF12306E99C00B7BBF6 /* libCodePush.a */,
+				07DFEAF32306E99C00B7BBF6 /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07DFEA052306E5C700B7BBF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07DFEA092306E5C700B7BBF6 /* libAirMaps.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07DFEB2B2306E99D00B7BBF6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07DFEB302306E99D00B7BBF6 /* libCodePush.a */,
+				07DFEB322306E99D00B7BBF6 /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -968,7 +1012,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				6E2B135DB6174F8093536F86 /* libz.tbd */,
+				726E32D50A6F49549EE85168 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1044,7 +1088,7 @@
 				E3D92554539042348D17528E /* RNReanimated.xcodeproj */,
 				0C60AE88C4FC4B4E833E916D /* TouchID.xcodeproj */,
 				867E6976064843BB812753BC /* AirMaps.xcodeproj */,
-				4935415BC1074C2A9C1C0158 /* CodePush.xcodeproj */,
+				81CF95EE569B4E7AA373A0F3 /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1249,7 +1293,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 6CE4A9EC2309D73B006BB399 /* Products */;
+					ProductGroup = 07DFEA052306E5C700B7BBF6 /* Products */;
 					ProjectRef = 867E6976064843BB812753BC /* AirMaps.xcodeproj */;
 				},
 				{
@@ -1257,8 +1301,8 @@
 					ProjectRef = F8D67E854747441BA580BF82 /* CodePush.xcodeproj */;
 				},
 				{
-					ProductGroup = 6C365670230A2DAF00EA09A2 /* Products */;
-					ProjectRef = 4935415BC1074C2A9C1C0158 /* CodePush.xcodeproj */;
+					ProductGroup = 07DFEB2B2306E99D00B7BBF6 /* Products */;
+					ProjectRef = 81CF95EE569B4E7AA373A0F3 /* CodePush.xcodeproj */;
 				},
 				{
 					ProductGroup = 07CEB1A222CE28F90059B415 /* Products */;
@@ -1554,18 +1598,39 @@
 			remoteRef = 07D0C4E822CCF2B80016364B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		07DFE91423044A7800B7BBF6 /* libCodePush.a */ = {
+		07DFEA092306E5C700B7BBF6 /* libAirMaps.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libCodePush.a;
-			remoteRef = 07DFE91323044A7800B7BBF6 /* PBXContainerItemProxy */;
+			path = libAirMaps.a;
+			remoteRef = 07DFEA082306E5C700B7BBF6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		07DFE91623044A7800B7BBF6 /* libCodePush.a */ = {
+		07DFEAF12306E99C00B7BBF6 /* libCodePush.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCodePush.a;
-			remoteRef = 07DFE91523044A7800B7BBF6 /* PBXContainerItemProxy */;
+			remoteRef = 07DFEAF02306E99C00B7BBF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07DFEAF32306E99C00B7BBF6 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 07DFEAF22306E99C00B7BBF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07DFEB302306E99D00B7BBF6 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 07DFEB2F2306E99D00B7BBF6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		07DFEB322306E99D00B7BBF6 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 07DFEB312306E99D00B7BBF6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
@@ -1973,24 +2038,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2029,24 +2076,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2174,24 +2203,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2239,24 +2250,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2303,24 +2296,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2366,24 +2341,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (

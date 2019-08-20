@@ -115,7 +115,6 @@ export const createHansungInfo = hansunginfo => async dispatch => {
 
     if (jsonData.statusCode == 200) {
         await dispatch(createHansungInfoAction(jsonData.result));
-
         //1번 더 요청
         await api.post(`/hansungInfo`, { body: hansunginfo, token: token });
     } else if (jsonData.statusCode == 403) {
@@ -142,7 +141,6 @@ export const getHansungInfo = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.get(`/hansungInfo`, { token: token });
 
-    console.log(jsonData);
     if (jsonData.statusCode == 200) {
         await dispatch(getHansungInfoAction(jsonData.result));
         // 시간표 색 설정
@@ -178,14 +176,14 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
     const jsonData = await api.post(`/hansungInfo/nonSubjectPoint`, {
         token: token
     });
-
     if (jsonData.statusCode == 200) {
         await dispatch(createHansungInfoAction(jsonData.result));
-
         //1번 더 요청
         await api.post(`/hansungInfo/nonSubjectPoint`, { token: token });
+        return true;
     } else if (jsonData.statusCode == 403) {
         // 마이페이지로가서 재인증.
+        return false;
     }
 };
 
@@ -197,7 +195,6 @@ export const createHansungInfoGrades = () => async dispatch => {
 
     if (jsonData.statusCode == 200) {
         await dispatch(createHansungInfoAction(jsonData.result));
-
         //1번 더 요청
         await api.post(`/hansungInfo/grades`, { token: token });
     } else if (jsonData.statusCode == 403) {
@@ -231,7 +228,6 @@ export default handleActions(
             produce(state, draft => {
                 draft.hansunginfo = null;
             }),
-
         [GET_HANSUNGINFO]: (state, { payload }) =>
             produce(state, draft => {
                 draft.hansunginfo = payload;
@@ -275,7 +271,7 @@ export default handleActions(
         [PROFESSOR_TEXT_HANDLE]: (state, {payload}) =>
             produce(state, draft => {
                 draft.professor_text = payload;
-            })
+            }),
     },
     initState
 );

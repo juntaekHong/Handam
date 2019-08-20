@@ -2,12 +2,19 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import { FlatList } from "react-native";
 import { AlarmListItem } from "../listItem/AlarmListItem";
-import { AlarmActions } from "../../../store/actionCreator";
+import { AlarmActions, TalkActions } from "../../../store/actionCreator";
+import navigators from "../../../utils/navigators";
 
 export const AlarmList = props => {
   const onPress = useCallback(
-    alarmIndex => {
-      if (props.index == 0) AlarmActions.putUpdateAlarm(alarmIndex);
+    alarm => {
+      if (props.index == 0) AlarmActions.putUpdateAlarm(alarm.alarmIndex);
+      TalkActions.handleLoading(false);
+      const postsIndex = JSON.parse(alarm.data).postsIndex;
+      navigators.navigate("TalkDetail", {
+        from: "alarm",
+        postsIndex
+      });
     },
     [props.index]
   );
@@ -24,9 +31,7 @@ export const AlarmList = props => {
       data={props.list}
       extraData={props}
       renderItem={({ item, index }) => {
-        return (
-          <AlarmListItem item={item} onPress={() => onPress(item.alarmIndex)} />
-        );
+        return <AlarmListItem item={item} onPress={() => onPress(item)} />;
       }}
     />
   );

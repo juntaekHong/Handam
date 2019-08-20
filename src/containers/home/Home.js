@@ -26,6 +26,8 @@ import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
 import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
+import { CertLoadModal } from "../../components/home/modal/CertLoadModal";
+import { CertFailModal } from "../../components/home/modal/CertFailModal";
 
 const Home = ({
   navigation,
@@ -40,6 +42,8 @@ const Home = ({
   const [certModal, setCertModal] = useState(false);
   const [call, setCall] = useState(0);
   const [scheduleModal, setScheduleModal] = useState(false);
+  const [certLoadModal, setCertLoadModal] = useState(false);
+  const [certFailModal, setCertFailModal] = useState(false);
 
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
@@ -51,11 +55,10 @@ const Home = ({
 
   const navigateSchedule = useCallback(() => {
     if (hansunginfo === null) return setCertModal(true);
-    if (
-      hansunginfo !== null &&
-      (hansunginfo.name === undefined || hansunginfo.name.length < 1)
-    )
-      return;
+    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED")
+      return setCertLoadModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "FAIL")
+      return setCertFailModal(true);
     navigation.navigate("schedule");
   }, [hansunginfo]);
 
@@ -78,11 +81,10 @@ const Home = ({
 
   const onPressRefresh = useCallback(() => {
     if (schedule_loading) return;
-    if (
-      hansunginfo !== null &&
-      (hansunginfo.name === undefined || hansunginfo.name.length < 1)
-    )
-      return;
+    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED")
+      return setCertLoadModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "FAIL")
+      return setCertFailModal(true);
 
     if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
       return setScheduleModal(true);
@@ -141,6 +143,18 @@ const Home = ({
         visible={certModal}
         closeHandler={() => setCertModal(false)}
         footerHandler={navigateCert}
+      />
+      <CertLoadModal
+        height={201.9}
+        visible={certLoadModal}
+        closeHandler={() => setCertLoadModal(false)}
+        footerHandler={() => setCertLoadModal(false)}
+      />
+      <CertFailModal
+        height={201.9}
+        visible={certFailModal}
+        closeHandler={() => setCertFailModal(false)}
+        footerHandler={() => setCertFailModal(false)}
       />
       <ScheduleModal
         closeHandler={() => setScheduleModal(false)}

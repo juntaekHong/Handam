@@ -28,6 +28,22 @@ export const userConnectedMajorHandleAction = createAction(USER_CONNECTEDMAJOR_H
 const USER_ADMISSION_YEAR_HANDLE = "myInfo/USER_ADMISSION_YEAR_HANDLE";
 export const userAdmissionYearHandleAction = createAction(USER_ADMISSION_YEAR_HANDLE);
 
+// 비밀번호 변경
+const USER_PASS_HANDLE = "myInfo/USER_PASS_HANDLE";
+export const userPassHandleAction = createAction(USER_PASS_HANDLE);
+
+// 계정 사진 업로드
+const AVATAR = 'myInfo/AVATAR';
+export const avatarHandleAction = createAction(AVATAR);
+
+// 계정 사진 업로드
+const AVATARDELETE = 'myInfo/AVATARDELTE';
+export const avatarDeleteHandleAction = createAction(AVATARDELETE);
+
+export const avatarDeleteHandle = bool => dispatch => {
+  dispatch(avatarDeleteHandleAction(bool));
+};
+
 const initState = {
     failmodal: false,
     password: '',
@@ -36,6 +52,9 @@ const initState = {
     userMinor: null,
     userConnectedMajor: null,
     userAdmissionYear: null,
+    userPass: '',
+    userAvatar: null,
+    avatarDelete: false,
 };
 
 export const failModalHandle = bool => dispatch => {
@@ -154,6 +173,58 @@ export const changeAdmissionYearHandle = (admissionYear) => async dispatch => {
     }
 };
 
+export const changePassHandle = (pass, newPass) => async dispatch => {
+    const token = await getData('token');
+    const userId = await getData('userId');
+
+    const data = {
+        userPw: pass,
+        userNewPw:newPass
+    };
+    const changeData = await api.put(`/user/userId/${userId}/password`,{token: token, body: data});
+
+    console.log(changeData);
+    if(changeData.statusCode == 200){
+        dispatch(userPassHandleAction(pass));
+    }
+    if(changeData.statusCode == 403){
+    }
+};
+
+// 사진 업로드
+export const uploadAvatar = (image) => async dispatch =>{
+    const token = await getData('token');
+    const userId = await getData('userId');
+    try {
+        const jsonData = await api.post(`/user/userId/${userId}/uploadAvatar`, {
+                token: token,
+                body: image
+            });
+
+        await dispatch(avatarHandleAction(jsonData.result));
+        await dispatch(ava)
+        console.log(jsonData.result);
+
+    } catch (err) {
+
+    }
+};
+
+export const deleteAvatar = () => async dispatch =>{
+    const token = await getData('token');
+    const userId = await getData('userId');
+    try {
+        const jsonData = await api.delete(`/user/userId/${userId}/deleteAvatar`, {
+            token: token
+        });
+
+        console.log(jsonData);
+        await dispatch(avatarHandleAction(undefined));
+
+    } catch (err) {
+    }
+};
+
 export default handleActions(
     {
         [FAIL_MODAL_HANDLE]: (state, { payload }) =>
@@ -179,6 +250,18 @@ export default handleActions(
         [USER_ADMISSION_YEAR_HANDLE]: (state, { payload }) =>
             produce(state, draft => {
                 draft.userAdmissionYear = payload;
+            }),
+        [USER_PASS_HANDLE]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.userPass = payload;
+            }),
+        [AVATAR]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.userAvatar = payload;
+            }),
+        [AVATARDELETE]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.avatarDelete = payload;
             }),
     },
     initState

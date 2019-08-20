@@ -43,6 +43,7 @@ import {
   EmojiButton,
   AnonymousButton
 } from "../../components/community/Button";
+import navigators from "../../utils/navigators";
 
 class TalkDetail extends Component {
   constructor(props) {
@@ -119,6 +120,8 @@ class TalkDetail extends Component {
   navigateBack = async () => {
     if (this.props.navigation.state.params.from == "about") {
       this.props.navigation.navigate("TalkAbout");
+    } else if (this.props.navigation.state.params.from === "alarm") {
+      navigators.navigateBack();
     } else {
       this.props.navigation.navigate("TalkSearch", {
         searchtext: this.props.navigation.state.params.searchtext
