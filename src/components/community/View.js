@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Image, Text } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import Hyperlink from "react-native-hyperlink";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
@@ -254,7 +254,7 @@ export const ReplyView = props => {
         }}
       >
         <ReplyContainer>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
             <Image
               style={{
                 width: widthPercentageToDP(16.4),
@@ -305,7 +305,7 @@ export const ReplyView = props => {
             opacity: 0.2
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row" }}>
             <Image
               style={{
                 width: widthPercentageToDP(16.4),
@@ -417,7 +417,7 @@ export const Re_ReplyView = props => {
           }}
         >
           <ReReplyContainer>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
               <Image
                 style={{
                   width: widthPercentageToDP(16.4),
@@ -505,7 +505,7 @@ export const Re_ReplyView = props => {
               opacity: 0.2
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}>
               <Image
                 style={{
                   width: widthPercentageToDP(16.4),

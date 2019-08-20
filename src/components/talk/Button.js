@@ -40,7 +40,16 @@ const WritePost = styled.TouchableOpacity`
 export const HotPostsListItem = props => {
   return (
     <HotPost onPress={() => props.handler()}>
-      <NumText>{props.index + 1}</NumText>
+      <View
+        style={{
+          width: widthPercentageToDP(35),
+          height: widthPercentageToDP(81),
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <NumText>{props.index + 1}</NumText>
+      </View>
       <View
         style={{
           width: widthPercentageToDP(340),

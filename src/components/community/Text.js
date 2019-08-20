@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
@@ -50,6 +51,7 @@ export const C_CreatedAtText = styled.Text`
   font-size: ${widthPercentageToDP(8)};
   font-family: ${fonts.nanumBarunGothic};
   margin-left: ${widthPercentageToDP(4)};
+  margin-top: ${widthPercentageToDP(2)};
 `;
 
 export const C_ContentText = styled.Text`
@@ -70,6 +72,10 @@ export const C_ReplyText = styled.Text`
   color: ${"#171717"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${Platform.OS == "ios" ? widthPercentageToDP(2) : 0}
+  margin-top: ${
+    Platform.OS == "ios" ? widthPercentageToDP(2) : widthPercentageToDP(1)
+  }
 `;
 
 export const C_ReportText = styled.Text`

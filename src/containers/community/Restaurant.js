@@ -77,7 +77,10 @@ class Restaurant extends Component {
             style={styles.category}
             contentContainerStyle={{ alignItems: "center" }}
             ListHeaderComponent={() => (
-              <View style={{ width: widthPercentageToDP(16) }}></View>
+              <View style={{ width: widthPercentageToDP(3) }}></View>
+            )}
+            listFooterContainer={() => (
+              <View style={{ width: widthPercentageToDP(3) }}></View>
             )}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}

@@ -53,9 +53,11 @@ export const LineView = styled.View`
 //restaurant
 
 const CategoryItemView = styled.TouchableOpacity`
-  height: ${widthPercentageToDP(16)};
+  height: ${widthPercentageToDP(46)};
+  justify-content: center;
   align-items: center;
-  margin-right: ${widthPercentageToDP(26)};
+  padding-left: ${widthPercentageToDP(13)};
+  padding-right: ${widthPercentageToDP(13)};
 `;
 
 export const CategoryItem = props => {

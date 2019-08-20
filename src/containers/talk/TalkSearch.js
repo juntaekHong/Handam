@@ -8,7 +8,8 @@ import {
   Text,
   Image,
   FlatList,
-  BackHandler
+  BackHandler,
+  Platform
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
@@ -185,7 +186,9 @@ class TalkSearch extends Component {
                 color: "#000000",
                 fontSize: widthPercentageToDP(14),
                 fontFamily: fonts.nanumBarunGothic,
-                width: widthPercentageToDP(244)
+                width: widthPercentageToDP(244),
+                justifyContent: "center",
+                marginTop: widthPercentageToDP(1)
               }}
               underlineColorAndroid="transparent"
               onChangeText={text => this.setState({ text })}
