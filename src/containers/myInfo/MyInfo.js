@@ -36,6 +36,9 @@ import { myInfoLoadingHandle } from "../../store/modules/hansungInfo/hansungInfo
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 class MyInfo extends React.Component {
+
+  _didFocusSubscription;
+
   constructor(props) {
     super(props);
 
@@ -51,7 +54,9 @@ class MyInfo extends React.Component {
       didBlurSubscription = this.props.navigation.addListener(
           'didFocus',
           async payload => {
-              this.certification_Check();
+              if(this.props.hansunginfo != null) {
+                  this.certification_Check();
+              }
           }
       );
   }
@@ -67,6 +72,8 @@ class MyInfo extends React.Component {
 
     componentWillUnmount = async () => {
         this.backHandler.remove();
+
+        this._didFocusSubscription && this._didFocusSubscription.remove();
     }
 
   certification_Check = async () => {
@@ -74,16 +81,17 @@ class MyInfo extends React.Component {
     await HansungInfoActions.loadingHandle(false);
 
     let timeout = setInterval(async () => {
+        console.log("ee");
       if (
           this.props.hansunginfo != null &&
           this.props.hansunginfo.status == "UNVERIFIED"
       ) {
         await HansungInfoActions.getHansungInfo();
-      } else if (this.props.hansunginfo.status == "SUCCESS") {
+      } else if (this.props.hansunginfo != null && this.props.hansunginfo.status == "SUCCESS") {
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
-      } else if (this.props.hansunginfo.status == "FAIL") {
+      } else if (this.props.hansunginfo != null && this.props.hansunginfo.status == "FAIL") {
         await HansungInfoActions.loadingHandle(false);
         await HansungInfoActions.myInfoLoadingHandle(false);
         clearInterval(timeout);
@@ -352,219 +360,173 @@ class MyInfo extends React.Component {
             <CertificationView>
               {this.props.myInfo_loading == true ? (
                   <View style={[styles.certView, styles.myinfoShadow]}>
-                    <View
-                        style={{
-                          flex: 1,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "white"
-                        }}
-                    >
-                      <UIActivityIndicator color={"grey"} />
-                    </View>
+                    <UIActivityIndicator style={{zIndex: 1, position: 'relative', top: widthPercentageToDP(78.5)}} color={"grey"} />
+                    <Image style={{
+                        width: widthPercentageToDP(375),
+                        height: widthPercentageToDP(157)
+                    }}
+                           source={require("../../../assets/image/myInfo/box_0.png")} />
                   </View>
               ) : this.props.hansunginfo == null ? (
-                  <View style={[styles.certView, styles.myinfoShadow]}>
-                    <TouchableOpacity
-                        onPress={() => {
-                          this.navigateCertification();
-                        }}
-                    >
-                      <Image
-                          style={{
-                            width: widthPercentageToDP(65),
-                            height: widthPercentageToDP(65)
-                          }}
-                          source={require("../../../assets/image/myInfo/plus.png")}
-                      />
-                    </TouchableOpacity>
-                  </View>
-              ) : this.props.hansunginfo.status == "FAIL" ? (
-                  <View style={[styles.failView, styles.myinfoShadow]}>
-                    <View
-                        style={{
-                          flexDirection: "row",
-                          paddingTop: widthPercentageToDP(31),
-                          paddingBottom: widthPercentageToDP(21),
-                          paddingLeft: widthPercentageToDP(17),
-                          backgroundColor: "white"
-                        }}
-                    >
-                      <StandText>학번과 비밀번호를 다시 확인해주세요</StandText>
-                      <StandText
-                          style={{
-                            marginLeft: widthPercentageToDP(18),
-                            fontFamily: fonts.nanumBarunGothicB,
-                            color: "#ff6464"
-                          }}
-                      >
-                        인증실패
-                      </StandText>
-                    </View>
-                    <View
-                        style={{
-                          alignItems: "flex-end",
-                          paddingTop: widthPercentageToDP(12),
-                          paddingRight: widthPercentageToDP(10)
-                        }}
-                    >
-                      <TouchableOpacity
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                          onPress={() => {
-                            this.setState({ deletemodal: true });
-                          }}
-                      >
-                        <StandText
-                            style={{
-                              fontSize: widthPercentageToDP(10),
-                              color: "#9e9e9e"
-                            }}
-                        >
-                          다시 인증하기
-                        </StandText>
-                        <Image
-                            style={{
-                              width: widthPercentageToDP(28),
-                              height: widthPercentageToDP(28)
-                            }}
-                            source={require("../../../assets/image/myInfo/grayarrow.png")}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-              ) : this.props.hansunginfo.status == "SUCCESS" ? (
-                  <View style={[styles.failView, styles.myinfoShadow]}>
-                    <View
-                        style={{
-                          flexDirection: "row",
-                          paddingTop: widthPercentageToDP(25),
-                          paddingBottom: widthPercentageToDP(21),
-                          paddingLeft: widthPercentageToDP(17),
-                          backgroundColor: "white"
-                        }}
-                    >
-                      <View
-                          style={{
-                            flexDirection: "column",
-                            width: widthPercentageToDP(169)
-                          }}
-                      >
-                        <StandText>
-                          {this.props.hansunginfo.hansungInfoId}
-                        </StandText>
+                  <TouchableOpacity onPress={() => {
+                      this.navigateCertification();
+                  }}>
+                      <Image style={{
+                          width: widthPercentageToDP(375),
+                          height: widthPercentageToDP(157)
+                      }}
+                             source={require("../../../assets/image/myInfo/box_1.png")} />
+                  </TouchableOpacity>
+              ) : this.props.hansunginfo != null && this.props.hansunginfo.status == "FAIL" ? (
+                  <View>
+                      <View style={{zIndex: 1, position: "relative", left: widthPercentageToDP(46), top: widthPercentageToDP(54)}}>
+                          <View style={{flexDirection: 'row'}}>
+                              <StandText style={{width: widthPercentageToDP(211), height: widthPercentageToDP(19)}}>
+                                  학번과 비밀번호를 다시 확인해주세요
+                              </StandText>
+                              <StandText style={{
+                                  marginLeft: widthPercentageToDP(18),
+                                  fontFamily: fonts.nanumBarunGothicB,
+                                  color: "#ff6464"}}>인증실패</StandText>
+                          </View>
+                          <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(28)}}>
+                              <TouchableOpacity
+                                  style={{flexDirection: "row", alignItems: "center"}}
+                                  onPress={() => {
+                                      this.setState({ deletemodal: true });
+                                  }}
+                              >
+                                  <StandText
+                                      style={{
+                                          fontSize: widthPercentageToDP(10),
+                                          color: "#9e9e9e"
+                                      }}
+                                  >
+                                      다시 인증하기
+                                  </StandText>
+                                  <Image
+                                      style={{
+                                          width: widthPercentageToDP(28),
+                                          height: widthPercentageToDP(28)
+                                      }}
+                                      source={require("../../../assets/image/myInfo/grayarrow.png")}
+                                  />
+                              </TouchableOpacity>
+                          </View>
                       </View>
-                      <StandText
-                          style={{
-                            marginLeft: widthPercentageToDP(60),
-                            fontFamily: fonts.nanumBarunGothicB,
-                            color: "#259ffa"
-                          }}
-                      >
-                        인증완료
-                      </StandText>
-                    </View>
-                    <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          paddingTop: widthPercentageToDP(12),
-                          paddingRight: widthPercentageToDP(10)
-                        }}
-                    >
-                      <StandText
-                          style={{
-                            marginLeft: widthPercentageToDP(19),
-                            fontSize: widthPercentageToDP(10),
-                            color: "#9e9e9e"
-                          }}
-                      >
-                        {this.props.hansunginfo.department}
-                      </StandText>
-                      <TouchableOpacity
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                          onPress={() => {
-                            this.setState({ deletemodal: true });
-                          }}
-                      >
-                        <StandText
-                            style={{
-                              fontSize: widthPercentageToDP(10),
-                              color: "#9e9e9e"
-                            }}
-                        >
-                          인증서 삭제
-                        </StandText>
-                        <Image
-                            style={{
-                              width: widthPercentageToDP(28),
-                              height: widthPercentageToDP(28)
-                            }}
-                            source={require("../../../assets/image/myInfo/grayarrow.png")}
-                        />
-                      </TouchableOpacity>
-                    </View>
+                      <Image style={{
+                          zIndex:0,
+                          position: 'absolute',
+                          width: widthPercentageToDP(375),
+                          height: widthPercentageToDP(157)
+                      }}
+                             source={require("../../../assets/image/myInfo/box_2.png")} />
+                  </View>
+              ) : this.props.hansunginfo != null && this.props.hansunginfo.status == "SUCCESS" ? (
+                  <View>
+                      <View style={{zIndex: 1, position: "relative", left: widthPercentageToDP(46), top: widthPercentageToDP(54)}}>
+                          <View style={{flexDirection: 'row'}}>
+                              <StandText style={{width: widthPercentageToDP(211), height: widthPercentageToDP(19)}}>
+                                  {this.props.hansunginfo.hansungInfoId}
+                              </StandText>
+                              <StandText style={{
+                                  marginLeft: widthPercentageToDP(18),
+                                  fontFamily: fonts.nanumBarunGothicB,
+                                  color: "#259ffa"}}>인증완료</StandText>
+                          </View>
+                          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(28)}}>
+                              <StandText
+                                  style={{
+                                      fontSize: widthPercentageToDP(10),
+                                      color: "#9e9e9e",
+                                      height: widthPercentageToDP(28),
+                                      paddingTop: widthPercentageToDP(9),
+                                  }}
+                              >
+                                  {this.props.hansunginfo.department}
+                              </StandText>
+                              <TouchableOpacity
+                                  style={{flexDirection: "row", alignItems: "center"}}
+                                  onPress={() => {
+                                      this.setState({ deletemodal: true });
+                                  }}
+                              >
+                                  <StandText
+                                      style={{
+                                          fontSize: widthPercentageToDP(10),
+                                          color: "#9e9e9e"
+                                      }}
+                                  >
+                                      인증서 삭제
+                                  </StandText>
+                                  <Image
+                                      style={{
+                                          width: widthPercentageToDP(28),
+                                          height: widthPercentageToDP(28)
+                                      }}
+                                      source={require("../../../assets/image/myInfo/grayarrow.png")}
+                                  />
+                              </TouchableOpacity>
+                          </View>
+                      </View>
+                      <Image style={{
+                          zIndex:0,
+                          position: 'absolute',
+                          width: widthPercentageToDP(375),
+                          height: widthPercentageToDP(157)
+                      }}
+                             source={require("../../../assets/image/myInfo/box_2.png")} />
                   </View>
               ) : (
-                  <View style={[styles.failView, styles.myinfoShadow]}>
-                    <View
-                        style={{
-                          flexDirection: "row",
-                          paddingTop: widthPercentageToDP(25),
-                          paddingBottom: widthPercentageToDP(6),
-                          paddingLeft: widthPercentageToDP(17),
-                          backgroundColor: "white"
-                        }}
-                    >
-                      <View
-                          style={{
-                            flexDirection: "column",
-                            width: widthPercentageToDP(211)
-                          }}
-                      >
-                        <StandText>서버오류로 인하여 잠시뒤</StandText>
-                        <StandText>다시 시도해주세요</StandText>
+                  <View>
+                      <View style={{zIndex: 1, position: "relative", left: widthPercentageToDP(46), top: widthPercentageToDP(54)}}>
+                          <View style={{flexDirection: 'row'}}>
+                              <View
+                                  style={{
+                                      flexDirection: "column",
+                                      width: widthPercentageToDP(211)
+                                  }}
+                              >
+                                  <StandText>서버오류로 인하여 잠시뒤</StandText>
+                                  <StandText>다시 시도해주세요</StandText>
+                              </View>
+                              <StandText style={{
+                                  marginLeft: widthPercentageToDP(18),
+                                  fontFamily: fonts.nanumBarunGothicB,
+                                  color: "#ff6464"}}>인증실패</StandText>
+                          </View>
+                          <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(15)}}>
+                              <TouchableOpacity
+                                  style={{flexDirection: "row", alignItems: "center"}}
+                                  onPress={() => {
+                                      this.setState({ deletemodal: true });
+                                  }}
+                              >
+                                  <StandText
+                                      style={{
+                                          fontSize: widthPercentageToDP(10),
+                                          color: "#9e9e9e"
+                                      }}
+                                  >
+                                      다시 인증하기
+                                  </StandText>
+                                  <Image
+                                      style={{
+                                          width: widthPercentageToDP(28),
+                                          height: widthPercentageToDP(28)
+                                      }}
+                                      source={require("../../../assets/image/myInfo/grayarrow.png")}
+                                  />
+                              </TouchableOpacity>
+                          </View>
                       </View>
-                      <StandText
-                          style={{
-                            marginLeft: widthPercentageToDP(18),
-                            fontFamily: fonts.nanumBarunGothicB,
-                            color: "#ff6464"
-                          }}
-                      >
-                        인증실패
-                      </StandText>
-                    </View>
-                    <View
-                        style={{
-                          alignItems: "flex-end",
-                          paddingTop: widthPercentageToDP(12),
-                          paddingRight: widthPercentageToDP(10)
-                        }}
-                    >
-                      <TouchableOpacity
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                          onPress={() => {
-                            this.setState({ deletemodal: true });
-                          }}
-                      >
-                        <StandText
-                            style={{
-                              fontSize: widthPercentageToDP(10),
-                              color: "#9e9e9e"
-                            }}
-                        >
-                          다시 인증하기
-                        </StandText>
-                        <Image
-                            style={{
-                              width: widthPercentageToDP(28),
-                              height: widthPercentageToDP(28)
-                            }}
-                            source={require("../../../assets/image/myInfo/grayarrow.png")}
-                        />
-                      </TouchableOpacity>
-                    </View>
+                      <Image style={{
+                          zIndex:0,
+                          position: 'absolute',
+                          width: widthPercentageToDP(375),
+                          height: widthPercentageToDP(157)
+                      }}
+                             source={require("../../../assets/image/myInfo/box_2.png")} />
                   </View>
               )}
             </CertificationView>

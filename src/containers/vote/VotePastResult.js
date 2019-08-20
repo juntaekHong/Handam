@@ -46,31 +46,37 @@ class VotePastResult extends Component {
       return true;
     });
 
-    await VoteActions.getPastVote(this.props.navigation.state.params.index);
-    VoteActions.checkVote(this.props.navigation.state.params.index, 1);
-    VoteActions.pageListVoteReply(this.props.navigation.state.params.index, 1);
-    this.IsPushed("o");
-    this.IsPushed("x");
-
-    VoteActions.handleLoading(false);
+    const promise1 = VoteActions.getPastVote(
+      this.props.navigation.state.params.index
+    );
+    const promise2 = VoteActions.checkVote(
+      this.props.navigation.state.params.index,
+      1
+    );
+    const promise3 = VoteActions.pageListVoteReply(
+      this.props.navigation.state.params.index,
+      1
+    );
+    Promise.all([promise1, promise2, promise3]).then(() => {
+      this.IsPushed();
+      VoteActions.handleLoading(false);
+    });
   }
 
   componentWillUnmount() {
     this.backHandler.remove();
   }
 
-  IsPushed = ox => {
-    if (ox == "o") {
-      this.props.getPastVote.voteItem[0].voteItemIndex ===
-      this.props.p_checkVote.voteItemIndex
-        ? this.setState({ opushed: true })
-        : this.setState({ opushed: false });
-    } else {
-      this.props.getPastVote.voteItem[1].voteItemIndex ===
-      this.props.p_checkVote.voteItemIndex
-        ? this.setState({ xpushed: true })
-        : this.setState({ xpushed: false });
-    }
+  IsPushed = () => {
+    this.props.getPastVote.voteItem[0].voteItemIndex ===
+    this.props.p_checkVote.voteItemIndex
+      ? this.setState({ opushed: true })
+      : this.setState({ opushed: false });
+
+    this.props.getPastVote.voteItem[1].voteItemIndex ===
+    this.props.p_checkVote.voteItemIndex
+      ? this.setState({ xpushed: true })
+      : this.setState({ xpushed: false });
   };
 
   navigateVotePast = () => {
@@ -117,7 +123,6 @@ class VotePastResult extends Component {
                   text="O"
                   oText={this.props.getPastVote.voteItem[0].itemName}
                 />
-                <View style={{ width: widthPercentageToDP(23) }} />
                 <VoteView
                   pushed={this.state.xpushed}
                   enabled={false}
@@ -133,6 +138,7 @@ class VotePastResult extends Component {
                 xPercent={this.percent(
                   this.props.getPastVote.voteItem[1].count
                 )}
+                check={true}
               />
             </TopView>
             <BottomView>

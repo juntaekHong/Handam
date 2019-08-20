@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
   View,
   StyleSheet,
-  Text,
+  ScrollView,
+  RefreshControl,
   Image,
   SafeAreaView,
   TouchableOpacity,
@@ -35,7 +36,8 @@ class TalkAbout extends Component {
     );
 
     this.state = {
-      loading: false
+      loading: false,
+      refreshing: false
     };
   }
 
@@ -51,21 +53,8 @@ class TalkAbout extends Component {
     await TalkActions.handleFilter(
       `postsCategoryIndex eq ${this.props.categoryIndex}`
     );
-    await TalkActions.initPostList();
-    await TalkActions.pageListPosts(
-      this.props.filter,
-      this.props.orderby,
-      this.props.postsList.length / 6,
-      6
-    );
-    await TalkActions.pageListPosts(
-      this.props.filter + ` AND status eq ACTIVE`,
-      "goodCount DESC",
-      1,
-      2
-    );
 
-    TalkActions.handleLoading(false);
+    this.getpostslist();
   }
 
   componentWillUnmount() {
@@ -99,10 +88,42 @@ class TalkAbout extends Component {
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 6 + 1,
-      6
+      this.props.postsList.length / 5 + 1,
+      5
     );
     await this.setState({ loading: false });
+  };
+
+  getpostslist = async () => {
+    await TalkActions.initPostList();
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    var lastDay = new Date(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      0
+    ).getDate();
+
+    const promise1 = TalkActions.pageListPosts(
+      this.props.filter,
+      this.props.orderby,
+      this.props.postsList.length / 5,
+      5
+    );
+
+    const promise2 = TalkActions.pageListPosts(
+      this.props.filter +
+        ` AND status eq ACTIVE AND ( fromDate ge ${year}-${month}-01 AND toDate le ${year}-${month}-${lastDay} )`,
+      "goodCount DESC",
+      1,
+      2
+    );
+
+    Promise.all([promise1, promise2]).then(() => {
+      TalkActions.handleLoading(false);
+    });
   };
 
   renderAlertModal = rendertext => {
@@ -163,6 +184,12 @@ class TalkAbout extends Component {
     );
   };
 
+  _onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.getpostslist();
+    this.setState({ refreshing: false });
+  };
+
   render() {
     if (this.props.loading == true) {
       return <UIActivityIndicator color={"gray"} />;
@@ -179,8 +206,21 @@ class TalkAbout extends Component {
           />
 
           <LineView />
-
+          {/* <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+          > */}
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
             style={styles.flatlist}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
@@ -208,6 +248,7 @@ class TalkAbout extends Component {
               }
             }}
           />
+          {/* </ScrollView> */}
           <WritePostView>
             <WritePostBtn handler={this.navigateTalkWrite} />
           </WritePostView>

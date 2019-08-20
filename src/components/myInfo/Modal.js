@@ -74,6 +74,7 @@ export const Menu = props => {
         return (
             <View>
                 <TopMenuButton
+                    activeOpacity={0.8}
                     onPress={() => {
                         props.handler();
                         props.takeHandler();
@@ -85,6 +86,7 @@ export const Menu = props => {
                     style={{ backgroundColor: "#e0e0e0", height: widthPercentageToDP(1) }}
                 />
                 <MiddleMenuButton
+                    activeOpacity={0.8}
                     onPress={() => {
                         props.handler();
                         props.uploadHandler();
@@ -96,6 +98,7 @@ export const Menu = props => {
                     style={{ backgroundColor: "#e0e0e0", height: widthPercentageToDP(1) }}
                 />
                 <BottomMenuButton
+                    activeOpacity={0.8}
                     onPress={() => {
                         props.handler();
                         props.deleteHandler();

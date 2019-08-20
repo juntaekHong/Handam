@@ -54,15 +54,17 @@ class RestaurantDetail extends Component {
       return true;
     });
 
-    await RestaurantActions.getRestaurant(
+    const promise1 = RestaurantActions.getRestaurant(
       this.props.navigation.state.params.index
     );
-    await RestaurantActions.pageListRestaurantReply(
+    const promise2 = RestaurantActions.pageListRestaurantReply(
       this.props.navigation.state.params.index
     );
-    this.setState({ isGood: this.props.getRestaurant.isGood });
-    this.MenuOrder();
-    RestaurantActions.handleLoading(false);
+    Promise.all([promise1, promise2]).then(() => {
+      this.setState({ isGood: this.props.getRestaurant.isGood });
+      this.MenuOrder();
+      RestaurantActions.handleLoading(false);
+    });
   }
 
   componentWillUnmount() {

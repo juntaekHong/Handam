@@ -19,9 +19,11 @@ class Restaurant extends Component {
   }
 
   async componentDidMount() {
-    await RestaurantActions.listRestaurantCategory();
-    await RestaurantActions.pageListRestaurant(null, 1);
-    await RestaurantActions.handleLoading(false);
+    const promise1 = RestaurantActions.listRestaurantCategory();
+    const promise2 = RestaurantActions.pageListRestaurant(null, 1);
+    Promise.all([promise1, promise2]).then(() => {
+      RestaurantActions.handleLoading(false);
+    });
   }
 
   navigateRestaurantDetail = (index, handler) => {
@@ -75,7 +77,10 @@ class Restaurant extends Component {
             style={styles.category}
             contentContainerStyle={{ alignItems: "center" }}
             ListHeaderComponent={() => (
-              <View style={{ width: widthPercentageToDP(16) }}></View>
+              <View style={{ width: widthPercentageToDP(3) }}></View>
+            )}
+            listFooterContainer={() => (
+              <View style={{ width: widthPercentageToDP(3) }}></View>
             )}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}

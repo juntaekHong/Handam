@@ -44,6 +44,37 @@ export const avatarDeleteHandle = bool => dispatch => {
   dispatch(avatarDeleteHandleAction(bool));
 };
 
+// 내가 쓴 글
+const READ_MY_POSTS = 'myInfo/READ_MY_POSTS';
+const ORDERBY_HANDLE = 'myInfo/ORDERBY_HANDLE';
+
+const POSTS_LOADING = 'myInfo/POSTS_LOADING';
+export const postsLoadingAction = createAction(POSTS_LOADING);
+
+const POSTS_LIST_INIT = 'myInfo/POSTS_LIST_INIT';
+export const postsListInitAction = createAction(POSTS_LIST_INIT);
+
+const POSTS_TOTAL = 'myInfo/POSTS_TOTAL';
+export const postsTotalAction = createAction(POSTS_TOTAL);
+
+export const orderByHandle = (orderby) => dispatch => {
+    dispatch({type: ORDERBY_HANDLE, payload: orderby});
+};
+
+//게시물리스트 초기화
+export const initPostsList = () => dispatch => {
+    dispatch(postsTotalAction(0));
+    dispatch(postsListInitAction());
+};
+
+export const postLoadingHandle = bool => dispatch => {
+    dispatch(postsLoadingAction(bool));
+};
+
+export const postsTotalHandle = number => dispatch => {
+    dispatch(postsTotalAction(number));
+};
+
 const initState = {
     failmodal: false,
     password: '',
@@ -55,6 +86,13 @@ const initState = {
     userPass: '',
     userAvatar: null,
     avatarDelete: false,
+
+    // 내가 쓴 글
+    postsList: [],
+    myPost_loading: false,
+    whatposts: null,
+    total: null,
+    orderby:`createdAt DESC`,
 };
 
 export const failModalHandle = bool => dispatch => {
@@ -202,7 +240,6 @@ export const uploadAvatar = (image) => async dispatch =>{
             });
 
         await dispatch(avatarHandleAction(jsonData.result));
-        await dispatch(ava)
         console.log(jsonData.result);
 
     } catch (err) {
@@ -222,6 +259,22 @@ export const deleteAvatar = () => async dispatch =>{
         await dispatch(avatarHandleAction(undefined));
 
     } catch (err) {
+    }
+};
+
+// 내가 쓴 글
+export const pageListPostsByUserIndex = (order, page, count) => async dispatch => {
+
+    const token = await getData('token');
+
+    const jsonData = await api.get(`/posts/publisher/?orderBy=${order}&page=${page}&count=${count}`, {token: token});
+    // 확인용 임시
+    // console.log(jsonData);
+    if (jsonData.statusCode == 200) {
+        dispatch({type: READ_MY_POSTS, payload: jsonData.result});
+        dispatch(postsTotalAction(jsonData.resultCount));
+    } else {
+
     }
 };
 
@@ -262,6 +315,29 @@ export default handleActions(
         [AVATARDELETE]: (state, { payload }) =>
             produce(state, draft => {
                 draft.avatarDelete = payload;
+            }),
+        // 내가 쓴 글
+        [POSTS_LOADING]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.myPost_loading = payload;
+            }),
+        [READ_MY_POSTS]:(state, action) => {
+            return {
+                ...state,
+                postsList: [...state.postsList, ...action.payload]
+            };
+        },
+        [POSTS_TOTAL]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.total = payload;
+            }),
+        [ORDERBY_HANDLE]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.orderby = payload;
+            }),
+        [POSTS_LIST_INIT]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.postsList = [];
             }),
     },
     initState

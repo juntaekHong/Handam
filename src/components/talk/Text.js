@@ -14,10 +14,8 @@ export const DefaultText = styled.Text`
 //Button
 export const NumText = styled(DefaultText)`
   color: ${"#0c81ff"};
-  width: ${widthPercentageToDP(35)};
-  height: ${widthPercentageToDP(81)};
-  text-align: center;
-  text-align-vertical: center;
+  font-size: ${widthPercentageToDP(16)};
+  font-family: ${fonts.nanumBarunGothicB};
 `;
 
 export const HotText = styled(DefaultText)`

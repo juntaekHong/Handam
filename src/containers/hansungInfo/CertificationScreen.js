@@ -31,31 +31,6 @@ class CertificationScreen extends React.Component {
         this.props.navigation.goBack(null);
     };
 
-    // certification_Check = async () => {
-    //     await HansungInfoActions.getHansungInfo();
-    //
-    //     let timeout = setInterval(async () => {
-    //         if (
-    //             this.props.hansunginfo != null &&
-    //             this.props.hansunginfo.status == "UNVERIFIED"
-    //         ) {
-    //             await HansungInfoActions.getHansungInfo();
-    //         } else if (this.props.hansunginfo.status == "SUCCESS") {
-    //             // 시간표 호출
-    //             await HansungInfoActions.scheduleCallAction(true);
-    //
-    //             await this.navigationBack();
-    //
-    //             clearInterval(timeout);
-    //         } else if (this.props.hansunginfo.status == "FAIL") {
-    //             // 마이 페이지에서 재인증 작업 예정
-    //             this.setState({ loading: false });
-    //             this.props.navigation.navigate("MyInfo");
-    //             clearInterval(timeout);
-    //         }
-    //     }, 5000);
-    // };
-
     renderSubmit = () => {
         if (this.state.hansung_id != "" && this.state.hansung_pass != "") {
             return (
