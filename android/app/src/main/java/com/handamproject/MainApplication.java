@@ -3,6 +3,7 @@ package com.handamproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.itrabbit.imageCapInsets.RCTImageCapInsetPackage;
 import com.microsoft.codepush.react.CodePush;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -45,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RCTImageCapInsetPackage(),
             new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
             new ExtraDimensionsPackage(),
             new MapsPackage(),

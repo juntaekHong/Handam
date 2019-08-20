@@ -139,6 +139,7 @@ export const pageListPosts = (
       dispatch(postsTotalAction(jsonData.resultCount));
       dispatch(postsListAction(jsonData.result));
     } else if (orderby == "goodCount DESC") {
+      console.log(jsonData.result);
       dispatch(hostpostsListAction(jsonData.result));
     }
     return true;

@@ -22,7 +22,6 @@ export const SubjectText = styled.Text`
   width: ${widthPercentageToDP(255)};
   height: ${widthPercentageToDP(55)};
   margin-top: ${widthPercentageToDP(19.5)};
-  margin-bottom: ${widthPercentageToDP(10)};
 `;
 
 export const DaText = styled.Text`
@@ -60,7 +59,7 @@ export const PersonText = styled.Text`
   color: ${"#000000"};
   font-size: ${widthPercentageToDP(10)};
   font-family: ${fonts.nanumBarunGothic};
-  margin-top: ${widthPercentageToDP(43.5)};
+  margin-top: ${widthPercentageToDP(35)};
 `;
 
 export const PercentText = styled.Text`

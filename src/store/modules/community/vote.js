@@ -105,6 +105,7 @@ export const getVote = () => async dispatch => {
       token: token
     });
     if (jsonData.statusCode == 200) {
+      console.log(jsonData.result);
       //종료기한
       const dueDate = jsonData.result.voteTopic.dueDate
         .replace(/-/gi, "")
@@ -115,6 +116,7 @@ export const getVote = () => async dispatch => {
       dispatch(getVoteAction(jsonData.result));
       return true;
     } else {
+      console.log(jsonData.statusCode);
       throw "error";
     }
   } catch (error) {}

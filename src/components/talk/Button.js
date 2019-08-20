@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Text } from "react-native";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP, timeSince } from "../../utils/util";
@@ -40,7 +40,16 @@ const WritePost = styled.TouchableOpacity`
 export const HotPostsListItem = props => {
   return (
     <HotPost onPress={() => props.handler()}>
-      <NumText>{props.index + 1}</NumText>
+      <View
+        style={{
+          width: widthPercentageToDP(35),
+          height: widthPercentageToDP(81),
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <NumText>{props.index + 1}</NumText>
+      </View>
       <View
         style={{
           width: widthPercentageToDP(340),
@@ -59,7 +68,19 @@ export const HotPostsListItem = props => {
           {props.data.content}
         </ContentText>
         <BottomContainer>
-          <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{
+                color: "#646464",
+                fontSize: widthPercentageToDP(11),
+                fontFamily: fonts.nanumBarunGothicB,
+                marginRight: widthPercentageToDP(4)
+              }}
+            >
+              {props.data.userNickName}
+            </Text>
+            <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
+          </View>
           <ImageContainer>
             <ImageImage
               source={require("../../../assets/image/community/images.png")}
@@ -90,26 +111,32 @@ export const PostsListItem = props => {
         {props.data.content}
       </ContentText>
       <BottomContainer>
-        <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{
+              color: "#646464",
+              fontSize: widthPercentageToDP(11),
+              fontFamily: fonts.nanumBarunGothicB,
+              marginRight: widthPercentageToDP(4)
+            }}
+          >
+            {props.data.userNickName}
+          </Text>
+          <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
+        </View>
         <ImageContainer>
           <ImageImage
             source={require("../../../assets/image/community/images.png")}
           />
-          <ImageCountText>
-            {props.data.imageCount}
-          </ImageCountText>
+          <ImageCountText>{props.data.imageCount}</ImageCountText>
           <LikeImage
             source={require("../../../assets/image/community/likes.png")}
           />
-          <ImageCountText>
-            {props.data.goodCount}
-          </ImageCountText>
+          <ImageCountText>{props.data.goodCount}</ImageCountText>
           <ReplyImage
             source={require("../../../assets/image/community/replys.png")}
           />
-          <ImageCountText>
-            {props.data.postsReplyCount}
-          </ImageCountText>
+          <ImageCountText>{props.data.postsReplyCount}</ImageCountText>
         </ImageContainer>
       </BottomContainer>
     </Post>
