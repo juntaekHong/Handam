@@ -151,7 +151,7 @@ export const scheduleTime = time => {
   let hour2 = time2.substring(0, time2.indexOf(":"));
   const minute2 = time2.substring(time2.indexOf(":") + 1);
   if (array[1] === "PM" && hour1 !== "12") hour1 = Number(hour1) + 12 + "";
-  if (array[4] === "PM") hour2 = Number(hour2) + 12 + "";
+  if (array[4] === "PM" && hour2 !== "12") hour2 = Number(hour2) + 12 + "";
   return [hour1, minute1, hour2, minute2];
 };
 
