@@ -8,11 +8,13 @@ import SettingStack from "../setting/SettingStack";
 import TalkStack from "../talk/TalkStack";
 import Schedule from "../../containers/schedule/Schedule";
 import RestaurantStack_noTab from "../restaurant/RestaurantStack_noTab";
+import Cis from "../../containers/notice/Cis";
 
 const RootStack = createStackNavigator(
   {
     main: { screen: MainTab },
     notice: { screen: Notice },
+    cis: { screen: Cis },
     busstack: { screen: BusStack },
     alarm: { screen: Alarm },
     Certification: { screen: CertificationStack },

@@ -20,14 +20,16 @@ import moment from "moment";
 import {
   ScheduleButton,
   BusButton,
-  NoticeButton
+  NoticeButton,
+  CisButton
 } from "../../components/home/Button";
 import TodayLecture from "../../components/home/view/TodayLecture";
-import { dayToString } from "../../utils/util";
+import { dayToString, widthPercentageToDP } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
 import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
 import { CertLoadModal } from "../../components/home/modal/CertLoadModal";
 import { CertFailModal } from "../../components/home/modal/CertFailModal";
+import { View } from "react-native";
 
 const Home = ({
   navigation,
@@ -47,6 +49,9 @@ const Home = ({
 
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
+  }, []);
+  const navigateCis = useCallback(() => {
+    navigation.navigate("cis");
   }, []);
 
   const navigateBus = useCallback(() => {
@@ -168,11 +173,16 @@ const Home = ({
         }}
       >
         <HomeAd list={noticeList} />
-        <HomeNavigateView>
-          <ScheduleButton onPress={navigateSchedule} />
-          <BusButton onPress={navigateBus} />
-          <NoticeButton onPress={navigateNotice} />
-        </HomeNavigateView>
+        <View style={{ width: "100%", height: widthPercentageToDP(140) }}>
+          <HomeNavigateView>
+            <View style={{ width: widthPercentageToDP(23) }} />
+            <ScheduleButton onPress={navigateSchedule} />
+            <BusButton onPress={navigateBus} />
+            <NoticeButton onPress={navigateNotice} />
+            <CisButton onPress={navigateCis} />
+            <View style={{ width: widthPercentageToDP(23) }} />
+          </HomeNavigateView>
+        </View>
         <TodayLectureTitle onPress={onPressRefresh} />
         <TodayLine time={moment(time).format("MM. DD (ddd)")} />
         <TodayLecture
