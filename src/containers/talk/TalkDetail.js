@@ -87,38 +87,21 @@ class TalkDetail extends Component {
     didBlurSubscription = this.props.navigation.addListener(
       "didFocus",
       async payload => {
-        console.log("1");
-        await TalkActions.getPosts(
+        const promise1 = TalkActions.getPosts(
           this.props.navigation.state.params.postsIndex
         );
-        console.log("2");
-        await TalkActions.pageListPostsReply(
+        const promise2 = TalkActions.pageListPostsReply(
           "page=1&count=100",
           this.props.navigation.state.params.postsIndex
         );
-        console.log("3");
-        this.setState({
-          goodCount: this.props.getPosts.goodCount,
-          isGood: this.props.getPosts.isGood,
-          isScrap: this.props.getPosts.isScrap
+        Promise.all([promise1, promise2]).then(() => {
+          this.setState({
+            goodCount: this.props.getPosts.goodCount,
+            isGood: this.props.getPosts.isGood,
+            isScrap: this.props.getPosts.isScrap
+          });
+          TalkActions.handleLoading(false);
         });
-        TalkActions.handleLoading(false);
-        //게시물 목록 초기화(전체게시물)
-        // const promise1 = TalkActions.getPosts(
-        //   this.props.navigation.state.params.postsIndex
-        // );
-        // const promise2 = TalkActions.pageListPostsReply(
-        //   "page=1&count=100",
-        //   this.props.navigation.state.params.postsIndex
-        // );
-        // Promise.all([promise1, promise2]).then(() => {
-        //   this.setState({
-        //     goodCount: this.props.getPosts.goodCount,
-        //     isGood: this.props.getPosts.isGood,
-        //     isScrap: this.props.getPosts.isScrap
-        //   });
-        //   TalkActions.handleLoading(false);
-        // });
       }
     );
   }
@@ -141,9 +124,9 @@ class TalkDetail extends Component {
       this.props.navigation.navigate("TalkAbout");
     } else if (this.props.navigation.state.params.from === "alarm") {
       navigators.navigateBack();
-    } else if(this.props.navigation.state.params.from === "MyPost") {
-        this.props.navigation.navigate("MyPost");
-    } else if(this.props.navigation.state.params.from === "MyScrap") {
+    } else if (this.props.navigation.state.params.from === "MyPost") {
+      this.props.navigation.navigate("MyPost");
+    } else if (this.props.navigation.state.params.from === "MyScrap") {
       this.props.navigation.navigate("MyScrap");
     } else {
       this.props.navigation.navigate("TalkSearch", {
