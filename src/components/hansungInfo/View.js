@@ -30,7 +30,7 @@ export const GradesDetailView = styled.View`
 
 // 비교과 인증 리스트 뷰
 export const PointListItem = props => {
-    if(props.index % 2 == 1) {
+    if(props.index % 2 == 0) {
         return (
             <View style={{position: "relative", left: widthPercentageToDP(10), flexDirection: "row", marginHorizontal: widthPercentageToDP(15), marginBottom: widthPercentageToDP(19)}}>
                 <ImageBackground style={{flexDirection: "column", width: widthPercentageToDP(154), height: widthPercentageToDP(78)}} source={require("../../../assets/image/hansungInfo/square_993.png")}>
@@ -38,7 +38,27 @@ export const PointListItem = props => {
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginRight: widthPercentageToDP(15)}}>
                             <PointListText style={{marginTop: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothic}}>{props.data.status}</PointListText>
                             {
-                                props.index == 1 ?
+                                props.index == 0 ?
+                                    <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)} height={widthPercentageToDP(12)} source={require("../../../assets/image/hansungInfo/circle_825.png")} />
+                                    :
+                                    null
+                            }
+                        </View>
+                        <PointListText style={{textAlign: "center", fontSize: widthPercentageToDP(20), color: "#24a0fa"}}>{props.data.score}</PointListText>
+                        <PointListText style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
+                    </View>
+                </ImageBackground>
+            </View>
+        );
+    } else if(props.index % 2 == 1 && (props.index + 1) != props.length ){
+        return (
+            <View style={{position: "absolute",bottom: widthPercentageToDP(0), left: widthPercentageToDP(186), width: widthPercentageToDP(154), height: widthPercentageToDP(78), flexDirection: "row", marginLeft: widthPercentageToDP(8), marginBottom: widthPercentageToDP(19)}}>
+                <ImageBackground style={{flexDirection: "column", width: widthPercentageToDP(154), height: widthPercentageToDP(78)}} source={require("../../../assets/image/hansungInfo/square_993.png")}>
+                    <View>
+                        <View style={{flexDirection: "row", justifyContent: "space-between", marginRight: widthPercentageToDP(15)}}>
+                            <PointListText style={{marginTop: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothic}}>{props.data.status}</PointListText>
+                            {
+                                props.index == 0 ?
                                     <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)} height={widthPercentageToDP(12)} source={require("../../../assets/image/hansungInfo/circle_825.png")} />
                                     :
                                     null
@@ -52,20 +72,45 @@ export const PointListItem = props => {
         );
     } else {
         return (
-            <View style={{position: "absolute",bottom: widthPercentageToDP(0), left: widthPercentageToDP(186), flexDirection: "row", marginLeft: widthPercentageToDP(8), marginBottom: widthPercentageToDP(19)}}>
-                <ImageBackground style={{flexDirection: "column", width: widthPercentageToDP(154), height: widthPercentageToDP(78)}} source={require("../../../assets/image/hansungInfo/square_993.png")}>
+            <View style={{
+                position: "relative",
+                left: widthPercentageToDP(186),
+                bottom: widthPercentageToDP(97.3),
+                flexDirection: "row",
+                marginLeft: widthPercentageToDP(8),
+                marginBottom: widthPercentageToDP(19),
+                width: widthPercentageToDP(154),
+                height: widthPercentageToDP(78)
+            }}>
+                <ImageBackground
+                    style={{flexDirection: "column", width: widthPercentageToDP(154), height: widthPercentageToDP(78)}}
+                    source={require("../../../assets/image/hansungInfo/square_993.png")}>
                     <View>
-                        <View style={{flexDirection: "row", justifyContent: "space-between", marginRight: widthPercentageToDP(15)}}>
-                            <PointListText style={{marginTop: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothic}}>{props.data.status}</PointListText>
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginRight: widthPercentageToDP(15)
+                        }}>
+                            <PointListText style={{
+                                marginTop: widthPercentageToDP(11),
+                                fontFamily: fonts.nanumBarunGothic
+                            }}>{props.data.status}</PointListText>
                             {
-                                props.index == 1 ?
-                                    <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)} height={widthPercentageToDP(12)} source={require("../../../assets/image/hansungInfo/circle_825.png")} />
+                                props.index == 0 ?
+                                    <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)}
+                                           height={widthPercentageToDP(12)}
+                                           source={require("../../../assets/image/hansungInfo/circle_825.png")}/>
                                     :
                                     null
                             }
                         </View>
-                        <PointListText style={{textAlign: "center", fontSize: widthPercentageToDP(20), color: "#24a0fa"}}>{props.data.score}</PointListText>
-                        <PointListText style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
+                        <PointListText style={{
+                            textAlign: "center",
+                            fontSize: widthPercentageToDP(20),
+                            color: "#24a0fa"
+                        }}>{props.data.score}</PointListText>
+                        <PointListText
+                            style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
                     </View>
                 </ImageBackground>
             </View>
