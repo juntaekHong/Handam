@@ -23,7 +23,7 @@ export const ScheduleContent = props => {
         left: widthPercentageToDP(props.left * 62),
         height: widthPercentageToDP(
           (parseInt(time[2]) - parseInt(time[0])) * 60 +
-            Math.abs(parseInt(time[3]) - parseInt(time[1]))
+            parseInt(parseInt(time[3]) - parseInt(time[1]))
         ),
         top:
           (parseInt(time[0]) - 9) * widthPercentageToDP(60) +
