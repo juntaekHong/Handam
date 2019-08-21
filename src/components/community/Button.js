@@ -22,6 +22,7 @@ export const WriteButton = props => {
     <TouchableOpacity
       style={{ marginLeft: widthPercentageToDP(5) }}
       onPress={() => props.handler()}
+      disabled={props.no_click}
     >
       <DefaultImage
         source={require("../../../assets/image/community/reply_write.png")}
