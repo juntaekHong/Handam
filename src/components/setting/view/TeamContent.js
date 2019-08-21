@@ -15,12 +15,11 @@ const Content = styled.View`
   align-items: center
   background-color: white
 `;
-const ContentImage = styled.View`
+const ContentImage = styled.Image`
   width: ${widthPercentageToDP(45)}
   height: ${widthPercentageToDP(45)}
   margin-right: ${widthPercentageToDP(12)}
   border-radius: ${widthPercentageToDP(22.5)}
-  border-width: 1
 `;
 const ContentBody = styled(BaseView)`
   justify-content: center;
@@ -31,7 +30,7 @@ export const TeamContent = props => {
       {props.data.map((item, index) => {
         return (
           <Content key={item.name}>
-            <ContentImage />
+            <ContentImage source={item.image} />
             <ContentBody>
               <NBGText
                 style={{ marginBottom: widthPercentageToDP(4) }}

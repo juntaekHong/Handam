@@ -16,34 +16,52 @@ const TeamInfo = () => {
   const [entries] = useState([
     {
       group: "Designer",
+      image: "design",
       bar: "#cc76e4",
       people: [
         {
+          name: "최혜종",
+          major: "시각미디어디자인과",
+          email: "anamor7000@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/design2.png")
+        },
+        {
           name: "전소은",
           major: "시각미디어디자인과",
-          email: "jjkl456@gmail.com"
+          email: "jjkl456@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/design2.png")
         },
         {
           name: "최지현",
           major: "시각미디어디자인과",
-          email: "bene.jeean95@gmail.com"
+          email: "bene.jeean95@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/design3.png")
         }
       ]
     },
     {
       group: "Backend Developer",
+      image: "backend",
       bar: "#ff6384",
       people: [
         {
           name: "제갈효선",
           major: "산업경영공학과",
-          email: "dott.goo@gmail.com"
+          email: "dott.goo@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/backend1.png")
         },
-        { name: "조용훈", major: "컴퓨터공학과", email: "starctak@gmail.com" },
+
+        {
+          name: "조용훈",
+          major: "컴퓨터공학과",
+          email: "starctak@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/backend2.png")
+        },
         {
           name: "정서영",
           major: "지식정보학부",
-          email: "dlwlrma0203@gmail.com"
+          email: "dlwlrma0203@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/backend3.png")
         }
       ]
     },
@@ -51,26 +69,49 @@ const TeamInfo = () => {
       group: "Service",
       bar: "#6386ff",
       people: [
-        { name: "김서연", major: "행정학", email: "seoyeon199515@daum.net" },
-        { name: "노희륜", major: "사회과학부", email: "gmlfbs9812@gmail.com" },
-        { name: "원정은", major: "사회과학부", email: "jkjk2654@naver.com" },
+        {
+          name: "김서연",
+          major: "행정학",
+          email: "seoyeon199515@daum.net",
+          image: require("HandamProject/assets/image/setting/teaminfo/service1.png")
+        },
+        {
+          name: "노희륜",
+          major: "사회과학부",
+          email: "gmlfbs9812@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/service2.png")
+        },
+        {
+          name: "원정은",
+          major: "사회과학부",
+          email: "jkjk2654@naver.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/service3.png")
+        },
         {
           name: "허혜정",
           major: "크리에이티브인문학부",
-          email: "gpwjd5019@gmail.com"
+          email: "gpwjd5019@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/service4.png")
         }
       ]
     },
     {
       group: "Frontend Developer",
+      image: "frontend",
       bar: "#ffca6c",
       people: [
         {
           name: "신현수",
           major: "정보시스템공학과",
-          email: "shs0655@gmail.com"
+          email: "shs0655@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/frontend1.png")
         },
-        { name: "홍준택", major: "컴퓨터공학부", email: "wnsxor3489@gmail.com" }
+        {
+          name: "홍준택",
+          major: "컴퓨터공학부",
+          email: "wnsxor3489@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/frontend2.png")
+        }
       ]
     }
   ]);
