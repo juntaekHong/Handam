@@ -52,7 +52,7 @@ export const PointListItem = props => {
         );
     } else {
         return (
-            <View style={{position: "absolute",bottom: widthPercentageToDP(0), left: widthPercentageToDP(176), flexDirection: "row", marginLeft: widthPercentageToDP(8), marginBottom: widthPercentageToDP(19)}}>
+            <View style={{position: "absolute",bottom: widthPercentageToDP(0), left: widthPercentageToDP(186), flexDirection: "row", marginLeft: widthPercentageToDP(8), marginBottom: widthPercentageToDP(19)}}>
                 <ImageBackground style={{flexDirection: "column", width: widthPercentageToDP(154), height: widthPercentageToDP(78)}} source={require("../../../assets/image/hansungInfo/square_993.png")}>
                     <View>
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginRight: widthPercentageToDP(15)}}>

@@ -12,8 +12,6 @@ import {UIActivityIndicator} from "react-native-indicators";
 import * as Progress from 'react-native-progress';
 import {NonSubjectPointModal} from "../../components/hansungInfo/Modal";
 
-let count = 0;
-
 class HansungPointScreen extends React.Component {
 
     constructor(props) {
@@ -234,7 +232,7 @@ class HansungPointScreen extends React.Component {
                                             :
                                             <FlatList data={this.props.hansunginfo.nonSubjectPointDetail} keyExtractor={(item, index) => index.toString()} renderItem={({ item, index }) => {
                                                 return (
-                                                    <PointListItem key={count} data={item} length={this.props.hansunginfo.nonSubjectPointDetail.length} index={index + 1} />
+                                                    <PointListItem data={item} length={this.props.hansunginfo.nonSubjectPointDetail.length} index={index + 1} />
                                                 )
                                             }}
                                             />
