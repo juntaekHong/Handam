@@ -160,10 +160,10 @@ class GradesScreen extends React.Component {
                                         </View>
                                     </View>
                                     <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
-                                        <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
+                                        <Image style={{width: widthPercentageToDP(50), height: widthPercentageToDP(50)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{marginTop: widthPercentageToDP(25)}}>
+                                <View style={{marginTop: widthPercentageToDP(10)}}>
                                     <Progress.Bar
                                         progress={(this.props.hansunginfo.summaryGrades.acquisitionGrades*1)/(this.props.hansunginfo.hansungInfoId.substring(0,2)>15? 130:140)}
                                         width={ widthPercentageToDP(321)}
@@ -179,13 +179,15 @@ class GradesScreen extends React.Component {
                                 </View>
                             </ProgressView>
                             <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                            <DetailView style={{paddingBottom: widthPercentageToDP(31)}}>
+                            <DetailView style={{paddingHorizontal: widthPercentageToDP(20)}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                     <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                         <BTText>내 성적</BTText>
                                     </View>
                                 </View>
+                            </DetailView>
+                            <DetailView style={{paddingTop: widthPercentageToDP(0), paddingHorizontal: widthPercentageToDP(12), paddingBottom: widthPercentageToDP(31)}}>
                                 <View style={styles.mainPoint}>
                                     <View style={{width: widthPercentageToDP(56)}}>
                                         <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>신청학점</SUBTText>
@@ -207,12 +209,12 @@ class GradesScreen extends React.Component {
                                         <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.averageRating}</VALText>
                                     </View>
                                     <View style={styles.devisionLine} />
-                                    <View>
-                                        <SUBTText style={{color: 'white', fontFamily: fonts.nanumBarunGothic}}>백분위</SUBTText>
+                                    <View style={{width: widthPercentageToDP(56)}}>
+                                        <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>백분위</SUBTText>
                                         <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.percentile}</VALText>
                                     </View>
                                 </View>
-                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(15)}}>
+                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
                                     <View style={styles.detailView}>
                                         <SUBTText style={{textAlign: 'center'}}>교필</SUBTText>
                                         <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.requiredAccomplishments}</VALText>
@@ -234,7 +236,7 @@ class GradesScreen extends React.Component {
                                         <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredMajor) +  parseInt(this.props.hansunginfo.summaryGrades.optionalMajor) + parseInt( this.props.hansunginfo.summaryGrades.foundationMajor)}</VALText>
                                     </View>
                                 </View>
-                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(15)}}>
+                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
                                     <View style={styles.detailView}>
                                         <SUBTText style={{textAlign: 'center'}}>소양</SUBTText>
                                         <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.knowledge}</VALText>
@@ -256,7 +258,7 @@ class GradesScreen extends React.Component {
                                         <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredMinor) + parseInt(this.props.hansunginfo.summaryGrades.optionalMinor) + parseInt(this.props.hansunginfo.summaryGrades.foundationMinor)}</VALText>
                                     </View>
                                 </View>
-                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(15)}}>
+                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
                                     <View style={styles.detailView}>
                                         <SUBTText style={{textAlign: 'center'}}>복전</SUBTText>
                                         <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredDoubleMajor)+ parseInt(this.props.hansunginfo.summaryGrades.optionalDoubleMajor) + parseInt(this.props.hansunginfo.summaryGrades.foundationDoubleMajor)}</VALText>
@@ -268,7 +270,7 @@ class GradesScreen extends React.Component {
                                 </View>
                             </DetailView>
                             <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                            <DetailView>
+                            <DetailView style={{paddingHorizontal: widthPercentageToDP(20)}}>
                                 <View style={{marginTop: widthPercentageToDP(18)}}>
                                     <View style={{flexDirection: 'row'}}>
                                         <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
@@ -305,9 +307,10 @@ const styles = StyleSheet.create({
     },
     mainPoint: {
         flexDirection: 'row',
+        // width: widthPercentageToDP(351),
         marginTop: widthPercentageToDP(19),
         paddingTop: widthPercentageToDP(18),
-        paddingLeft: widthPercentageToDP(8),
+        paddingHorizontal: widthPercentageToDP(8),
         width: '100%',
         height: widthPercentageToDP(72),
         borderRadius: widthPercentageToDP(8),
