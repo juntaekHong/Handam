@@ -232,7 +232,7 @@ class HansungPointScreen extends React.Component {
                                             :
                                             <FlatList data={this.props.hansunginfo.nonSubjectPointDetail} keyExtractor={(item, index) => index.toString()} renderItem={({ item, index }) => {
                                                 return (
-                                                    <PointListItem data={item} length={this.props.hansunginfo.nonSubjectPointDetail.length} index={index + 1} />
+                                                    <PointListItem data={item} length={this.props.hansunginfo.nonSubjectPointDetail.length} index={index} />
                                                 )
                                             }}
                                             />
