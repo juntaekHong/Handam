@@ -1,11 +1,11 @@
 import React from 'react';
-import {ScrollView, Image, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {ScrollView, Image, View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
 import { widthPercentageToDP} from "../../utils/util";
 import { connect } from "react-redux";
 import Hyperlink from 'react-native-hyperlink';
 import fonts from '../../configs/fonts';
 import { HansungInfoActions } from "../../store/actionCreator";
-import { ProgressView, DetailView } from "../../components/hansungInfo/View";
+import { ProgressView, DetailView, PointListItem } from "../../components/hansungInfo/View";
 import { BTText, SUBTText, VALText } from "../../components/hansungInfo/Text";
 import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
 import {UIActivityIndicator} from "react-native-indicators";
@@ -135,10 +135,10 @@ class HansungPointScreen extends React.Component {
                                         </View>
                                     </View>
                                     <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
-                                        <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
+                                        <Image style={{width: widthPercentageToDP(50), height: widthPercentageToDP(50)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{marginTop: widthPercentageToDP(25)}}>
+                                <View style={{marginTop: widthPercentageToDP(10)}}>
                                     <Progress.Bar
                                         progress={(this.props.hansunginfo.nonSubjectPoint.myTotalPoint*1)/800}
                                         width={ widthPercentageToDP(321)}
@@ -154,7 +154,7 @@ class HansungPointScreen extends React.Component {
                                 </View>
                             </ProgressView>
                             <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                            <DetailView style={{paddingBottom: widthPercentageToDP(42)}}>
+                            <DetailView style={{paddingHorizontal:widthPercentageToDP(20)}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                     <View style={{flexDirection: 'column', justifyContent: 'center'}}>
@@ -208,6 +208,35 @@ class HansungPointScreen extends React.Component {
                                         <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.gradeMaximum}</VALText>
                                     </View>
                                 </View>
+                                <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(57), marginBottom: widthPercentageToDP(29)}}>
+                                    <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
+                                    <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+                                        <BTText>세부 통계치</BTText>
+                                    </View>
+                                </View>
+                            </DetailView>
+                            <DetailView style={{paddingTop: widthPercentageToDP(0)}}>
+                                {
+                                    this.props.hansunginfo.nonSubjectPointDetail == null ?
+                                        <View style={{height: widthPercentageToDP(300), alignItems: 'center', justifyContent: 'center'}}>
+                                            <Image width={widthPercentageToDP(55)} height={widthPercentageToDP(55)} source={require("../../../assets/image/hansungInfo/certificationimage_1.png")}/>
+                                            <Text style={{fontSize: widthPercentageToDP(15), marginBottom: widthPercentageToDP(7.5), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`새로고침을 해주세요!`}</Text>
+                                            <Text style={{fontSize: widthPercentageToDP(13), color: '#9e9e9e', fontFamily: fonts.nanumBarunGothic}}>새로고침을 통해 세부 통계치를 확인하세요!</Text>
+                                        </View>
+                                        :
+                                        this.props.hansunginfo.nonSubjectPointDetail == undefined ?
+                                            <View style={{height: widthPercentageToDP(300), alignItems: 'center', justifyContent: 'center'}}>
+                                                <Image width={widthPercentageToDP(73)} height={widthPercentageToDP(76)} source={require("../../../assets/image/hansungInfo/certificationimage_2.png")}/>
+                                                <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`세부통계치가 없습니다!`}</Text>
+                                            </View>
+                                            :
+                                            <FlatList data={this.props.hansunginfo.nonSubjectPointDetail} keyExtractor={(item, index) => index.toString()} renderItem={({ item, index }) => {
+                                                return (
+                                                    <PointListItem data={item} length={this.props.hansunginfo.nonSubjectPointDetail.length} index={index + 1} />
+                                                )
+                                            }}
+                                            />
+                                }
                             </DetailView>
                         </View>
                         :
