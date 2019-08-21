@@ -1,4 +1,4 @@
 <resources>
 	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">mTIqF8zXQzV0GBCyfbAxe-K-lcaf615b4c2f-cc19-4f37-a800-d03f0b3a5157</string>
-    <string name="app_name">HandamProject</string>
+    <string name="app_name">한담</string>
 </resources>
