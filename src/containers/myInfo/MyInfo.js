@@ -81,7 +81,6 @@ class MyInfo extends React.Component {
     await HansungInfoActions.loadingHandle(false);
 
     let timeout = setInterval(async () => {
-        console.log("ee");
       if (
           this.props.hansunginfo != null &&
           this.props.hansunginfo.status == "UNVERIFIED"

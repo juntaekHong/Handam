@@ -47,3 +47,11 @@ export const SEMESVALText = styled.Text`
   textAlign: center;
 `;
 
+// 비교과 리스트 목록 기본 텍스트
+export const PointListText = styled.Text`
+  font-size: ${widthPercentageToDP(10)};
+  fontFamily: ${fonts.nanumBarunGothicB};
+  color: ${"black"};
+  marginHorizontal: ${widthPercentageToDP(22)};
+`;
+

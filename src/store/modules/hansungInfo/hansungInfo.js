@@ -141,6 +141,8 @@ export const getHansungInfo = () => async dispatch => {
     //서버로 전송
     const jsonData = await api.get(`/hansungInfo`, { token: token });
 
+    // 확인용
+    console.log(jsonData);
     if (jsonData.statusCode == 200) {
         await dispatch(getHansungInfoAction(jsonData.result));
         // 시간표 색 설정
