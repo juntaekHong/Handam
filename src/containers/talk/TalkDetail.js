@@ -141,8 +141,10 @@ class TalkDetail extends Component {
       this.props.navigation.navigate("TalkAbout");
     } else if (this.props.navigation.state.params.from === "alarm") {
       navigators.navigateBack();
-    } else if (this.props.navigation.state.params.from === "MyPost") {
-      this.props.navigation.navigate("MyPost");
+    } else if(this.props.navigation.state.params.from === "MyPost") {
+        this.props.navigation.navigate("MyPost");
+    } else if(this.props.navigation.state.params.from === "MyScrap") {
+      this.props.navigation.navigate("MyScrap");
     } else {
       this.props.navigation.navigate("TalkSearch", {
         searchtext: this.props.navigation.state.params.searchtext

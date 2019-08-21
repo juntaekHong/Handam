@@ -46,6 +46,7 @@ export const avatarDeleteHandle = bool => dispatch => {
 
 // 내가 쓴 글
 const READ_MY_POSTS = 'myInfo/READ_MY_POSTS';
+const READ_SCRAP_POSTS = 'myInfo/READ_SCRAP_POSTS';
 const ORDERBY_HANDLE = 'myInfo/ORDERBY_HANDLE';
 
 const POSTS_LOADING = 'myInfo/POSTS_LOADING';
@@ -264,12 +265,10 @@ export const deleteAvatar = () => async dispatch =>{
 
 // 내가 쓴 글
 export const pageListPostsByUserIndex = (order, page, count) => async dispatch => {
-
     const token = await getData('token');
 
     const jsonData = await api.get(`/posts/publisher/?orderBy=${order}&page=${page}&count=${count}`, {token: token});
-    // 확인용 임시
-    // console.log(jsonData);
+
     if (jsonData.statusCode == 200) {
         dispatch({type: READ_MY_POSTS, payload: jsonData.result});
         dispatch(postsTotalAction(jsonData.resultCount));
@@ -277,6 +276,20 @@ export const pageListPostsByUserIndex = (order, page, count) => async dispatch =
 
     }
 };
+
+// 내가 스크랩한 글
+export const pageListPostsByIsScrap = (order, page, count) => async dispatch => {
+    const token = await getData('token');
+
+    const jsonData = await api.get(`/posts/scrap/?orderBy=${order}&page=${page}&count=${count}`, {token: token});
+    
+    if (jsonData.statusCode == 200) {
+        dispatch({type: READ_SCRAP_POSTS, payload: jsonData.result});
+        dispatch(postsTotalAction(jsonData.resultCount));
+    } else {
+
+    }
+}
 
 export default handleActions(
     {
@@ -322,6 +335,12 @@ export default handleActions(
                 draft.myPost_loading = payload;
             }),
         [READ_MY_POSTS]:(state, action) => {
+            return {
+                ...state,
+                postsList: [...state.postsList, ...action.payload]
+            };
+        },
+        [READ_SCRAP_POSTS]:(state, action) => {
             return {
                 ...state,
                 postsList: [...state.postsList, ...action.payload]

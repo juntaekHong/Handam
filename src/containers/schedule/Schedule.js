@@ -47,9 +47,7 @@ const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
               <TableBody
                 key={index}
                 index={index + 1}
-                content={`${
-                  parseInt((index + 1) / 3) == 0 ? "0" + (index + 9) : index + 9
-                }:00`}
+                content={`${(index === 0 ? "0" : "") + (index + 9)}:00`}
               />
             );
           })}
