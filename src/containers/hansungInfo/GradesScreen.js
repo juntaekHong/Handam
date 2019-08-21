@@ -160,10 +160,10 @@ class GradesScreen extends React.Component {
                                         </View>
                                     </View>
                                     <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
-                                        <Image style={{width: widthPercentageToDP(36.3), height: widthPercentageToDP(36.3)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
+                                        <Image style={{width: widthPercentageToDP(50), height: widthPercentageToDP(50)}} source={require("../../../assets/image/hansungInfo/refresh.png")}/>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{marginTop: widthPercentageToDP(25)}}>
+                                <View style={{marginTop: widthPercentageToDP(10)}}>
                                     <Progress.Bar
                                         progress={(this.props.hansunginfo.summaryGrades.acquisitionGrades*1)/(this.props.hansunginfo.hansungInfoId.substring(0,2)>15? 130:140)}
                                         width={ widthPercentageToDP(321)}

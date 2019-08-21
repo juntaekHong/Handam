@@ -388,7 +388,7 @@ class MyInfo extends React.Component {
                                   fontFamily: fonts.nanumBarunGothicB,
                                   color: "#ff6464"}}>인증실패</StandText>
                           </View>
-                          <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(28)}}>
+                          <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(298), marginTop: widthPercentageToDP(28)}}>
                               <TouchableOpacity
                                   style={{flexDirection: "row", alignItems: "center"}}
                                   onPress={() => {
@@ -433,7 +433,7 @@ class MyInfo extends React.Component {
                                   fontFamily: fonts.nanumBarunGothicB,
                                   color: "#259ffa"}}>인증완료</StandText>
                           </View>
-                          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(28)}}>
+                          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' , width: widthPercentageToDP(298), marginTop: widthPercentageToDP(28)}}>
                               <StandText
                                   style={{
                                       fontSize: widthPercentageToDP(10),
@@ -494,7 +494,7 @@ class MyInfo extends React.Component {
                                   fontFamily: fonts.nanumBarunGothicB,
                                   color: "#ff6464"}}>인증실패</StandText>
                           </View>
-                          <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(288), marginTop: widthPercentageToDP(15)}}>
+                          <View style={{backgroundColor: 'red', alignItems: 'flex-end' , width: widthPercentageToDP(298), marginTop: widthPercentageToDP(15)}}>
                               <TouchableOpacity
                                   style={{flexDirection: "row", alignItems: "center"}}
                                   onPress={() => {
