@@ -22,8 +22,9 @@ const shadow = {
 };
 
 export const HomeNavigate = styled.TouchableOpacity`
-  width: ${widthPercentageToDP(80)}
-  height: ${widthPercentageToDP(100)}
+  width: ${widthPercentageToDP(100)}
+  height: ${widthPercentageToDP(140)}
+  margin-right: ${widthPercentageToDP(5)}
   align-items: center
 `;
 
@@ -32,7 +33,6 @@ export const HomeNavigateButton = props => {
     <HomeNavigate {...props}>
       <Image
         style={{
-          top: widthPercentageToDP(-20),
           width: widthPercentageToDP(100),
           height: widthPercentageToDP(140)
         }}
@@ -60,5 +60,12 @@ export const NoticeButton = props => (
   <HomeNavigateButton
     {...props}
     image={require("HandamProject/assets/image/home/notice.png")}
+  />
+);
+
+export const CisButton = props => (
+  <HomeNavigateButton
+    {...props}
+    image={require("HandamProject/assets/image/home/cis.png")}
   />
 );
