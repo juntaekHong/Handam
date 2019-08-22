@@ -22,9 +22,8 @@ const shadow = {
 };
 
 export const HomeNavigate = styled.TouchableOpacity`
-  width: ${widthPercentageToDP(100)}
-  height: ${widthPercentageToDP(140)}
-  margin-right: ${widthPercentageToDP(5)}
+  width: ${widthPercentageToDP(84)}
+  height: ${widthPercentageToDP(130)}
   align-items: center
 `;
 
@@ -33,8 +32,8 @@ export const HomeNavigateButton = props => {
     <HomeNavigate {...props}>
       <Image
         style={{
-          width: widthPercentageToDP(100),
-          height: widthPercentageToDP(140)
+          width: widthPercentageToDP(84),
+          height: widthPercentageToDP(130)
         }}
         source={props.image}
       />

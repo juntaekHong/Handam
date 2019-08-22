@@ -43,7 +43,10 @@ const Bar = styled.View`
   border-bottom-left-radius: ${widthPercentageToDP(10)}
   background-color: ${({ bar = "black" }) => bar}
 `;
-const ContentView = styled.View`
+const ContentView = styled.ImageBackground.attrs(props => ({
+  source: require("HandamProject/assets/image/setting/teaminfo/teamcard.png"),
+  resizeMode: "stretch"
+}))`
   flex: 1
   padding-top: ${widthPercentageToDP(16)}
   padding-left: ${widthPercentageToDP(16)}
@@ -54,12 +57,11 @@ const ContentView = styled.View`
 
 const GroupText = styled(NBGText)`
   font-size: ${widthPercentageToDP(17)}
-  margin-bottom: ${widthPercentageToDP(28)}
+  margin-bottom: ${widthPercentageToDP(39)}
 `;
 
 const ProfileContainer = styled.View`
-  width: 100%
-  flex-direction: row
+  width: 100%;
 `;
 const Profile = styled.View`
   width: ${widthPercentageToDP(50)}
@@ -73,7 +75,7 @@ const ProfileImg = styled.Image`
   border-radius: ${widthPercentageToDP(25)}
 `;
 const ProfileText = styled(NBGULText)`
-  font-size: ${widthPercentageToDP(12)};
+  font-size: ${widthPercentageToDP(14)};
 `;
 export const TeamCard = props => {
   return (
@@ -83,14 +85,9 @@ export const TeamCard = props => {
         <ContentView>
           <GroupText>{props.data.group}</GroupText>
           <ProfileContainer>
-            {props.data.people.map((item, index) => {
-              return (
-                <Profile key={index}>
-                  <ProfileImg source={item.image} />
-                  <ProfileText>{item.name}</ProfileText>
-                </Profile>
-              );
-            })}
+            {props.data.text.map((item, index) => (
+              <ProfileText>{item}</ProfileText>
+            ))}
           </ProfileContainer>
         </ContentView>
       </Card>
