@@ -16,15 +16,9 @@ const TeamInfo = () => {
   const [entries] = useState([
     {
       group: "Design",
-      text: ["- UX/UI 및 그래픽 디자인", "- 브랜딩"],
+      text: ["- UX/UI 디자인", "- 그래픽 디자인", "- 브랜딩 디자인"],
       bar: "#cc76e4",
       people: [
-        {
-          name: "최혜종",
-          major: "시각미디어디자인과",
-          email: "anamor7000@gmail.com",
-          image: require("HandamProject/assets/image/setting/teaminfo/design2.png")
-        },
         {
           name: "전소은",
           major: "시각미디어디자인과",
@@ -36,12 +30,18 @@ const TeamInfo = () => {
           major: "시각미디어디자인과",
           email: "bene.jeean95@gmail.com",
           image: require("HandamProject/assets/image/setting/teaminfo/design3.png")
+        },
+        {
+          name: "최혜종",
+          major: "시각미디어디자인과",
+          email: "anamor7000@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/design4.png")
         }
       ]
     },
     {
       group: "Backend",
-      text: ["- 아키텍쳐 및 DB 모델링", "- API 개발"],
+      text: ["- 아키텍쳐", "- DB 모델링", "- API 개발"],
       bar: "#ff6384",
       people: [
         {
@@ -72,7 +72,7 @@ const TeamInfo = () => {
       people: [
         {
           name: "김서연",
-          major: "행정학",
+          major: "행정학과",
           email: "seoyeon199515@daum.net",
           image: require("HandamProject/assets/image/setting/teaminfo/service1.png")
         },
@@ -98,7 +98,7 @@ const TeamInfo = () => {
     },
     {
       group: "Frontend",
-      text: ["- 데이터 및 인터페이스 시각화", "- Web / App 개발"],
+      text: ["- 데이터 처리", "- 인터페이스 시각화", "- Web / App 개발"],
       bar: "#ffca6c",
       people: [
         {

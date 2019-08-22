@@ -116,14 +116,16 @@ const TodayLecture = ({
             const time = scheduleTime(item.time);
             return (
               <ScheduleItem>
-                <NBGBText
-                  width={158.4}
-                  fontSize={15}
-                  color={"#363636"}
-                  numberOfLines={1}
-                >
-                  {content[0]}
-                </NBGBText>
+                <View style={{ width: widthPercentageToDP(158.4) }}>
+                  <NBGBText
+                    fontSize={15}
+                    color={"#363636"}
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                  >
+                    {content[0]}
+                  </NBGBText>
+                </View>
                 <ScheduleTimeView>
                   <ScheduleTimeText numberOfLines={1} marginBottom={6.5}>
                     {content[2]}
