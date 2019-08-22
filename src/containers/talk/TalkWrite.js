@@ -60,7 +60,10 @@ class TalkWrite extends Component {
       deletemodal: false,
       imageinfo: null,
       imageindex: null,
-      anonymous: 1
+      anonymous:
+        this.props.navigation.state.params.form == "update"
+          ? this.props.getPosts.isAnonymous
+          : 1
     };
   }
 
@@ -100,10 +103,6 @@ class TalkWrite extends Component {
         includeBase64: true,
         cropperToolbarTitle: ""
       });
-
-      // console.log('posts >> ')
-      // console.log(Object.keys(image));
-      // console.log('posts end')
 
       await this.setState({ imageSize: this.state.imageSize + image.size });
 

@@ -77,7 +77,7 @@ export const HotPostsListItem = props => {
                 marginRight: widthPercentageToDP(4)
               }}
             >
-              {props.data.userNickName}
+              {props.data.displayName}
             </Text>
             <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
           </View>
@@ -120,7 +120,7 @@ export const PostsListItem = props => {
               marginRight: widthPercentageToDP(4)
             }}
           >
-            {props.data.userNickName}
+            {props.data.displayName}
           </Text>
           <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
         </View>

@@ -24,11 +24,15 @@ export const HotText = styled(DefaultText)`
   line-height: ${widthPercentageToDP(12)};
 `;
 
-export const TitleText = styled(DefaultText)`
+export const TitleText = styled.Text`
+  color: ${"#000000"};
   font-size: ${widthPercentageToDP(13)};
+  font-family: ${fonts.nanumBarunGothicB};
+  width: ${widthPercentageToDP(288)};
+  height: ${widthPercentageToDP(13)};
 `;
 
-export const ContentText = styled(DefaultText)`
+export const ContentText = styled(TitleText)`
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
   margin-top: ${widthPercentageToDP(8)};

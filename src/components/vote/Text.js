@@ -37,8 +37,9 @@ export const PushedDaText = styled(DaText)`
 
 export const OText = styled.Text`
   color: ${"#259ffa"};
-  font-size: ${widthPercentageToDP(80)};
-  font-family: ${fonts.nanumBarunGothic};
+  font-size: ${widthPercentageToDP(70)};
+  font-family: ${fonts.nanumBarunGothicB};
+  margin-top: ${widthPercentageToDP(3)};
 `;
 
 export const PushedText = styled(OText)`
