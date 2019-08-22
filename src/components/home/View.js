@@ -143,23 +143,14 @@ export const HomeAd = ({ list = [] }) => {
   );
 };
 
-// export const HomeNavigateView = styled.View`
-//   width: ${widthPercentageToDP(310)}
-//   margin-top: ${widthPercentageToDP(27)}
-//   margin-bottom: ${widthPercentageToDP(25)}
-//   align-items: center
-//   justify-content: space-between
-//   flex-direction: row
-// `;
-export const HomeNavigateView = styled.ScrollView.attrs(props => ({
-  horizontal: true,
-  showsHorizontalScrollIndicator: false,
-  contentContainerStyle: {
-    height: widthPercentageToDP(140)
-  }
-}))`
+export const HomeNavigateView = styled.View`
   width: 100%
-  height: ${widthPercentageToDP(140)}
+  margin-top: ${widthPercentageToDP(12)}
+  margin-bottom: ${widthPercentageToDP(10)}
+  padding-horizontal: ${widthPercentageToDP(12)}
+  align-items: center
+  justify-content: space-between
+  flex-direction: row
 `;
 
 const TodayLectureTitleView = styled(RowView)`

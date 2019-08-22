@@ -173,14 +173,12 @@ const Home = ({
         }}
       >
         <HomeAd list={noticeList} />
-        <View style={{ width: "100%", height: widthPercentageToDP(140) }}>
+        <View style={{ width: "100%" }}>
           <HomeNavigateView>
-            <View style={{ width: widthPercentageToDP(23) }} />
-            <ScheduleButton onPress={navigateSchedule} />
             <BusButton onPress={navigateBus} />
             <NoticeButton onPress={navigateNotice} />
             <CisButton onPress={navigateCis} />
-            <View style={{ width: widthPercentageToDP(23) }} />
+            <ScheduleButton onPress={navigateSchedule} />
           </HomeNavigateView>
         </View>
         <TodayLectureTitle onPress={onPressRefresh} />

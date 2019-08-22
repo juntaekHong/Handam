@@ -15,8 +15,8 @@ const TeamInfo = () => {
   const [index, setIndex] = useState(0);
   const [entries] = useState([
     {
-      group: "Designer",
-      image: "design",
+      group: "Design",
+      text: ["- UX/UI 및 그래픽 디자인", "- 브랜딩"],
       bar: "#cc76e4",
       people: [
         {
@@ -40,8 +40,8 @@ const TeamInfo = () => {
       ]
     },
     {
-      group: "Backend Developer",
-      image: "backend",
+      group: "Backend",
+      text: ["- 아키텍쳐 및 DB 모델링", "- API 개발"],
       bar: "#ff6384",
       people: [
         {
@@ -67,6 +67,7 @@ const TeamInfo = () => {
     },
     {
       group: "Service",
+      text: ["- 서비스 및 전략 기획", "- 마케팅", "- CS, QA"],
       bar: "#6386ff",
       people: [
         {
@@ -96,8 +97,8 @@ const TeamInfo = () => {
       ]
     },
     {
-      group: "Frontend Developer",
-      image: "frontend",
+      group: "Frontend",
+      text: ["- 데이터 및 인터페이스 시각화", "- Web / App 개발"],
       bar: "#ffca6c",
       people: [
         {
