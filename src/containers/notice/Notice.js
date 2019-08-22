@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { WebView } from "react-native-webview";
-import { HCenterView } from "../../components/common/View";
+import { HCenterView, Title } from "../../components/common/View";
 import { View } from "react-native";
 import { NoticeFooterView } from "../../components/notice/View";
 import {
@@ -47,6 +47,7 @@ const Notice = ({}) => {
   }, []);
   return (
     <View style={{ flex: 1 }}>
+      <Title title={"한성공지"} rightInVisible={true} />
       <WebView
         style={{ flex: 1, backgroundColor: "#fff" }}
         ref={WEBVIEW_REF}

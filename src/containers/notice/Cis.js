@@ -8,6 +8,7 @@ import {
   ForwardButton,
   ReloadButton
 } from "../../components/notice/Button";
+import { Title } from "../../components/common/View";
 
 const Cis = ({}) => {
   const WEBVIEW_REF = useRef();
@@ -46,6 +47,7 @@ const Cis = ({}) => {
   }, []);
   return (
     <View style={{ flex: 1 }}>
+      <Title title={"종합정보시스템"} rightInVisible={true} />
       <WebView
         style={{ flex: 1, backgroundColor: "#fff" }}
         ref={WEBVIEW_REF}
