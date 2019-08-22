@@ -160,8 +160,8 @@ android {
 }
 
 dependencies {
-    implementation project(':rn-imagecapinsets')
     implementation project(':react-native-code-push')
+    implementation project(':rn-imagecapinsets')
     implementation project(':react-native-extra-dimensions-android')
     implementation project(':react-native-maps')
     implementation project(':react-native-touch-id')
