@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import Swiper from "react-native-swiper";
-import call from "react-native-phone-call";
+import call from "react-native-communications";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
@@ -152,11 +152,11 @@ class RestaurantDetail extends Component {
             }
             footerHandler={() => {
               this.setState({ dialmodal: false });
-              const telInfo = {
-                number: this.props.getRestaurant.tel,
-                prompt: false
-              };
-              call(telInfo).catch(console.log(error));
+              call.phonecall(
+                this.props.getRestaurant.tel.replace(/-/gi, ""),
+                false
+              );
+              // .replace(/-/gi, ""),
             }}
             closeHandler={() => this.setState({ dialmodal: false })}
           />
