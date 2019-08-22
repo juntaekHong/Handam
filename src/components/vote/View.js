@@ -14,7 +14,6 @@ import {
   PreVoteText
 } from "./Text";
 import { VoteItemImg } from "./Image";
-import { tsPropertySignature } from "@babel/types";
 
 export const TopView = styled.View`
   width: ${widthPercentageToDP(343)};
