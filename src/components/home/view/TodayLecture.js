@@ -12,6 +12,7 @@ import { NBGBText, NBGText } from "../../common/Text";
 import colors from "../../../configs/colors";
 import { connect } from "react-redux";
 import { UIActivityIndicator } from "react-native-indicators";
+import LottieView from "lottie-react-native";
 
 const CertificateButton = styled(ButtonStyle)`
 width: ${widthPercentageToDP(128)}
@@ -57,18 +58,18 @@ const TodayLecture = ({
   hansunginfo = null,
   schedule_loading,
   goCertificate,
-  day
+  day,
+  loadSchedule
 }) => {
-  useEffect(() => {}, []);
   if (hansunginfo === null) {
     return (
       <HCenterView>
         <Image
           style={{
-            width: widthPercentageToDP(61),
-            height: widthPercentageToDP(61),
-            marginTop: widthPercentageToDP(22.5),
-            marginBottom: widthPercentageToDP(16)
+            width: widthPercentageToDP(55),
+            height: widthPercentageToDP(55),
+            marginTop: widthPercentageToDP(47.5),
+            marginBottom: widthPercentageToDP(8)
           }}
           source={require("HandamProject/assets/image/home/certificationimage.png")}
         />
@@ -86,20 +87,83 @@ const TodayLecture = ({
   } else if (schedule_loading) {
     return (
       <HCenterView>
-        <UIActivityIndicator color={"grey"} />
+        <View
+          style={{
+            width: widthPercentageToDP(71),
+            height: widthPercentageToDP(71),
+            marginTop: widthPercentageToDP(31.5),
+            marginBottom: widthPercentageToDP(11)
+          }}
+        >
+          {/* <LottieView
+            style={{
+              width: widthPercentageToDP(71),
+              height: widthPercentageToDP(71)
+            }}
+            source={require("HandamProject/assets/animation/loading.json")}
+            autoPlay
+            loop
+          /> */}
+          <UIActivityIndicator color={"grey"} size={widthPercentageToDP(40)} />
+        </View>
         <NBGText
           fontSize={12}
-          style={{ textAlign: "center", marginBottom: widthPercentageToDP(97) }}
+          style={{
+            textAlign: "center",
+            marginBottom: widthPercentageToDP(97),
+            lineHeight: widthPercentageToDP(20)
+          }}
+          color={"#767676"}
         >
           {"시간표를 불러오는 중입니다.\n잠시만 기다려주세요."}
         </NBGText>
+      </HCenterView>
+    );
+  } else if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED") {
+    return (
+      <HCenterView style={{ paddingTop: widthPercentageToDP(69.5) }}>
+        <NBGBText fontSize={15} color={"#646464"}>
+          종합정보시스템 인증중입니다.
+        </NBGBText>
+      </HCenterView>
+    );
+  } else if (hansunginfo !== null && hansunginfo.status === "FAIL") {
+    return (
+      <HCenterView style={{ paddingTop: widthPercentageToDP(69.5) }}>
+        <NBGBText fontSize={15} color={"#646464"} marginBottom={7.5}>
+          종합정보시스템 인증에 실패했습니다.
+        </NBGBText>
+        <NBGBText fontSize={15} color={"#646464"} marginBottom={7.5}>
+          인증서를 삭제하고 다시 인증해주세요.
+        </NBGBText>
       </HCenterView>
     );
   } else if (
     hansunginfo !== null &&
     hansunginfo.schedule.monday === undefined
   ) {
-    return null;
+    return (
+      <HCenterView>
+        <Image
+          style={{
+            width: widthPercentageToDP(71),
+            height: widthPercentageToDP(67),
+            marginTop: widthPercentageToDP(35.5),
+            marginBottom: widthPercentageToDP(8)
+          }}
+          source={require("HandamProject/assets/image/home/scheduleimage.png")}
+        />
+        <NBGBText fontSize={15} color={"#646464"} marginBottom={7.5}>
+          시간표를 불러와주세요!
+        </NBGBText>
+        <NBGText fontSize={13} color={"#9e9e9e"} marginBottom={21.5}>
+          해당요일의 과목을 확인할 수 있습니다.
+        </NBGText>
+        <CertificateButton onPress={loadSchedule}>
+          <NBGBText color={colors.white}>불러오기</NBGBText>
+        </CertificateButton>
+      </HCenterView>
+    );
   } else {
     return (
       <ScheduleView>

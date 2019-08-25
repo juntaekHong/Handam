@@ -186,6 +186,7 @@ const Home = ({
         <TodayLecture
           day={dayToString(moment(time).day())}
           goCertificate={navigateCert}
+          loadSchedule={callSchedule}
         />
       </CenterScroll>
     </HCenterView>
