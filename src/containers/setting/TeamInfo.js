@@ -2,13 +2,12 @@ import React, { useRef, useState, useCallback, useEffect } from "react";
 import { HCenterView, Title, BaseView } from "../../components/common/View";
 import { connect } from "react-redux";
 import { widthPercentageToDP } from "../../utils/util";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import Carousel from "react-native-snap-carousel";
 import LoopCarousel from "react-native-looped-carousel";
 import { TeamCard } from "../../components/setting/view/TeamCard";
-import { View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { TeamPagination } from "../../components/setting/view/TeamPagination";
 import { TeamContent } from "../../components/setting/view/TeamContent";
-import { NBGBText } from "../../components/common/Text";
 
 const TeamInfo = () => {
   const _carousel = useRef(null);
@@ -159,8 +158,16 @@ const TeamInfo = () => {
           isLooped={false}
           swipe={false}
         >
-          {entries.map((item, index) => {
-            return <TeamContent data={item.people} key={item.key} />;
+          {entries.map((item, i) => {
+            return (
+              <TeamContent
+                key={i}
+                data={item.people}
+                key={item.key}
+                page={index}
+                index={i}
+              />
+            );
           })}
         </LoopCarousel>
       </View>

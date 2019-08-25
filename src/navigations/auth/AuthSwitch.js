@@ -6,6 +6,8 @@ import RootStack from "../root/root";
 import LockSolve from "../../containers/lock/LockSolve";
 import LibraryUpdate from "../../containers/update/LibraryUpdate";
 import LiveUpdate from "../../containers/update/LiveUpdate";
+import TestContainer from "../../containers/test/TestContainer";
+import TeamInfo from "../../containers/setting/TeamInfo";
 
 const AuthSwitch = createSwitchNavigator(
   {
@@ -15,7 +17,8 @@ const AuthSwitch = createSwitchNavigator(
     sign: { screen: SignStack },
     locksolve: { screen: LockSolve },
     library: { screen: LibraryUpdate },
-    liveupdate: { screen: LiveUpdate }
+    liveupdate: { screen: LiveUpdate },
+    test: TeamInfo
   },
   {
     initialRouteName: "liveupdate"
