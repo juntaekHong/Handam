@@ -97,14 +97,22 @@ const TodayLecture = ({
         >
           {/* <LottieView
             style={{
+              width: widthPercentageToDP(82),
+              height: widthPercentageToDP(82)
+            }}
+            source={require("HandamProject/assets/animation/loading.json")}
+            autoPlay={false}
+            loop={true}
+            useNativeDriver={true}
+          /> */}
+          <Image
+            style={{
               width: widthPercentageToDP(71),
               height: widthPercentageToDP(71)
             }}
-            source={require("HandamProject/assets/animation/loading.json")}
-            autoPlay
-            loop
-          /> */}
-          <UIActivityIndicator color={"grey"} size={widthPercentageToDP(40)} />
+            source={require("HandamProject/assets/animation/loading.gif")}
+          />
+          {/* <UIActivityIndicator color={"grey"} size={widthPercentageToDP(40)} /> */}
         </View>
         <NBGText
           fontSize={12}
