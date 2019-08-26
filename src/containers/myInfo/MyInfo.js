@@ -511,7 +511,7 @@ class MyInfo extends React.Component {
                                             fontFamily: fonts.nanumBarunGothicB,
                                             color: "#ff6464"}}>인증실패</StandText>
                                     </View>
-                                    <View style={{backgroundColor: 'red', alignItems: 'flex-end' , width: widthPercentageToDP(298), marginTop: widthPercentageToDP(15)}}>
+                                    <View style={{alignItems: 'flex-end' , width: widthPercentageToDP(298), marginTop: widthPercentageToDP(15)}}>
                                         <TouchableOpacity
                                             style={{flexDirection: "row", alignItems: "center"}}
                                             onPress={() => {
