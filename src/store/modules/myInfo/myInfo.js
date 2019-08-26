@@ -41,7 +41,7 @@ const AVATARDELETE = 'myInfo/AVATARDELTE';
 export const avatarDeleteHandleAction = createAction(AVATARDELETE);
 
 export const avatarDeleteHandle = bool => dispatch => {
-  dispatch(avatarDeleteHandleAction(bool));
+    dispatch(avatarDeleteHandleAction(bool));
 };
 
 // 내가 쓴 글
@@ -236,9 +236,9 @@ export const uploadAvatar = (image) => async dispatch =>{
     const userId = await getData('userId');
     try {
         const jsonData = await api.post(`/user/userId/${userId}/uploadAvatar`, {
-                token: token,
-                body: image
-            });
+            token: token,
+            body: image
+        });
 
         await dispatch(avatarHandleAction(jsonData.result));
         console.log(jsonData.result);
@@ -257,7 +257,7 @@ export const deleteAvatar = () => async dispatch =>{
         });
 
         console.log(jsonData);
-        await dispatch(avatarHandleAction(undefined));
+        await dispatch(avatarHandleAction(null));
 
     } catch (err) {
     }
@@ -282,7 +282,7 @@ export const pageListPostsByIsScrap = (order, page, count) => async dispatch => 
     const token = await getData('token');
 
     const jsonData = await api.get(`/posts/scrap/?orderBy=${order}&page=${page}&count=${count}`, {token: token});
-    
+
     if (jsonData.statusCode == 200) {
         dispatch({type: READ_SCRAP_POSTS, payload: jsonData.result});
         dispatch(postsTotalAction(jsonData.resultCount));

@@ -15,7 +15,24 @@ class AbstractAccountInfoScreen extends React.Component {
             <View style={styles.member}>
                 <View style={{marginTop: widthPercentageToDP(35), marginLeft: widthPercentageToDP(26), flexDirection: 'row'}}>
                     <View>
-                        <Image style={{width: widthPercentageToDP(60), height: widthPercentageToDP(60), borderRadius: widthPercentageToDP(90)}} source={ this.props.userAvatar ? {uri: this.props.userAvatar} : this.props.avatarDelete == false && this.props.avatar ? {uri: this.props.avatar} : require("../../../assets/image/hansungInfo/myicon.png")}/>
+                        {
+                            this.props.userAvatar ?
+                                <Image
+                                    style={styles.profile}
+                                    source={{uri: this.props.userAvatar}}
+                                />
+                                :
+                                this.props.avatarDelete == false && this.props.avatar ?
+                                    <Image
+                                        style={styles.profile}
+                                        source={{uri: this.props.avatar}}
+                                    />
+                                    :
+                                    <Image
+                                        style={styles.nonProfile}
+                                        source={require("../../../assets/image/myInfo/group_1455.png")}
+                                    />
+                        }
                     </View>
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
@@ -31,7 +48,7 @@ class AbstractAccountInfoScreen extends React.Component {
                         <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.changeMajor != null ? this.props.changeMajor : this.props.major : this.props.hansunginfo.department}</Text>
                         <TouchableOpacity style={{position: 'relative', left: widthPercentageToDP(-5), marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
                                           onPress={ async () => {this.props.move.navigate("MyInfo")}}>
-                            <Image source={require("../../../assets/image/hansungInfo/my.png")}/>
+                            <Image width={widthPercentageToDP(46)} height={widthPercentageToDP(26)} source={require("../../../assets/image/hansungInfo/my.png")}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -59,6 +76,16 @@ const styles = StyleSheet.create({
         height: widthPercentageToDP(115),
         backgroundColor: '#f8f8f8',
     },
+    profile: {
+        width: widthPercentageToDP(54),
+        height: widthPercentageToDP(54),
+        borderRadius: widthPercentageToDP(27.5)
+    },
+    nonProfile: {
+        width: widthPercentageToDP(66),
+        height: widthPercentageToDP(66),
+        borderRadius: widthPercentageToDP(27.5)
+    }
 });
 
 export default connect(state => ({
