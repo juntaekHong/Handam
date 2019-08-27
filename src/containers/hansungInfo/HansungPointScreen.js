@@ -66,7 +66,7 @@ class HansungPointScreen extends React.Component {
     certification_check = () => {
         return (
             <View style={{alignItems: 'center', marginTop: widthPercentageToDP(133)}}>
-                <Text style={{fontSize: widthPercentageToDP(15), marginBottom: widthPercentageToDP(12.5), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`한성 e-포트폴리오(HOPE)를 통해\n개인정보 동의를 해야 불러올 수 있습니다.`}</Text>
+                <Text style={{fontSize: widthPercentageToDP(15), marginBottom: widthPercentageToDP(12.5), lineHeight: widthPercentageToDP(20), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`한성 e-포트폴리오(HOPE)를 통해\n개인정보 동의를 해야 불러올 수 있습니다.`}</Text>
                 <Hyperlink linkDefault={true} linkStyle={{color:'#2980b9'}}>
                     <Text style={{fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothic, color: '#24a0fa'}}>https://hope.hansung.ac.kr/</Text>
                 </Hyperlink>

@@ -14,7 +14,7 @@ class AbstractAccountInfoScreen extends React.Component {
         return (
             <View style={styles.member}>
                 <View style={{marginTop: widthPercentageToDP(35), marginLeft: widthPercentageToDP(26), flexDirection: 'row'}}>
-                    <View>
+                    <TouchableOpacity onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                         {
                             this.props.userAvatar ?
                                 <Image
@@ -33,10 +33,10 @@ class AbstractAccountInfoScreen extends React.Component {
                                         source={require("../../../assets/image/myInfo/group_1455.png")}
                                     />
                         }
-                    </View>
+                    </TouchableOpacity>
                     <View style={{marginLeft: widthPercentageToDP(12.8), flexDirection: 'column'}}>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.userNickName : this.props.hansunginfo.name == '' ? this.props.userNickName : this.props.hansunginfo.name}님 </Text>
+                            <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" || this.props.hansunginfo.name == undefined ? `학우` : this.props.hansunginfo.name}님 </Text>
                             {
                                 this.props.selected == true && this.props.professor_text == true ?
                                     // 교수평가 페이지 완성시 텍스트 변경 예정
@@ -45,7 +45,7 @@ class AbstractAccountInfoScreen extends React.Component {
                                     <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothic, color: 'black'}}>안녕하세요!</Text>
                             }
                         </View>
-                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? this.props.changeMajor != null ? this.props.changeMajor : this.props.major : this.props.hansunginfo.department}</Text>
+                        <Text style={{marginTop: widthPercentageToDP(5), fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#888888'}}>{this.props.hansunginfo == null || this.props.hansunginfo.status != "SUCCESS" ? `` : this.props.hansunginfo.department == undefined ? `마이페이지에서 인증서 삭제후 다시 등록해주세요` : this.props.hansunginfo.department}</Text>
                         <TouchableOpacity style={{position: 'relative', left: widthPercentageToDP(-5), marginTop: widthPercentageToDP(5.9), width: widthPercentageToDP(46), height: widthPercentageToDP(26)}}
                                           onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                             <Image width={widthPercentageToDP(46)} height={widthPercentageToDP(26)} source={require("../../../assets/image/hansungInfo/my.png")}/>
@@ -77,14 +77,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f8f8',
     },
     profile: {
-        width: widthPercentageToDP(54),
-        height: widthPercentageToDP(54),
+        marginTop: widthPercentageToDP(6),
+        width: widthPercentageToDP(60),
+        height: widthPercentageToDP(60),
         borderRadius: widthPercentageToDP(27.5)
     },
     nonProfile: {
-        width: widthPercentageToDP(66),
-        height: widthPercentageToDP(66),
-        borderRadius: widthPercentageToDP(27.5)
+        // position: "absolute",
+        // top: widthPercentageToDP(-6),
+        width: widthPercentageToDP(72),
+        height: widthPercentageToDP(72),
+        borderRadius: widthPercentageToDP(27.5),
     }
 });
 
