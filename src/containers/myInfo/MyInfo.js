@@ -207,10 +207,6 @@ class MyInfo extends React.Component {
     };
 
     render() {
-        {
-            console.log(this.props.avatar);
-            console.log(this.props.userAvatar);
-        }
         return (
             <SafeAreaView>
                 <ScrollView>
@@ -722,15 +718,16 @@ const styles = StyleSheet.create({
     },
     profile: {
         position: "absolute",
-        width: widthPercentageToDP(54),
-        height: widthPercentageToDP(54),
+        width: widthPercentageToDP(60),
+        height: widthPercentageToDP(60),
         borderRadius: widthPercentageToDP(27.5)
     },
     nonProfile: {
         position: "absolute",
-        width: widthPercentageToDP(66),
-        height: widthPercentageToDP(66),
-        borderRadius: widthPercentageToDP(27.5)
+        top: widthPercentageToDP(-6),
+        width: widthPercentageToDP(72),
+        height: widthPercentageToDP(72),
+        borderRadius: widthPercentageToDP(27.5),
     }
 });
 
