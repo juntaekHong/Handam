@@ -128,9 +128,6 @@ class HansungPointScreen extends React.Component {
                                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
                                         <View style={{flexDirection: 'row'}}>
                                             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-                                                <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/bepoint.png")}/>
-                                            </View>
-                                            <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                                 <BTText>내 비교과 포인트</BTText>
                                             </View>
                                         </View>
@@ -156,8 +153,7 @@ class HansungPointScreen extends React.Component {
                                 <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
                                 <DetailView style={{paddingHorizontal:widthPercentageToDP(20)}}>
                                     <View style={{flexDirection: 'row'}}>
-                                        <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
-                                        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+                                        <View style={{flexDirection: 'column', justifyContent: 'center', marginTop: widthPercentageToDP(20.6)}}>
                                             <BTText>주요 통계치</BTText>
                                         </View>
                                     </View>
@@ -209,7 +205,6 @@ class HansungPointScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(57), marginBottom: widthPercentageToDP(29)}}>
-                                        <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                             <BTText>세부 통계치</BTText>
                                         </View>
