@@ -66,7 +66,7 @@ class HansungPointScreen extends React.Component {
     certification_check = () => {
         return (
             <View style={{alignItems: 'center', marginTop: widthPercentageToDP(133)}}>
-                <Text style={{fontSize: widthPercentageToDP(15), marginBottom: widthPercentageToDP(12.5), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`한성 e-포트폴리오(HOPE)를 통해\n개인정보 동의를 해야 불러올 수 있습니다.`}</Text>
+                <Text style={{fontSize: widthPercentageToDP(15), marginBottom: widthPercentageToDP(12.5), lineHeight: widthPercentageToDP(20), fontFamily: fonts.nanumBarunGothicB, color: '#646464', textAlign: 'center'}}>{`한성 e-포트폴리오(HOPE)를 통해\n개인정보 동의를 해야 불러올 수 있습니다.`}</Text>
                 <Hyperlink linkDefault={true} linkStyle={{color:'#2980b9'}}>
                     <Text style={{fontSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothic, color: '#24a0fa'}}>https://hope.hansung.ac.kr/</Text>
                 </Hyperlink>
@@ -128,6 +128,9 @@ class HansungPointScreen extends React.Component {
                                     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
                                         <View style={{flexDirection: 'row'}}>
                                             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+                                                <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/bepoint.png")}/>
+                                            </View>
+                                            <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                                 <BTText>내 비교과 포인트</BTText>
                                             </View>
                                         </View>
@@ -153,7 +156,8 @@ class HansungPointScreen extends React.Component {
                                 <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
                                 <DetailView style={{paddingHorizontal:widthPercentageToDP(20)}}>
                                     <View style={{flexDirection: 'row'}}>
-                                        <View style={{flexDirection: 'column', justifyContent: 'center', marginTop: widthPercentageToDP(20.6)}}>
+                                        <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
+                                        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                             <BTText>주요 통계치</BTText>
                                         </View>
                                     </View>
@@ -205,6 +209,7 @@ class HansungPointScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(57), marginBottom: widthPercentageToDP(29)}}>
+                                        <Image style={{width: widthPercentageToDP(25), height: widthPercentageToDP(25)}} source={require("../../../assets/image/hansungInfo/grid.png")}/>
                                         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                             <BTText>세부 통계치</BTText>
                                         </View>
