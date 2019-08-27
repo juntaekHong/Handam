@@ -15,7 +15,6 @@ import {
   VoteActions,
   RestaurantActions
 } from "../../store/actionCreator";
-import { AlertModal } from "../../components/community/Modal";
 
 class TalkScreen extends Component {
   constructor(props) {
@@ -32,16 +31,12 @@ class TalkScreen extends Component {
 
   navigateTalkAbout = index => {
     TalkActions.handleLoading(true);
-    this.props.navigation.navigate("TalkAbout", { index: index });
+    this.props.navigation.navigate("TalkAbout", { categoryIndex: index });
   };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <AlertModal
-          visible={this.props.alertModal}
-          text={this.props.alertText}
-        />
         <FlatList
           ref={ref => {
             this.flatListRef = ref;
@@ -127,8 +122,6 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryList: state.talk.categoryList,
-  alertModal: state.talk.alertModal,
-  alertText: state.talk.alertText,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
 

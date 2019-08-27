@@ -45,7 +45,7 @@ import {
   EmojiButton,
   AnonymousButton
 } from "../../components/community/Button";
-import navigators from "../../utils/navigators";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkDetail extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class TalkDetail extends Component {
 
     this.state = {
       no_click: false,
-      form: "reply", //textinput 상태 : 댓글생성, 댓글수정, 답글생성 결정
+      form: "reply", //textinput 상태 : 댓글생성(reply), 댓글수정(update), 답글생성(re_reply) 결정
       replyIndex: null,
       reply: "",
       temp_reply: "", //댓글내용 임시저장
@@ -71,8 +71,10 @@ class TalkDetail extends Component {
       deletemodal: false,
       updatemodal: false,
       reportmodal: false,
-      reportdetailmodal: false,
+      detailmodal: false,
       scrapmodal: false,
+      alertModal: false,
+      alertText: null,
       reportEU: [
         { str: "토픽(주제)에 부적절함" },
         { str: "욕설/비하" },
@@ -110,18 +112,32 @@ class TalkDetail extends Component {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       TalkActions.handleBottomModal(false);
       this.navigateBack();
-
       return true;
     });
+
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
   }
 
   componentWillUnmount() {
     this.backHandler.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidHide() {
+    TalkActions.handleReplyModal(true);
   }
 
   navigateBack = async () => {
-    if (this.props.navigation.state.params.from == "about") {
-      this.props.navigation.navigate("TalkAbout");
+    if (
+      this.props.navigation.state.params.from == "about" ||
+      this.props.navigation.state.params.from == "write"
+    ) {
+      this.props.navigation.navigate("TalkAbout", {
+        scrollIndex: this.props.navigation.state.params.scrollIndex
+      });
     } else if (this.props.navigation.state.params.from === "alarm") {
       navigators.navigateBack();
     } else if (this.props.navigation.state.params.from === "MyPost") {
@@ -144,14 +160,22 @@ class TalkDetail extends Component {
   deletePost = async () => {
     await TalkActions.deletePosts(this.props.getPosts.postsIndex);
     await TalkActions.initPostList();
-    await TalkActions.pageListPosts(
+    const pro1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
       this.props.postsList.length / 6,
       6
     );
-    await TalkActions.pageListPosts(this.props.filter, "count DESC", 1, 2);
-    this.navigateBack();
+    const pro2 = TalkActions.pageListPosts(
+      this.props.filter,
+      "count DESC",
+      1,
+      2
+    );
+    Promise.all([pro1, pro2]).then(() => {
+      this.navigateBack();
+      this.renderAlertModal("게시글이 삭제되었습니다.");
+    });
   };
 
   reportPost = async () => {
@@ -159,12 +183,12 @@ class TalkDetail extends Component {
     posts.postsIndex = this.props.getPosts.postsIndex;
     posts.content = this.props.getPosts.content;
     await TalkActions.createPostsReport(posts);
-    await TalkActions.getPosts(this.props.getPosts.postsIndex);
+    TalkActions.getPosts(this.props.getPosts.postsIndex);
   };
 
   deletePostsReply = async () => {
     await TalkActions.deletePostsReply(this.state.replyIndex);
-    await TalkActions.pageListPostsReply(
+    TalkActions.pageListPostsReply(
       "page=1&count=100",
       this.props.getPosts.postsIndex
     );
@@ -184,7 +208,7 @@ class TalkDetail extends Component {
     reply.postsReplyIndex = this.state.replyinfo.postsReplyIndex;
     reply.content = this.state.replyinfo.content;
     await TalkActions.createPostsReplyReport(reply);
-    await TalkActions.pageListPostsReply(
+    TalkActions.pageListPostsReply(
       "page=1&count=100",
       this.props.getPosts.postsIndex
     );
@@ -267,15 +291,23 @@ class TalkDetail extends Component {
                     source={{ uri: `${item}` }}
                   />
                   {concept == "gif" ? (
-                    <Text
+                    <View
                       style={
                         imageData.length == 1
                           ? styles.image_single_gif
                           : styles.image_multi_gif
                       }
                     >
-                      GIF
-                    </Text>
+                      <Text
+                        style={
+                          imageData.length == 1
+                            ? styles.image_single_gif_text
+                            : styles.image_multi_gif_text
+                        }
+                      >
+                        GIF
+                      </Text>
+                    </View>
                   ) : null}
                 </TouchableOpacity>
               );
@@ -365,10 +397,9 @@ class TalkDetail extends Component {
   };
 
   renderAlertModal = rendertext => {
-    TalkActions.handleAlertModal(true);
-    TalkActions.handleAlertText(rendertext);
+    this.setState({ alertModal: true, alertText: rendertext });
     setTimeout(() => {
-      TalkActions.handleAlertModal(false);
+      this.setState({ alertModal: false });
     }, 1000);
   };
 
@@ -389,6 +420,10 @@ class TalkDetail extends Component {
               : { backgroundColor: "#f2f2f2" }
           ]}
         >
+          <AlertModal
+            visible={this.state.alertModal}
+            text={this.state.alertText}
+          />
           <ImageModal
             visible={this.props.imageModal}
             close={() => TalkActions.handleImageModal(false)}
@@ -405,9 +440,30 @@ class TalkDetail extends Component {
                 : this.updatePostsReply
             }
             deleteHandler={() => this.setState({ deletemodal: true })}
-            reportHandler={() => this.setState({ reportmodal: true })}
+            reportHandler={() => this.setState({ detailmodal: true })}
             who={this.state.who}
           />
+          {/* <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                댓글 작성을 취소하시겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={this.props.replyModal}
+            footerHandler={() => {
+              TalkActions.handleReplyModal(false);
+              this.setState({
+                form: "reply",
+                reply: "",
+                placeholder: "댓글을 입력해주세요."
+              });
+            }}
+            closeHandler={() => {
+              TalkActions.handleReplyModal(false);
+              this.TextInput.focus();
+            }}
+          /> */}
           <CustomModal
             height={widthPercentageToDP(201.9)}
             children={
@@ -424,7 +480,7 @@ class TalkDetail extends Component {
             }}
             closeHandler={() => this.setState({ deletemodal: false })}
           />
-          <CustomModal
+          {/* <CustomModal
             height={widthPercentageToDP(201.9)}
             children={
               <CustomModalText
@@ -435,10 +491,10 @@ class TalkDetail extends Component {
             }
             visible={this.state.reportmodal}
             footerHandler={() => {
-              this.setState({ reportdetailmodal: true, reportmodal: false });
+              this.setState({ reportmodal: false, detailmodal: true });
             }}
             closeHandler={() => this.setState({ reportmodal: false })}
-          />
+          /> */}
           <CustomModal
             height={widthPercentageToDP(381)}
             children={
@@ -448,19 +504,21 @@ class TalkDetail extends Component {
                 reportEU={this.state.reportEU}
               />
             }
-            visible={this.state.reportdetailmodal}
+            visible={this.state.detailmodal}
             footerDisabled={this.state.reportEUindex == null ? true : false}
-            footerHandler={() => {
+            footerHandler={async () => {
               this.state.type == "posts"
-                ? this.reportPost()
-                : this.reportReply();
+                ? await this.reportPost()
+                : await this.reportReply();
               this.setState({
-                reportdetailmodal: false,
+                detailmodal: false,
                 reportEUindex: null
               });
-              this.renderAlertModal("신고가 완료되었습니다.");
+              // this.renderAlertModal("신고가 완료되었습니다.");
             }}
-            closeHandler={() => this.setState({ reportdetailmodal: false })}
+            closeHandler={() =>
+              this.setState({ detailmodal: false, reportEUindex: null })
+            }
           />
           <CustomModal
             height={widthPercentageToDP(201.9)}
@@ -483,19 +541,14 @@ class TalkDetail extends Component {
               posts.postsIndex = this.props.getPosts.postsIndex;
               posts.isScrap = this.state.isScrap == true ? 0 : 1; //스크랩:1 취소:0
 
-              this.setState({ scrapmodal: false });
-
               await TalkActions.putPostsSubscriber(posts);
-
-              this.state.isScrap == true
-                ? [
-                    this.setState({ isScrap: false }),
-                    this.renderAlertModal("스크랩을 취소하였습니다.")
-                  ]
-                : [
-                    this.setState({ isScrap: true }),
-                    this.renderAlertModal("이 글을 스크랩하였습니다.")
-                  ];
+              if (this.state.isScrap == true) {
+                await this.setState({ scrapmodal: false, isScrap: false });
+                // this.renderAlertModal("스크랩을 취소하였습니다.");
+              } else {
+                await this.setState({ scrapmodal: false, isScrap: true });
+                // this.renderAlertModal("이 글을 스크랩하였습니다.");
+              }
             }}
             closeHandler={() => this.setState({ scrapmodal: false })}
           />
@@ -509,6 +562,9 @@ class TalkDetail extends Component {
           />
 
           <ScrollView
+            ref={ref => {
+              this.flatListRef = ref;
+            }}
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="never"
           >
@@ -755,7 +811,6 @@ class TalkDetail extends Component {
               selectedEmoji={this.state.selected_emoji}
             />
           ) : null} */}
-
             <WriteContainer>
               <TextInputContainer>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -814,28 +869,36 @@ class TalkDetail extends Component {
                     if (this.state.form == "reply") {
                       //댓글 작성
                       await TalkActions.createPostsReply(reply);
+                      this.renderAlertModal("댓글이 작성되었습니다.");
                     } else if (this.state.form == "update") {
                       //댓글 수정
                       reply.postsReplyIndex = this.state.replyIndex;
                       await TalkActions.updatePostsReply(reply);
+                      this.renderAlertModal("댓글이 수정되었습니다.");
                     } else {
                       //대댓글 작성
                       reply.parentsPostsReplyIndex = this.state.replyIndex;
                       await TalkActions.createPostsReply(reply);
+                      this.renderAlertModal("답글이 작성되었습니다.");
                     }
                     Keyboard.dismiss();
-                    const pro1 = this.setState({
-                      no_click: false,
-                      form: "reply",
-                      reply: "",
-                      emoji: false,
-                      selected_emoji: null
-                    });
-                    const pro2 = TalkActions.pageListPostsReply(
+                    await TalkActions.pageListPostsReply(
                       "page=1&count=100",
                       this.props.getPosts.postsIndex
                     );
-                    Promise.all([pro1, pro2]);
+                    if (this.state.form == "reply") {
+                      setTimeout(() => {
+                        this.flatListRef.scrollToEnd();
+                      }, 500);
+                    }
+                    this.setState({
+                      no_click: false,
+                      form: "reply",
+                      reply: "",
+                      placeholder: "댓글을 입력하세요",
+                      emoji: false,
+                      selected_emoji: null
+                    });
                   }
                 }}
               />
@@ -884,23 +947,40 @@ const styles = StyleSheet.create({
   },
   image_single_gif: {
     position: "absolute",
-    width: widthPercentageToDP(45),
-    height: widthPercentageToDP(22),
-    fontSize: widthPercentageToDP(14),
-    borderRadius: widthPercentageToDP(4),
-    textAlign: "center",
-    backgroundColor: "#4a4a4a",
-    color: "white"
+    width: widthPercentageToDP(44),
+    height: widthPercentageToDP(20),
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: widthPercentageToDP(323),
+    marginTop: widthPercentageToDP(208),
+    borderRadius: widthPercentageToDP(3),
+    borderWidth: widthPercentageToDP(0.5),
+    borderColor: "#e0e0e0",
+    backgroundColor: "#e0e0e0"
   },
   image_multi_gif: {
     position: "absolute",
-    width: widthPercentageToDP(31),
+    width: widthPercentageToDP(34),
     height: widthPercentageToDP(15),
-    fontSize: widthPercentageToDP(10),
-    borderRadius: widthPercentageToDP(4),
-    textAlign: "center",
-    backgroundColor: "#4a4a4a",
-    color: "white"
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: widthPercentageToDP(95),
+    marginTop: widthPercentageToDP(105),
+    paddingTop: widthPercentageToDP(2),
+    borderRadius: widthPercentageToDP(3),
+    borderWidth: widthPercentageToDP(0.5),
+    borderColor: "#e0e0e0",
+    backgroundColor: "#e0e0e0"
+  },
+  image_single_gif_text: {
+    color: "#000000",
+    fontSize: widthPercentageToDP(13),
+    fontFamily: fonts.nanumBarunGothicB
+  },
+  image_multi_gif_text: {
+    color: "#000000",
+    fontSize: widthPercentageToDP(11),
+    fontFamily: fonts.nanumBarunGothicB
   },
   textInput: {
     color: "#000000",
@@ -931,6 +1011,7 @@ export default connect(state => ({
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,
   imageIndex: state.talk.imageIndex,
+  replyModal: state.talk.replyModal,
 
   userNickName: state.signin.user.userNickName
 }))(TalkDetail);

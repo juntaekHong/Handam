@@ -27,6 +27,7 @@ import {
 } from "../../components/talk/Text";
 import { CustomModal } from "../../components/common/Modal";
 import { LineView } from "../../components/restaurant/View";
+import { AlertModal } from "../../components/community/Modal";
 
 class RestaurantWrite extends Component {
   constructor(props) {
@@ -215,6 +216,7 @@ class RestaurantWrite extends Component {
               this.props.getRestaurant.restaurantIndex
             );
 
+            this.renderAlertModal("리뷰가 작성되었습니다.");
             this.navigateRestaurantDetail();
             // this.renderAlertModal("리뷰를 업로드했습니다.");
           }}
@@ -242,9 +244,21 @@ class RestaurantWrite extends Component {
     }
   };
 
+  renderAlertModal = rendertext => {
+    RestaurantActions.handleAlertModal(true);
+    RestaurantActions.handleAlertText(rendertext);
+    setTimeout(() => {
+      RestaurantActions.handleAlertModal(false);
+    }, 1000);
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <AlertModal
+          visible={this.props.alertModal}
+          text={this.props.alertText}
+        />
         <CustomModal
           height={widthPercentageToDP(201.9)}
           children={
@@ -426,5 +440,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   getRestaurant: state.restaurant.getRestaurant,
-  getRestaurantReply: state.restaurant.getRestaurantReply
+  getRestaurantReply: state.restaurant.getRestaurantReply,
+  alertModal: state.restaurant.alertModal,
+  alertText: state.restaurant.alertText
 }))(RestaurantWrite);

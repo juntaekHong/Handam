@@ -23,6 +23,7 @@ import {
 } from "../../components/talk/Button";
 import { WritePostView, LineView } from "../../components/talk/View";
 import { TitleView } from "../../components/community/View";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkAbout extends Component {
   constructor(props) {
@@ -32,12 +33,20 @@ class TalkAbout extends Component {
       "didFocus",
       async payload => {
         TalkActions.initGetPosts();
+        this.props.navigation.state.params.scrollIndex != undefined
+          ? this.flatlistRef.scrollToIndex({
+              index: this.props.navigation.state.params.scrollIndex,
+              viewPosition: 0.5
+            })
+          : null;
       }
     );
 
     this.state = {
       loading: false,
-      refreshing: false
+      refreshing: false,
+      alertModal: false,
+      alertText: null
     };
   }
 
@@ -48,7 +57,7 @@ class TalkAbout extends Component {
     });
 
     await TalkActions.handleCategoryIndex(
-      this.props.navigation.state.params.index
+      this.props.navigation.state.params.categoryIndex
     );
     await TalkActions.handleFilter(
       `postsCategoryIndex eq ${this.props.categoryIndex}`
@@ -61,15 +70,16 @@ class TalkAbout extends Component {
     this.backHandler.remove();
   }
 
-  navigateBack = async () => {
+  navigateBack = () => {
     this.props.navigation.goBack();
   };
 
-  navigateTalkDetail = postsIndex => {
+  navigateTalkDetail = (postsIndex, index) => {
     TalkActions.handleLoading(true);
     this.props.navigation.navigate("TalkDetail", {
       from: "about",
-      postsIndex: postsIndex
+      postsIndex: postsIndex,
+      scrollIndex: index
     });
   };
 
@@ -88,8 +98,8 @@ class TalkAbout extends Component {
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 5 + 1,
-      5
+      this.props.postsList.length / 6 + 1,
+      6
     );
     await this.setState({ loading: false });
   };
@@ -109,8 +119,8 @@ class TalkAbout extends Component {
     const promise1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 5,
-      5
+      this.props.postsList.length / 6,
+      6
     );
 
     const promise2 = TalkActions.pageListPosts(
@@ -127,16 +137,22 @@ class TalkAbout extends Component {
   };
 
   renderAlertModal = rendertext => {
-    TalkActions.handleAlertModal(true);
-    TalkActions.handleAlertText(rendertext);
+    this.setState({ alertModal: true, alertText: rendertext });
+    // TalkActions.handleAlertModal(true);
+    // TalkActions.handleAlertText(rendertext);
     setTimeout(() => {
-      TalkActions.handleAlertModal(false);
+      this.setState({ alertModal: false });
+      // TalkActions.handleAlertModal(false);
     }, 1000);
   };
 
   renderListHeader = () => {
     return (
       <FlatList
+        ref={ref => {
+          this.hotflatRef = ref;
+        }}
+        scrollEnabled={false}
         style={{ backgroundColor: "#ffffff", width: "100%" }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
@@ -145,7 +161,7 @@ class TalkAbout extends Component {
           return (
             <HotPostsListItem
               handler={() => {
-                this.navigateTalkDetail(item.postsIndex);
+                this.navigateTalkDetail(item.postsIndex, null);
               }}
               data={item}
               index={index}
@@ -196,6 +212,10 @@ class TalkAbout extends Component {
     } else
       return (
         <SafeAreaView style={styles.container}>
+          <AlertModal
+            visible={this.state.alertModal}
+            text={this.state.alertText}
+          />
           <TitleView
             titleName={
               this.props.categoryList[this.props.categoryIndex - 1].str
@@ -206,49 +226,49 @@ class TalkAbout extends Component {
           />
 
           <LineView />
-          {/* <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-          > */}
-          <FlatList
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-            style={styles.flatlist}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            onEndReachedThreshold={0.01}
-            onEndReached={() => {
-              this.props.postsList.length < this.props.total
-                ? this.pageListPosts()
-                : null;
-            }}
-            ListHeaderComponent={this.renderListHeader}
-            ListFooterComponent={this.renderListFooter}
-            data={this.props.postsList}
-            renderItem={({ item, index }) => {
-              if (item.status == "ACTIVE") {
-                return (
-                  <PostsListItem
-                    handler={() => {
-                      this.navigateTalkDetail(item.postsIndex);
-                    }}
-                    data={item}
-                  />
-                );
-              } else {
-                return <ReportedPostsListItem handler={() => {}} data={item} />;
+
+          <View style={{ flex: 1 }}>
+            <FlatList
+              ref={ref => {
+                this.flatlistRef = ref;
+              }}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this._onRefresh}
+                />
               }
-            }}
-          />
-          {/* </ScrollView> */}
+              style={styles.flatlist}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              onEndReachedThreshold={0.01}
+              onEndReached={() => {
+                this.props.postsList.length < this.props.total
+                  ? this.pageListPosts()
+                  : null;
+              }}
+              ListHeaderComponent={this.renderListHeader}
+              ListFooterComponent={this.renderListFooter}
+              data={this.props.postsList}
+              renderItem={({ item, index }) => {
+                if (item.status == "ACTIVE") {
+                  return (
+                    <PostsListItem
+                      handler={() => {
+                        this.navigateTalkDetail(item.postsIndex, index);
+                      }}
+                      data={item}
+                    />
+                  );
+                } else {
+                  return (
+                    <ReportedPostsListItem handler={() => {}} data={item} />
+                  );
+                }
+              }}
+            />
+          </View>
+
           <WritePostView>
             <WritePostBtn handler={this.navigateTalkWrite} />
           </WritePostView>

@@ -26,6 +26,7 @@ import {
 } from "../../components/talk/Text";
 import { TitleView } from "../../components/community/View";
 import { CustomModal } from "../../components/common/Modal";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkWrite extends Component {
   constructor(props) {
@@ -58,6 +59,8 @@ class TalkWrite extends Component {
           : 0,
       imageSize: 0,
       deletemodal: false,
+      alertModal: false,
+      alertText: null,
       imageinfo: null,
       imageindex: null,
       anonymous:
@@ -69,16 +72,16 @@ class TalkWrite extends Component {
 
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      this.navigateTalkAbout();
+      this.navigateTalkDetail();
       return true;
     });
   }
 
-  // navigateTalkDetail = () => {
-  //   this.props.navigation.navigate("TalkDetail", {
-  //     from: "about"
-  //   });
-  // };
+  navigateTalkDetail = () => {
+    this.props.navigation.navigate("TalkDetail", {
+      from: "write"
+    });
+  };
 
   navigateTalkAbout = () => {
     this.props.navigation.navigate("TalkAbout");
@@ -193,27 +196,27 @@ class TalkWrite extends Component {
                 formData,
                 this.props.getPosts.postsIndex
               );
+              await TalkActions.getPosts(this.props.getPosts.postsIndex);
+              this.navigateTalkDetail();
             } else {
               await TalkActions.createPosts(formData);
+              await TalkActions.initPostList();
+
+              const pro1 = TalkActions.pageListPosts(
+                this.props.filter,
+                this.props.orderby,
+                this.props.postsList.length / 6,
+                6
+              );
+              const pro2 = TalkActions.pageListPosts(
+                this.props.filter,
+                "count DESC",
+                1,
+                2
+              );
+              Promise.all([pro1, pro2]).then(this.navigateTalkAbout());
             }
 
-            await TalkActions.initPostList();
-            await TalkActions.handleFilter(
-              `postsCategoryIndex eq ${this.props.categoryIndex}`
-            );
-            await TalkActions.pageListPosts(
-              this.props.filter,
-              this.props.orderby,
-              this.props.postsList.length / 6,
-              6
-            );
-            await TalkActions.pageListPosts(
-              this.props.filter,
-              "count DESC",
-              1,
-              2
-            );
-            this.navigateTalkAbout();
             if (this.props.navigation.state.params.form == "update") {
               this.renderAlertModal("게시글을 업데이트했습니다.");
             } else {
@@ -244,9 +247,23 @@ class TalkWrite extends Component {
     }
   };
 
+  renderAlertModal = async rendertext => {
+    await this.setState({ alertModal: true, alertText: rendertext });
+    // TalkActions.handleAlertModal(true);
+    // TalkActions.handleAlertText(rendertext);
+    setTimeout(() => {
+      this.setState({ alertModal: false });
+      // TalkActions.handleAlertModal(false);
+    }, 1000);
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <AlertModal
+          visible={this.state.alertModal}
+          text={this.state.alertText}
+        />
         <CustomModal
           height={widthPercentageToDP(201.9)}
           children={
@@ -266,7 +283,7 @@ class TalkWrite extends Component {
         <TitleView
           titleName={"글쓰기"}
           leftChild={true}
-          handler={this.navigateTalkAbout}
+          handler={this.navigateTalkDetail}
           rightChild={this.renderSubmit()}
         />
         <KeyboardAvoidingView
