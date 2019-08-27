@@ -2,29 +2,22 @@ import React, { useRef, useState, useCallback, useEffect } from "react";
 import { HCenterView, Title, BaseView } from "../../components/common/View";
 import { connect } from "react-redux";
 import { widthPercentageToDP } from "../../utils/util";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import Carousel from "react-native-snap-carousel";
 import LoopCarousel from "react-native-looped-carousel";
 import { TeamCard } from "../../components/setting/view/TeamCard";
-import { View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { TeamPagination } from "../../components/setting/view/TeamPagination";
 import { TeamContent } from "../../components/setting/view/TeamContent";
-import { NBGBText } from "../../components/common/Text";
 
 const TeamInfo = () => {
   const _carousel = useRef(null);
   const [index, setIndex] = useState(0);
   const [entries] = useState([
     {
-      group: "Designer",
-      image: "design",
+      group: "Design",
+      text: ["- UX/UI 디자인", "- 그래픽 디자인", "- 브랜딩 디자인"],
       bar: "#cc76e4",
       people: [
-        {
-          name: "최혜종",
-          major: "시각미디어디자인과",
-          email: "anamor7000@gmail.com",
-          image: require("HandamProject/assets/image/setting/teaminfo/design2.png")
-        },
         {
           name: "전소은",
           major: "시각미디어디자인과",
@@ -36,12 +29,18 @@ const TeamInfo = () => {
           major: "시각미디어디자인과",
           email: "bene.jeean95@gmail.com",
           image: require("HandamProject/assets/image/setting/teaminfo/design3.png")
+        },
+        {
+          name: "최혜종",
+          major: "시각미디어디자인과",
+          email: "anamor7000@gmail.com",
+          image: require("HandamProject/assets/image/setting/teaminfo/design4.png")
         }
       ]
     },
     {
-      group: "Backend Developer",
-      image: "backend",
+      group: "Backend",
+      text: ["- 아키텍쳐", "- DB 모델링", "- API 개발"],
       bar: "#ff6384",
       people: [
         {
@@ -67,11 +66,12 @@ const TeamInfo = () => {
     },
     {
       group: "Service",
+      text: ["- 서비스 및 전략 기획", "- 마케팅", "- CS, QA"],
       bar: "#6386ff",
       people: [
         {
           name: "김서연",
-          major: "행정학",
+          major: "행정학과",
           email: "seoyeon199515@daum.net",
           image: require("HandamProject/assets/image/setting/teaminfo/service1.png")
         },
@@ -96,8 +96,8 @@ const TeamInfo = () => {
       ]
     },
     {
-      group: "Frontend Developer",
-      image: "frontend",
+      group: "Frontend",
+      text: ["- 데이터 처리", "- 인터페이스 시각화", "- Web / App 개발"],
       bar: "#ffca6c",
       people: [
         {
@@ -158,8 +158,16 @@ const TeamInfo = () => {
           isLooped={false}
           swipe={false}
         >
-          {entries.map((item, index) => {
-            return <TeamContent data={item.people} key={item.key} />;
+          {entries.map((item, i) => {
+            return (
+              <TeamContent
+                key={i}
+                data={item.people}
+                key={item.key}
+                page={index}
+                index={i}
+              />
+            );
           })}
         </LoopCarousel>
       </View>

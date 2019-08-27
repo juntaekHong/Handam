@@ -1,8 +1,10 @@
 rootProject.name = 'HandamProject'
-include ':rn-imagecapinsets'
-project(':rn-imagecapinsets').projectDir = new File(rootProject.projectDir, '../node_modules/rn-imagecapinsets/android')
+include ':lottie-react-native'
+project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
 include ':react-native-code-push'
 project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
+include ':rn-imagecapinsets'
+project(':rn-imagecapinsets').projectDir = new File(rootProject.projectDir, '../node_modules/rn-imagecapinsets/android')
 include ':react-native-extra-dimensions-android'
 project(':react-native-extra-dimensions-android').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-extra-dimensions-android/android')
 include ':react-native-maps'

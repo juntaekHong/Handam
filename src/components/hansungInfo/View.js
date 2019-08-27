@@ -38,10 +38,10 @@ export const PointListItem = props => {
                         <View style={{flexDirection: "row", justifyContent: "space-between", marginRight: widthPercentageToDP(15)}}>
                             <PointListText style={{marginTop: widthPercentageToDP(11), fontFamily: fonts.nanumBarunGothic}}>{props.data.status}</PointListText>
                             {
-                                props.index == 0 ?
-                                    <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)} height={widthPercentageToDP(12)} source={require("../../../assets/image/hansungInfo/circle_825.png")} />
-                                    :
-                                    null
+                                // props.index == 0 ?
+                                //     <Image style={{marginTop: widthPercentageToDP(9)}} width={widthPercentageToDP(12)} height={widthPercentageToDP(12)} source={require("../../../assets/image/hansungInfo/circle_825.png")} />
+                                //     :
+                                //     null
                             }
                         </View>
                         <PointListText style={{textAlign: "center", fontSize: widthPercentageToDP(20), color: "#24a0fa"}}>{props.data.score}</PointListText>
