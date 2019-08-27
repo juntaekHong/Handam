@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { CenterScroll, HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
 import {
@@ -30,6 +30,7 @@ import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
 import { CertLoadModal } from "../../components/home/modal/CertLoadModal";
 import { CertFailModal } from "../../components/home/modal/CertFailModal";
 import { View } from "react-native";
+import { NavigationEvents } from "react-navigation";
 
 const Home = ({
   navigation,
@@ -46,6 +47,7 @@ const Home = ({
   const [scheduleModal, setScheduleModal] = useState(false);
   const [certLoadModal, setCertLoadModal] = useState(false);
   const [certFailModal, setCertFailModal] = useState(false);
+  const lottie = useRef(null);
 
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
@@ -143,6 +145,13 @@ const Home = ({
   return (
     <HCenterView>
       <HomeTitle alarm={count > 0} />
+      <NavigationEvents
+        onDidFocus={() => {
+          if (lottie.current) {
+            lottie.current.play();
+          }
+        }}
+      />
       <CertModal
         height={201.9}
         visible={certModal}
@@ -187,6 +196,7 @@ const Home = ({
           day={dayToString(moment(time).day())}
           goCertificate={navigateCert}
           loadSchedule={callSchedule}
+          lottie={lottie}
         />
       </CenterScroll>
     </HCenterView>

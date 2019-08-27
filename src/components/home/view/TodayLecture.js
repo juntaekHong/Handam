@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import {
   widthPercentageToDP,
@@ -12,6 +12,7 @@ import { NBGBText, NBGText } from "../../common/Text";
 import colors from "../../../configs/colors";
 import { connect } from "react-redux";
 import { UIActivityIndicator } from "react-native-indicators";
+import { NavigationEvents } from "react-navigation";
 import LottieView from "lottie-react-native";
 
 const CertificateButton = styled(ButtonStyle)`
@@ -59,7 +60,8 @@ const TodayLecture = ({
   schedule_loading,
   goCertificate,
   day,
-  loadSchedule
+  loadSchedule,
+  lottie
 }) => {
   if (hansunginfo === null) {
     return (
@@ -89,30 +91,23 @@ const TodayLecture = ({
       <HCenterView>
         <View
           style={{
-            width: widthPercentageToDP(71),
-            height: widthPercentageToDP(71),
-            marginTop: widthPercentageToDP(31.5),
-            marginBottom: widthPercentageToDP(11)
+            width: widthPercentageToDP(82),
+            height: widthPercentageToDP(82),
+            marginTop: widthPercentageToDP(20.5)
           }}
         >
-          {/* <LottieView
+          <LottieView
+            ref={lottie}
             style={{
               width: widthPercentageToDP(82),
               height: widthPercentageToDP(82)
             }}
             source={require("HandamProject/assets/animation/loading.json")}
-            autoPlay={false}
+            autoPlay={true}
             loop={true}
             useNativeDriver={true}
-          /> */}
-          <Image
-            style={{
-              width: widthPercentageToDP(71),
-              height: widthPercentageToDP(71)
-            }}
-            source={require("HandamProject/assets/animation/loading.gif")}
+            hardwareAccelerationAndroid={true}
           />
-          {/* <UIActivityIndicator color={"grey"} size={widthPercentageToDP(40)} /> */}
         </View>
         <NBGText
           fontSize={12}
