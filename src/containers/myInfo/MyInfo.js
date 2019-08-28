@@ -720,7 +720,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: widthPercentageToDP(60),
         height: widthPercentageToDP(60),
-        borderRadius: widthPercentageToDP(27.5)
+        borderRadius: widthPercentageToDP(30)
     },
     nonProfile: {
         position: "absolute",
@@ -728,6 +728,7 @@ const styles = StyleSheet.create({
         width: widthPercentageToDP(72),
         height: widthPercentageToDP(72),
         borderRadius: widthPercentageToDP(27.5),
+
     }
 });
 
