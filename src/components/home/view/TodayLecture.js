@@ -11,9 +11,6 @@ import { HCenterView, CenterView } from "../../common/View";
 import { NBGBText, NBGText } from "../../common/Text";
 import colors from "../../../configs/colors";
 import { connect } from "react-redux";
-import { UIActivityIndicator } from "react-native-indicators";
-import { NavigationEvents } from "react-navigation";
-import LottieView from "lottie-react-native";
 
 const CertificateButton = styled(ButtonStyle)`
 width: ${widthPercentageToDP(128)}
@@ -61,7 +58,7 @@ const TodayLecture = ({
   goCertificate,
   day,
   loadSchedule,
-  lottie
+  Loading
 }) => {
   if (hansunginfo === null) {
     return (
@@ -96,18 +93,7 @@ const TodayLecture = ({
             marginTop: widthPercentageToDP(20.5)
           }}
         >
-          <LottieView
-            ref={lottie}
-            style={{
-              width: widthPercentageToDP(82),
-              height: widthPercentageToDP(82)
-            }}
-            source={require("HandamProject/assets/animation/loading.json")}
-            autoPlay={true}
-            loop={true}
-            useNativeDriver={true}
-            hardwareAccelerationAndroid={true}
-          />
+          {Loading}
         </View>
         <NBGText
           fontSize={12}

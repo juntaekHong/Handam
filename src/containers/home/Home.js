@@ -3,7 +3,6 @@ import { CenterScroll, HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
 import {
   HomeTitle,
-  AboutHandam,
   HomeAd,
   HomeNavigateView,
   TodayLectureTitle,
@@ -31,6 +30,7 @@ import { CertLoadModal } from "../../components/home/modal/CertLoadModal";
 import { CertFailModal } from "../../components/home/modal/CertFailModal";
 import { View } from "react-native";
 import { NavigationEvents } from "react-navigation";
+import LottieView from "lottie-react-native";
 
 const Home = ({
   navigation,
@@ -105,9 +105,9 @@ const Home = ({
     }
   }, [hansunginfo, schedule_loading]);
 
-  const callSchedule = useCallback(async () => {
-    await setScheduleModal(false);
-    await HansungInfoActions.scheduleCallAction(true);
+  const callSchedule = useCallback(() => {
+    setScheduleModal(false);
+    HansungInfoActions.scheduleCallAction(true);
   }, []);
 
   const getSchedule = useCallback(async () => {
@@ -122,6 +122,7 @@ const Home = ({
       setCall(0);
     }
   }, [hansunginfo]);
+
   scheduleCall = async () => {
     await HansungInfoActions.scheduleCallAction(false);
     await HansungInfoActions.scheduleLoadingAction(true);
@@ -142,14 +143,26 @@ const Home = ({
       setTimeout(getSchedule, 5000);
     }
   }, [call]);
+  useEffect(() => {
+    if (navigation.isFocused()) {
+      try {
+        if (lottie.current) lottie.current.play();
+      } catch (e) {}
+    }
+  }, [navigation.isFocused()]);
   return (
     <HCenterView>
       <HomeTitle alarm={count > 0} />
       <NavigationEvents
-        onDidFocus={() => {
-          if (lottie.current) {
-            lottie.current.play();
-          }
+        onWillFocus={() => {
+          try {
+            if (lottie.current) lottie.current.play();
+          } catch (e) {}
+        }}
+        onWillBlur={() => {
+          try {
+            if (lottie.current) lottie.current.play();
+          } catch (e) {}
         }}
       />
       <CertModal
@@ -196,7 +209,20 @@ const Home = ({
           day={dayToString(moment(time).day())}
           goCertificate={navigateCert}
           loadSchedule={callSchedule}
-          lottie={lottie}
+          Loading={
+            <LottieView
+              ref={lottie}
+              style={{
+                width: widthPercentageToDP(82),
+                height: widthPercentageToDP(82)
+              }}
+              source={require("HandamProject/assets/animation/loading.json")}
+              autoPlay={true}
+              loop={true}
+              useNativeDriver={true}
+              hardwareAccelerationAndroid={true}
+            />
+          }
         />
       </CenterScroll>
     </HCenterView>
