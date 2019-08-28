@@ -193,7 +193,7 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{marginVertical: widthPercentageToDP(18), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
+                    <View style={{marginVertical: widthPercentageToDP(13), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
                     <TouchableOpacity  style={styles.account} onPress={() => {this.setState({majorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>전공(제 1트랙)</ACCOUNTINFOText>
@@ -203,7 +203,7 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.divisionLine}/>
+                    <View style={styles.divisionLine2}/>
                     <TouchableOpacity  style={styles.account} onPress={() => {this.setState({doublemajorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>복수전공(제 2트랙)</ACCOUNTINFOText>
@@ -213,7 +213,7 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.divisionLine}/>
+                    <View style={styles.divisionLine2}/>
                     <TouchableOpacity  style={styles.account} onPress={() => {this.setState({minorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>부전공</ACCOUNTINFOText>
@@ -223,7 +223,7 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.divisionLine}/>
+                    <View style={styles.divisionLine2}/>
                     <TouchableOpacity  style={styles.account} onPress={() => {this.setState({connectedMajorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>연계전공</ACCOUNTINFOText>
@@ -233,7 +233,7 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.divisionLine}/>
+                    <View style={styles.divisionLine2}/>
                     <TouchableOpacity  style={styles.account} onPress={() => {this.setState({admissionYearModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>입학년도</ACCOUNTINFOText>
@@ -256,12 +256,18 @@ const styles = StyleSheet.create({
         height: widthPercentageToDP(1),
         backgroundColor: '#f8f8f8'
     },
+    divisionLine2: {
+        marginHorizontal: widthPercentageToDP(29),
+        marginTop: widthPercentageToDP(7.5),
+        height: widthPercentageToDP(1),
+        backgroundColor: '#f8f8f8'
+    },
     account: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: 'white',
-        marginTop: widthPercentageToDP(18),
+        marginTop: widthPercentageToDP(7.5),
         marginHorizontal: widthPercentageToDP(29)
     }
 });
