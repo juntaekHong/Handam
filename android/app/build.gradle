@@ -116,8 +116,8 @@ android {
         applicationId "com.handamproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "2.4.7"
+        versionCode 28
+        versionName "2.4.8"
     }
     signingConfigs {
         release {
