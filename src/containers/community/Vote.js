@@ -131,9 +131,8 @@ class Vote extends Component {
   };
 
   DueTime = () => {
-    console.log("돌고~~");
     const today = new Date();
-    const dueDay = new Date(
+    const dueday = new Date(
       parseInt(this.props.dueDate.substring(0, 4), 10),
       parseInt(this.props.dueDate.substring(4, 6) - 1, 10),
       parseInt(this.props.dueDate.substring(6, 8), 10),
@@ -142,10 +141,18 @@ class Vote extends Component {
       parseInt(this.props.dueDate.substring(12, 14), 10)
     );
 
-    const day_gap = dueDay.getTime() - today.getTime();
-    const time_gap = new Date(0, 0, 0, 0, 0, 0, dueDay - today);
+    const day_gap = dueday.getTime() - today.getTime();
+    const day_gap_hour = Math.floor(day_gap / (1000 * 60 * 60));
+    const time_gap = new Date(
+      dueday.getFullYear() - today.getFullYear(),
+      dueday.getMonth() - today.getMonth(),
+      dueday.getDay() - today.getDay(),
+      dueday.getHours() - today.getHours(),
+      dueday.getMinutes() - today.getMinutes(),
+      dueday.getSeconds() - today.getSeconds()
+    );
 
-    let hour_gap = time_gap.getHours();
+    let hour_gap = day_gap_hour;
     let minute_gap = time_gap.getMinutes();
     let second_gap = time_gap.getSeconds();
 
