@@ -127,7 +127,13 @@ const PercentBarContainer = props => {
                 ) * 1.6
               ),
               height: widthPercentageToDP(11),
-              marginHorizontal: widthPercentageToDP(13),
+              marginRight: widthPercentageToDP(13),
+              marginLeft: widthPercentageToDP(
+                13 +
+                  parseInt(
+                    props.oPercent > props.xPercent ? 0 : props.oPercent * 1.6
+                  )
+              ),
               borderRadius: widthPercentageToDP(15),
               borderWidth: widthPercentageToDP(1),
               borderColor: "#848484"

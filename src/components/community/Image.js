@@ -1,14 +1,14 @@
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
 
-export const DefaultImage = styled.Image`
-  width: ${widthPercentageToDP(28)};
-  height: ${widthPercentageToDP(28)};
-`;
-
-export const DefaultImage2 = styled.Image`
+export const Image21 = styled.Image`
   width: ${widthPercentageToDP(21)};
   height: ${widthPercentageToDP(21)};
+`;
+
+export const Image28 = styled.Image`
+  width: ${widthPercentageToDP(28)};
+  height: ${widthPercentageToDP(28)};
 `;
 
 export const SelectedEmojiImage = styled.Image`
@@ -18,7 +18,7 @@ export const SelectedEmojiImage = styled.Image`
   margin-right: ${widthPercentageToDP(13)};
 `;
 
-export const C_LikeImage = styled(DefaultImage)`
+export const C_LikeImage = styled.Image`
   width: ${widthPercentageToDP(8.5)};
   height: ${widthPercentageToDP(10.2)};
 `;

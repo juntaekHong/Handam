@@ -1,30 +1,43 @@
 import React from "react";
-import { View } from "react-native";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
 import { widthPercentageToDP } from "../../utils/util";
 
-//기본
-export const DefaultText = styled.Text`
-  color: ${"#000000"};
-  font-size: ${widthPercentageToDP(16)};
-  font-family: ${fonts.nanumBarunGothicB};
+//Common
+
+//Talk.js
+
+export const CategoryName = styled.Text`
+  height: ${widthPercentageToDP(18)};
+  color: ${"#101010"};
+  margin-top: ${widthPercentageToDP(8)};
+  margin-bottom: ${widthPercentageToDP(6)};
+`;
+export const CategoryExplain = styled.Text`
+  font-size: ${widthPercentageToDP(12)};
+  font-family: ${fonts.nanumBarunGothic};
+  width: ${widthPercentageToDP(200)};
+  height: ${widthPercentageToDP(13)};
+  color: ${"#646464"};
 `;
 
-//Button
-export const NumText = styled(DefaultText)`
+//TalkAbout.js
+
+export const HotNum = styled.Text`
   color: ${"#0c81ff"};
   font-size: ${widthPercentageToDP(16)};
   font-family: ${fonts.nanumBarunGothicB};
 `;
 
-export const HotText = styled(DefaultText)`
+export const HotText = styled.Text`
   color: ${"#ffffff"};
   font-size: ${widthPercentageToDP(10)};
+  font-family: ${fonts.nanumBarunGothicB};
   line-height: ${widthPercentageToDP(12)};
 `;
 
-export const TitleText = styled.Text`
+export const PostTitle = styled.Text`
   color: ${"#000000"};
   font-size: ${widthPercentageToDP(13)};
   font-family: ${fonts.nanumBarunGothicB};
@@ -32,41 +45,120 @@ export const TitleText = styled.Text`
   height: ${widthPercentageToDP(13)};
 `;
 
-export const ContentText = styled(TitleText)`
+export const PostContent = styled(PostTitle)`
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
   margin-top: ${widthPercentageToDP(8)};
 `;
 
-export const CreatedAtText = styled(DefaultText)`
+export const PostUserName = styled.Text`
   color: ${"#646464"};
   font-size: ${widthPercentageToDP(11)};
+  font-family: ${fonts.nanumBarunGothicB};
+  margin-right: ${widthPercentageToDP(4)};
 `;
 
-export const ImageCountText = styled(DefaultText)`
+export const PostCreatedAt = styled.Text`
+  color: ${"#646464"};
+  font-size: ${widthPercentageToDP(11)};
+  font-family: ${fonts.nanumBarunGothicB};
+`;
+
+export const ImageCount = styled.Text`
   color: ${"#171717"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
   margin-left: ${widthPercentageToDP(5)};
 `;
 
-export const ReportText = styled(DefaultText)`
+export const ReportText = styled.Text`
   color: ${"#101010"};
   font-size: ${widthPercentageToDP(11)};
+  font-family: ${fonts.nanumBarunGothicB};
 `;
 
-export const WriteText = styled(DefaultText)`
+export const WriteText = styled.Text`
   position: absolute;
   color: ${"#ffffff"};
   font-size: ${widthPercentageToDP(15)};
   font-family: ${fonts.nanumBarunGothicB};
 `;
 
-//카테고리
-export const PostTitleText = styled(DefaultText)`
-  color: ${"#101010"};
-  height: ${widthPercentageToDP(18)};
-  margin-vertical: ${widthPercentageToDP(8)};
+//TalkDetail.js
+
+export const UserName = styled.Text`
+  color: ${"#171717"};
+  font-size: ${widthPercentageToDP(12)};
+  font-family: ${fonts.nanumBarunGothicB};
+  margin-left: ${widthPercentageToDP(6)};
+  padding-bottom: ${0};
+  margin-bottom: ${0};
+`;
+
+export const CreatedAt = styled.Text`
+  color: ${"#929292"};
+  font-size: ${widthPercentageToDP(8)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${widthPercentageToDP(4)};
+  margin-top: ${Platform.OS == "ios"
+    ? widthPercentageToDP(4)
+    : widthPercentageToDP(3)};
+`;
+
+export const ScrapText = styled.Text`
+  color: ${"#171717"};
+  font-size: ${widthPercentageToDP(11)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${widthPercentageToDP(4)};
+  margin-top: ${widthPercentageToDP(2)};
+`;
+
+export const Title = styled.Text`
+  color: ${"#000000"};
+  width: ${widthPercentageToDP(343)};
+  font-size: ${widthPercentageToDP(16)};
+  font-family: ${fonts.nanumBarunGothicB};
+  margin-top: ${widthPercentageToDP(15)};
+`;
+
+export const Content = styled.Text`
+  color: ${"#000000"};
+  width: ${widthPercentageToDP(343)};
+  font-size: ${widthPercentageToDP(13)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-top: ${widthPercentageToDP(7)};
+`;
+
+export const GoodCount = styled.Text`
+  color: ${"#171717"};
+  font-size: ${widthPercentageToDP(11)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${widthPercentageToDP(4)};
+`;
+
+//TalkSearch.js
+
+export const HandaMon = styled.Text`
+  color: ${"#c3c3c3"};
+  font-size: ${widthPercentageToDP(18)};
+  font-family: ${fonts.nanumBarunGothicB};
+`;
+
+//TalkSearch.js
+
+export const SearchCancel = styled.Text`
+  color: ${"#000000"};
+  font-size: ${widthPercentageToDP(18)};
+  font-family: ${fonts.nanumBarunGothic};
+  margin-left: ${widthPercentageToDP(16)};
+`;
+
+//TalkWrite.js
+
+export const ImageAdd = styled.Text`
+  color: ${"#c3c3c3"};
+  font-size: ${widthPercentageToDP(13)};
+  font-family: ${fonts.nanumBarunGothic};
 `;
 
 //Modal
@@ -80,13 +172,17 @@ export const CustomModalRedText = styled(CustomModalBlackText)`
   color: ${"#ea0000"};
 `;
 
+const CustomModalTextView = styled.View`
+  flex-direction: row;
+`;
+
 export const CustomModalText = props => {
   return (
-    <View style={{ flexDirection: "row" }}>
+    <CustomModalTextView>
       <CustomModalBlackText>{props.black1}</CustomModalBlackText>
       <CustomModalRedText>{props.red}</CustomModalRedText>
       <CustomModalBlackText>{props.black2}</CustomModalBlackText>
-    </View>
+    </CustomModalTextView>
   );
 };
 
