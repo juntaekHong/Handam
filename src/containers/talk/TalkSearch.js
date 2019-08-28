@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  View,
   SafeAreaView,
   TextInput,
-  TouchableOpacity,
-  Text,
-  Image,
   FlatList,
-  BackHandler,
-  Platform
+  BackHandler
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
@@ -18,8 +13,14 @@ import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
 import {
   PostsListItem,
-  ReportedPostsListItem
-} from "../../components/talk/Button";
+  ReportedPostsListItem,
+  BottomLoading,
+  SearchNone,
+  TextInputContainer,
+  TextInputView
+} from "../../components/talk/View";
+import { SearchInIMG } from "../../components/talk/Image";
+import { SearchCancelBTN } from "../../components/talk/Button";
 
 class TalkSearch extends Component {
   constructor(props) {
@@ -78,13 +79,7 @@ class TalkSearch extends Component {
   };
 
   renderListFooter = () => {
-    return this.props.loading ? (
-      <View style={styles.listFooterContainer}>
-        <UIActivityIndicator size={widthPercentageToDP(20)} color={"#727272"} />
-      </View>
-    ) : (
-      <View>{null}</View>
-    );
+    return this.props.loading ? <BottomLoading /> : null;
   };
 
   renderPostslist = () => {
@@ -115,81 +110,26 @@ class TalkSearch extends Component {
                 />
               );
             } else {
-              return <ReportedPostsListItem handler={() => {}} data={item} />;
+              return <ReportedPostsListItem data={item} />;
             }
           }}
         />
       );
     } else {
-      return (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Image
-            style={{
-              width: widthPercentageToDP(30),
-              height: widthPercentageToDP(45),
-              marginBottom: widthPercentageToDP(10)
-            }}
-            source={require("../../../assets/image/community/handamon.png")}
-          />
-          <Text
-            style={{
-              color: "#c3c3c3",
-              fontSize: widthPercentageToDP(18),
-              fontFamily: fonts.nanumBarunGothicB
-            }}
-          >
-            게시판 글을 검색해보세요
-          </Text>
-        </View>
-      );
+      return <SearchNone />;
     }
   };
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, alignItems: "center" }}>
-        <View
-          style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(60),
-            justifyContent: "center",
-            alignItems: "center",
-            borderBottomColor: "#dbdbdb",
-            borderBottomWidth: widthPercentageToDP(1)
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: widthPercentageToDP(299),
-              height: widthPercentageToDP(40),
-              alignItems: "center",
-              borderWidth: widthPercentageToDP(1),
-              borderRadius: widthPercentageToDP(20),
-              borderColor: "#dbdbdb"
-            }}
-          >
-            <Image
-              style={{
-                width: widthPercentageToDP(15),
-                height: widthPercentageToDP(15),
-                marginLeft: widthPercentageToDP(17),
-                marginRight: widthPercentageToDP(8)
-              }}
+      <SafeAreaView style={styles.container}>
+        <TextInputContainer>
+          <TextInputView>
+            <SearchInIMG
               source={require("../../../assets/image/community/search_in.png")}
             />
             <TextInput
-              style={{
-                color: "#000000",
-                fontSize: widthPercentageToDP(14),
-                fontFamily: fonts.nanumBarunGothic,
-                width: widthPercentageToDP(244),
-                justifyContent: "center",
-                marginTop: widthPercentageToDP(1)
-              }}
+              style={styles.textinput}
               underlineColorAndroid="transparent"
               onChangeText={text => this.setState({ text })}
               placeholder={"글 제목, 내용을 입력해주세요."}
@@ -212,20 +152,9 @@ class TalkSearch extends Component {
                 TalkActions.handleLoading(false);
               }}
             />
-          </View>
-          <TouchableOpacity onPress={() => this.navigateTalkAbout()}>
-            <Text
-              style={{
-                color: "#000000",
-                fontSize: widthPercentageToDP(18),
-                fontFamily: fonts.nanumBarunGothic,
-                marginLeft: widthPercentageToDP(16)
-              }}
-            >
-              취소
-            </Text>
-          </TouchableOpacity>
-        </View>
+          </TextInputView>
+          <SearchCancelBTN handler={this.navigateTalkAbout} />
+        </TextInputContainer>
         {this.renderPostslist()}
       </SafeAreaView>
     );
@@ -235,8 +164,7 @@ class TalkSearch extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end"
+    alignItems: "center"
   },
   flatlist: {
     flexGrow: 1,
@@ -244,16 +172,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  listFooterContainer: {
-    width: widthPercentageToDP(375),
-    height: widthPercentageToDP(122),
+  textinput: {
+    color: "#000000",
+    fontSize: widthPercentageToDP(14),
+    fontFamily: fonts.nanumBarunGothic,
+    width: widthPercentageToDP(244),
     justifyContent: "center",
-    alignItems: "center"
+    marginTop: widthPercentageToDP(1)
   }
 });
 
 export default connect(state => ({
-  categoryList: state.talk.categoryList,
   categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   total: state.talk.total,

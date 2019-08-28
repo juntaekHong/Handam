@@ -15,24 +15,24 @@ import {
   BackHandler
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
-import Hyperlink from "react-native-hyperlink";
 import { widthPercentageToDP, timeSince } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
-import {
-  ReplyView,
-  Re_ReplyView,
-  ReportDetailBody
-} from "../../components/community/View";
+import { Top, Center, Bottom } from "../../components/talk/View";
 import {
   CustomModalText,
   CustomModalBlackText,
   AnonymousOFFText,
   AnonymousONText
 } from "../../components/talk/Text";
-import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { ImageModal } from "../../components/talk/Modal";
+import {
+  ReplyView,
+  Re_ReplyView,
+  ReportDetailBody
+} from "../../components/community/View";
+import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import {
   WriteContainer,
   TextInputContainer,
@@ -45,7 +45,7 @@ import {
   EmojiButton,
   AnonymousButton
 } from "../../components/community/Button";
-import navigators from "../../utils/navigators";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkDetail extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class TalkDetail extends Component {
 
     this.state = {
       no_click: false,
-      form: "reply", //textinput 상태 : 댓글생성, 댓글수정, 답글생성 결정
+      form: "reply", //textinput 상태 : 댓글생성(reply), 댓글수정(update), 답글생성(re_reply) 결정
       replyIndex: null,
       reply: "",
       temp_reply: "", //댓글내용 임시저장
@@ -71,8 +71,10 @@ class TalkDetail extends Component {
       deletemodal: false,
       updatemodal: false,
       reportmodal: false,
-      reportdetailmodal: false,
+      detailmodal: false,
       scrapmodal: false,
+      alertModal: false,
+      alertText: null,
       reportEU: [
         { str: "토픽(주제)에 부적절함" },
         { str: "욕설/비하" },
@@ -110,18 +112,32 @@ class TalkDetail extends Component {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       TalkActions.handleBottomModal(false);
       this.navigateBack();
-
       return true;
     });
+
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
   }
 
   componentWillUnmount() {
     this.backHandler.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidHide() {
+    TalkActions.handleReplyModal(true);
   }
 
   navigateBack = async () => {
-    if (this.props.navigation.state.params.from == "about") {
-      this.props.navigation.navigate("TalkAbout");
+    if (
+      this.props.navigation.state.params.from == "about" ||
+      this.props.navigation.state.params.from == "write"
+    ) {
+      this.props.navigation.navigate("TalkAbout", {
+        scrollIndex: this.props.navigation.state.params.scrollIndex
+      });
     } else if (this.props.navigation.state.params.from === "alarm") {
       navigators.navigateBack();
     } else if (this.props.navigation.state.params.from === "MyPost") {
@@ -144,14 +160,22 @@ class TalkDetail extends Component {
   deletePost = async () => {
     await TalkActions.deletePosts(this.props.getPosts.postsIndex);
     await TalkActions.initPostList();
-    await TalkActions.pageListPosts(
+    const pro1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
       this.props.postsList.length / 6,
       6
     );
-    await TalkActions.pageListPosts(this.props.filter, "count DESC", 1, 2);
-    this.navigateBack();
+    const pro2 = TalkActions.pageListPosts(
+      this.props.filter,
+      "count DESC",
+      1,
+      2
+    );
+    Promise.all([pro1, pro2]).then(() => {
+      this.navigateBack();
+      this.renderAlertModal("게시글이 삭제되었습니다.");
+    });
   };
 
   reportPost = async () => {
@@ -159,18 +183,18 @@ class TalkDetail extends Component {
     posts.postsIndex = this.props.getPosts.postsIndex;
     posts.content = this.props.getPosts.content;
     await TalkActions.createPostsReport(posts);
-    await TalkActions.getPosts(this.props.getPosts.postsIndex);
+    TalkActions.getPosts(this.props.getPosts.postsIndex);
   };
 
-  deletePostsReply = async () => {
+  deleteReply = async () => {
     await TalkActions.deletePostsReply(this.state.replyIndex);
-    await TalkActions.pageListPostsReply(
+    TalkActions.pageListPostsReply(
       "page=1&count=100",
       this.props.getPosts.postsIndex
     );
   };
 
-  updatePostsReply = async () => {
+  updateReply = async () => {
     await this.setState({
       form: "update",
       reply: this.state.temp_reply
@@ -184,7 +208,7 @@ class TalkDetail extends Component {
     reply.postsReplyIndex = this.state.replyinfo.postsReplyIndex;
     reply.content = this.state.replyinfo.content;
     await TalkActions.createPostsReplyReport(reply);
-    await TalkActions.pageListPostsReply(
+    TalkActions.pageListPostsReply(
       "page=1&count=100",
       this.props.getPosts.postsIndex
     );
@@ -215,11 +239,7 @@ class TalkDetail extends Component {
     }
   };
 
-  header = () => {
-    return <View style={{ width: widthPercentageToDP(10) }} />;
-  };
-
-  footer = () => {
+  space = () => {
     return <View style={{ width: widthPercentageToDP(10) }} />;
   };
 
@@ -241,8 +261,8 @@ class TalkDetail extends Component {
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             data={imageData}
-            ListHeaderComponent={imageData.length == 1 ? null : this.header}
-            ListFooterComponent={imageData.length == 1 ? null : this.footer}
+            ListHeaderComponent={imageData.length == 1 ? null : this.space}
+            ListFooterComponent={imageData.length == 1 ? null : this.space}
             renderItem={({ item, index }) => {
               const concept = item.substr(
                 item.lastIndexOf(".") + 1,
@@ -267,15 +287,23 @@ class TalkDetail extends Component {
                     source={{ uri: `${item}` }}
                   />
                   {concept == "gif" ? (
-                    <Text
+                    <View
                       style={
                         imageData.length == 1
                           ? styles.image_single_gif
                           : styles.image_multi_gif
                       }
                     >
-                      GIF
-                    </Text>
+                      <Text
+                        style={
+                          imageData.length == 1
+                            ? styles.image_single_gif_text
+                            : styles.image_multi_gif_text
+                        }
+                      >
+                        GIF
+                      </Text>
+                    </View>
                   ) : null}
                 </TouchableOpacity>
               );
@@ -296,12 +324,7 @@ class TalkDetail extends Component {
     return this.props.replysList.length == 0 ? null : (
       <FlatList
         scrollEnabled={false}
-        style={{
-          flexGrow: 1,
-          width: "100%",
-          height: "100%",
-          padding: widthPercentageToDP(16)
-        }}
+        style={styles.replylist}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         data={this.props.replysList}
@@ -335,7 +358,7 @@ class TalkDetail extends Component {
                 data={item}
                 writerName={this.props.getPosts.userNickName}
               />
-              {/* 대댓글 */}
+              {/* 답글 */}
               {item.childReplies.length != 0
                 ? item.childReplies.map((item2, index) => {
                     return (
@@ -365,10 +388,9 @@ class TalkDetail extends Component {
   };
 
   renderAlertModal = rendertext => {
-    TalkActions.handleAlertModal(true);
-    TalkActions.handleAlertText(rendertext);
+    this.setState({ alertModal: true, alertText: rendertext });
     setTimeout(() => {
-      TalkActions.handleAlertModal(false);
+      this.setState({ alertModal: false });
     }, 1000);
   };
 
@@ -389,6 +411,10 @@ class TalkDetail extends Component {
               : { backgroundColor: "#f2f2f2" }
           ]}
         >
+          <AlertModal
+            visible={this.state.alertModal}
+            text={this.state.alertText}
+          />
           <ImageModal
             visible={this.props.imageModal}
             close={() => TalkActions.handleImageModal(false)}
@@ -402,12 +428,33 @@ class TalkDetail extends Component {
             updateHandler={
               this.state.type == "posts"
                 ? this.navigateTalkWrite
-                : this.updatePostsReply
+                : this.updateReply
             }
             deleteHandler={() => this.setState({ deletemodal: true })}
-            reportHandler={() => this.setState({ reportmodal: true })}
+            reportHandler={() => this.setState({ detailmodal: true })}
             who={this.state.who}
           />
+          {/* <CustomModal
+            height={widthPercentageToDP(201.9)}
+            children={
+              <CustomModalBlackText>
+                댓글 작성을 취소하시겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={this.props.replyModal}
+            footerHandler={() => {
+              TalkActions.handleReplyModal(false);
+              this.setState({
+                form: "reply",
+                reply: "",
+                placeholder: "댓글을 입력해주세요."
+              });
+            }}
+            closeHandler={() => {
+              TalkActions.handleReplyModal(false);
+              this.TextInput.focus();
+            }}
+          /> */}
           <CustomModal
             height={widthPercentageToDP(201.9)}
             children={
@@ -419,12 +466,12 @@ class TalkDetail extends Component {
             footerHandler={() => {
               this.state.type == "posts"
                 ? this.deletePost()
-                : this.deletePostsReply();
+                : this.deleteReply();
               this.setState({ deletemodal: false });
             }}
             closeHandler={() => this.setState({ deletemodal: false })}
           />
-          <CustomModal
+          {/* <CustomModal
             height={widthPercentageToDP(201.9)}
             children={
               <CustomModalText
@@ -435,10 +482,10 @@ class TalkDetail extends Component {
             }
             visible={this.state.reportmodal}
             footerHandler={() => {
-              this.setState({ reportdetailmodal: true, reportmodal: false });
+              this.setState({ reportmodal: false, detailmodal: true });
             }}
             closeHandler={() => this.setState({ reportmodal: false })}
-          />
+          /> */}
           <CustomModal
             height={widthPercentageToDP(381)}
             children={
@@ -448,19 +495,21 @@ class TalkDetail extends Component {
                 reportEU={this.state.reportEU}
               />
             }
-            visible={this.state.reportdetailmodal}
+            visible={this.state.detailmodal}
             footerDisabled={this.state.reportEUindex == null ? true : false}
-            footerHandler={() => {
+            footerHandler={async () => {
               this.state.type == "posts"
-                ? this.reportPost()
-                : this.reportReply();
+                ? await this.reportPost()
+                : await this.reportReply();
               this.setState({
-                reportdetailmodal: false,
+                detailmodal: false,
                 reportEUindex: null
               });
-              this.renderAlertModal("신고가 완료되었습니다.");
+              // this.renderAlertModal("신고가 완료되었습니다.");
             }}
-            closeHandler={() => this.setState({ reportdetailmodal: false })}
+            closeHandler={() =>
+              this.setState({ detailmodal: false, reportEUindex: null })
+            }
           />
           <CustomModal
             height={widthPercentageToDP(201.9)}
@@ -483,19 +532,14 @@ class TalkDetail extends Component {
               posts.postsIndex = this.props.getPosts.postsIndex;
               posts.isScrap = this.state.isScrap == true ? 0 : 1; //스크랩:1 취소:0
 
-              this.setState({ scrapmodal: false });
-
               await TalkActions.putPostsSubscriber(posts);
-
-              this.state.isScrap == true
-                ? [
-                    this.setState({ isScrap: false }),
-                    this.renderAlertModal("스크랩을 취소하였습니다.")
-                  ]
-                : [
-                    this.setState({ isScrap: true }),
-                    this.renderAlertModal("이 글을 스크랩하였습니다.")
-                  ];
+              if (this.state.isScrap == true) {
+                await this.setState({ scrapmodal: false, isScrap: false });
+                // this.renderAlertModal("스크랩을 취소하였습니다.");
+              } else {
+                await this.setState({ scrapmodal: false, isScrap: true });
+                // this.renderAlertModal("이 글을 스크랩하였습니다.");
+              }
             }}
             closeHandler={() => this.setState({ scrapmodal: false })}
           />
@@ -509,6 +553,9 @@ class TalkDetail extends Component {
           />
 
           <ScrollView
+            ref={ref => {
+              this.flatListRef = ref;
+            }}
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="never"
           >
@@ -519,227 +566,40 @@ class TalkDetail extends Component {
                 paddingLeft: widthPercentageToDP(16)
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center"
+              <Top
+                isScrap={this.state.isScrap}
+                data={this.props.getPosts}
+                handleScrap={() => this.setState({ scrapmodal: true })}
+                handleDots={() => {
+                  this.checkUser(this.props.getPosts.userNickName);
+                  this.setState({ type: "posts" });
+                  TalkActions.handleBottomModal(true);
                 }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(19.3),
-                      height: widthPercentageToDP(11.9)
-                    }}
-                    source={require("../../../assets/image/community/quotation_color.png")}
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(12),
-                      fontFamily: fonts.nanumBarunGothicB,
-                      marginLeft: widthPercentageToDP(6),
-                      paddingBottom: 0,
-                      marginBottom: 0
-                    }}
-                  >
-                    {this.props.getPosts.displayName}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#929292",
-                      fontSize: widthPercentageToDP(8),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4),
-                      marginTop:
-                        Platform.OS == "ios"
-                          ? widthPercentageToDP(4)
-                          : widthPercentageToDP(3)
-                    }}
-                  >
-                    {timeSince(this.props.getPosts.createdAt)}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <TouchableOpacity
-                    style={{
-                      width: widthPercentageToDP(62.5),
-                      height: widthPercentageToDP(22),
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: widthPercentageToDP(20),
-                      borderColor: "#9e9e9e",
-                      borderWidth: widthPercentageToDP(1)
-                    }}
-                    onPress={async () => {
-                      this.setState({ scrapmodal: true });
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <Image
-                        style={{
-                          width: widthPercentageToDP(10.3),
-                          height: widthPercentageToDP(10.3)
-                        }}
-                        source={
-                          this.state.isScrap == false
-                            ? require("../../../assets/image/community/star.png")
-                            : require("../../../assets/image/community/star_color.png")
-                        }
-                      />
-                      <Text
-                        style={{
-                          color: "#171717",
-                          fontSize: widthPercentageToDP(11),
-                          fontFamily: fonts.nanumBarunGothic,
-                          marginLeft: widthPercentageToDP(4),
-                          marginTop: widthPercentageToDP(2)
-                        }}
-                      >
-                        스크랩
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ marginHorizontal: widthPercentageToDP(4) }}
-                    onPress={async () => {
-                      this.checkUser(this.props.getPosts.userNickName);
-                      this.setState({ type: "posts" });
-                      TalkActions.handleBottomModal(true);
-                    }}
-                  >
-                    <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/community/dots.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <Text
-                style={{
-                  color: "#000000",
-                  width: widthPercentageToDP(343),
-                  fontSize: widthPercentageToDP(16),
-                  fontFamily: fonts.nanumBarunGothicB,
-                  marginTop: widthPercentageToDP(15)
-                }}
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-              >
-                {this.props.getPosts.title}
-              </Text>
-              <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
-                <Text
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(343),
-                    fontSize: widthPercentageToDP(13),
-                    fontFamily: fonts.nanumBarunGothic,
-                    marginTop: widthPercentageToDP(7)
-                  }}
-                >
-                  {this.props.getPosts.content}
-                </Text>
-              </Hyperlink>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: widthPercentageToDP(33),
-                  marginBottom: widthPercentageToDP(12)
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    width: widthPercentageToDP(40),
-                    height: widthPercentageToDP(22),
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: widthPercentageToDP(20),
-                    borderColor: "#9e9e9e",
-                    borderWidth: widthPercentageToDP(1)
-                  }}
-                  onPress={async () => {
-                    var posts = new Object();
-                    posts.postsIndex = this.props.getPosts.postsIndex;
-                    posts.isGood = this.state.isGood == true ? 0 : 1; //좋아요:1 취소:0
+              />
+              <Center data={this.props.getPosts} />
+              <Bottom
+                isGood={this.state.isGood}
+                goodCount={this.state.goodCount}
+                data={this.props.getPosts}
+                handleLike={async () => {
+                  const posts = new Object();
+                  posts.postsIndex = this.props.getPosts.postsIndex;
+                  posts.isGood = this.state.isGood == true ? 0 : 1; //좋아요:1 취소:0
 
-                    TalkActions.putPostsSubscriber(posts);
-                    this.state.isGood == true
-                      ? await this.setState({
-                          isGood: false,
-                          goodCount: this.state.goodCount - 1
-                        })
-                      : await this.setState({
-                          isGood: true,
-                          goodCount: this.state.goodCount + 1
-                        });
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(8.5),
-                      height: widthPercentageToDP(10.2)
-                    }}
-                    source={
-                      this.state.isGood == true
-                        ? require("../../../assets/image/community/likes_color.png")
-                        : require("../../../assets/image/community/likes.png")
-                    }
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4)
-                    }}
-                  >
-                    {this.state.goodCount}
-                  </Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: widthPercentageToDP(40),
-                    height: widthPercentageToDP(22),
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: widthPercentageToDP(8),
-                    borderRadius: widthPercentageToDP(20),
-                    borderColor: "#9e9e9e",
-                    borderWidth: widthPercentageToDP(1)
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(10.2),
-                      height: widthPercentageToDP(10)
-                    }}
-                    source={require("../../../assets/image/community/replys.png")}
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4)
-                    }}
-                  >
-                    {this.props.getPosts.postsReplyCount}
-                  </Text>
-                </View>
-              </View>
+                  TalkActions.putPostsSubscriber(posts);
+                  this.state.isGood == true
+                    ? await this.setState({
+                        isGood: false,
+                        goodCount: this.state.goodCount - 1
+                      })
+                    : await this.setState({
+                        isGood: true,
+                        goodCount: this.state.goodCount + 1
+                      });
+                }}
+              />
             </View>
-
             {this.renderImages()}
-
             {this.renderReplyList()}
           </ScrollView>
 
@@ -755,7 +615,6 @@ class TalkDetail extends Component {
               selectedEmoji={this.state.selected_emoji}
             />
           ) : null} */}
-
             <WriteContainer>
               <TextInputContainer>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -814,28 +673,36 @@ class TalkDetail extends Component {
                     if (this.state.form == "reply") {
                       //댓글 작성
                       await TalkActions.createPostsReply(reply);
+                      this.renderAlertModal("댓글이 작성되었습니다.");
                     } else if (this.state.form == "update") {
                       //댓글 수정
                       reply.postsReplyIndex = this.state.replyIndex;
                       await TalkActions.updatePostsReply(reply);
+                      this.renderAlertModal("댓글이 수정되었습니다.");
                     } else {
                       //대댓글 작성
                       reply.parentsPostsReplyIndex = this.state.replyIndex;
                       await TalkActions.createPostsReply(reply);
+                      this.renderAlertModal("답글이 작성되었습니다.");
                     }
                     Keyboard.dismiss();
-                    const pro1 = this.setState({
-                      no_click: false,
-                      form: "reply",
-                      reply: "",
-                      emoji: false,
-                      selected_emoji: null
-                    });
-                    const pro2 = TalkActions.pageListPostsReply(
+                    await TalkActions.pageListPostsReply(
                       "page=1&count=100",
                       this.props.getPosts.postsIndex
                     );
-                    Promise.all([pro1, pro2]);
+                    if (this.state.form == "reply") {
+                      setTimeout(() => {
+                        this.flatListRef.scrollToEnd();
+                      }, 500);
+                    }
+                    this.setState({
+                      no_click: false,
+                      form: "reply",
+                      reply: "",
+                      placeholder: "댓글을 입력하세요",
+                      emoji: false,
+                      selected_emoji: null
+                    });
                   }
                 }}
               />
@@ -854,6 +721,12 @@ class TalkDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  replylist: {
+    flexGrow: 1,
+    width: "100%",
+    height: "100%",
+    padding: widthPercentageToDP(16)
   },
   image_single: {
     width: widthPercentageToDP(375),
@@ -884,23 +757,40 @@ const styles = StyleSheet.create({
   },
   image_single_gif: {
     position: "absolute",
-    width: widthPercentageToDP(45),
-    height: widthPercentageToDP(22),
-    fontSize: widthPercentageToDP(14),
-    borderRadius: widthPercentageToDP(4),
-    textAlign: "center",
-    backgroundColor: "#4a4a4a",
-    color: "white"
+    width: widthPercentageToDP(44),
+    height: widthPercentageToDP(20),
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: widthPercentageToDP(323),
+    marginTop: widthPercentageToDP(208),
+    borderRadius: widthPercentageToDP(3),
+    borderWidth: widthPercentageToDP(0.5),
+    borderColor: "#e0e0e0",
+    backgroundColor: "#e0e0e0"
   },
   image_multi_gif: {
     position: "absolute",
-    width: widthPercentageToDP(31),
+    width: widthPercentageToDP(35),
     height: widthPercentageToDP(15),
-    fontSize: widthPercentageToDP(10),
-    borderRadius: widthPercentageToDP(4),
-    textAlign: "center",
-    backgroundColor: "#4a4a4a",
-    color: "white"
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: widthPercentageToDP(95),
+    marginTop: widthPercentageToDP(109),
+    paddingTop: widthPercentageToDP(2),
+    borderRadius: widthPercentageToDP(3),
+    borderWidth: widthPercentageToDP(0.5),
+    borderColor: "#e0e0e0",
+    backgroundColor: "#e0e0e0"
+  },
+  image_single_gif_text: {
+    color: "#000000",
+    fontSize: widthPercentageToDP(13),
+    fontFamily: fonts.nanumBarunGothicB
+  },
+  image_multi_gif_text: {
+    color: "#000000",
+    fontSize: widthPercentageToDP(11),
+    fontFamily: fonts.nanumBarunGothicB
   },
   textInput: {
     color: "#000000",
@@ -931,6 +821,7 @@ export default connect(state => ({
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,
   imageIndex: state.talk.imageIndex,
+  replyModal: state.talk.replyModal,
 
   userNickName: state.signin.user.userNickName
 }))(TalkDetail);

@@ -11,7 +11,6 @@ import { widthPercentageToDP } from "../../utils/util";
 import { VoteActions } from "../../store/actionCreator";
 import { PastVoteItem } from "../../components/vote/Button";
 import { PastVoteName, PastVote } from "../../components/vote/Text";
-import { DefaultImage } from "../../components/community/Image";
 import { TitleView } from "../../components/community/View";
 
 class VotePast extends Component {

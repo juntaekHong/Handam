@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { VoteActions } from "../../store/actionCreator";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
+import { AlertModal } from "../../components/community/Modal";
 import {
   NoticeText,
   SubjectText,
@@ -130,9 +131,8 @@ class Vote extends Component {
   };
 
   DueTime = () => {
-    console.log("돌고~~");
     const today = new Date();
-    const dueDay = new Date(
+    const dueday = new Date(
       parseInt(this.props.dueDate.substring(0, 4), 10),
       parseInt(this.props.dueDate.substring(4, 6) - 1, 10),
       parseInt(this.props.dueDate.substring(6, 8), 10),
@@ -141,10 +141,18 @@ class Vote extends Component {
       parseInt(this.props.dueDate.substring(12, 14), 10)
     );
 
-    const day_gap = dueDay.getTime() - today.getTime();
-    const time_gap = new Date(0, 0, 0, 0, 0, 0, dueDay - today);
+    const day_gap = dueday.getTime() - today.getTime();
+    const day_gap_hour = Math.floor(day_gap / (1000 * 60 * 60));
+    const time_gap = new Date(
+      dueday.getFullYear() - today.getFullYear(),
+      dueday.getMonth() - today.getMonth(),
+      dueday.getDay() - today.getDay(),
+      dueday.getHours() - today.getHours(),
+      dueday.getMinutes() - today.getMinutes(),
+      dueday.getSeconds() - today.getSeconds()
+    );
 
-    let hour_gap = time_gap.getHours();
+    let hour_gap = day_gap_hour;
     let minute_gap = time_gap.getMinutes();
     let second_gap = time_gap.getSeconds();
 
@@ -214,12 +222,24 @@ class Vote extends Component {
     );
   };
 
+  renderAlertModal = rendertext => {
+    VoteActions.handleAlertModal(true);
+    VoteActions.handleAlertText(rendertext);
+    setTimeout(() => {
+      VoteActions.handleAlertModal(false);
+    }, 1000);
+  };
+
   render() {
     if (this.props.loading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+          <AlertModal
+            visible={this.props.alertModal}
+            text={this.props.alertText}
+          />
           <BottomMenuModal
             visible={this.props.bottomModal}
             handler={() => VoteActions.handleBottomModal(false)}
@@ -262,6 +282,9 @@ class Vote extends Component {
           />
 
           <ScrollView
+            ref={ref => {
+              this.flatlistRef = ref;
+            }}
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="never"
           >
@@ -384,6 +407,7 @@ class Vote extends Component {
           />
         ) : null} */}
 
+            {/* {this.renderCreateReply} */}
             <WriteContainer>
               <TextInputContainer>
                 <TextInput
@@ -427,10 +451,12 @@ class Vote extends Component {
                     if (this.state.form == "reply") {
                       //댓글 작성
                       await VoteActions.createVoteReply(reply);
+                      this.renderAlertModal("댓글이 작성되었습니다.");
                     } else if (this.state.form == "update") {
                       //댓글 수정
                       reply.voteReplyIndex = this.state.replyIndex;
                       await VoteActions.updateVoteReply(reply);
+                      this.renderAlertModal("댓글이 수정되었습니다.");
                     } else {
                       //대댓글 작성
                       // reply.parentsVoteReplyIndex = this.state.parentIndex;
@@ -438,18 +464,22 @@ class Vote extends Component {
                     }
 
                     Keyboard.dismiss();
-                    const pro1 = this.setState({
+                    await VoteActions.pageListVoteReply(
+                      this.props.getVote.voteTopic.voteTopicIndex,
+                      0
+                    );
+                    if (this.state.form == "reply") {
+                      setTimeout(() => {
+                        this.flatlistRef.scrollToEnd();
+                      }, 500);
+                    }
+                    this.setState({
                       no_click: false,
                       form: "reply",
                       reply: "",
                       emoji: false,
                       selected_emoji: null
                     });
-                    const pro2 = VoteActions.pageListVoteReply(
-                      this.props.getVote.voteTopic.voteTopicIndex,
-                      0
-                    );
-                    Promise.all([pro1, pro2]);
                   }
                 }}
               />
@@ -495,6 +525,8 @@ export default connect(state => ({
   enable: state.vote.enable,
   bottomModal: state.vote.bottomModal,
   loading: state.vote.loading,
+  alertModal: state.vote.alertModal,
+  alertText: state.vote.alertText,
 
   dueDate: state.vote.dueDate,
   dueTime: state.vote.dueTime,

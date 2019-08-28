@@ -10,20 +10,16 @@ import {
 import Modal from "react-native-modal";
 import Swiper from "react-native-swiper";
 import { widthPercentageToDP } from "../../utils/util";
-import {
-  AlertModalView,
-  ImageModalFooterView,
-  ImageModalCloseView
-} from "./View";
-import { AlertText, ImageModalText } from "./Text";
-import { DefaultImage } from "./Image";
+import { ImageModalFooterView, ImageModalCloseView } from "./View";
+import { ImageModalText } from "./Text";
+import { Image28 } from "../../components/community/Image";
 
 const ImageModalClose = props => {
   if (props.close) {
     return (
       <ImageModalCloseView>
         <TouchableOpacity onPress={() => props.close()}>
-          <DefaultImage
+          <Image28
             source={require("../../../assets/image/community/close_white.png")}
           />
         </TouchableOpacity>

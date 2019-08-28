@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
@@ -110,28 +110,37 @@ export const TagView = styled.View`
 `;
 
 const BottomContainer = styled.View`
+  height: ${widthPercentageToDP(21)}
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 export const RestaurantItem = props => {
   const [state, setState] = useState({ isGood: props.data.isGood });
+  let menuStr = "";
+
+  props.data.restaurantPriorityMenus.map((item, index) => {
+    menuStr += item.name + " ";
+  });
+
   return (
     <RestaurantItemView
       onPress={async () => {
-        props.handler(props.data.restaurantIndex, setState);
+        props.loadingHandler(true);
+        props.navigation.navigate("RestaurantDetail", {
+          restaurantIndex: props.data.restaurantIndex,
+          likeHandler: setState,
+          index: props.index
+        });
       }}
     >
       <RestaurantImg source={{ uri: props.data.restaurantImage }} />
       <InfoContainer>
         <Name>{props.data.name}</Name>
-
-        <RowView>
-          {props.data.restaurantPriorityMenus.map((item, index) => {
-            return <MenuName key={`menu${index}`}>{item.name}</MenuName>;
-          })}
-        </RowView>
+        <MenuName ellipsizeMode={"tail"} numberOfLines={1}>
+          {menuStr}
+        </MenuName>
 
         <RowView>
           {props.data.restaurantTag.map((item, index) => {
@@ -142,7 +151,6 @@ export const RestaurantItem = props => {
             );
           })}
         </RowView>
-
         <BottomContainer>
           <RowView>
             <SmalltalkImg
@@ -154,10 +162,13 @@ export const RestaurantItem = props => {
             <ReplyCount>{props.data.restaurantReplyCount}</ReplyCount>
           </RowView>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
-              props.putlike(props.data.restaurantIndex, state.isGood);
               setState({ isGood: !state.isGood });
+              const good = new Object();
+              good.isGood = state.isgood == 1 ? 0 : 1;
+              good.restaurantIndex = props.data.restaurantIndex;
+              props.likeHandler(good);
             }}
           >
             <Image21
@@ -167,7 +178,7 @@ export const RestaurantItem = props => {
                   : require("../../../assets/image/community/heart.png")
               }
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </BottomContainer>
       </InfoContainer>
     </RestaurantItemView>

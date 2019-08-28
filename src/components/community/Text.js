@@ -14,20 +14,6 @@ export const C_Text = styled.Text`
 
 //community
 
-export const CategoryName = styled(C_Text)`
-  height: ${widthPercentageToDP(18)};
-  color: ${"#101010"};
-  margin-top: ${widthPercentageToDP(8)};
-  margin-bottom: ${widthPercentageToDP(6)};
-`;
-export const CategoryExplain = styled(C_Text)`
-  font-size: ${widthPercentageToDP(12)};
-  font-family: ${fonts.nanumBarunGothic};
-  width: ${widthPercentageToDP(200)};
-  height: ${widthPercentageToDP(13)};
-  color: ${"#646464"};
-`;
-
 export const WriterName = styled.Text`
   color: ${"#0c81ff"};
   font-size: ${widthPercentageToDP(10)};
