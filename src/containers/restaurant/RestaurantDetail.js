@@ -13,6 +13,7 @@ import { UIActivityIndicator } from "react-native-indicators";
 import Swiper from "react-native-swiper";
 import call from "react-native-communications";
 import { widthPercentageToDP } from "../../utils/util";
+import navigations from "../../utils/navigators";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
@@ -42,8 +43,6 @@ class RestaurantDetail extends Component {
       who: "me",
       isGood: null
     };
-
-    // this.MenuOrder();
   }
 
   async componentDidMount() {
@@ -55,11 +54,12 @@ class RestaurantDetail extends Component {
     });
 
     const promise1 = RestaurantActions.getRestaurant(
-      this.props.navigation.state.params.index
+      this.props.navigation.state.params.restaurantIndex
     );
     const promise2 = RestaurantActions.pageListRestaurantReply(
-      this.props.navigation.state.params.index
+      this.props.navigation.state.params.restaurantIndex
     );
+
     Promise.all([promise1, promise2]).then(() => {
       this.setState({ isGood: this.props.getRestaurant.isGood });
       this.MenuOrder();
@@ -72,13 +72,15 @@ class RestaurantDetail extends Component {
   }
 
   navigateRestaurant = () => {
-    this.props.navigation.navigate("Restaurant");
+    this.props.navigation.navigate("Restaurant", {
+      index: this.props.navigation.state.params.index
+    });
   };
 
   navigateRestaurantWrite = () => {
     this.props.navigation.navigate("RestaurantWrite", {
       form: this.state.form,
-      handler: this.props.navigation.state.params.handler,
+      handler: this.props.navigation.state.params.likeHandler,
       replyIndex: this.state.replyIndex
     });
   };
@@ -97,7 +99,7 @@ class RestaurantDetail extends Component {
     good.isGood = bool;
     good.restaurantIndex = this.props.getRestaurant.restaurantIndex;
     RestaurantActions.putRestaurantSubscriber(good);
-    this.props.navigation.state.params.handler(bool);
+    this.props.navigation.state.params.likeHandler(bool == 0 ? true : false);
   };
 
   render() {

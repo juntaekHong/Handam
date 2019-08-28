@@ -4,12 +4,23 @@ import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
-import { AlertModal } from "../../components/community/Modal";
 import { RestaurantItem, CategoryItem } from "../../components/restaurant/View";
 
 class Restaurant extends Component {
   constructor(props) {
     super(props);
+
+    didBlurSubscription = this.props.navigation.addListener(
+      "didFocus",
+      async payload => {
+        this.props.navigation.state.params.index != null
+          ? this.flatlistRef.scrollToIndex({
+              index: this.props.navigation.state.params.index,
+              viewPosition: 0.5
+            })
+          : null;
+      }
+    );
 
     this.state = {
       selected: 0,
@@ -25,25 +36,6 @@ class Restaurant extends Component {
       RestaurantActions.handleLoading(false);
     });
   }
-
-  navigateRestaurantDetail = (index, handler) => {
-    this.props.navigation.navigate("RestaurantDetail", {
-      index: index,
-      handler: handler
-    });
-  };
-
-  handler = async (index, handler) => {
-    RestaurantActions.handleLoading(true);
-    this.navigateRestaurantDetail(index, handler);
-  };
-
-  putlike = (index, isgood) => {
-    const good = new Object();
-    good.isGood = isgood == 1 ? 0 : 1;
-    good.restaurantIndex = index;
-    RestaurantActions.putRestaurantSubscriber(good);
-  };
 
   onreach = async () => {
     await this.setState({ loading: true });
@@ -68,10 +60,6 @@ class Restaurant extends Component {
     } else
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <AlertModal
-            visible={this.props.alertModal}
-            text={this.props.alertText}
-          />
           <FlatList
             horizontal={true}
             style={styles.category}
@@ -115,6 +103,9 @@ class Restaurant extends Component {
           />
 
           <FlatList
+            ref={ref => {
+              this.flatlistRef = ref;
+            }}
             style={styles.restaurant}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
@@ -129,9 +120,11 @@ class Restaurant extends Component {
             renderItem={({ item, index }) => {
               return (
                 <RestaurantItem
-                  handler={this.handler}
-                  putlike={this.putlike}
+                  navigation={this.props.navigation}
+                  loadingHandler={RestaurantActions.handleLoading}
+                  likeHandler={RestaurantActions.putRestaurantSubscriber}
                   data={item}
+                  index={index}
                 />
               );
             }}
@@ -160,8 +153,6 @@ const styles = StyleSheet.create({
 export default connect(state => ({
   categoryList: state.restaurant.categoryList,
   restaurantList: state.restaurant.restaurantList,
-  alertModal: state.restaurant.alertModal,
-  alertText: state.restaurant.alertText,
   total: state.restaurant.total,
   filter: state.restaurant.filter,
   loading: state.restaurant.loading

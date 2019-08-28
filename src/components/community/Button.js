@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, Image } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
-import { DefaultImage, DefaultImage2 } from "./Image";
+import { Image28, Image21 } from "./Image";
 
 export const BackBtn = props => {
   return (
@@ -10,9 +10,7 @@ export const BackBtn = props => {
       style={{ marginLeft: widthPercentageToDP(10) }}
       onPress={() => props.handler()}
     >
-      <DefaultImage
-        source={require("../../../assets/image/community/back.png")}
-      />
+      <Image28 source={require("../../../assets/image/community/back.png")} />
     </TouchableOpacity>
   );
 };
@@ -24,7 +22,7 @@ export const WriteButton = props => {
       onPress={() => props.handler()}
       disabled={props.no_click}
     >
-      <DefaultImage
+      <Image28
         source={require("../../../assets/image/community/reply_write.png")}
       />
     </TouchableOpacity>
@@ -39,7 +37,7 @@ export const AnonymousButton = props => {
         props.handler();
       }}
     >
-      <DefaultImage
+      <Image28
         source={
           props.anonymous == 0
             ? require("../../../assets/image/community/anonymous_off.png")
@@ -58,7 +56,7 @@ export const EmojiButton = props => {
         props.handler();
       }}
     >
-      <DefaultImage2
+      <Image21
         source={
           props.emoji == false
             ? require("../../../assets/image/community/emoji.png")

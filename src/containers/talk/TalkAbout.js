@@ -1,44 +1,49 @@
 import React, { Component } from "react";
 import {
-  View,
   StyleSheet,
-  ScrollView,
   RefreshControl,
-  Image,
   SafeAreaView,
-  TouchableOpacity,
   FlatList,
   BackHandler
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
-import { widthPercentageToDP } from "../../utils/util";
-import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
+import { WritePostBTN, SearchBTN } from "../../components/talk/Button";
 import {
-  WritePostBtn,
+  LineView,
   HotPostsListItem,
   PostsListItem,
-  ReportedPostsListItem
-} from "../../components/talk/Button";
-import { WritePostView, LineView } from "../../components/talk/View";
+  ReportedPostsListItem,
+  BottomLoading
+} from "../../components/talk/View";
 import { TitleView } from "../../components/community/View";
+import { AlertModal } from "../../components/community/Modal";
 
 class TalkAbout extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      loading: false,
+      refreshing: false,
+      alertModal: false,
+      alertText: null
+    };
+
     didBlurSubscription = this.props.navigation.addListener(
       "didFocus",
       async payload => {
         TalkActions.initGetPosts();
+        this.props.navigation.state.params.scrollIndex != undefined ||
+        this.props.navigation.state.params.scrollIndex != null
+          ? this.flatlistRef.scrollToIndex({
+              index: this.props.navigation.state.params.scrollIndex,
+              viewPosition: 0.5
+            })
+          : null;
       }
     );
-
-    this.state = {
-      loading: false,
-      refreshing: false
-    };
   }
 
   async componentDidMount() {
@@ -48,7 +53,7 @@ class TalkAbout extends Component {
     });
 
     await TalkActions.handleCategoryIndex(
-      this.props.navigation.state.params.index
+      this.props.navigation.state.params.categoryIndex
     );
     await TalkActions.handleFilter(
       `postsCategoryIndex eq ${this.props.categoryIndex}`
@@ -61,15 +66,16 @@ class TalkAbout extends Component {
     this.backHandler.remove();
   }
 
-  navigateBack = async () => {
+  navigateBack = () => {
     this.props.navigation.goBack();
   };
 
-  navigateTalkDetail = postsIndex => {
+  navigateTalkDetail = (postsIndex, index) => {
     TalkActions.handleLoading(true);
     this.props.navigation.navigate("TalkDetail", {
       from: "about",
-      postsIndex: postsIndex
+      postsIndex: postsIndex,
+      scrollIndex: index
     });
   };
 
@@ -88,8 +94,8 @@ class TalkAbout extends Component {
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 5 + 1,
-      5
+      this.props.postsList.length / 6 + 1,
+      6
     );
     await this.setState({ loading: false });
   };
@@ -109,8 +115,8 @@ class TalkAbout extends Component {
     const promise1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 5,
-      5
+      this.props.postsList.length / 6,
+      6
     );
 
     const promise2 = TalkActions.pageListPosts(
@@ -127,16 +133,19 @@ class TalkAbout extends Component {
   };
 
   renderAlertModal = rendertext => {
-    TalkActions.handleAlertModal(true);
-    TalkActions.handleAlertText(rendertext);
+    this.setState({ alertModal: true, alertText: rendertext });
+    // TalkActions.handleAlertModal(true);
+    // TalkActions.handleAlertText(rendertext);
     setTimeout(() => {
-      TalkActions.handleAlertModal(false);
+      this.setState({ alertModal: false });
+      // TalkActions.handleAlertModal(false);
     }, 1000);
   };
 
   renderListHeader = () => {
     return (
       <FlatList
+        scrollEnabled={false}
         style={{ backgroundColor: "#ffffff", width: "100%" }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
@@ -145,7 +154,7 @@ class TalkAbout extends Component {
           return (
             <HotPostsListItem
               handler={() => {
-                this.navigateTalkDetail(item.postsIndex);
+                this.navigateTalkDetail(item.postsIndex, null);
               }}
               data={item}
               index={index}
@@ -157,31 +166,7 @@ class TalkAbout extends Component {
   };
 
   renderListFooter = () => {
-    return this.state.loading ? (
-      <View style={styles.listFooterContainer}>
-        <UIActivityIndicator size={widthPercentageToDP(30)} color={"#727272"} />
-      </View>
-    ) : null;
-  };
-
-  renderSearchBtn = () => {
-    return (
-      <TouchableOpacity
-        onPress={async () => {
-          await TalkActions.initPostList();
-          this.navigateTalkSearch();
-        }}
-      >
-        <Image
-          style={{
-            width: widthPercentageToDP(21),
-            height: widthPercentageToDP(21),
-            marginRight: widthPercentageToDP(16)
-          }}
-          source={require("../../../assets/image/community/search.png")}
-        />
-      </TouchableOpacity>
-    );
+    return this.state.loading ? <BottomLoading /> : null;
   };
 
   _onRefresh = async () => {
@@ -196,25 +181,30 @@ class TalkAbout extends Component {
     } else
       return (
         <SafeAreaView style={styles.container}>
+          <AlertModal
+            visible={this.state.alertModal}
+            text={this.state.alertText}
+          />
           <TitleView
             titleName={
               this.props.categoryList[this.props.categoryIndex - 1].str
             }
             leftChild={true}
             handler={this.navigateBack}
-            rightChild={this.renderSearchBtn()}
-          />
-
-          <LineView />
-          {/* <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
+            rightChild={
+              <SearchBTN
+                navigation={async () => {
+                  await TalkActions.initPostList();
+                  this.navigateTalkSearch();
+                }}
               />
             }
-          > */}
+          />
+          <LineView />
           <FlatList
+            ref={ref => {
+              this.flatlistRef = ref;
+            }}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
@@ -222,7 +212,6 @@ class TalkAbout extends Component {
               />
             }
             style={styles.flatlist}
-            showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             onEndReachedThreshold={0.01}
             onEndReached={() => {
@@ -238,20 +227,17 @@ class TalkAbout extends Component {
                 return (
                   <PostsListItem
                     handler={() => {
-                      this.navigateTalkDetail(item.postsIndex);
+                      this.navigateTalkDetail(item.postsIndex, index);
                     }}
                     data={item}
                   />
                 );
               } else {
-                return <ReportedPostsListItem handler={() => {}} data={item} />;
+                return <ReportedPostsListItem data={item} />;
               }
             }}
           />
-          {/* </ScrollView> */}
-          <WritePostView>
-            <WritePostBtn handler={this.navigateTalkWrite} />
-          </WritePostView>
+          <WritePostBTN handler={this.navigateTalkWrite} />
         </SafeAreaView>
       );
   }
@@ -268,12 +254,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     width: "100%",
     height: "100%"
-  },
-  listFooterContainer: {
-    height: widthPercentageToDP(122),
-    width: widthPercentageToDP(375),
-    justifyContent: "center",
-    alignItems: "center"
   }
 });
 

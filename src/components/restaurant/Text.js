@@ -26,6 +26,7 @@ export const MenuName = styled.Text`
   color: ${"#404040"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
+  width: ${widthPercentageToDP(167)}
   margin-top: ${widthPercentageToDP(5)};
   margin-bottom: ${widthPercentageToDP(16)};
   margin-right: ${widthPercentageToDP(5)};
