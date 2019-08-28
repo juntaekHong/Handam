@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import {
   widthPercentageToDP,
@@ -11,8 +11,6 @@ import { HCenterView, CenterView } from "../../common/View";
 import { NBGBText, NBGText } from "../../common/Text";
 import colors from "../../../configs/colors";
 import { connect } from "react-redux";
-import { UIActivityIndicator } from "react-native-indicators";
-import LottieView from "lottie-react-native";
 
 const CertificateButton = styled(ButtonStyle)`
 width: ${widthPercentageToDP(128)}
@@ -59,7 +57,8 @@ const TodayLecture = ({
   schedule_loading,
   goCertificate,
   day,
-  loadSchedule
+  loadSchedule,
+  Loading
 }) => {
   if (hansunginfo === null) {
     return (
@@ -89,30 +88,12 @@ const TodayLecture = ({
       <HCenterView>
         <View
           style={{
-            width: widthPercentageToDP(71),
-            height: widthPercentageToDP(71),
-            marginTop: widthPercentageToDP(31.5),
-            marginBottom: widthPercentageToDP(11)
+            width: widthPercentageToDP(82),
+            height: widthPercentageToDP(82),
+            marginTop: widthPercentageToDP(20.5)
           }}
         >
-          {/* <LottieView
-            style={{
-              width: widthPercentageToDP(82),
-              height: widthPercentageToDP(82)
-            }}
-            source={require("HandamProject/assets/animation/loading.json")}
-            autoPlay={false}
-            loop={true}
-            useNativeDriver={true}
-          /> */}
-          <Image
-            style={{
-              width: widthPercentageToDP(71),
-              height: widthPercentageToDP(71)
-            }}
-            source={require("HandamProject/assets/animation/loading.gif")}
-          />
-          {/* <UIActivityIndicator color={"grey"} size={widthPercentageToDP(40)} /> */}
+          {Loading}
         </View>
         <NBGText
           fontSize={12}
