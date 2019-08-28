@@ -77,14 +77,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f8f8',
     },
     profile: {
-        marginTop: widthPercentageToDP(6),
+        marginTop: widthPercentageToDP(3),
         width: widthPercentageToDP(60),
         height: widthPercentageToDP(60),
-        borderRadius: widthPercentageToDP(27.5)
+        borderRadius: widthPercentageToDP(30),
     },
     nonProfile: {
-        // position: "absolute",
-        // top: widthPercentageToDP(-6),
+        position: 'relative',
+        bottom: widthPercentageToDP(3),
         width: widthPercentageToDP(72),
         height: widthPercentageToDP(72),
         borderRadius: widthPercentageToDP(27.5),
