@@ -1,228 +1,201 @@
 import React from "react";
-import { View, Text } from "react-native";
 import styled from "styled-components/native";
-import fonts from "../../configs/fonts";
-import { widthPercentageToDP, timeSince } from "../../utils/util";
-import { HotView, HotPostView, BottomContainer, ImageContainer } from "./View";
-import {
-  NumText,
-  HotText,
-  TitleText,
-  ContentText,
-  CreatedAtText,
-  ImageCountText,
-  ReportText,
-  WriteText
-} from "./Text";
-import { ImageImage, LikeImage, ReplyImage, WriteImage } from "./Image";
+import { widthPercentageToDP } from "../../utils/util";
+import { WriteText, ScrapText, GoodCount, SearchCancel } from "./Text";
+import { WriteIMG, SearchIMG, ScrapIMG, LikeIMG2, AddedImage } from "./Image";
+import { RowView } from "./View";
+import { Image28 } from "../community/Image";
 
-const HotPost = styled.TouchableOpacity`
-  flex-direction: row;
-  width: ${widthPercentageToDP(375)};
-  height: ${widthPercentageToDP(81)};
-  border-bottom-width: ${widthPercentageToDP(1)};
-  border-bottom-color: ${"#dbdbdb"};
-`;
+//Common
 
-const Post = styled(HotPost)`
-  flex-direction: column;
-  padding-horizontal: ${widthPercentageToDP(16)};
-  padding-vertical: ${widthPercentageToDP(13)};
-`;
+const BTN = styled.TouchableOpacity``;
 
-const WritePost = styled.TouchableOpacity`
+//TalkAbout.js
+
+export const WritePostView = styled.View`
+  position: absolute;
   width: ${widthPercentageToDP(87)};
-  height: ${widthPercentageToDP(37)};
+  height: ${widthPercentageToDP(50)};
+  padding-bottom: ${widthPercentageToDP(15)};
+`;
+
+export const WritePost = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 `;
 
-export const HotPostsListItem = props => {
+export const WritePostBTN = props => {
   return (
-    <HotPost onPress={() => props.handler()}>
-      <View
-        style={{
-          width: widthPercentageToDP(35),
-          height: widthPercentageToDP(81),
-          justifyContent: "center",
-          alignItems: "center"
+    <WritePostView>
+      <WritePost
+        onPress={() => {
+          props.handler();
         }}
       >
-        <NumText>{props.index + 1}</NumText>
-      </View>
-      <View
-        style={{
-          width: widthPercentageToDP(340),
-          paddingRight: widthPercentageToDP(16)
-        }}
-      >
-        <HotPostView>
-          <TitleText ellipsizeMode={"tail"} numberOfLines={1}>
-            {props.data.title}
-          </TitleText>
-          <HotView>
-            <HotText>HOT</HotText>
-          </HotView>
-        </HotPostView>
-        <ContentText ellipsizeMode={"tail"} numberOfLines={1}>
-          {props.data.content}
-        </ContentText>
-        <BottomContainer>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{
-                color: "#646464",
-                fontSize: widthPercentageToDP(11),
-                fontFamily: fonts.nanumBarunGothicB,
-                marginRight: widthPercentageToDP(4)
-              }}
-            >
-              {props.data.displayName}
-            </Text>
-            <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
-          </View>
-          <ImageContainer>
-            <ImageImage
-              source={require("../../../assets/image/community/images.png")}
-            />
-            <ImageCountText>{props.data.imageCount}</ImageCountText>
-            <LikeImage
-              source={require("../../../assets/image/community/likes.png")}
-            />
-            <ImageCountText>{props.data.goodCount}</ImageCountText>
-            <ReplyImage
-              source={require("../../../assets/image/community/replys.png")}
-            />
-            <ImageCountText>{props.data.postsReplyCount}</ImageCountText>
-          </ImageContainer>
-        </BottomContainer>
-      </View>
-    </HotPost>
+        <WriteIMG
+          source={require("../../../assets/image/community/write.png")}
+        />
+        <WriteText>글쓰기</WriteText>
+      </WritePost>
+    </WritePostView>
   );
 };
 
-export const PostsListItem = props => {
+export const SearchBTN = props => {
   return (
-    <Post onPress={() => props.handler()}>
-      <TitleText ellipsizeMode={"tail"} numberOfLines={1}>
-        {props.data.title}
-      </TitleText>
-      <ContentText ellipsizeMode={"tail"} numberOfLines={1}>
-        {props.data.content}
-      </ContentText>
-      <BottomContainer>
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              color: "#646464",
-              fontSize: widthPercentageToDP(11),
-              fontFamily: fonts.nanumBarunGothicB,
-              marginRight: widthPercentageToDP(4)
-            }}
-          >
-            {props.data.displayName}
-          </Text>
-          <CreatedAtText>{timeSince(props.data.createdAt)}</CreatedAtText>
-        </View>
-        <ImageContainer>
-          <ImageImage
-            source={require("../../../assets/image/community/images.png")}
-          />
-          <ImageCountText>{props.data.imageCount}</ImageCountText>
-          <LikeImage
-            source={require("../../../assets/image/community/likes.png")}
-          />
-          <ImageCountText>{props.data.goodCount}</ImageCountText>
-          <ReplyImage
-            source={require("../../../assets/image/community/replys.png")}
-          />
-          <ImageCountText>{props.data.postsReplyCount}</ImageCountText>
-        </ImageContainer>
-      </BottomContainer>
-    </Post>
+    <BTN
+      onPress={() => {
+        props.navigation();
+      }}
+    >
+      <SearchIMG
+        source={require("../../../assets/image/community/search.png")}
+      />
+    </BTN>
   );
 };
 
-export const ReportedPostsListItem = props => {
-  return (
-    <Post onPress={() => props.handler()}>
-      <TitleText
-        style={{
-          opacity: 0.2
-        }}
-        ellipsizeMode={"tail"}
-        numberOfLines={1}
-      >
-        {props.data.title}
-      </TitleText>
-      <ContentText
-        style={{
-          opacity: 0.2
-        }}
-        ellipsizeMode={"tail"}
-        numberOfLines={1}
-      >
-        {props.data.content}
-      </ContentText>
-      <BottomContainer>
-        <ReportText>* 신고된 게시글입니다.</ReportText>
-        <ImageContainer>
-          <ImageImage
-            style={{
-              opacity: 0.3
-            }}
-            source={require("../../../assets/image/community/images.png")}
-          />
-          <ImageCountText
-            style={{
-              opacity: 0.2
-            }}
-          >
-            {props.data.imageCount}
-          </ImageCountText>
-          <LikeImage
-            style={{
-              opacity: 0.3
-            }}
-            source={require("../../../assets/image/community/likes.png")}
-          />
-          <ImageCountText
-            style={{
-              opacity: 0.2
-            }}
-          >
-            {props.data.goodCount}
-          </ImageCountText>
-          <ReplyImage
-            style={{
-              opacity: 0.3
-            }}
-            source={require("../../../assets/image/community/replys.png")}
-          />
-          <ImageCountText
-            style={{
-              opacity: 0.2
-            }}
-          >
-            {props.data.postsReplyCount}
-          </ImageCountText>
-        </ImageContainer>
-      </BottomContainer>
-    </Post>
-  );
-};
+//TalkDetail.js
 
-export const WritePostBtn = props => {
+const ScrapView = styled.TouchableOpacity`
+  width: ${widthPercentageToDP(62.5)};
+  height: ${widthPercentageToDP(22)};
+  justify-content: center;
+  align-items: center;
+  border-radius: ${widthPercentageToDP(20)};
+  border-color: ${"#9e9e9e"};
+  border-width: ${widthPercentageToDP(1)};
+`;
+
+export const ScrapBTN = props => {
   return (
-    <WritePost
+    <ScrapView
       onPress={() => {
         props.handler();
       }}
     >
-      <WriteImage
-        source={require("../../../assets/image/community/write.png")}
+      <RowView>
+        <ScrapIMG
+          source={
+            props.isScrap == false
+              ? require("../../../assets/image/community/star.png")
+              : require("../../../assets/image/community/star_color.png")
+          }
+        />
+        <ScrapText>스크랩</ScrapText>
+      </RowView>
+    </ScrapView>
+  );
+};
+
+const DotsView = styled.TouchableOpacity`
+  margin-horizontal: ${widthPercentageToDP(4)};
+`;
+
+export const DotsBTN = props => {
+  return (
+    <DotsView
+      onPress={() => {
+        props.handler();
+      }}
+    >
+      <Image28 source={require("../../../assets/image/community/dots.png")} />
+    </DotsView>
+  );
+};
+
+const LikeView = styled.TouchableOpacity`
+  flex-direction: row;
+  width: ${widthPercentageToDP(40)};
+  height: ${widthPercentageToDP(22)};
+  justify-content: center;
+  align-items: center;
+  border-radius: ${widthPercentageToDP(20)};
+  border-color: ${"#9e9e9e"};
+  border-width: ${widthPercentageToDP(1)};
+`;
+
+export const LikeBTN = props => {
+  return (
+    <LikeView
+      onPress={() => {
+        props.handler();
+      }}
+    >
+      <LikeIMG2
+        source={
+          props.isGood == true
+            ? require("../../../assets/image/community/likes_color.png")
+            : require("../../../assets/image/community/likes.png")
+        }
       />
-      <WriteText>글쓰기</WriteText>
-    </WritePost>
+      <GoodCount>{props.goodCount}</GoodCount>
+    </LikeView>
+  );
+};
+
+//TalkSearch.js
+
+export const SearchCancelBTN = props => {
+  return (
+    <BTN onPress={() => props.handler()}>
+      <SearchCancel>취소</SearchCancel>
+    </BTN>
+  );
+};
+
+//TalkWrite.js
+
+const ImageAdd = styled.TouchableOpacity`
+  margin-left: ${widthPercentageToDP(16)};
+  margin-right: ${widthPercentageToDP(10)};
+`;
+
+export const ImageAddBTN = props => {
+  return (
+    <ImageAdd onPress={() => props.handler()}>
+      <Image28 source={require("../../../assets/image/community/image.png")} />
+    </ImageAdd>
+  );
+};
+
+export const AnonymousBTN = props => {
+  return (
+    <BTN
+      onPress={async () => {
+        props.anonymous == 0
+          ? await this.setState({ anonymous: 1 })
+          : await this.setState({ anonymous: 0 });
+      }}
+    >
+      <Image28
+        source={
+          props.anonymous == 0
+            ? require("../../../assets/image/community/anonymous_off.png")
+            : require("../../../assets/image/community/anonymous_on.png")
+        }
+      />
+    </BTN>
+  );
+};
+
+export const ImageBTN = props => {
+  return (
+    <BTN
+      onPress={() => {
+        props.handler();
+      }}
+    >
+      <AddedImage
+        resizeMode={"cover"}
+        source={
+          typeof props.data == "string"
+            ? { uri: `${props.data}` }
+            : {
+                uri: `data:${props.data.mime};base64,${props.data.data}`
+              }
+        }
+      />
+    </BTN>
   );
 };

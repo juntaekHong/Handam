@@ -8,7 +8,6 @@ import {
   TextInput,
   Text,
   ScrollView,
-  Image,
   FlatList,
   Platform,
   BackHandler
@@ -19,11 +18,9 @@ import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 import ImageCropPicker from "react-native-image-crop-picker";
-import {
-  CustomModalBlackText,
-  AnonymousOFFText,
-  AnonymousONText
-} from "../../components/talk/Text";
+import { WriteBottom } from "../../components/talk/View";
+import { ImageBTN } from "../../components/talk/Button";
+import { CustomModalBlackText } from "../../components/talk/Text";
 import { TitleView } from "../../components/community/View";
 import { CustomModal } from "../../components/common/Modal";
 import { AlertModal } from "../../components/community/Modal";
@@ -299,13 +296,7 @@ class TalkWrite extends Component {
               <View style={styles.line} />
               <View style={styles.titleContainer}>
                 <TextInput
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(335),
-                    // height: util.widthPercentageToDP(20),
-                    fontSize: widthPercentageToDP(16),
-                    padding: 0
-                  }}
+                  style={styles.titleinput}
                   underlineColorAndroid="transparent"
                   onChangeText={title => this.setState({ title })}
                   placeholder={"제목"}
@@ -321,14 +312,7 @@ class TalkWrite extends Component {
               <View style={styles.line} />
               <View style={styles.contentContainer}>
                 <TextInput
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(335),
-                    //height: util.widthPercentageToDP(20),
-                    fontSize: widthPercentageToDP(16),
-                    padding: 0,
-                    textAlignVertical: "top"
-                  }}
+                  style={styles.contentinput}
                   underlineColorAndroid="transparent"
                   onChangeText={content => this.setState({ content })}
                   value={this.state.content}
@@ -342,50 +326,23 @@ class TalkWrite extends Component {
               </View>
               {this.state.imageArray.length != 0 ? (
                 <FlatList
-                  style={{
-                    flexGrow: 1,
-                    backgroundColor: "#ffffff",
-                    width: "100%",
-                    height: "100%",
-                    marginTop: widthPercentageToDP(43),
-                    paddingHorizontal: widthPercentageToDP(16)
-                  }}
+                  style={styles.imagelist}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   keyExtractor={(item, index) => index.toString()}
-                  ListHeaderComponent={this.renderListHeader}
-                  ListFooterComponent={this.renderListFooter}
                   data={this.state.imageArray}
                   renderItem={({ item, index }) => {
                     return (
-                      <View>
-                        <TouchableOpacity
-                          onPress={() => {
-                            this.setState({
-                              deletemodal: true,
-                              imageinfo: item,
-                              imageindex: index
-                            });
-                          }}
-                        >
-                          <Image
-                            style={{
-                              width: widthPercentageToDP(95),
-                              height: widthPercentageToDP(95),
-                              marginRight: widthPercentageToDP(10),
-                              borderRadius: widthPercentageToDP(4)
-                            }}
-                            resizeMode={"cover"}
-                            source={
-                              typeof item == "string"
-                                ? { uri: `${item}` }
-                                : {
-                                    uri: `data:${item.mime};base64,${item.data}`
-                                  }
-                            }
-                          />
-                        </TouchableOpacity>
-                      </View>
+                      <ImageBTN
+                        data={item}
+                        handler={() => {
+                          this.setState({
+                            deletemodal: true,
+                            imageinfo: item,
+                            imageindex: index
+                          });
+                        }}
+                      />
                     );
                   }}
                 />
@@ -393,82 +350,11 @@ class TalkWrite extends Component {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <View
-          style={{
-            flexDirection: "row",
-            width: widthPercentageToDP(375),
-            height: widthPercentageToDP(58),
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
-              style={{
-                marginLeft: widthPercentageToDP(16),
-                marginRight: widthPercentageToDP(10)
-              }}
-              onPress={() => this.onClickSelectPicture()}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={require("../../../assets/image/community/image.png")}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: "#c3c3c3",
-                fontSize: widthPercentageToDP(13),
-                fontFamily: fonts.nanumBarunGothic
-              }}
-            >
-              사진추가 {this.state.imageNumber}/5 최대 10MB
-            </Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
-              onPress={async () => {
-                this.state.anonymous == 0
-                  ? await this.setState({ anonymous: 1 })
-                  : await this.setState({ anonymous: 0 });
-              }}
-            >
-              <Image
-                style={{
-                  width: widthPercentageToDP(28),
-                  height: widthPercentageToDP(28)
-                }}
-                source={
-                  this.state.anonymous == 0
-                    ? require("../../../assets/image/community/anonymous_off.png")
-                    : require("../../../assets/image/community/anonymous_on.png")
-                }
-              />
-            </TouchableOpacity>
-            {this.state.anonymous == 0 ? (
-              <AnonymousOFFText
-                style={{
-                  marginRight: widthPercentageToDP(18),
-                  marginLeft: widthPercentageToDP(2)
-                }}
-              >
-                익명
-              </AnonymousOFFText>
-            ) : (
-              <AnonymousONText
-                style={{
-                  marginRight: widthPercentageToDP(18),
-                  marginLeft: widthPercentageToDP(2)
-                }}
-              >
-                익명
-              </AnonymousONText>
-            )}
-          </View>
-        </View>
+        <WriteBottom
+          imageNum={this.state.imageNumber}
+          anonymous={this.state.anonymous}
+          addImage={this.onClickSelectPicture}
+        />
       </SafeAreaView>
     );
   }
@@ -508,16 +394,37 @@ const styles = StyleSheet.create({
     marginVertical: widthPercentageToDP(20),
     marginHorizontal: widthPercentageToDP(16)
   },
+  titleinput: {
+    color: "#000000",
+    width: widthPercentageToDP(335),
+    fontSize: widthPercentageToDP(16),
+    padding: 0
+  },
   contentContainer: {
     width: widthPercentageToDP(343),
     height: widthPercentageToDP(295),
     marginTop: widthPercentageToDP(20),
     marginHorizontal: widthPercentageToDP(16)
   },
+  contentinput: {
+    color: "#000000",
+    width: widthPercentageToDP(335),
+    fontSize: widthPercentageToDP(16),
+    padding: 0,
+    textAlignVertical: "top"
+  },
   line: {
     backgroundColor: "#dbdbdb",
     width: widthPercentageToDP(375),
     height: widthPercentageToDP(1)
+  },
+  imagelist: {
+    flexGrow: 1,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: "100%",
+    marginTop: widthPercentageToDP(43),
+    paddingHorizontal: widthPercentageToDP(16)
   }
 });
 

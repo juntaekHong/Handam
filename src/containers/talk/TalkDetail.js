@@ -15,24 +15,24 @@ import {
   BackHandler
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
-import Hyperlink from "react-native-hyperlink";
 import { widthPercentageToDP, timeSince } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
-import {
-  ReplyView,
-  Re_ReplyView,
-  ReportDetailBody
-} from "../../components/community/View";
+import { Top, Center, Bottom } from "../../components/talk/View";
 import {
   CustomModalText,
   CustomModalBlackText,
   AnonymousOFFText,
   AnonymousONText
 } from "../../components/talk/Text";
-import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { ImageModal } from "../../components/talk/Modal";
+import {
+  ReplyView,
+  Re_ReplyView,
+  ReportDetailBody
+} from "../../components/community/View";
+import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import {
   WriteContainer,
   TextInputContainer,
@@ -186,7 +186,7 @@ class TalkDetail extends Component {
     TalkActions.getPosts(this.props.getPosts.postsIndex);
   };
 
-  deletePostsReply = async () => {
+  deleteReply = async () => {
     await TalkActions.deletePostsReply(this.state.replyIndex);
     TalkActions.pageListPostsReply(
       "page=1&count=100",
@@ -194,7 +194,7 @@ class TalkDetail extends Component {
     );
   };
 
-  updatePostsReply = async () => {
+  updateReply = async () => {
     await this.setState({
       form: "update",
       reply: this.state.temp_reply
@@ -239,11 +239,7 @@ class TalkDetail extends Component {
     }
   };
 
-  header = () => {
-    return <View style={{ width: widthPercentageToDP(10) }} />;
-  };
-
-  footer = () => {
+  space = () => {
     return <View style={{ width: widthPercentageToDP(10) }} />;
   };
 
@@ -265,8 +261,8 @@ class TalkDetail extends Component {
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             data={imageData}
-            ListHeaderComponent={imageData.length == 1 ? null : this.header}
-            ListFooterComponent={imageData.length == 1 ? null : this.footer}
+            ListHeaderComponent={imageData.length == 1 ? null : this.space}
+            ListFooterComponent={imageData.length == 1 ? null : this.space}
             renderItem={({ item, index }) => {
               const concept = item.substr(
                 item.lastIndexOf(".") + 1,
@@ -328,12 +324,7 @@ class TalkDetail extends Component {
     return this.props.replysList.length == 0 ? null : (
       <FlatList
         scrollEnabled={false}
-        style={{
-          flexGrow: 1,
-          width: "100%",
-          height: "100%",
-          padding: widthPercentageToDP(16)
-        }}
+        style={styles.replylist}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         data={this.props.replysList}
@@ -367,7 +358,7 @@ class TalkDetail extends Component {
                 data={item}
                 writerName={this.props.getPosts.userNickName}
               />
-              {/* 대댓글 */}
+              {/* 답글 */}
               {item.childReplies.length != 0
                 ? item.childReplies.map((item2, index) => {
                     return (
@@ -437,7 +428,7 @@ class TalkDetail extends Component {
             updateHandler={
               this.state.type == "posts"
                 ? this.navigateTalkWrite
-                : this.updatePostsReply
+                : this.updateReply
             }
             deleteHandler={() => this.setState({ deletemodal: true })}
             reportHandler={() => this.setState({ detailmodal: true })}
@@ -475,7 +466,7 @@ class TalkDetail extends Component {
             footerHandler={() => {
               this.state.type == "posts"
                 ? this.deletePost()
-                : this.deletePostsReply();
+                : this.deleteReply();
               this.setState({ deletemodal: false });
             }}
             closeHandler={() => this.setState({ deletemodal: false })}
@@ -575,227 +566,40 @@ class TalkDetail extends Component {
                 paddingLeft: widthPercentageToDP(16)
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center"
+              <Top
+                isScrap={this.state.isScrap}
+                data={this.props.getPosts}
+                handleScrap={() => this.setState({ scrapmodal: true })}
+                handleDots={() => {
+                  this.checkUser(this.props.getPosts.userNickName);
+                  this.setState({ type: "posts" });
+                  TalkActions.handleBottomModal(true);
                 }}
-              >
-                <View style={{ flexDirection: "row" }}>
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(19.3),
-                      height: widthPercentageToDP(11.9)
-                    }}
-                    source={require("../../../assets/image/community/quotation_color.png")}
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(12),
-                      fontFamily: fonts.nanumBarunGothicB,
-                      marginLeft: widthPercentageToDP(6),
-                      paddingBottom: 0,
-                      marginBottom: 0
-                    }}
-                  >
-                    {this.props.getPosts.displayName}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#929292",
-                      fontSize: widthPercentageToDP(8),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4),
-                      marginTop:
-                        Platform.OS == "ios"
-                          ? widthPercentageToDP(4)
-                          : widthPercentageToDP(3)
-                    }}
-                  >
-                    {timeSince(this.props.getPosts.createdAt)}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <TouchableOpacity
-                    style={{
-                      width: widthPercentageToDP(62.5),
-                      height: widthPercentageToDP(22),
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: widthPercentageToDP(20),
-                      borderColor: "#9e9e9e",
-                      borderWidth: widthPercentageToDP(1)
-                    }}
-                    onPress={async () => {
-                      this.setState({ scrapmodal: true });
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <Image
-                        style={{
-                          width: widthPercentageToDP(10.3),
-                          height: widthPercentageToDP(10.3)
-                        }}
-                        source={
-                          this.state.isScrap == false
-                            ? require("../../../assets/image/community/star.png")
-                            : require("../../../assets/image/community/star_color.png")
-                        }
-                      />
-                      <Text
-                        style={{
-                          color: "#171717",
-                          fontSize: widthPercentageToDP(11),
-                          fontFamily: fonts.nanumBarunGothic,
-                          marginLeft: widthPercentageToDP(4),
-                          marginTop: widthPercentageToDP(2)
-                        }}
-                      >
-                        스크랩
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ marginHorizontal: widthPercentageToDP(4) }}
-                    onPress={async () => {
-                      this.checkUser(this.props.getPosts.userNickName);
-                      this.setState({ type: "posts" });
-                      TalkActions.handleBottomModal(true);
-                    }}
-                  >
-                    <Image
-                      style={{
-                        width: widthPercentageToDP(28),
-                        height: widthPercentageToDP(28)
-                      }}
-                      source={require("../../../assets/image/community/dots.png")}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <Text
-                style={{
-                  color: "#000000",
-                  width: widthPercentageToDP(343),
-                  fontSize: widthPercentageToDP(16),
-                  fontFamily: fonts.nanumBarunGothicB,
-                  marginTop: widthPercentageToDP(15)
-                }}
-                numberOfLines={1}
-                ellipsizeMode={"tail"}
-              >
-                {this.props.getPosts.title}
-              </Text>
-              <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
-                <Text
-                  style={{
-                    color: "#000000",
-                    width: widthPercentageToDP(343),
-                    fontSize: widthPercentageToDP(13),
-                    fontFamily: fonts.nanumBarunGothic,
-                    marginTop: widthPercentageToDP(7)
-                  }}
-                >
-                  {this.props.getPosts.content}
-                </Text>
-              </Hyperlink>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: widthPercentageToDP(33),
-                  marginBottom: widthPercentageToDP(12)
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    width: widthPercentageToDP(40),
-                    height: widthPercentageToDP(22),
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: widthPercentageToDP(20),
-                    borderColor: "#9e9e9e",
-                    borderWidth: widthPercentageToDP(1)
-                  }}
-                  onPress={async () => {
-                    var posts = new Object();
-                    posts.postsIndex = this.props.getPosts.postsIndex;
-                    posts.isGood = this.state.isGood == true ? 0 : 1; //좋아요:1 취소:0
+              />
+              <Center data={this.props.getPosts} />
+              <Bottom
+                isGood={this.state.isGood}
+                goodCount={this.state.goodCount}
+                data={this.props.getPosts}
+                handleLike={async () => {
+                  const posts = new Object();
+                  posts.postsIndex = this.props.getPosts.postsIndex;
+                  posts.isGood = this.state.isGood == true ? 0 : 1; //좋아요:1 취소:0
 
-                    TalkActions.putPostsSubscriber(posts);
-                    this.state.isGood == true
-                      ? await this.setState({
-                          isGood: false,
-                          goodCount: this.state.goodCount - 1
-                        })
-                      : await this.setState({
-                          isGood: true,
-                          goodCount: this.state.goodCount + 1
-                        });
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(8.5),
-                      height: widthPercentageToDP(10.2)
-                    }}
-                    source={
-                      this.state.isGood == true
-                        ? require("../../../assets/image/community/likes_color.png")
-                        : require("../../../assets/image/community/likes.png")
-                    }
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4)
-                    }}
-                  >
-                    {this.state.goodCount}
-                  </Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: widthPercentageToDP(40),
-                    height: widthPercentageToDP(22),
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: widthPercentageToDP(8),
-                    borderRadius: widthPercentageToDP(20),
-                    borderColor: "#9e9e9e",
-                    borderWidth: widthPercentageToDP(1)
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: widthPercentageToDP(10.2),
-                      height: widthPercentageToDP(10)
-                    }}
-                    source={require("../../../assets/image/community/replys.png")}
-                  />
-                  <Text
-                    style={{
-                      color: "#171717",
-                      fontSize: widthPercentageToDP(11),
-                      fontFamily: fonts.nanumBarunGothic,
-                      marginLeft: widthPercentageToDP(4)
-                    }}
-                  >
-                    {this.props.getPosts.postsReplyCount}
-                  </Text>
-                </View>
-              </View>
+                  TalkActions.putPostsSubscriber(posts);
+                  this.state.isGood == true
+                    ? await this.setState({
+                        isGood: false,
+                        goodCount: this.state.goodCount - 1
+                      })
+                    : await this.setState({
+                        isGood: true,
+                        goodCount: this.state.goodCount + 1
+                      });
+                }}
+              />
             </View>
-
             {this.renderImages()}
-
             {this.renderReplyList()}
           </ScrollView>
 
@@ -917,6 +721,12 @@ class TalkDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  replylist: {
+    flexGrow: 1,
+    width: "100%",
+    height: "100%",
+    padding: widthPercentageToDP(16)
   },
   image_single: {
     width: widthPercentageToDP(375),

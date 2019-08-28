@@ -15,7 +15,7 @@ import {
   C_ReportText,
   C_LikeText
 } from "./Text";
-import { DefaultImage, SelectedEmojiImage, C_LikeImage } from "./Image";
+import { Image28, SelectedEmojiImage, C_LikeImage } from "./Image";
 import { BackBtn, C_ReplyButton, C_LikeButton } from "./Button";
 import ImageCapInset from "rn-imagecapinsets";
 
@@ -116,7 +116,7 @@ export const SelectedEmojiView = props => {
         }}
         onPress={() => props.handler()}
       >
-        <DefaultImage
+        <Image28
           source={require("../../../assets/image/community/close_white.png")}
         />
       </TouchableOpacity>
@@ -225,9 +225,7 @@ renderDotButton = props => {
   if (props.isdotsButton == true) {
     return (
       <TouchableOpacity onPress={() => props.handler()}>
-        <DefaultImage
-          source={require("../../../assets/image/community/dots.png")}
-        />
+        <Image28 source={require("../../../assets/image/community/dots.png")} />
       </TouchableOpacity>
     );
   }
@@ -445,7 +443,7 @@ export const Re_ReplyView = props => {
               style={{ marginTop: widthPercentageToDP(5) }}
               onPress={() => props.handler()}
             >
-              <DefaultImage
+              <Image28
                 source={require("../../../assets/image/community/dots.png")}
               />
             </TouchableOpacity>
@@ -529,7 +527,7 @@ export const Re_ReplyView = props => {
               </C_CreatedAtText>
             </View>
             <TouchableOpacity>
-              <DefaultImage
+              <Image28
                 source={require("../../../assets/image/community/dots.png")}
               />
             </TouchableOpacity>
@@ -588,7 +586,7 @@ export const ReportDetailBody = props => {
             }}
           >
             <TouchableOpacity onPress={() => props.handler(index)}>
-              <DefaultImage
+              <Image28
                 source={
                   props.reportEUindex == index
                     ? require("../../../assets/image/community/check_on.png")
