@@ -35,7 +35,8 @@ class TalkAbout extends Component {
       "didFocus",
       async payload => {
         TalkActions.initGetPosts();
-        this.props.navigation.state.params.scrollIndex != undefined
+        this.props.navigation.state.params.scrollIndex != undefined ||
+        this.props.navigation.state.params.scrollIndex != null
           ? this.flatlistRef.scrollToIndex({
               index: this.props.navigation.state.params.scrollIndex,
               viewPosition: 0.5

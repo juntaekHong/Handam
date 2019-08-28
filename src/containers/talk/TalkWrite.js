@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   View,
   TouchableOpacity,
+  Image,
   TextInput,
   Text,
   ScrollView,
@@ -69,11 +70,18 @@ class TalkWrite extends Component {
 
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      this.navigateTalkDetail();
+      this.navigateBack();
       return true;
     });
   }
 
+  navigateBack = () => {
+    if (this.props.navigation.state.params.form == "write") {
+      this.navigateTalkAbout();
+    } else {
+      this.navigateTalkDetail();
+    }
+  };
   navigateTalkDetail = () => {
     this.props.navigation.navigate("TalkDetail", {
       from: "write"
@@ -81,7 +89,7 @@ class TalkWrite extends Component {
   };
 
   navigateTalkAbout = () => {
-    this.props.navigation.navigate("TalkAbout");
+    this.props.navigation.navigate("TalkAbout", { scrollIndex: undefined });
   };
 
   checkSpace = str => {
@@ -110,11 +118,11 @@ class TalkWrite extends Component {
         //이미지 총 합이 10MB보다 작으면
         await this.state.imageArray.push(image);
         await this.setState({ imageNumber: this.state.imageNumber + 1 });
+        this.renderAlertModal("선택하신 이미지가 첨부되었습니다.");
       } else {
         this.setState({ imageSize: this.state.imageSize - image.size });
+        this.renderAlertModal("이미지 용량이 10MB를 초과합니다.");
       }
-
-      this.renderAlertModal("선택하신 이미지가 첨부되었습니다.");
     } catch (err) {
       // err.code : E_PICKER_CANCELLED,
       console.log(err);
@@ -280,7 +288,7 @@ class TalkWrite extends Component {
         <TitleView
           titleName={"글쓰기"}
           leftChild={true}
-          handler={this.navigateTalkDetail}
+          handler={this.navigateBack}
           rightChild={this.renderSubmit()}
         />
         <KeyboardAvoidingView
@@ -324,32 +332,39 @@ class TalkWrite extends Component {
                   multiline={true}
                 />
               </View>
-              {this.state.imageArray.length != 0 ? (
-                <FlatList
-                  style={styles.imagelist}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  keyExtractor={(item, index) => index.toString()}
-                  data={this.state.imageArray}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <ImageBTN
-                        data={item}
-                        handler={() => {
-                          this.setState({
-                            deletemodal: true,
-                            imageinfo: item,
-                            imageindex: index
-                          });
-                        }}
-                      />
-                    );
-                  }}
-                />
-              ) : null}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
+        {this.state.imageArray.length != 0 ? (
+          <FlatList
+            style={{
+              flexGrow: 1,
+              backgroundColor: "#ffffff",
+              width: "100%",
+              height: widthPercentageToDP(100),
+              // marginTop: widthPercentageToDP(43),
+              paddingHorizontal: widthPercentageToDP(16)
+            }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            data={this.state.imageArray}
+            renderItem={({ item, index }) => {
+              return (
+                <ImageBTN
+                  data={item}
+                  handler={() => {
+                    this.setState({
+                      deletemodal: true,
+                      imageinfo: item,
+                      imageindex: index
+                    });
+                  }}
+                />
+              );
+            }}
+          />
+        ) : null}
         <WriteBottom
           imageNum={this.state.imageNumber}
           anonymous={this.state.anonymous}
@@ -417,14 +432,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#dbdbdb",
     width: widthPercentageToDP(375),
     height: widthPercentageToDP(1)
-  },
-  imagelist: {
-    flexGrow: 1,
-    backgroundColor: "#ffffff",
-    width: "100%",
-    height: "100%",
-    marginTop: widthPercentageToDP(43),
-    paddingHorizontal: widthPercentageToDP(16)
   }
 });
 
