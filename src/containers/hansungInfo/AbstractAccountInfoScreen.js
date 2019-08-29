@@ -13,7 +13,7 @@ class AbstractAccountInfoScreen extends React.Component {
     render() {
         return (
             <View style={styles.member}>
-                <View style={{marginTop: widthPercentageToDP(35), marginLeft: widthPercentageToDP(26), flexDirection: 'row'}}>
+                <View style={{marginTop: widthPercentageToDP(5), marginLeft: widthPercentageToDP(26), flexDirection: 'row'}}>
                     <TouchableOpacity onPress={ async () => {this.props.move.navigate("MyInfo")}}>
                         {
                             this.props.userAvatar ?
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: widthPercentageToDP(115),
         backgroundColor: '#f8f8f8',
+        justifyContent: 'center'
     },
     profile: {
         marginTop: widthPercentageToDP(3),
