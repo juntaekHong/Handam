@@ -6,7 +6,8 @@ import colors from "../../../configs/colors";
 
 const SettingMenuView = styled.TouchableOpacity`
   width: 100%
-  height: ${widthPercentageToDP(44)}
+  padding-top: ${widthPercentageToDP(13.5)}
+  padding-bottom: ${widthPercentageToDP(11.5)}
   flex-direction: row
   justify-content: space-between
   align-items: center
@@ -23,7 +24,7 @@ const Menu = styled.View`
 `;
 const Bar = styled.View`
   width: ${widthPercentageToDP(316.9)}
-  height: 0.5
+  height: ${widthPercentageToDP(0.5)}
   background-color: ${({ border = true }) =>
     border ? colors.border : "transparent"}
 `;
@@ -31,7 +32,7 @@ export const SettingMenu = props => {
   return (
     <Menu>
       <SettingMenuView {...props}>
-        <NBGText fontSize={18} color={"#272727"}>
+        <NBGText fontSize={16} color={"#272727"}>
           {props.title}
         </NBGText>
         {!props.right ? (

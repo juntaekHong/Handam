@@ -29,11 +29,12 @@ const Setting = ({ navigation, term1, term2, appVersion }) => {
     <HCenterView>
       <Title title={"설정"} rightInVisible={true} />
       <Scroll>
-        <SettingMenuTitle
-          style={{ marginBottom: widthPercentageToDP(5.5) }}
-          title={"Settings"}
+        <SettingMenuTitle title={"Settings"} />
+        <SettingMenu
+          style={{ marginTop: widthPercentageToDP(6) }}
+          title={"암호잠금 설정"}
+          onPress={navigationLock}
         />
-        <SettingMenu title={"암호잠금 설정"} onPress={navigationLock} />
         <SettingMenu title={"알림 설정"} onPress={navigationAlarm} />
         <SettingMenu title={"개인정보처리방침"} onPress={navigationTerm1} />
         <SettingMenu title={"이용약관"} onPress={navigationTerm2} />
@@ -50,7 +51,11 @@ const Setting = ({ navigation, term1, term2, appVersion }) => {
           style={{ marginTop: widthPercentageToDP(6) }}
           title={"Contact us"}
         />
-        <SettingMenu title={"팀 정보"} onPress={navigateTeamInfo} />
+        <SettingMenu
+          style={{ marginTop: widthPercentageToDP(6) }}
+          title={"팀 정보"}
+          onPress={navigateTeamInfo}
+        />
         <SettingMenu
           disabled={true}
           title={"문의"}
