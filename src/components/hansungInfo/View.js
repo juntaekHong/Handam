@@ -45,7 +45,7 @@ export const PointListItem = props => {
                             }
                         </View>
                         <PointListText style={{textAlign: "center", fontSize: widthPercentageToDP(20), color: "#24a0fa"}}>{props.data.score}</PointListText>
-                        <PointListText style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
+                        <PointListText numberOfLines={2} style={{textAlign: "center"}}>{props.data.item}</PointListText>
                     </View>
                 </ImageBackground>
             </View>
@@ -65,7 +65,7 @@ export const PointListItem = props => {
                             }
                         </View>
                         <PointListText style={{textAlign: "center", fontSize: widthPercentageToDP(20), color: "#24a0fa"}}>{props.data.score}</PointListText>
-                        <PointListText style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
+                        <PointListText numberOfLines={2} style={{textAlign: "center"}}>{props.data.item}</PointListText>
                     </View>
                 </ImageBackground>
             </View>
@@ -109,8 +109,7 @@ export const PointListItem = props => {
                             fontSize: widthPercentageToDP(20),
                             color: "#24a0fa"
                         }}>{props.data.score}</PointListText>
-                        <PointListText
-                            style={{textAlign: "center"}}>{props.data.item.length > 20 ? props.data.item.slice(0, 21) + ".." : props.data.item}</PointListText>
+                        <PointListText numberOfLines={2} style={{textAlign: "center"}}>{props.data.item}</PointListText>
                     </View>
                 </ImageBackground>
             </View>

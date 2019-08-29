@@ -4,7 +4,7 @@ import {widthPercentageToDP} from "../../utils/util";
 import {SECText} from "../../components/myInfo/Text";
 import {connect} from "react-redux";
 import {MyInfoActions, TalkActions} from "../../store/actionCreator";
-import {PostsListItem, ReportedPostsListItem} from "../../components/talk/Button";
+import {PostsListItem, ReportedPostsListItem} from "../../components/talk/View";
 import {UIActivityIndicator} from "react-native-indicators";
 
 class MyPostListScreen extends React.Component {
