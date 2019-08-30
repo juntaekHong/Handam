@@ -9,7 +9,7 @@ const init = {
     prod: "https://www.handam.kr"
   },
   mailServer: {
-    dev: "https://hee4gbx1d9.execute-api.us-west-2.amazonaws.com/dev",
+    dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
     prod: "https://www.handam.kr"
   },
   shuttleWebView: {

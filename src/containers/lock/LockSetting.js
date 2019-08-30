@@ -44,6 +44,7 @@ const LockSetting = props => {
         style={{ borderBottomWidth: 1, borderColor: "#e4e4e4" }}
       />
       <LockMenu
+        style={{marginTop: widthPercentageToDP(4)}}
         switchRef={passRef}
         title={"암호잠금 사용"}
         switch={true}
