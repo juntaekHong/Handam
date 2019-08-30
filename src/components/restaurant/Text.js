@@ -125,3 +125,12 @@ export const D_ReviewCreatedAt = styled.Text`
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothicB};
 `;
+
+export const ModalIndicator = styled.Text`
+  position: absolute;
+  color: ${"#ffffff"};
+  font-size: ${widthPercentageToDP(15)};
+  font-family: ${fonts.nanumBarunGothicB};
+  width: ${widthPercentageToDP(375)};
+  text-align: center;
+`;

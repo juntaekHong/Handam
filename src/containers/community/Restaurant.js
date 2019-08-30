@@ -10,23 +10,27 @@ class Restaurant extends Component {
   constructor(props) {
     super(props);
 
-    didBlurSubscription = this.props.navigation.addListener(
-      "didFocus",
-      async payload => {
-        this.props.navigation.state.params.index != null
-          ? this.flatlistRef.scrollToIndex({
-              index: this.props.navigation.state.params.index,
-              viewPosition: 0.5
-            })
-          : null;
-      }
-    );
-
     this.state = {
       selected: 0,
       loading: false,
       loadingList: false
     };
+
+    didBlurSubscription = this.props.navigation.addListener(
+      "didFocus",
+      async payload => {
+        if (
+          this.props.navigation.state.params != undefined &&
+          (this.props.navigation.state.params.scrollIndex != undefined ||
+            this.props.navigation.state.params.scrollIndex != null)
+        ) {
+          this.flatlistRef.scrollToIndex({
+            index: this.props.navigation.state.params.scrollIndex,
+            viewPosition: 0.5
+          });
+        }
+      }
+    );
   }
 
   async componentDidMount() {
@@ -124,7 +128,7 @@ class Restaurant extends Component {
                   loadingHandler={RestaurantActions.handleLoading}
                   likeHandler={RestaurantActions.putRestaurantSubscriber}
                   data={item}
-                  index={index}
+                  index={index} //렌더 순서
                 />
               );
             }}

@@ -121,14 +121,6 @@ class RestaurantWrite extends Component {
   //   }
   // };
 
-  // renderAlertModal = rendertext => {
-  //   RestaurantActions.handleAlertModal(true);
-  //   RestaurantActions.handleAlertText(rendertext);
-  //   setTimeout(() => {
-  //     RestaurantActions.handleAlertModal(false);
-  //   }, 1000);
-  // };
-
   renderSubmit = () => {
     if (
       this.state.title != "" &&
@@ -192,33 +184,25 @@ class RestaurantWrite extends Component {
             body.title = this.state.title;
             body.content = this.state.content;
 
-            if (this.props.navigation.state.params.form == "update") {
-              // await RestaurantActions.updateRestaurantReply(
-              //   formData,
-              //   this.props.getRestaurant.restaurantIndex
-              // );
-              await RestaurantActions.updateRestaurantReply(
-                body,
-                this.props.navigation.state.params.replyIndex
-              );
-            } else {
-              // await RestaurantActions.createRestaurantReply(
-              //   formData,
-              //   this.props.getRestaurant.restaurantIndex
-              // );
-              await RestaurantActions.createRestaurantReply(
-                body,
-                this.props.getRestaurant.restaurantIndex
-              );
-            }
+            this.props.navigation.state.params.form == "update"
+              ? await RestaurantActions.updateRestaurantReply(
+                  body,
+                  this.props.navigation.state.params.replyIndex
+                )
+              : await RestaurantActions.createRestaurantReply(
+                  body,
+                  this.props.getRestaurant.restaurantIndex
+                );
 
             await RestaurantActions.pageListRestaurantReply(
               this.props.getRestaurant.restaurantIndex
             );
 
-            this.renderAlertModal("리뷰가 작성되었습니다.");
+            this.props.navigation.state.params.form == "update"
+              ? this.renderAlertModal("리뷰가 수정되었습니다.")
+              : this.renderAlertModal("리뷰가 작성되었습니다.");
+
             this.navigateRestaurantDetail();
-            // this.renderAlertModal("리뷰를 업로드했습니다.");
           }}
         >
           <Text style={[styles.submitText]}>완료</Text>
@@ -249,7 +233,7 @@ class RestaurantWrite extends Component {
     RestaurantActions.handleAlertText(rendertext);
     setTimeout(() => {
       RestaurantActions.handleAlertModal(false);
-    }, 1000);
+    }, 1500);
   };
 
   render() {

@@ -163,9 +163,11 @@ export const AnonymousBTN = props => {
   return (
     <BTN
       onPress={async () => {
-        props.anonymous == 0
-          ? await this.setState({ anonymous: 1 })
-          : await this.setState({ anonymous: 0 });
+        if (props.anonymous == 0) {
+          await props.handleAnonymousOn();
+        } else {
+          await props.handleAnonymousOff();
+        }
       }}
     >
       <Image28
