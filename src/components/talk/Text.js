@@ -9,17 +9,19 @@ import { widthPercentageToDP } from "../../utils/util";
 //Talk.js
 
 export const CategoryName = styled.Text`
-  height: ${widthPercentageToDP(18)};
   color: ${"#101010"};
+  font-size: ${widthPercentageToDP(16)};
+  font-family: ${fonts.nanumBarunGothicB};
+  height: ${widthPercentageToDP(17)};
   margin-top: ${widthPercentageToDP(8)};
   margin-bottom: ${widthPercentageToDP(6)};
 `;
 export const CategoryExplain = styled.Text`
+  color: ${"#000000"};
   font-size: ${widthPercentageToDP(12)};
   font-family: ${fonts.nanumBarunGothic};
   width: ${widthPercentageToDP(200)};
   height: ${widthPercentageToDP(13)};
-  color: ${"#646464"};
 `;
 
 //TalkAbout.js
@@ -38,14 +40,15 @@ export const HotText = styled.Text`
 `;
 
 export const PostTitle = styled.Text`
-  color: ${"#000000"};
-  font-size: ${widthPercentageToDP(13)};
+  color: ${"#101010"};
+  font-size: ${widthPercentageToDP(14)};
   font-family: ${fonts.nanumBarunGothicB};
   width: ${widthPercentageToDP(288)};
-  height: ${widthPercentageToDP(13)};
+  height: ${widthPercentageToDP(15)};
 `;
 
 export const PostContent = styled(PostTitle)`
+  color: ${"#454545"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
   margin-top: ${widthPercentageToDP(8)};
@@ -53,15 +56,15 @@ export const PostContent = styled(PostTitle)`
 
 export const PostUserName = styled.Text`
   color: ${"#646464"};
-  font-size: ${widthPercentageToDP(11)};
-  font-family: ${fonts.nanumBarunGothicB};
+  font-size: ${widthPercentageToDP(9)};
+  font-family: ${fonts.nanumBarunGothic};
   margin-right: ${widthPercentageToDP(4)};
 `;
 
 export const PostCreatedAt = styled.Text`
   color: ${"#646464"};
-  font-size: ${widthPercentageToDP(11)};
-  font-family: ${fonts.nanumBarunGothicB};
+  font-size: ${widthPercentageToDP(9)};
+  font-family: ${fonts.nanumBarunGothic};
 `;
 
 export const ImageCount = styled.Text`
@@ -127,6 +130,7 @@ export const Content = styled.Text`
   font-size: ${widthPercentageToDP(13)};
   font-family: ${fonts.nanumBarunGothic};
   margin-top: ${widthPercentageToDP(7)};
+  line-height: ${widthPercentageToDP(19)};
 `;
 
 export const GoodCount = styled.Text`

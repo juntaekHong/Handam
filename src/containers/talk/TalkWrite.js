@@ -223,9 +223,9 @@ class TalkWrite extends Component {
             }
 
             if (this.props.navigation.state.params.form == "update") {
-              this.renderAlertModal("게시글을 업데이트했습니다.");
+              this.renderAlertModal("게시글을 수정되었습니다.");
             } else {
-              this.renderAlertModal("게시글을 업로드했습니다.");
+              this.renderAlertModal("게시글이 작성되었습니다.");
             }
           }}
         >
@@ -321,6 +321,7 @@ class TalkWrite extends Component {
               <View style={styles.contentContainer}>
                 <TextInput
                   style={styles.contentinput}
+                  scrollEnabled={true}
                   underlineColorAndroid="transparent"
                   onChangeText={content => this.setState({ content })}
                   value={this.state.content}
@@ -335,14 +336,15 @@ class TalkWrite extends Component {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
+
         {this.state.imageArray.length != 0 ? (
           <FlatList
             style={{
               flexGrow: 1,
               backgroundColor: "#ffffff",
               width: "100%",
-              height: widthPercentageToDP(100),
-              // marginTop: widthPercentageToDP(43),
+              minHeight: widthPercentageToDP(100),
+              maxHeight: widthPercentageToDP(100),
               paddingHorizontal: widthPercentageToDP(16)
             }}
             horizontal={true}
@@ -368,6 +370,8 @@ class TalkWrite extends Component {
         <WriteBottom
           imageNum={this.state.imageNumber}
           anonymous={this.state.anonymous}
+          handleAnonymousOn={() => this.setState({ anonymous: 1 })}
+          handleAnonymousOff={() => this.setState({ anonymous: 0 })}
           addImage={this.onClickSelectPicture}
         />
       </SafeAreaView>
@@ -419,6 +423,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(343),
     height: widthPercentageToDP(295),
     marginTop: widthPercentageToDP(20),
+    marginBottom: widthPercentageToDP(43),
     marginHorizontal: widthPercentageToDP(16)
   },
   contentinput: {

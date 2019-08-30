@@ -177,7 +177,7 @@ const WriterTimeView = styled.View`
   height: ${widthPercentageToDP(12)};
   justify-content: space-between;
   align-items: center;
-  margin-top: ${widthPercentageToDP(10)};
+  margin-top: ${widthPercentageToDP(8)};
 `;
 
 const WriterTime = props => {

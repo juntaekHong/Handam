@@ -129,9 +129,9 @@ export const RestaurantItem = props => {
       onPress={async () => {
         props.loadingHandler(true);
         props.navigation.navigate("RestaurantDetail", {
-          restaurantIndex: props.data.restaurantIndex,
+          restaurantIndex: props.data.restaurantIndex, //식당 인덱스
           likeHandler: setState,
-          index: props.index
+          scrollIndex: props.index //렌더 순서
         });
       }}
     >
