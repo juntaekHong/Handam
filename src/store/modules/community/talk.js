@@ -180,7 +180,7 @@ export const getPosts = postsIndex => async dispatch => {
   if (jsonData.statusCode == 200) {
     dispatch(getPostsAction(jsonData.result));
     return true;
-  } else if (jsonData.statusCode == 500) {
+  } else if (jsonData.statusCode == 404) {
     //삭제된 게시물인 경우
     return "deleted";
   } else {

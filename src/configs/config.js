@@ -3,7 +3,7 @@
  */
 
 const init = {
-  type: "prod",
+  type: "dev",
   server: {
     dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
     prod: "https://www.handam.kr"
