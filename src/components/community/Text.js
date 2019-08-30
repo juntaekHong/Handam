@@ -46,7 +46,7 @@ export const C_ContentText = styled.Text`
   font-size: ${widthPercentageToDP(13)};
   font-family: ${fonts.nanumBarunGothic};
   margin-bottom: ${widthPercentageToDP(16)};
-  line-height: ${widthPercentageToDP(17)};
+  line-height: ${widthPercentageToDP(18)};
 `;
 
 export const C_ReContentText = styled(C_ContentText)`
