@@ -85,6 +85,8 @@ export const timeSince = date => {
     return "";
   }
 
+  if (seconds < 0) return "0 초전";
+
   let interval = Math.floor(seconds / 31536000);
 
   if (interval >= 1) {
