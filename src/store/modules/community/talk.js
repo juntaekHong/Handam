@@ -263,15 +263,19 @@ export const pageListPostsReply = (condition, postsIndex) => async dispatch => {
 };
 
 export const createPostsReply = reply => async dispatch => {
-  const token = await getData("token");
-  const jsonData = await api.post(
-    `/postsReply/postsIndex/${reply["postsIndex"]}`,
-    { body: reply, token: token }
-  );
-  if (jsonData.statusCode == 200) {
-    return true;
-  } else {
-    throw "error";
+  try {
+    const token = await getData("token");
+    const jsonData = await api.post(
+      `/postsReply/postsIndex/${reply["postsIndex"]}`,
+      { body: reply, token: token }
+    );
+    if (jsonData.statusCode == 200) {
+      return true;
+    } else {
+      throw "error";
+    }
+  } catch (e) {
+    return false;
   }
 };
 

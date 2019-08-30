@@ -4,6 +4,8 @@
 import config from "../configs/config";
 import axios from "axios";
 import { showMessage } from "./util";
+import { removeAllData } from "./util";
+import navigators from "./navigators";
 
 const ROOT_URL = config.server;
 const MESSAGE_URL = config.mailServer;
@@ -49,9 +51,12 @@ function rest(method) {
       const { response } = err;
       // 403: token이 인증되지 않을경우 로그인 화면으로 네비게이팅
       if (response.status == 403) {
+        removeAllData();
+        navigators.navigate("signIn");
       } else {
-        throw err;
+        showMessage("알 수 없는 오류가 발생했습니다");
       }
+      return response;
     }
   };
 }
