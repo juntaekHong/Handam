@@ -170,6 +170,7 @@ export const CustomModalBlackText = styled.Text`
   color: ${"#000000"};
   font-size: ${widthPercentageToDP(20)};
   font-family: ${fonts.nanumBarunGothic};
+  margin-bottom: ${widthPercentageToDP(29)};
 `;
 
 export const CustomModalRedText = styled(CustomModalBlackText)`

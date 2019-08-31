@@ -76,20 +76,21 @@ class TalkWrite extends Component {
   }
 
   navigateBack = () => {
-    if (this.props.navigation.state.params.form == "write") {
-      this.navigateTalkAbout();
-    } else {
+    if (this.props.navigation.state.params.form == "update") {
       this.navigateTalkDetail();
+    } else if (this.props.navigation.state.params.form == "write") {
+      this.navigateTalkAbout();
     }
-  };
-  navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", {
-      from: "write"
-    });
   };
 
   navigateTalkAbout = () => {
     this.props.navigation.navigate("TalkAbout", { scrollIndex: undefined });
+  };
+
+  navigateTalkDetail = () => {
+    this.props.navigation.navigate("TalkDetail", {
+      from: "write"
+    });
   };
 
   checkSpace = str => {
@@ -202,6 +203,7 @@ class TalkWrite extends Component {
                 this.props.getPosts.postsIndex
               );
               await TalkActions.getPosts(this.props.getPosts.postsIndex);
+              this.renderAlertModal("게시글을 수정되었습니다.");
               this.navigateTalkDetail();
             } else {
               await TalkActions.createPosts(formData);
@@ -219,13 +221,10 @@ class TalkWrite extends Component {
                 1,
                 2
               );
-              Promise.all([pro1, pro2]).then(this.navigateTalkAbout());
-            }
-
-            if (this.props.navigation.state.params.form == "update") {
-              this.renderAlertModal("게시글을 수정되었습니다.");
-            } else {
-              this.renderAlertModal("게시글이 작성되었습니다.");
+              Promise.all([pro1, pro2]).then(() => {
+                this.renderAlertModal("게시글이 작성되었습니다.");
+                this.navigateTalkAbout();
+              });
             }
           }}
         >
@@ -259,7 +258,7 @@ class TalkWrite extends Component {
     setTimeout(() => {
       this.setState({ alertModal: false });
       // TalkActions.handleAlertModal(false);
-    }, 1000);
+    }, 1500);
   };
 
   render() {

@@ -69,7 +69,8 @@ class TalkAbout extends Component {
   }
 
   navigateBack = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("Talk");
+    // this.props.navigation.goBack();
   };
 
   navigateTalkDetail = (postsIndex, index) => {
