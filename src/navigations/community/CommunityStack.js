@@ -7,7 +7,7 @@ import RestaurantStack from "../restaurant/RestaurantStack";
 const CommunityStack = createStackNavigator(
   {
     Community: { screen: CommunityTab },
-    // TalkAbout: { screen: TalkAbout },
+    TalkAbout: { screen: TalkAbout },
     VoteStack: { screen: VoteStack },
     RestaurantStack: { screen: RestaurantStack }
   },

@@ -6,7 +6,7 @@ import TalkSearch from "../../containers/talk/TalkSearch";
 
 const TalkStack = createStackNavigator(
   {
-    TalkAbout: { screen: TalkAbout },
+    // TalkAbout: { screen: TalkAbout },
     TalkDetail: { screen: TalkDetail },
     TalkWrite: { screen: TalkWrite },
     TalkSearch: { screen: TalkSearch }
