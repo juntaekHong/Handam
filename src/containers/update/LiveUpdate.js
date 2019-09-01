@@ -10,11 +10,11 @@ import config from "../../configs/config";
 
 const codepushOption = {
   checkFrequency: CodePush.CheckFrequency.ON_APP_START,
-  installMode: CodePush.InstallMode.IMMEDIATE,
-  deploymentKey:
-    Platform.OS === "android"
-      ? "mTIqF8zXQzV0GBCyfbAxe-K-lcaf615b4c2f-cc19-4f37-a800-d03f0b3a5157"
-      : "eQ2W-17w3tP32pUyr0NVniuQ1LpU615b4c2f-cc19-4f37-a800-d03f0b3a5157"
+  installMode: CodePush.InstallMode.IMMEDIATE
+  // deploymentKey:
+  //   Platform.OS === "android"
+  //     ? "mTIqF8zXQzV0GBCyfbAxe-K-lcaf615b4c2f-cc19-4f37-a800-d03f0b3a5157"
+  //     : "eQ2W-17w3tP32pUyr0NVniuQ1LpU615b4c2f-cc19-4f37-a800-d03f0b3a5157"
 };
 
 class LiveUpdate extends React.Component {
