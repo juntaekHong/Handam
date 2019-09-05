@@ -70,13 +70,22 @@ export const showMessage = (message, options) => {
 };
 
 export const timeSince = date => {
-  if (date === null || date === undefined) return "";
-  let seconds = Math.floor(
-    (new Date(moment().utc(moment().format())) - new Date(date)) / 1000
-  );
+  if (date === null || date === undefined || date === "") return "";
+
+  let d = date.indexOf("+");
+  if (d >= 0) date = date.substring(0, d);
+  date = date.replace("T", " ");
+  date = date.replace("Z", "");
+  let t1 = moment(date);
+  let t2 = moment();
+
+  let seconds = moment.duration(t2.diff(t1)).asSeconds();
+
   if (isNaN(seconds)) {
-    return "댓글 없음";
+    return "";
   }
+
+  if (seconds < 0) return "0 초전";
 
   let interval = Math.floor(seconds / 31536000);
 

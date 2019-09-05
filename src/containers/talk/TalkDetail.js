@@ -19,6 +19,7 @@ import { widthPercentageToDP, timeSince } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
+import navigators from "../../utils/navigators";
 import { Top, Center, Bottom } from "../../components/talk/View";
 import {
   CustomModalText,
@@ -27,6 +28,7 @@ import {
   AnonymousONText
 } from "../../components/talk/Text";
 import { ImageModal } from "../../components/talk/Modal";
+import { ZoomImageModal } from "../../components/restaurant/Modal";
 import {
   ReplyView,
   Re_ReplyView,
@@ -53,6 +55,7 @@ class TalkDetail extends Component {
 
     this.state = {
       no_click: false,
+      imageData: null,
       form: "reply", //textinput 상태 : 댓글생성(reply), 댓글수정(update), 답글생성(re_reply) 결정
       replyIndex: null,
       reply: "",
@@ -64,7 +67,6 @@ class TalkDetail extends Component {
       isScrap: null,
       emoji: false,
       selected_emoji: null,
-      imagemodal: false,
       who: "me",
       type: "posts",
       anonymous: 1,
@@ -96,12 +98,32 @@ class TalkDetail extends Component {
           "page=1&count=100",
           this.props.navigation.state.params.postsIndex
         );
-        Promise.all([promise1, promise2]).then(() => {
+        Promise.all([promise1, promise2]).then(result => {
+          // if (this.props.getPosts.imagePath.length > 0) {
+          //   this.setState({
+          //     imageData: eval("(" + this.props.getPosts.imagePath[0].path + ")")
+          //       .image
+          //   });
+          // } else {
+          //   this.setState({ imageData: [] });
+          // }
+          if (this.props.getPosts.imagePath.length > 0) {
+            let arr = [];
+            eval("(" + this.props.getPosts.imagePath[0].path + ")").image.map(
+              (item, index) => arr.push({ url: item })
+            );
+            this.setState({ imageData: arr });
+          }
+
           this.setState({
             goodCount: this.props.getPosts.goodCount,
             isGood: this.props.getPosts.isGood,
             isScrap: this.props.getPosts.isScrap
           });
+          if (result[0] == "deleted") {
+            this.renderAlertModal("존재하지 않는 게시글입니다.");
+            this.navigateBack();
+          }
           TalkActions.handleLoading(false);
         });
       }
@@ -391,14 +413,10 @@ class TalkDetail extends Component {
     this.setState({ alertModal: true, alertText: rendertext });
     setTimeout(() => {
       this.setState({ alertModal: false });
-    }, 1000);
+    }, 1500);
   };
 
   render() {
-    const imageData =
-      this.props.getPosts.imagePath.length > 0
-        ? eval("(" + this.props.getPosts.imagePath[0].path + ")").image
-        : [];
     if (this.props.loading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else
@@ -415,13 +433,20 @@ class TalkDetail extends Component {
             visible={this.state.alertModal}
             text={this.state.alertText}
           />
-          <ImageModal
+          {/* <ImageModal
             visible={this.props.imageModal}
             close={() => TalkActions.handleImageModal(false)}
-            images={imageData}
+            images={this.state.imageData}
             index={this.props.imageIndex}
             indexhandle={TalkActions.handleImageIndex}
+          /> */}
+          <ZoomImageModal
+            visible={this.props.imageModal}
+            image={this.state.imageData}
+            index={this.props.imageIndex}
+            close={() => TalkActions.handleImageModal(false)}
           />
+
           <BottomMenuModal
             visible={this.props.bottomModal}
             handler={() => TalkActions.handleBottomModal(false)}
@@ -534,12 +559,17 @@ class TalkDetail extends Component {
 
               await TalkActions.putPostsSubscriber(posts);
               if (this.state.isScrap == true) {
-                await this.setState({ scrapmodal: false, isScrap: false });
+                setTimeout(() => {
+                  this.setState({ isScrap: false });
+                }, 500);
                 // this.renderAlertModal("스크랩을 취소하였습니다.");
               } else {
-                await this.setState({ scrapmodal: false, isScrap: true });
+                setTimeout(() => {
+                  this.setState({ isScrap: true });
+                }, 500);
                 // this.renderAlertModal("이 글을 스크랩하였습니다.");
               }
+              this.setState({ scrapmodal: false });
             }}
             closeHandler={() => this.setState({ scrapmodal: false })}
           />

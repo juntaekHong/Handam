@@ -60,7 +60,7 @@ export const putUpdateAlarm = alarmIndex => async dispatch => {
       token,
       body: {
         isRead: 1,
-        readAt: moment().format()
+        readAt: moment().format("YYYY-MM-DD HH:mm:ss")
       }
     });
     if (jsonData.statusCode == 200) {

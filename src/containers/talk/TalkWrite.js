@@ -76,20 +76,21 @@ class TalkWrite extends Component {
   }
 
   navigateBack = () => {
-    if (this.props.navigation.state.params.form == "write") {
-      this.navigateTalkAbout();
-    } else {
+    if (this.props.navigation.state.params.form == "update") {
       this.navigateTalkDetail();
+    } else if (this.props.navigation.state.params.form == "write") {
+      this.navigateTalkAbout();
     }
-  };
-  navigateTalkDetail = () => {
-    this.props.navigation.navigate("TalkDetail", {
-      from: "write"
-    });
   };
 
   navigateTalkAbout = () => {
     this.props.navigation.navigate("TalkAbout", { scrollIndex: undefined });
+  };
+
+  navigateTalkDetail = () => {
+    this.props.navigation.navigate("TalkDetail", {
+      from: "write"
+    });
   };
 
   checkSpace = str => {
@@ -202,6 +203,7 @@ class TalkWrite extends Component {
                 this.props.getPosts.postsIndex
               );
               await TalkActions.getPosts(this.props.getPosts.postsIndex);
+              this.renderAlertModal("게시글을 수정되었습니다.");
               this.navigateTalkDetail();
             } else {
               await TalkActions.createPosts(formData);
@@ -219,13 +221,10 @@ class TalkWrite extends Component {
                 1,
                 2
               );
-              Promise.all([pro1, pro2]).then(this.navigateTalkAbout());
-            }
-
-            if (this.props.navigation.state.params.form == "update") {
-              this.renderAlertModal("게시글을 업데이트했습니다.");
-            } else {
-              this.renderAlertModal("게시글을 업로드했습니다.");
+              Promise.all([pro1, pro2]).then(() => {
+                this.renderAlertModal("게시글이 작성되었습니다.");
+                this.navigateTalkAbout();
+              });
             }
           }}
         >
@@ -259,7 +258,7 @@ class TalkWrite extends Component {
     setTimeout(() => {
       this.setState({ alertModal: false });
       // TalkActions.handleAlertModal(false);
-    }, 1000);
+    }, 1500);
   };
 
   render() {
@@ -321,6 +320,7 @@ class TalkWrite extends Component {
               <View style={styles.contentContainer}>
                 <TextInput
                   style={styles.contentinput}
+                  scrollEnabled={true}
                   underlineColorAndroid="transparent"
                   onChangeText={content => this.setState({ content })}
                   value={this.state.content}
@@ -335,14 +335,15 @@ class TalkWrite extends Component {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
+
         {this.state.imageArray.length != 0 ? (
           <FlatList
             style={{
               flexGrow: 1,
               backgroundColor: "#ffffff",
               width: "100%",
-              height: widthPercentageToDP(100),
-              // marginTop: widthPercentageToDP(43),
+              minHeight: widthPercentageToDP(100),
+              maxHeight: widthPercentageToDP(100),
               paddingHorizontal: widthPercentageToDP(16)
             }}
             horizontal={true}
@@ -368,6 +369,8 @@ class TalkWrite extends Component {
         <WriteBottom
           imageNum={this.state.imageNumber}
           anonymous={this.state.anonymous}
+          handleAnonymousOn={() => this.setState({ anonymous: 1 })}
+          handleAnonymousOff={() => this.setState({ anonymous: 0 })}
           addImage={this.onClickSelectPicture}
         />
       </SafeAreaView>
@@ -419,6 +422,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(343),
     height: widthPercentageToDP(295),
     marginTop: widthPercentageToDP(20),
+    marginBottom: widthPercentageToDP(43),
     marginHorizontal: widthPercentageToDP(16)
   },
   contentinput: {

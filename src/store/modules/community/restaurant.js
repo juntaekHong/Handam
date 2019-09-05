@@ -7,6 +7,8 @@ import { getData } from "../../../utils/util";
 const FILTER_HANDLE = "restaurant/FILTER_HANDLE";
 const TOTAL_HANDLE = "restaurant/TOTAL_HANDLE";
 const BOTTOMMODAL_HANDLE = "restaurant/BOTTOMMODAL_HANDLE";
+const IMAGEMODAL_HANDLE = "restaurant/IMAGEMODAL_HANDLE";
+const IMAGEINDEX_HANDLE = "restaurant/IMAGEINDEX_HANDLE";
 const ALERTMODAL_HANDLE = "restaurant/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "restaurant/ALERTTEXT_HANDLE";
 const LOADING_HANDLE = "restaurant/LOADING_HANDLE";
@@ -14,6 +16,8 @@ const LOADING_HANDLE = "restaurant/LOADING_HANDLE";
 const filterHandleAction = createAction(FILTER_HANDLE);
 const totalHandleAction = createAction(TOTAL_HANDLE);
 const bottomModalHandleAction = createAction(BOTTOMMODAL_HANDLE);
+const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
+const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
 const loadingHandleAction = createAction(LOADING_HANDLE);
@@ -45,6 +49,8 @@ const initState = {
   total: 0,
 
   bottomModal: false,
+  imageModal: false,
+  imageIndex: 0,
   alertModal: false,
   alertText: "호로록 칼국수",
   loading: false,
@@ -66,6 +72,14 @@ export const handleFilter = categoryName => async dispatch => {
 
 export const handleBottomModal = bool => dispatch => {
   dispatch(bottomModalHandleAction(bool));
+};
+
+export const handleImageModal = bool => dispatch => {
+  dispatch(imageModalHandleAction(bool));
+};
+
+export const handleImageIndex = index => dispatch => {
+  dispatch(imageIndexHandleAction(index));
 };
 
 export const handleAlertModal = bool => dispatch => {
@@ -241,6 +255,14 @@ export default handleActions(
     [BOTTOMMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.bottomModal = payload;
+      }),
+    [IMAGEMODAL_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.imageModal = payload;
+      }),
+    [IMAGEINDEX_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.imageIndex = payload;
       }),
     [ALERTMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {

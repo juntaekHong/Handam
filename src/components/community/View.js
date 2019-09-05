@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, Platform } from "react-native";
 import Hyperlink from "react-native-hyperlink";
 import styled from "styled-components/native";
 import fonts from "../../configs/fonts";
@@ -243,7 +243,11 @@ export const ReplyView = props => {
           paddingBottom: widthPercentageToDP(21),
           marginBottom: widthPercentageToDP(10)
         }}
-        source={require("../../../assets/image/community/reply.png")}
+        source={
+          Platform.OS === "ios"
+            ? require("../../../assets/image/community/reply.png")
+            : {uri:"reply"}
+        }
         capInsets={{
           top: widthPercentageToDP(12),
           right: widthPercentageToDP(12),
@@ -290,7 +294,9 @@ export const ReplyView = props => {
           paddingBottom: widthPercentageToDP(21),
           marginBottom: widthPercentageToDP(10)
         }}
-        source={require("../../../assets/image/community/reply.png")}
+        source={Platform.OS === "ios"
+        ? require("../../../assets/image/community/reply.png")
+        : {uri:"reply"}}
         capInsets={{
           top: widthPercentageToDP(12),
           right: widthPercentageToDP(12),
@@ -406,7 +412,9 @@ export const Re_ReplyView = props => {
             paddingBottom: widthPercentageToDP(21),
             marginBottom: widthPercentageToDP(10)
           }}
-          source={require("../../../assets/image/community/reply.png")}
+          source={Platform.OS === "ios"
+          ? require("../../../assets/image/community/reply.png")
+          : {uri:"reply"}}
           capInsets={{
             top: widthPercentageToDP(12),
             right: widthPercentageToDP(12),
@@ -490,7 +498,9 @@ export const Re_ReplyView = props => {
             paddingBottom: widthPercentageToDP(21),
             marginBottom: widthPercentageToDP(10)
           }}
-          source={require("../../../assets/image/community/reply.png")}
+          source={Platform.OS === "ios"
+          ? require("../../../assets/image/community/reply.png")
+          : {uri:"reply"}}
           capInsets={{
             top: widthPercentageToDP(12),
             right: widthPercentageToDP(12),

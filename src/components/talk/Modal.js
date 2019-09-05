@@ -38,7 +38,7 @@ const ImageModalBody = props => {
       horizontal={true}
       removeClippedSubviews={false}
       width={widthPercentageToDP(375)}
-      height={widthPercentageToDP(207)}
+      // height={widthPercentageToDP(207)}
       loop={false}
       autoplay={false}
       containerStyle={{

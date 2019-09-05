@@ -180,6 +180,9 @@ export const getPosts = postsIndex => async dispatch => {
   if (jsonData.statusCode == 200) {
     dispatch(getPostsAction(jsonData.result));
     return true;
+  } else if (jsonData.statusCode == 404) {
+    //삭제된 게시물인 경우
+    return "deleted";
   } else {
     throw "error";
   }
@@ -260,15 +263,19 @@ export const pageListPostsReply = (condition, postsIndex) => async dispatch => {
 };
 
 export const createPostsReply = reply => async dispatch => {
-  const token = await getData("token");
-  const jsonData = await api.post(
-    `/postsReply/postsIndex/${reply["postsIndex"]}`,
-    { body: reply, token: token }
-  );
-  if (jsonData.statusCode == 200) {
-    return true;
-  } else {
-    throw "error";
+  try {
+    const token = await getData("token");
+    const jsonData = await api.post(
+      `/postsReply/postsIndex/${reply["postsIndex"]}`,
+      { body: reply, token: token }
+    );
+    if (jsonData.statusCode == 200) {
+      return true;
+    } else {
+      throw "error";
+    }
+  } catch (e) {
+    return false;
   }
 };
 

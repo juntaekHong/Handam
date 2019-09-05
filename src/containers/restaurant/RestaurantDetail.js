@@ -7,18 +7,21 @@ import {
   Text,
   Image,
   FlatList,
-  BackHandler
+  BackHandler,
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
 import Swiper from "react-native-swiper";
 import call from "react-native-communications";
 import { widthPercentageToDP } from "../../utils/util";
-import navigations from "../../utils/navigators";
 import { connect } from "react-redux";
 import { RestaurantActions } from "../../store/actionCreator";
 import { BottomMenuModal, CustomModal } from "../../components/common/Modal";
 import { TitleView } from "../../components/community/View";
+import { Image28 } from "../../components/community/Image";
 import { CustomModalBlackText } from "../../components/talk/Text";
+import { ImageModalCloseView } from "../../components/talk/View";
 import { D_Name } from "../../components/restaurant/Text";
 import {
   RestaurantInfo,
@@ -29,6 +32,19 @@ import {
   Pagenation
 } from "../../components/restaurant/View";
 import fonts from "../../configs/fonts";
+import { ZoomImageModal } from "../../components/restaurant/Modal";
+
+const ImageModalClose = props => {
+  return (
+    <ImageModalCloseView style={{ position: "absolute" }}>
+      <TouchableOpacity onPress={() => props.handler()}>
+        <Image28
+          source={require("../../../assets/image/community/close_white.png")}
+        />
+      </TouchableOpacity>
+    </ImageModalCloseView>
+  );
+};
 
 class RestaurantDetail extends Component {
   constructor(props) {
@@ -38,6 +54,7 @@ class RestaurantDetail extends Component {
       form: "write",
       replyIndex: null,
       imageIndex: 1,
+      imageData: null,
       deletemodal: false,
       dialmodal: false,
       who: "me",
@@ -61,7 +78,15 @@ class RestaurantDetail extends Component {
     );
 
     Promise.all([promise1, promise2]).then(() => {
-      this.setState({ isGood: this.props.getRestaurant.isGood });
+      let arr = [];
+      this.props.getRestaurant.resultRestaurantImage.subImage.map(
+        (item, index) => arr.push({ url: item })
+      );
+
+      this.setState({
+        isGood: this.props.getRestaurant.isGood,
+        imageData: arr
+      });
       this.MenuOrder();
       RestaurantActions.handleLoading(false);
     });
@@ -73,7 +98,7 @@ class RestaurantDetail extends Component {
 
   navigateRestaurant = () => {
     this.props.navigation.navigate("Restaurant", {
-      index: this.props.navigation.state.params.index
+      scrollIndex: this.props.navigation.state.params.scrollIndex
     });
   };
 
@@ -121,6 +146,14 @@ class RestaurantDetail extends Component {
             reportHandler={null}
             who={this.state.who}
           />
+
+          <ZoomImageModal
+            visible={this.props.imageModal}
+            image={this.state.imageData}
+            index={this.props.imageIndex}
+            close={() => RestaurantActions.handleImageModal(false)}
+          />
+
           <CustomModal
             height={widthPercentageToDP(201.9)}
             children={
@@ -186,6 +219,7 @@ class RestaurantDetail extends Component {
               renderPagination={() => {
                 return (
                   <Pagenation
+                    key={`page${this.state.imageIndex}`}
                     index={this.state.imageIndex}
                     total={
                       this.props.getRestaurant.resultRestaurantImage.subImage
@@ -198,14 +232,24 @@ class RestaurantDetail extends Component {
               {this.props.getRestaurant.resultRestaurantImage.subImage.map(
                 (item, index) => {
                   return (
-                    <Image
-                      key={index}
-                      style={{
-                        width: widthPercentageToDP(375),
-                        height: widthPercentageToDP(207)
+                    <TouchableWithoutFeedback
+                      key={`btn${index}`}
+                      onPress={() => {
+                        RestaurantActions.handleImageIndex(
+                          this.state.imageIndex - 1
+                        );
+                        RestaurantActions.handleImageModal(true);
                       }}
-                      source={{ uri: item }}
-                    />
+                    >
+                      <Image
+                        key={index}
+                        style={{
+                          width: widthPercentageToDP(375),
+                          height: widthPercentageToDP(207)
+                        }}
+                        source={{ uri: item }}
+                      />
+                    </TouchableWithoutFeedback>
                   );
                 }
               )}
@@ -318,6 +362,8 @@ export default connect(state => ({
   getRestaurantReply: state.restaurant.getRestaurantReply,
   restaurantReplyList: state.restaurant.restaurantReplyList,
   bottomModal: state.restaurant.bottomModal,
+  imageModal: state.restaurant.imageModal,
+  imageIndex: state.restaurant.imageIndex,
   loading: state.restaurant.loading,
 
   userNickName: state.signin.user.userNickName

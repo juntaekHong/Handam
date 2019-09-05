@@ -35,13 +35,15 @@ class TalkAbout extends Component {
       "didFocus",
       async payload => {
         TalkActions.initGetPosts();
-        this.props.navigation.state.params.scrollIndex != undefined ||
-        this.props.navigation.state.params.scrollIndex != null
-          ? this.flatlistRef.scrollToIndex({
-              index: this.props.navigation.state.params.scrollIndex,
-              viewPosition: 0.5
-            })
-          : null;
+        if (
+          this.props.navigation.state.params.scrollIndex != undefined ||
+          this.props.navigation.state.params.scrollIndex != null
+        ) {
+          this.flatlistRef.scrollToIndex({
+            index: this.props.navigation.state.params.scrollIndex,
+            viewPosition: 0.5
+          });
+        }
       }
     );
   }
@@ -67,7 +69,8 @@ class TalkAbout extends Component {
   }
 
   navigateBack = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("Talk");
+    // this.props.navigation.goBack();
   };
 
   navigateTalkDetail = (postsIndex, index) => {
