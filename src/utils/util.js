@@ -10,10 +10,7 @@ import Toast from "react-native-root-toast";
 import moment from "moment";
 import ExtraDimensions from "react-native-extra-dimensions-android";
 
-const screenWidth =
-  Platform.OS === "android"
-    ? ExtraDimensions.getRealWindowWidth()
-    : Dimensions.get("window").width;
+const screenWidth = Platform.OS === "android" ? ExtraDimensions.getRealWindowWidth() : Dimensions.get("window").width;
 
 const getWidthPercent = dp => {
   let percent = (dp / 375) * 100;
@@ -143,11 +140,8 @@ export const secondToMinute = time => {
 
 export const scheduleContent = value => {
   const lecture = value.substring(0, value.indexOf(")") + 1);
-  const professor = value.substring(
-    value.indexOf(")") + 1,
-    value.indexOf(")") + 4
-  );
-  const room = value.substring(value.length - 6);
+  const professor = value.substring(value.indexOf(")") + 1, value.indexOf(")") + 4);
+  const room = value.substring(value.indexOf(")") + 4);
   return [lecture, professor, room];
 };
 
