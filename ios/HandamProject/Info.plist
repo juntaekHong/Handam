@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.0.0</string>
+	<string>3.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>30</string>
+	<string>32</string>
 	<key>CodePushDeploymentKey</key>
 	<string>eQ2W-17w3tP32pUyr0NVniuQ1LpU615b4c2f-cc19-4f37-a800-d03f0b3a5157</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -41,13 +41,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>카메라 접근</string>
+	<string>프로필 사진을 위해 카메라 기능을 사용합니다</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Face ID사용</string>
+	<string>잠금기능을 위해 Face ID를 사용합니다</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>위치 접근</string>
+	<string>지도 사용을 위한 위치 접근 사용</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진첩 접근</string>
+	<string>프로필 및 게시판 사진추가를 위해 사진첩을 사용합니다</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

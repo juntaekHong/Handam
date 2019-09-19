@@ -14,7 +14,7 @@ const init = {
   },
   shuttleWebView: {
     dev: "http://dev.handam.tk.s3-website.ap-northeast-2.amazonaws.com",
-    prod: "http://shuttle.handam.tk.s3-website.ap-northeast-2.amazonaws.com"
+    prod: "http://handam.shuttle.s3-website.ap-northeast-2.amazonaws.com/"
   },
   pushKey: {
     dev: "4f682cdd-46b2-470f-976c-e61a359fc147",
@@ -28,8 +28,7 @@ const config = {
   shuttleWebView: init.shuttleWebView[init.type],
   pushKey: init.pushKey[init.type],
   bus_url: "http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll",
-  bus_key:
-    "KBxpAljaCeVDNgnaQtyrBO8wPG5PDE1q1WWh%2B7K9N0tuiP9RPOISKOpZt2WvzJLFO6CaZrLCf4sGzPz87lF1SA%3D%3D",
+  bus_key: "KBxpAljaCeVDNgnaQtyrBO8wPG5PDE1q1WWh%2B7K9N0tuiP9RPOISKOpZt2WvzJLFO6CaZrLCf4sGzPz87lF1SA%3D%3D",
   jongro: "100900010",
   seongbuk: "107900003",
   androidVersion: "2.1.0",
@@ -41,15 +40,7 @@ const config = {
   androidStore: {
     packageName: "com.handamproject"
   },
-  signDataKey: [
-    "token",
-    "userId",
-    "BusFavorite",
-    "pass_locking",
-    "bio_locking",
-    "lock_pass",
-    "schedule_color"
-  ]
+  signDataKey: ["token", "userId", "BusFavorite", "pass_locking", "bio_locking", "lock_pass", "schedule_color"]
 };
 
 export default config;
