@@ -75,6 +75,10 @@ class TalkWrite extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   navigateBack = () => {
     if (this.props.navigation.state.params.form == "update") {
       this.navigateTalkDetail();
