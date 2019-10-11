@@ -88,7 +88,7 @@ class RestaurantDetail extends Component {
         imageData: arr
       });
       this.MenuOrder();
-      RestaurantActions.handleLoading(false);
+      RestaurantActions.handleDetailLoading(false);
     });
   }
 
@@ -97,9 +97,7 @@ class RestaurantDetail extends Component {
   }
 
   navigateRestaurant = () => {
-    this.props.navigation.navigate("Restaurant", {
-      scrollIndex: this.props.navigation.state.params.scrollIndex
-    });
+    this.props.navigation.navigate("Restaurant");
   };
 
   navigateRestaurantWrite = () => {
@@ -128,7 +126,7 @@ class RestaurantDetail extends Component {
   };
 
   render() {
-    if (this.props.loading == true) {
+    if (this.props.detailloading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else
       return (
@@ -364,7 +362,7 @@ export default connect(state => ({
   bottomModal: state.restaurant.bottomModal,
   imageModal: state.restaurant.imageModal,
   imageIndex: state.restaurant.imageIndex,
-  loading: state.restaurant.loading,
+  detailloading: state.restaurant.detailloading,
 
   userNickName: state.signin.user.userNickName
 }))(RestaurantDetail);

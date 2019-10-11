@@ -20,7 +20,7 @@ class TalkScreen extends Component {
   }
 
   navigateTalkAbout = index => {
-    TalkActions.handleLoading(true);
+    TalkActions.handleAboutloading(true);
     this.props.navigation.navigate("TalkAbout", { categoryIndex: index });
   };
 
