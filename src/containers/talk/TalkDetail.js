@@ -124,7 +124,7 @@ class TalkDetail extends Component {
             this.renderAlertModal("존재하지 않는 게시글입니다.");
             this.navigateBack();
           }
-          TalkActions.handleLoading(false);
+          TalkActions.handleDetailloading(false);
         });
       }
     );
@@ -157,9 +157,7 @@ class TalkDetail extends Component {
       this.props.navigation.state.params.from == "about" ||
       this.props.navigation.state.params.from == "write"
     ) {
-      this.props.navigation.navigate("TalkAbout", {
-        scrollIndex: this.props.navigation.state.params.scrollIndex
-      });
+      this.props.navigation.navigate("TalkAbout");
     } else if (this.props.navigation.state.params.from === "alarm") {
       navigators.navigateBack();
     } else if (this.props.navigation.state.params.from === "MyPost") {
@@ -185,8 +183,8 @@ class TalkDetail extends Component {
     const pro1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 6,
-      6
+      this.props.postsList.length / 15,
+      15
     );
     const pro2 = TalkActions.pageListPosts(
       this.props.filter,
@@ -417,7 +415,7 @@ class TalkDetail extends Component {
   };
 
   render() {
-    if (this.props.loading == true) {
+    if (this.props.detailloading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else
       return (
@@ -846,7 +844,7 @@ export default connect(state => ({
 
   filter: state.talk.filter,
   orderby: state.talk.orderby,
-  loading: state.talk.loading,
+  detailloading: state.talk.detailloading,
 
   bottomModal: state.talk.bottomModal,
   imageModal: state.talk.imageModal,

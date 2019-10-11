@@ -13,8 +13,8 @@ const init = {
     prod: "https://www.handam.kr"
   },
   shuttleWebView: {
-    dev: "http://dev.handam.tk.s3-website.ap-northeast-2.amazonaws.com",
-    prod: "http://handam.shuttle.s3-website.ap-northeast-2.amazonaws.com/"
+    dev: "http://dev.shuttle.handam.s3-website.ap-northeast-2.amazonaws.com",
+    prod: "http://shuttle.handam.s3-website.ap-northeast-2.amazonaws.com"
   },
   pushKey: {
     dev: "4f682cdd-46b2-470f-976c-e61a359fc147",

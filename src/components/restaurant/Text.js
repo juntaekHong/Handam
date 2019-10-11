@@ -108,7 +108,8 @@ export const D_ReviewTitle = styled.Text`
   font-size: ${widthPercentageToDP(13)};
   font-family: ${fonts.nanumBarunGothicB};
   width: ${widthPercentageToDP(288)};
-  margin-bottom: ${widthPercentageToDP(8)};
+  margin-bottom: ${widthPercentageToDP(5)};
+  line-height: ${widthPercentageToDP(17)};
 `;
 
 export const D_ReviewContent = styled.Text`

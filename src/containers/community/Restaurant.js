@@ -15,22 +15,6 @@ class Restaurant extends Component {
       loading: false,
       loadingList: false
     };
-
-    didBlurSubscription = this.props.navigation.addListener(
-      "didFocus",
-      async payload => {
-        if (
-          this.props.navigation.state.params != undefined &&
-          (this.props.navigation.state.params.scrollIndex != undefined ||
-            this.props.navigation.state.params.scrollIndex != null)
-        ) {
-          this.flatlistRef.scrollToIndex({
-            index: this.props.navigation.state.params.scrollIndex,
-            viewPosition: 0.5
-          });
-        }
-      }
-    );
   }
 
   async componentDidMount() {
@@ -125,7 +109,7 @@ class Restaurant extends Component {
               return (
                 <RestaurantItem
                   navigation={this.props.navigation}
-                  loadingHandler={RestaurantActions.handleLoading}
+                  loadingHandler={RestaurantActions.handleDetailLoading}
                   likeHandler={RestaurantActions.putRestaurantSubscriber}
                   data={item}
                   index={index} //렌더 순서

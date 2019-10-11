@@ -75,6 +75,10 @@ class TalkWrite extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   navigateBack = () => {
     if (this.props.navigation.state.params.form == "update") {
       this.navigateTalkDetail();
@@ -84,7 +88,7 @@ class TalkWrite extends Component {
   };
 
   navigateTalkAbout = () => {
-    this.props.navigation.navigate("TalkAbout", { scrollIndex: undefined });
+    this.props.navigation.navigate("TalkAbout");
   };
 
   navigateTalkDetail = () => {
@@ -212,8 +216,8 @@ class TalkWrite extends Component {
               const pro1 = TalkActions.pageListPosts(
                 this.props.filter,
                 this.props.orderby,
-                this.props.postsList.length / 6,
-                6
+                this.props.postsList.length / 15,
+                15
               );
               const pro2 = TalkActions.pageListPosts(
                 this.props.filter,
