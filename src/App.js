@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 import { CenterView } from "./components/common/View";
 import { UIActivityIndicator } from "react-native-indicators";
 import Modal from "react-native-modal";
-useScreens();
+//붙여넣기 기능 쓰려면 이 놈 주석처리
+// useScreens();
 
 class App extends Component {
   constructor(props) {

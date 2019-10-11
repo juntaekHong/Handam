@@ -113,10 +113,14 @@ const ImageContainer = styled.View`
 const ImageView = props => {
   return (
     <ImageContainer>
-      <ImageIMG
-        source={require("../../../assets/image/community/images.png")}
-      />
-      <ImageCount>{props.data.imageCount}</ImageCount>
+      {props.data.imageCount > 0 ? (
+        <RowView>
+          <ImageIMG
+            source={require("../../../assets/image/community/images.png")}
+          />
+          <ImageCount>{props.data.imageCount}</ImageCount>
+        </RowView>
+      ) : null}
       <LikeIMG source={require("../../../assets/image/community/likes.png")} />
       <ImageCount>{props.data.goodCount}</ImageCount>
       <ReplyIMG
@@ -147,7 +151,7 @@ const HotTextView = styled.View`
   height: ${widthPercentageToDP(14)};
   justify-content: center;
   align-items: center;
-  padding-top: ${widthPercentageToDP(1)};
+  margin-bottom: ${widthPercentageToDP(5)}
   border-radius: ${widthPercentageToDP(10)};
   border-width: ${widthPercentageToDP(1)};
   border-color: ${"#259ffa"};
@@ -177,7 +181,6 @@ const WriterTimeView = styled.View`
   height: ${widthPercentageToDP(12)};
   justify-content: space-between;
   align-items: center;
-  margin-top: ${widthPercentageToDP(8)};
 `;
 
 const WriterTime = props => {

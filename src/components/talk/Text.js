@@ -44,14 +44,16 @@ export const PostTitle = styled.Text`
   font-size: ${widthPercentageToDP(14)};
   font-family: ${fonts.nanumBarunGothicB};
   width: ${widthPercentageToDP(288)};
-  height: ${widthPercentageToDP(15)};
+  margin-bottom: ${widthPercentageToDP(5)};
+  line-height: ${widthPercentageToDP(18)};
 `;
 
 export const PostContent = styled(PostTitle)`
   color: ${"#454545"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
-  margin-top: ${widthPercentageToDP(8)};
+  margin-bottom: ${widthPercentageToDP(8)}
+  line-height: ${widthPercentageToDP(15)};
 `;
 
 export const PostUserName = styled.Text`

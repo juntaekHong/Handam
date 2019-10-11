@@ -53,8 +53,8 @@ class TalkSearch extends Component {
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 6 + 1,
-      6
+      this.props.postsList.length / 15 + 1,
+      15
     );
     TalkActions.handleLoading(false);
   };
@@ -73,8 +73,8 @@ class TalkSearch extends Component {
       this.state.filter +
         ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
       this.props.orderby,
-      this.props.postsList.length / 7 + 1,
-      7
+      this.props.postsList.length / 15 + 1,
+      15
     );
   };
 

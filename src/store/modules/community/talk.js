@@ -11,7 +11,8 @@ const IMAGEMODAL_HANDLE = "talk/IMAGEMODAL_HANDLE";
 const IMAGEINDEX_HANDLE = "talk/IMAGEINDEX_HANDLE";
 const ALERTMODAL_HANDLE = "talk/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "talk/ALERTTEXT_HANDLE";
-const LOADING_HANDLE = "talk/LOADING_HANDLE";
+const DETAILLOADING_HANDLE = "talk/DETAILLOADING_HANDLE";
+const ABOUTLOADING_HANDLE = "talk/ABOUTLOADING_HANDLE";
 const REPLYMODAL_HANDLE = "talk/REPLYMODAL_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
@@ -21,7 +22,8 @@ const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
 const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
-const loadingHandleAction = createAction(LOADING_HANDLE);
+const detailloadingHandleAction = createAction(DETAILLOADING_HANDLE);
+const aboutloadingHandleAction = createAction(ABOUTLOADING_HANDLE);
 const replyModalHandleAction = createAction(REPLYMODAL_HANDLE);
 
 //게시물
@@ -71,7 +73,8 @@ const initState = {
   imageIndex: 0,
   alertModal: false,
   alertText: "호로록 칼국수",
-  loading: false,
+  detailloading: false,
+  aboutloading: false,
   replyModal: false,
 
   //게시물
@@ -116,8 +119,12 @@ export const handleAlertText = text => dispatch => {
   dispatch(alertTextHandleAction(text));
 };
 
-export const handleLoading = bool => dispatch => {
-  dispatch(loadingHandleAction(bool));
+export const handleDetailloading = bool => dispatch => {
+  dispatch(detailloadingHandleAction(bool));
+};
+
+export const handleAboutloading = bool => dispatch => {
+  dispatch(aboutloadingHandleAction(bool));
 };
 
 export const handleReplyModal = bool => dispatch => {
@@ -385,9 +392,13 @@ export default handleActions(
       produce(state, draft => {
         draft.alertText = payload;
       }),
-    [LOADING_HANDLE]: (state, { payload }) =>
+    [DETAILLOADING_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
-        draft.loading = payload;
+        draft.detailloading = payload;
+      }),
+    [ABOUTLOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.aboutloading = payload;
       }),
     [REPLYMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {

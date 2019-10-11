@@ -35,15 +35,6 @@ class TalkAbout extends Component {
       "didFocus",
       async payload => {
         TalkActions.initGetPosts();
-        if (
-          this.props.navigation.state.params.scrollIndex != undefined ||
-          this.props.navigation.state.params.scrollIndex != null
-        ) {
-          this.flatlistRef.scrollToIndex({
-            index: this.props.navigation.state.params.scrollIndex,
-            viewPosition: 0.5
-          });
-        }
       }
     );
   }
@@ -74,11 +65,10 @@ class TalkAbout extends Component {
   };
 
   navigateTalkDetail = (postsIndex, index) => {
-    TalkActions.handleLoading(true);
+    TalkActions.handleDetailloading(true);
     this.props.navigation.navigate("TalkDetail", {
       from: "about",
-      postsIndex: postsIndex,
-      scrollIndex: index
+      postsIndex: postsIndex
     });
   };
 
@@ -97,8 +87,8 @@ class TalkAbout extends Component {
     await TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 6 + 1,
-      6
+      this.props.postsList.length / 15 + 1,
+      15
     );
     await this.setState({ loading: false });
   };
@@ -118,8 +108,8 @@ class TalkAbout extends Component {
     const promise1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
-      this.props.postsList.length / 6,
-      6
+      this.props.postsList.length / 15,
+      15
     );
 
     const promise2 = TalkActions.pageListPosts(
@@ -131,7 +121,7 @@ class TalkAbout extends Component {
     );
 
     Promise.all([promise1, promise2]).then(() => {
-      TalkActions.handleLoading(false);
+      TalkActions.handleAboutloading(false);
     });
   };
 
@@ -179,7 +169,7 @@ class TalkAbout extends Component {
   };
 
   render() {
-    if (this.props.loading == true) {
+    if (this.props.aboutloading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else
       return (
@@ -268,5 +258,5 @@ export default connect(state => ({
   total: state.talk.total,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
-  loading: state.talk.loading
+  aboutloading: state.talk.aboutloading
 }))(TalkAbout);
