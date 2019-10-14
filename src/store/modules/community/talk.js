@@ -93,8 +93,6 @@ export const listPostsCategory = () => async dispatch => {
   const token = await getData("token");
   const jsonData = await api.get(`/postsCategory`, { token: token });
 
-  console.log(jsonData.result);
-
   dispatch(getCategoryAction(jsonData.result));
 };
 

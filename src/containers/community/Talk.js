@@ -20,9 +20,9 @@ class TalkScreen extends Component {
     RestaurantActions.handleLoading(true);
   }
 
-  navigateTalkAbout = index => {
+  navigateTalkAbout = categoryName => {
     TalkActions.handleAboutloading(true);
-    this.props.navigation.navigate("TalkAbout", { categoryIndex: index });
+    this.props.navigation.navigate("TalkAbout", { categoryName: categoryName });
   };
 
   render() {
@@ -37,8 +37,14 @@ class TalkScreen extends Component {
             return (
               <CategoryCard
                 data={item}
-                navigation={() => {
-                  this.navigateTalkAbout(index + 1);
+                navigation={async () => {
+                  await TalkActions.handleCategoryIndex(index + 1);
+                  await TalkActions.handleFilter(
+                    `postsCategoryIndex eq ${this.props.categoryIndex}`
+                  );
+                  this.navigateTalkAbout(
+                    this.props.categoryList[index].postsCategoryName
+                  );
                 }}
               />
             );
@@ -65,5 +71,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  categoryList: state.talk.categoryList
+  categoryList: state.talk.categoryList,
+  categoryIndex: state.talk.categoryIndex
 }))(TalkScreen);

@@ -9,7 +9,7 @@ export const AlarmList = props => {
   const onPress = useCallback(
     alarm => {
       if (props.index == 0) AlarmActions.putUpdateAlarm(alarm.alarmIndex);
-      TalkActions.handleLoading(true);
+      TalkActions.handleDetailloading(true);
       const postsIndex = JSON.parse(alarm.data).postsIndex;
       navigators.navigate("TalkDetail", {
         from: "alarm",

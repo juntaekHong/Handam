@@ -15,7 +15,7 @@ import {
   BackHandler
 } from "react-native";
 import { UIActivityIndicator } from "react-native-indicators";
-import { widthPercentageToDP, timeSince } from "../../utils/util";
+import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { TalkActions } from "../../store/actionCreator";
@@ -573,9 +573,7 @@ class TalkDetail extends Component {
           />
 
           <TitleView
-            titleName={
-              this.props.categoryList[this.props.categoryIndex - 1].str
-            }
+            titleName={this.props.getPosts.postsCategoryName}
             leftChild={true}
             handler={this.navigateBack}
           />
@@ -835,8 +833,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  categoryList: state.talk.categoryList,
-  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   getPosts: state.talk.getPosts,
 
