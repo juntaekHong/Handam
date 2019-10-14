@@ -15,6 +15,7 @@ class TalkScreen extends Component {
   }
 
   async componentDidMount() {
+    TalkActions.listPostsCategory(); //카테고리 리스트 받아오는 부분
     VoteActions.handleLoading(true);
     RestaurantActions.handleLoading(true);
   }

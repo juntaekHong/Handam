@@ -26,6 +26,11 @@ const detailloadingHandleAction = createAction(DETAILLOADING_HANDLE);
 const aboutloadingHandleAction = createAction(ABOUTLOADING_HANDLE);
 const replyModalHandleAction = createAction(REPLYMODAL_HANDLE);
 
+//카테고리
+const CATEGORYLIST = "talk/CATEGORYLIST";
+
+const getCategoryAction = createAction(CATEGORYLIST);
+
 //게시물
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
 const POSTS_TOTAL = "talk/POSTS_TOTAL";
@@ -57,13 +62,7 @@ const re_replyListAction = createAction(RE_REPLYSLIST);
 
 //state
 const initState = {
-  categoryList: [
-    { str: "한담", explain: "자유 주제 카테고리 입니다." },
-    { str: "건의한담", explain: "건의사항 카테고리 입니다." },
-    { str: "대자보", explain: "홍보 카테고리 입니다." },
-    { str: "오픈마켓", explain: "상품 거래 카테고리 입니다." },
-    { str: "분실물 센터", explain: "분실물 카테고리 입니다." }
-  ],
+  categoryList: [],
   categoryIndex: 1,
   filter: `postsCategoryIndex eq 1`,
   orderby: `createdAt DESC`,
@@ -88,6 +87,15 @@ const initState = {
 
   //대댓글
   re_replyList: []
+};
+
+export const listPostsCategory = () => async dispatch => {
+  const token = await getData("token");
+  const jsonData = await api.get(`/postsCategory`, { token: token });
+
+  console.log(jsonData.result);
+
+  dispatch(getCategoryAction(jsonData.result));
 };
 
 //핸들러
@@ -403,6 +411,11 @@ export default handleActions(
     [REPLYMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.replyModal = payload;
+      }),
+    //카테고리
+    [CATEGORYLIST]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.categoryList = payload;
       }),
     //게시물
     [INIT_POSTSLIST]: (state, { payload }) =>

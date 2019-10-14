@@ -94,10 +94,12 @@ export const CategoryCard = props => {
         source={require("../../../assets/image/community/quotation_color.png")}
       />
       <RowView>
-        <CategoryName>{props.data.str}</CategoryName>
-        {/* <NewIMG source={require("../../../assets/image/community/new.png")} /> */}
+        <CategoryName>{props.data.postsCategoryName}</CategoryName>
+        {props.data.hasNewPost ? (
+          <NewIMG source={require("../../../assets/image/community/new.png")} />
+        ) : null}
       </RowView>
-      <CategoryExplain>{props.data.explain}</CategoryExplain>
+      <CategoryExplain>{props.data.description}</CategoryExplain>
     </CategoryCardView>
   );
 };
