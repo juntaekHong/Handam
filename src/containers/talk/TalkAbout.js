@@ -45,13 +45,6 @@ class TalkAbout extends Component {
       return true;
     });
 
-    await TalkActions.handleCategoryIndex(
-      this.props.navigation.state.params.categoryIndex
-    );
-    await TalkActions.handleFilter(
-      `postsCategoryIndex eq ${this.props.categoryIndex}`
-    );
-
     this.getpostslist();
   }
 
@@ -179,9 +172,7 @@ class TalkAbout extends Component {
             text={this.state.alertText}
           />
           <TitleView
-            titleName={
-              this.props.categoryList[this.props.categoryIndex - 1].str
-            }
+            titleName={this.props.navigation.state.params.categoryName}
             leftChild={true}
             handler={this.navigateBack}
             rightChild={
@@ -251,8 +242,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => ({
-  categoryList: state.talk.categoryList,
-  categoryIndex: state.talk.categoryIndex,
   postsList: state.talk.postsList,
   hotpostsList: state.talk.hotpostsList,
   total: state.talk.total,

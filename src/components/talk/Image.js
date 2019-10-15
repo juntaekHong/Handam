@@ -83,8 +83,8 @@ export const HandaMonIMG = styled.Image`
 export const SearchInIMG = styled.Image`
   width: ${widthPercentageToDP(15)};
   height: ${widthPercentageToDP(15)};
-  margin-right: ${widthPercentageToDP(17)};
-  margin-left: ${widthPercentageToDP(8)};
+  margin-right: ${widthPercentageToDP(8)};
+  margin-left: ${widthPercentageToDP(17)};
 `;
 
 //TalkWrite.js
