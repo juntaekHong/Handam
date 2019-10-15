@@ -31,7 +31,8 @@ class TalkSearch extends Component {
         this.props.navigation.state.params.searchtext != ""
           ? this.props.navigation.state.params.searchtext
           : "",
-      filter: `postsCategoryIndex eq ${this.props.categoryIndex}`
+      filter: `postsCategoryIndex eq ${this.props.categoryIndex}`,
+      loading: false
     };
   }
 
@@ -47,7 +48,7 @@ class TalkSearch extends Component {
   }
 
   navigateTalkAbout = async () => {
-    TalkActions.handleLoading(true);
+    TalkActions.handleAboutloading(true);
     this.props.navigation.navigate("TalkAbout");
     await TalkActions.initPostList();
     await TalkActions.pageListPosts(
@@ -56,11 +57,11 @@ class TalkSearch extends Component {
       this.props.postsList.length / 15 + 1,
       15
     );
-    TalkActions.handleLoading(false);
+    TalkActions.handleAboutloading(false);
   };
 
   navigateTalkDetail = postsIndex => {
-    TalkActions.handleLoading(true);
+    TalkActions.handleDetailloading(true);
     this.props.navigation.navigate("TalkDetail", {
       from: "search",
       postsIndex: postsIndex,
@@ -69,6 +70,7 @@ class TalkSearch extends Component {
   };
 
   pageListPosts = async () => {
+    await this.setState({ loading: true });
     await TalkActions.pageListPosts(
       this.state.filter +
         ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
@@ -76,14 +78,15 @@ class TalkSearch extends Component {
       this.props.postsList.length / 15 + 1,
       15
     );
+    await this.setState({ loading: false });
   };
 
   renderListFooter = () => {
-    return this.props.loading ? <BottomLoading /> : null;
+    return this.state.loading ? <BottomLoading /> : null;
   };
 
   renderPostslist = () => {
-    if (this.props.loading == true) {
+    if (this.props.detailloading == true) {
       return <UIActivityIndicator color={"gray"} />;
     } else if (this.props.total !== 0) {
       return (
@@ -140,16 +143,16 @@ class TalkSearch extends Component {
               returnKeyType={"search"}
               onSubmitEditing={async () => {
                 // ` AND  ((title LIKE ${this.state.text}) OR (content LIKE ${this.state.text}))`
-                TalkActions.handleLoading(true);
+                TalkActions.handleDetailloading(true);
                 await TalkActions.initPostList();
                 await TalkActions.pageListPosts(
                   this.state.filter +
                     ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
                   this.props.orderby,
-                  this.props.postsList.length / 7,
-                  7
+                  this.props.postsList.length / 15,
+                  15
                 );
-                TalkActions.handleLoading(false);
+                TalkActions.handleDetailloading(false);
               }}
             />
           </TextInputView>
@@ -188,5 +191,5 @@ export default connect(state => ({
   total: state.talk.total,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
-  loading: state.talk.loading
+  detailloading: state.talk.detailloading
 }))(TalkSearch);

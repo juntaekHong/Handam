@@ -209,7 +209,6 @@ export const getRestaurantReply = restaurantReplyIndex => async dispatch => {
   );
 
   if (jsonData.statusCode == 200) {
-    console.log(jsonData.result);
     dispatch(getRestaurantReplyAction(jsonData.result));
     return true;
   } else {
