@@ -30,19 +30,18 @@ const TabIndicator = styled.View`
   width: 100%
   height: ${widthPercentageToDP(2)}
   bottom: 0
-  background-color: ${({ visible }) =>
-    visible ? colors.active : "transparent"}
+  background-color: ${({ visible }) => (visible ? colors.active : "transparent")}
 `;
 
 export const BusTab = ({ index = 0, onPress }) => {
   return (
     <Tab>
-      <TabBarView>
+      {/* <TabBarView>
         <TabBar onPress={() => onPress(0)}>
           <TabLabel visible={index == 0}>스쿨버스</TabLabel>
           <TabIndicator visible={index == 0} />
         </TabBar>
-      </TabBarView>
+      </TabBarView> */}
       <TabBarView>
         <TabBar onPress={() => onPress(1)}>
           <TabLabel visible={index == 1}>성북02</TabLabel>

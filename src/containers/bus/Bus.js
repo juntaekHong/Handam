@@ -17,7 +17,7 @@ const Bus = ({
   seongbuk_list,
   jongro_list
 }) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
   const [time, setTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [favorite, setFavorite] = useState({});
