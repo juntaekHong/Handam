@@ -24,20 +24,6 @@ class MyScrapListScreen extends React.Component {
     this.state = {
       loading: false
     };
-
-    // didBlurSubscription = this.props.navigation.addListener(
-    //   "didFocus",
-    //   async payload => {
-    //     await MyInfoActions.postLoadingHandle(true);
-    //     await MyInfoActions.initPostsList();
-    //     await MyInfoActions.pageListPostsByIsScrap(
-    //       this.props.orderby,
-    //       this.props.postsList.length / 7,
-    //       7
-    //     );
-    //     await MyInfoActions.postLoadingHandle(false);
-    //   }
-    // );
   }
 
   navigategoBack = () => {

@@ -177,6 +177,21 @@ class TalkDetail extends Component {
     });
   };
 
+  // 내가 쓴 글&내가 스크랩한 글에서 게시물을 수정 페이지 이동 후, 수정 or 취소 경우, 내가 쓴 글&내가 스크랩한 글로 이동하게
+  navigateTalkWriteBackMyPost = () => {
+    this.props.navigation.navigate("TalkWrite", {
+      form: "update",
+      from: "MyPost"
+    });
+  };
+
+  navigateTalkWriteBackMyScrap = () => {
+    this.props.navigation.navigate("TalkWrite", {
+      form: "update",
+      from: "MyScrap"
+    });
+  };
+
   deletePost = async () => {
     await TalkActions.deletePosts(this.props.getPosts.postsIndex);
     await TalkActions.initPostList();
@@ -470,7 +485,15 @@ class TalkDetail extends Component {
             handler={() => TalkActions.handleBottomModal(false)}
             updateHandler={
               this.state.type == "posts"
-                ? this.navigateTalkWrite
+                ?
+                  // 내가 쓴 글 or 내가 스크랩한 글 페이지를 통해 게시물을 들어와 수정할 경우, from 파미터로 수정페이지에서 수정 취소 or 수정완료할 경우 해당 페이지로 이동.
+                  this.props.navigation.state.params != null && this.props.navigation.state.params.from === "MyPost" ?
+                      this.navigateTalkWriteBackMyPost
+                      :
+                      this.props.navigation.state.params != null && this.props.navigation.state.params.from === "MyScrap" ?
+                          this.navigateTalkWriteBackMyScrap
+                          :
+                          this.navigateTalkWrite
                 : this.updateReply
             }
             deleteHandler={() => this.setState({ deletemodal: true })}

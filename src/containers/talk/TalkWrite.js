@@ -81,7 +81,13 @@ class TalkWrite extends Component {
 
   navigateBack = () => {
     if (this.props.navigation.state.params.form == "update") {
-      this.navigateTalkDetail();
+      // 수정 페이지에서 내가 쓴 글&내가 스크랩한 글 페이지를 통해 왔을 때, 취소 시, 해당 페이지로 이동.
+      if(this.props.navigation.state.params.from != null && this.props.navigation.state.params.from === "MyPost") {
+        this.props.navigation.navigate("MyPost");
+      } else if(this.props.navigation.state.params.from != null && this.props.navigation.state.params.from === "MyScrap") {
+        this.props.navigation.navigate("MyScrap");
+      } else
+        this.navigateTalkDetail();
     } else if (this.props.navigation.state.params.form == "write") {
       this.navigateTalkAbout();
     }
@@ -208,7 +214,13 @@ class TalkWrite extends Component {
               );
               await TalkActions.getPosts(this.props.getPosts.postsIndex);
               this.renderAlertModal("게시글을 수정되었습니다.");
-              this.navigateTalkDetail();
+              // 수정 페이지에서 내가 쓴 글&내가 스크랩한 글 페이지를 통해 왔을 때, 수정완료 시, 해당 페이지로 이동.
+              if(this.props.navigation.state.params.from != null && this.props.navigation.state.params.from === "MyPost") {
+                this.props.navigation.navigate("MyPost");
+              } else if(this.props.navigation.state.params.from != null && this.props.navigation.state.params.from === "MyScrap") {
+                this.props.navigation.navigate("MyScrap");
+              } else
+                this.navigateTalkDetail();
             } else {
               await TalkActions.createPosts(formData);
               await TalkActions.initPostList();
