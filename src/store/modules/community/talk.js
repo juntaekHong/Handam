@@ -11,7 +11,8 @@ const IMAGEMODAL_HANDLE = "talk/IMAGEMODAL_HANDLE";
 const IMAGEINDEX_HANDLE = "talk/IMAGEINDEX_HANDLE";
 const ALERTMODAL_HANDLE = "talk/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "talk/ALERTTEXT_HANDLE";
-const LOADING_HANDLE = "talk/LOADING_HANDLE";
+const DETAILLOADING_HANDLE = "talk/DETAILLOADING_HANDLE";
+const ABOUTLOADING_HANDLE = "talk/ABOUTLOADING_HANDLE";
 const REPLYMODAL_HANDLE = "talk/REPLYMODAL_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
@@ -21,8 +22,14 @@ const imageModalHandleAction = createAction(IMAGEMODAL_HANDLE);
 const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
-const loadingHandleAction = createAction(LOADING_HANDLE);
+const detailloadingHandleAction = createAction(DETAILLOADING_HANDLE);
+const aboutloadingHandleAction = createAction(ABOUTLOADING_HANDLE);
 const replyModalHandleAction = createAction(REPLYMODAL_HANDLE);
+
+//카테고리
+const CATEGORYLIST = "talk/CATEGORYLIST";
+
+const getCategoryAction = createAction(CATEGORYLIST);
 
 //게시물
 const INIT_POSTSLIST = "talk/INIT_POSTSLIST";
@@ -55,13 +62,7 @@ const re_replyListAction = createAction(RE_REPLYSLIST);
 
 //state
 const initState = {
-  categoryList: [
-    { str: "한담", explain: "자유 주제 카테고리 입니다." },
-    { str: "건의한담", explain: "건의사항 카테고리 입니다." },
-    { str: "대자보", explain: "홍보 카테고리 입니다." },
-    { str: "오픈마켓", explain: "상품 거래 카테고리 입니다." },
-    { str: "분실물 센터", explain: "분실물 카테고리 입니다." }
-  ],
+  categoryList: [],
   categoryIndex: 1,
   filter: `postsCategoryIndex eq 1`,
   orderby: `createdAt DESC`,
@@ -71,7 +72,8 @@ const initState = {
   imageIndex: 0,
   alertModal: false,
   alertText: "호로록 칼국수",
-  loading: false,
+  detailloading: false,
+  aboutloading: false,
   replyModal: false,
 
   //게시물
@@ -85,6 +87,13 @@ const initState = {
 
   //대댓글
   re_replyList: []
+};
+
+export const listPostsCategory = () => async dispatch => {
+  const token = await getData("token");
+  const jsonData = await api.get(`/postsCategory`, { token: token });
+
+  dispatch(getCategoryAction(jsonData.result));
 };
 
 //핸들러
@@ -116,8 +125,12 @@ export const handleAlertText = text => dispatch => {
   dispatch(alertTextHandleAction(text));
 };
 
-export const handleLoading = bool => dispatch => {
-  dispatch(loadingHandleAction(bool));
+export const handleDetailloading = bool => dispatch => {
+  dispatch(detailloadingHandleAction(bool));
+};
+
+export const handleAboutloading = bool => dispatch => {
+  dispatch(aboutloadingHandleAction(bool));
 };
 
 export const handleReplyModal = bool => dispatch => {
@@ -385,13 +398,22 @@ export default handleActions(
       produce(state, draft => {
         draft.alertText = payload;
       }),
-    [LOADING_HANDLE]: (state, { payload }) =>
+    [DETAILLOADING_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
-        draft.loading = payload;
+        draft.detailloading = payload;
+      }),
+    [ABOUTLOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.aboutloading = payload;
       }),
     [REPLYMODAL_HANDLE]: (state, { payload }) =>
       produce(state, draft => {
         draft.replyModal = payload;
+      }),
+    //카테고리
+    [CATEGORYLIST]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.categoryList = payload;
       }),
     //게시물
     [INIT_POSTSLIST]: (state, { payload }) =>

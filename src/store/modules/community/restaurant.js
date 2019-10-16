@@ -12,6 +12,7 @@ const IMAGEINDEX_HANDLE = "restaurant/IMAGEINDEX_HANDLE";
 const ALERTMODAL_HANDLE = "restaurant/ALERTMODAL_HANDLE";
 const ALERTTEXT_HANDLE = "restaurant/ALERTTEXT_HANDLE";
 const LOADING_HANDLE = "restaurant/LOADING_HANDLE";
+const DETAILLOADING_HANDLE = "restaurant/DETAILLOADING_HANDLE";
 
 const filterHandleAction = createAction(FILTER_HANDLE);
 const totalHandleAction = createAction(TOTAL_HANDLE);
@@ -21,6 +22,7 @@ const imageIndexHandleAction = createAction(IMAGEINDEX_HANDLE);
 const alertModalHandleAction = createAction(ALERTMODAL_HANDLE);
 const alertTextHandleAction = createAction(ALERTTEXT_HANDLE);
 const loadingHandleAction = createAction(LOADING_HANDLE);
+const detailloadingHandleAction = createAction(DETAILLOADING_HANDLE);
 
 //식당
 const RESTAURANTCATEGORY = "restaurant/RESTAURANTCATEGORY";
@@ -54,6 +56,7 @@ const initState = {
   alertModal: false,
   alertText: "호로록 칼국수",
   loading: false,
+  detailloading: false,
 
   //삭당
   categoryList: [{ restaurantCategoryName: "전체 맛집", order: 0 }],
@@ -92,6 +95,10 @@ export const handleAlertText = text => dispatch => {
 
 export const handleLoading = bool => dispatch => {
   dispatch(loadingHandleAction(bool));
+};
+
+export const handleDetailLoading = bool => dispatch => {
+  dispatch(detailloadingHandleAction(bool));
 };
 
 //식당
@@ -202,7 +209,6 @@ export const getRestaurantReply = restaurantReplyIndex => async dispatch => {
   );
 
   if (jsonData.statusCode == 200) {
-    console.log(jsonData.result);
     dispatch(getRestaurantReplyAction(jsonData.result));
     return true;
   } else {
@@ -276,6 +282,11 @@ export default handleActions(
       produce(state, draft => {
         draft.loading = payload;
       }),
+    [DETAILLOADING_HANDLE]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.detailloading = payload;
+      }),
+
     //식당
     [RESTAURANTCATEGORY]: (state, { payload }) =>
       produce(state, draft => {
