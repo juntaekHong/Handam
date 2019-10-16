@@ -180,7 +180,7 @@ class AccountInfoScreen extends React.Component {
                         <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.userId}</ACCOUNTINFOText>
                     </AccountView>
                     <View style={styles.divisionLine}/>
-                    <AccountView>
+                    <AccountView style={{marginTop: widthPercentageToDP(13.5)}}>
                         <ACCOUNTINFOText>닉네임</ACCOUNTINFOText>
                         <ACCOUNTINFOText style={{color: '#646464'}}>{this.props.userNickName}</ACCOUNTINFOText>
                     </AccountView>
@@ -193,8 +193,8 @@ class AccountInfoScreen extends React.Component {
                             <Image width={widthPercentageToDP(28)} height={widthPercentageToDP(28)} source={require("../../../assets/image/myInfo/grayarrow.png")}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{marginVertical: widthPercentageToDP(13), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
-                    <TouchableOpacity  style={styles.account} onPress={() => {this.setState({majorModal: true})}}>
+                    <View style={{marginVertical: widthPercentageToDP(8.5), height: widthPercentageToDP(9), backgroundColor: '#f8f8f8'}}/>
+                    <TouchableOpacity  style={styles.account2} onPress={() => {this.setState({majorModal: true})}}>
                         <View style={{justifyContent: 'center'}}>
                             <ACCOUNTINFOText>전공(제 1트랙)</ACCOUNTINFOText>
                         </View>
@@ -257,8 +257,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f8f8'
     },
     divisionLine2: {
+        marginTop:widthPercentageToDP(7.5),
+        marginBottom: widthPercentageToDP(1),
         marginHorizontal: widthPercentageToDP(29),
-        marginTop: widthPercentageToDP(7.5),
         height: widthPercentageToDP(1),
         backgroundColor: '#f8f8f8'
     },
@@ -268,6 +269,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         backgroundColor: 'white',
         marginTop: widthPercentageToDP(7.5),
+        marginHorizontal: widthPercentageToDP(29)
+    },
+    account2: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: 'white',
+        marginTop: widthPercentageToDP(13),
         marginHorizontal: widthPercentageToDP(29)
     }
 });
