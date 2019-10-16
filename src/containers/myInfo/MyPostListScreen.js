@@ -1,12 +1,9 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   StyleSheet,
-  Platform,
-  ScrollView,
   SafeAreaView,
   FlatList
 } from "react-native";
@@ -28,19 +25,19 @@ class MyPostListScreen extends React.Component {
       loading: false
     };
 
-    didBlurSubscription = this.props.navigation.addListener(
-      "didFocus",
-      async payload => {
-        await MyInfoActions.postLoadingHandle(true);
-        await MyInfoActions.initPostsList();
-        await MyInfoActions.pageListPostsByUserIndex(
-          this.props.orderby,
-          this.props.postsList.length / 7,
-          7
-        );
-        await MyInfoActions.postLoadingHandle(false);
-      }
-    );
+    // didBlurSubscription = this.props.navigation.addListener(
+    //   "didFocus",
+    //   async payload => {
+    //     await MyInfoActions.postLoadingHandle(true);
+    //     await MyInfoActions.initPostsList();
+    //     await MyInfoActions.pageListPostsByUserIndex(
+    //       this.props.orderby,
+    //       this.props.postsList.length / 7,
+    //       7
+    //     );
+    //     await MyInfoActions.postLoadingHandle(false);
+    //   }
+    // );
   }
 
   navigategoBack = () => {
@@ -63,6 +60,7 @@ class MyPostListScreen extends React.Component {
       this.props.postsList.length / 7,
       7
     );
+    await MyInfoActions.postLoadingHandle(false);
   }
 
   pageListPosts = async () => {

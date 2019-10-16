@@ -1,12 +1,9 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   Image,
   StyleSheet,
-  Platform,
-  ScrollView,
   SafeAreaView,
   FlatList
 } from "react-native";
@@ -28,19 +25,19 @@ class MyScrapListScreen extends React.Component {
       loading: false
     };
 
-    didBlurSubscription = this.props.navigation.addListener(
-      "didFocus",
-      async payload => {
-        await MyInfoActions.postLoadingHandle(true);
-        await MyInfoActions.initPostsList();
-        await MyInfoActions.pageListPostsByIsScrap(
-          this.props.orderby,
-          this.props.postsList.length / 7,
-          7
-        );
-        await MyInfoActions.postLoadingHandle(false);
-      }
-    );
+    // didBlurSubscription = this.props.navigation.addListener(
+    //   "didFocus",
+    //   async payload => {
+    //     await MyInfoActions.postLoadingHandle(true);
+    //     await MyInfoActions.initPostsList();
+    //     await MyInfoActions.pageListPostsByIsScrap(
+    //       this.props.orderby,
+    //       this.props.postsList.length / 7,
+    //       7
+    //     );
+    //     await MyInfoActions.postLoadingHandle(false);
+    //   }
+    // );
   }
 
   navigategoBack = () => {
@@ -57,19 +54,21 @@ class MyScrapListScreen extends React.Component {
 
   async componentDidMount() {
     await MyInfoActions.postLoadingHandle(true);
-    await MyInfoActions.initPostsList();
+    await MyInfoActions.initScrapsList();
     await MyInfoActions.pageListPostsByIsScrap(
       this.props.orderby,
-      this.props.postsList.length / 7,
+      this.props.scrapsList.length / 7,
       7
     );
+    await MyInfoActions.postLoadingHandle(false);
+
   }
 
   pageListScraps = async () => {
     await this.setState({ loading: true });
     await MyInfoActions.pageListPostsByIsScrap(
       this.props.orderby,
-      this.props.postsList.length / 7 + 1,
+      this.props.scrapsList.length / 7 + 1,
       7
     );
     await this.setState({ loading: false });
@@ -130,11 +129,11 @@ class MyScrapListScreen extends React.Component {
           <FlatList
             style={styles.flatlist}
             showsHorizontalScrollIndicator={false}
-            data={this.props.postsList}
+            data={this.props.scrapsList}
             keyExtractor={(item, index) => index.toString()}
             onEndReachedThreshold={0.01}
             onEndReached={() => {
-              this.props.postsList.length < this.props.total
+              this.props.scrapsList.length < this.props.scrapsTotal
                 ? this.pageListScraps()
                 : null;
             }}
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   orderby: state.myInfo.orderby,
-  postsList: state.myInfo.postsList,
-  total: state.myInfo.total,
+  scrapsList: state.myInfo.scrapsList,
+  scrapsTotal: state.myInfo.scrapstotal,
   myPost_loading: state.myInfo.myPost_loading
 }))(MyScrapListScreen);
