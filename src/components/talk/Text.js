@@ -52,8 +52,9 @@ export const PostContent = styled(PostTitle)`
   color: ${"#454545"};
   font-size: ${widthPercentageToDP(11)};
   font-family: ${fonts.nanumBarunGothic};
-  margin-bottom: ${widthPercentageToDP(8)}
+  margin-bottom: ${widthPercentageToDP(8)};
   line-height: ${widthPercentageToDP(15)};
+  height: ${widthPercentageToDP(15)};
 `;
 
 export const PostUserName = styled.Text`

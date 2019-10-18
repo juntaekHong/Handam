@@ -1,5 +1,6 @@
 import styled from "styled-components/native";
 import { widthPercentageToDP } from "../../utils/util";
+import { Platform } from "react-native";
 
 //Talk.js
 
@@ -18,6 +19,7 @@ export const NewIMG = styled.Image`
   width: ${widthPercentageToDP(13)};
   height: ${widthPercentageToDP(14)};
   margin-left: ${widthPercentageToDP(5)};
+  margin-top: ${Platform.OS == "ios" ? widthPercentageToDP(1) : 0};
 `;
 
 //TalkAbout.js
