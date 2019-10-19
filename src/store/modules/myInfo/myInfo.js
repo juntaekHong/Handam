@@ -55,8 +55,15 @@ export const postsLoadingAction = createAction(POSTS_LOADING);
 const POSTS_LIST_INIT = 'myInfo/POSTS_LIST_INIT';
 export const postsListInitAction = createAction(POSTS_LIST_INIT);
 
+const SCRAPS_LIST_INIT = 'myInfo/SCRAPS_LIST_INIT';
+export const scrapsListInitAction = createAction(SCRAPS_LIST_INIT);
+
 const POSTS_TOTAL = 'myInfo/POSTS_TOTAL';
 export const postsTotalAction = createAction(POSTS_TOTAL);
+
+//
+const SCRAPS_TOTAL = 'myInfo/SCRAPS_TOTAL';
+export const scrapsTotalAction = createAction(SCRAPS_TOTAL);
 
 export const orderByHandle = (orderby) => dispatch => {
     dispatch({type: ORDERBY_HANDLE, payload: orderby});
@@ -66,6 +73,11 @@ export const orderByHandle = (orderby) => dispatch => {
 export const initPostsList = () => dispatch => {
     dispatch(postsTotalAction(0));
     dispatch(postsListInitAction());
+};
+
+export const initScrapsList = () => dispatch => {
+    dispatch(scrapsTotalAction(0));
+    dispatch(scrapsListInitAction());
 };
 
 export const postLoadingHandle = bool => dispatch => {
@@ -90,9 +102,11 @@ const initState = {
 
     // 내가 쓴 글
     postsList: [],
+    scrapsList: [],
     myPost_loading: false,
     whatposts: null,
     total: null,
+    scrapstotal: null,
     orderby:`createdAt DESC`,
 };
 
@@ -285,7 +299,7 @@ export const pageListPostsByIsScrap = (order, page, count) => async dispatch => 
 
     if (jsonData.statusCode == 200) {
         dispatch({type: READ_SCRAP_POSTS, payload: jsonData.result});
-        dispatch(postsTotalAction(jsonData.resultCount));
+        dispatch(scrapsTotalAction(jsonData.resultCount));
     } else {
 
     }
@@ -343,12 +357,16 @@ export default handleActions(
         [READ_SCRAP_POSTS]:(state, action) => {
             return {
                 ...state,
-                postsList: [...state.postsList, ...action.payload]
+                scrapsList: [...state.scrapsList, ...action.payload]
             };
         },
         [POSTS_TOTAL]: (state, { payload }) =>
             produce(state, draft => {
                 draft.total = payload;
+            }),
+        [SCRAPS_TOTAL]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.scrapstotal = payload;
             }),
         [ORDERBY_HANDLE]: (state, { payload }) =>
             produce(state, draft => {
@@ -357,6 +375,10 @@ export default handleActions(
         [POSTS_LIST_INIT]: (state, { payload }) =>
             produce(state, draft => {
                 draft.postsList = [];
+            }),
+        [SCRAPS_LIST_INIT]: (state, { payload }) =>
+            produce(state, draft => {
+                draft.scrapsList = [];
             }),
     },
     initState

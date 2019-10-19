@@ -48,6 +48,6 @@ export const AccountView = styled.View`
   flexDirection: row;
   justifyContent: space-between;
   background-color: white;
-  marginTop: ${widthPercentageToDP(18)};
+  marginTop: ${widthPercentageToDP(17.5)};
   marginHorizontal: ${widthPercentageToDP(29)};
 `;

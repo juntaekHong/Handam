@@ -18,7 +18,7 @@ import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
-import { TalkActions } from "../../store/actionCreator";
+import {MyInfoActions, TalkActions} from "../../store/actionCreator";
 import navigators from "../../utils/navigators";
 import { Top, Center, Bottom } from "../../components/talk/View";
 import {
@@ -177,9 +177,29 @@ class TalkDetail extends Component {
     });
   };
 
+  // 내가 쓴 글&내가 스크랩한 글에서 게시물을 수정 페이지 이동 후, 수정 or 취소 경우, 내가 쓴 글&내가 스크랩한 글로 이동하게
+  navigateTalkWriteBackMyPost = () => {
+    this.props.navigation.navigate("TalkWrite", {
+      form: "update",
+      from: "MyPost"
+    });
+  };
+
+  navigateTalkWriteBackMyScrap = () => {
+    this.props.navigation.navigate("TalkWrite", {
+      form: "update",
+      from: "MyScrap"
+    });
+  };
+
   deletePost = async () => {
     await TalkActions.deletePosts(this.props.getPosts.postsIndex);
     await TalkActions.initPostList();
+
+    // 내가 쓴 글, 내가 스크랩한 글(자신의 게시물 스크랩 경우) 게시물 삭제 시, 리스트 초기화.
+    await MyInfoActions.initPostsList();
+    await MyInfoActions.initScrapsList();
+
     const pro1 = TalkActions.pageListPosts(
       this.props.filter,
       this.props.orderby,
@@ -192,7 +212,22 @@ class TalkDetail extends Component {
       1,
       2
     );
-    Promise.all([pro1, pro2]).then(() => {
+
+    // 내가 쓴 글, 내가 스크랩한 글 리스트 불러오기.
+    const pro3 = MyInfoActions.pageListPostsByUserIndex(
+        this.props.orderby,
+        this.props.myPostsList.length / 7,
+        7
+    );
+
+    const pro4 = MyInfoActions.pageListPostsByIsScrap(
+        this.props.orderby,
+        this.props.myScrapsList.length / 7,
+        7
+    );
+
+
+    Promise.all([pro1, pro2, pro3, pro4]).then(() => {
       this.navigateBack();
       this.renderAlertModal("게시글이 삭제되었습니다.");
     });
@@ -450,7 +485,15 @@ class TalkDetail extends Component {
             handler={() => TalkActions.handleBottomModal(false)}
             updateHandler={
               this.state.type == "posts"
-                ? this.navigateTalkWrite
+                ?
+                  // 내가 쓴 글 or 내가 스크랩한 글 페이지를 통해 게시물을 들어와 수정할 경우, from 파미터로 수정페이지에서 수정 취소 or 수정완료할 경우 해당 페이지로 이동.
+                  this.props.navigation.state.params != null && this.props.navigation.state.params.from === "MyPost" ?
+                      this.navigateTalkWriteBackMyPost
+                      :
+                      this.props.navigation.state.params != null && this.props.navigation.state.params.from === "MyScrap" ?
+                          this.navigateTalkWriteBackMyScrap
+                          :
+                          this.navigateTalkWrite
                 : this.updateReply
             }
             deleteHandler={() => this.setState({ deletemodal: true })}
@@ -555,14 +598,30 @@ class TalkDetail extends Component {
               posts.postsIndex = this.props.getPosts.postsIndex;
               posts.isScrap = this.state.isScrap == true ? 0 : 1; //스크랩:1 취소:0
 
+              await MyInfoActions.initScrapsList();
+
               await TalkActions.putPostsSubscriber(posts);
               if (this.state.isScrap == true) {
                 setTimeout(() => {
+                  // 스크랩 취소 시, 나의 스크랩 리스트 초기화 및 불러오기
+                  MyInfoActions.pageListPostsByIsScrap(
+                      this.props.orderby,
+                      this.props.myScrapsList.length / 7,
+                      7
+                  );
+
                   this.setState({ isScrap: false });
                 }, 500);
                 // this.renderAlertModal("스크랩을 취소하였습니다.");
               } else {
                 setTimeout(() => {
+                  // 스크랩 취소 후 재스크랩 시, 나의 스크랩 리스트 초기화 및 불러오기
+                  MyInfoActions.pageListPostsByIsScrap(
+                      this.props.orderby,
+                      this.props.myScrapsList.length / 7,
+                      7
+                  );
+
                   this.setState({ isScrap: true });
                 }, 500);
                 // this.renderAlertModal("이 글을 스크랩하였습니다.");
@@ -847,5 +906,9 @@ export default connect(state => ({
   imageIndex: state.talk.imageIndex,
   replyModal: state.talk.replyModal,
 
-  userNickName: state.signin.user.userNickName
+  userNickName: state.signin.user.userNickName,
+
+  // 내가 쓴 글, 스크랩한 글
+  myPostsList: state.myInfo.postsList,
+  myScrapsList: state.myInfo.scrapsList,
 }))(TalkDetail);
