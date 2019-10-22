@@ -160,6 +160,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-onesignal')
     implementation 'com.facebook.fresco:fresco:1.12.0'
     implementation 'com.facebook.fresco:animated-gif:1.12.0'
     implementation project(':lottie-react-native')
@@ -174,7 +175,6 @@ dependencies {
     implementation project(':react-native-wheel-picker-extended')
     implementation project(':react-native-fast-image')
     implementation project(':react-native-device-info')
-    implementation project(':react-native-onesignal')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-screens')
     implementation project(':react-native-splash-screen')

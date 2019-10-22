@@ -11,10 +11,6 @@ import config from "../../configs/config";
 const codepushOption = {
   checkFrequency: CodePush.CheckFrequency.ON_APP_START,
   installMode: CodePush.InstallMode.IMMEDIATE
-  // deploymentKey:
-  //   Platform.OS === "android"
-  //     ? "mTIqF8zXQzV0GBCyfbAxe-K-lcaf615b4c2f-cc19-4f37-a800-d03f0b3a5157"
-  //     : "eQ2W-17w3tP32pUyr0NVniuQ1LpU615b4c2f-cc19-4f37-a800-d03f0b3a5157"
 };
 
 class LiveUpdate extends React.Component {
@@ -29,15 +25,7 @@ class LiveUpdate extends React.Component {
   componentDidMount() {
     try {
       moment.lang("ko", {
-        weekdays: [
-          "일요일",
-          "월요일",
-          "화요일",
-          "수요일",
-          "목요일",
-          "금요일",
-          "토요일"
-        ],
+        weekdays: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
         weekdaysShort: ["일", "월", "화", "수", "목", "금", "토"]
       });
       StatusBar.setBarStyle("dark-content", true);
@@ -78,10 +66,7 @@ class LiveUpdate extends React.Component {
 
   codePushDownloadDidProgress(progress) {
     this.setState({
-      message: `${(
-        (progress.receivedBytes / progress.totalBytes) *
-        100
-      ).toFixed(0)}%`
+      message: `${((progress.receivedBytes / progress.totalBytes) * 100).toFixed(0)}%`
     });
   }
 
