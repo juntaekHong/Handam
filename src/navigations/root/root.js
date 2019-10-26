@@ -9,6 +9,7 @@ import TalkStack from "../talk/TalkStack";
 import Schedule from "../../containers/schedule/Schedule";
 import RestaurantStack_noTab from "../restaurant/RestaurantStack_noTab";
 import Cis from "../../containers/notice/Cis";
+import HomeMenu from "../../containers/home/HomeMenu";
 
 const RootStack = createStackNavigator(
   {
@@ -21,7 +22,8 @@ const RootStack = createStackNavigator(
     settingstack: { screen: SettingStack },
     talk: { screen: TalkStack },
     schedule: { screen: Schedule },
-    RestaurantStack_noTab: { screen: RestaurantStack_noTab }
+    RestaurantStack_noTab: { screen: RestaurantStack_noTab },
+    homemenu: { screen: HomeMenu }
   },
   {
     initialRouteName: "main",

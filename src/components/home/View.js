@@ -39,31 +39,18 @@ const HomeTitleRight = ({ alarm = false }) => {
   return (
     <HomeTitleRightView>
       <HomeTitleIcon marginRight={21.4} onPress={navigateSetting}>
-        <Image
-          source={require("HandamProject/assets/image/home/settings.png")}
-        />
+        <Image source={require("HandamProject/assets/image/home/settings.png")} />
       </HomeTitleIcon>
       <HomeTitleIcon onPress={navigateAlarm}>
         <Image source={require("HandamProject/assets/image/home/alarm.png")} />
-        {alarm ? (
-          <BadgeIcon
-            source={require("HandamProject/assets/image/home/reddot.png")}
-          />
-        ) : null}
+        {alarm ? <BadgeIcon source={require("HandamProject/assets/image/home/reddot.png")} /> : null}
       </HomeTitleIcon>
     </HomeTitleRightView>
   );
 };
 
 export const HomeTitle = props => {
-  return (
-    <Title
-      {...props}
-      paddingRight={16.8}
-      leftInVisible={true}
-      rightRender={() => HomeTitleRight(props)}
-    />
-  );
+  return <Title {...props} paddingRight={16.8} leftInVisible={true} rightRender={() => HomeTitleRight(props)} />;
 };
 
 const AboutHandamView = styled.View`
@@ -145,11 +132,10 @@ export const HomeAd = ({ list = [] }) => {
 
 export const HomeNavigateView = styled.View`
   width: 100%
-  margin-top: ${widthPercentageToDP(12)}
-  margin-bottom: ${widthPercentageToDP(10)}
-  padding-horizontal: ${widthPercentageToDP(12)}
+  margin-top: ${widthPercentageToDP(11)}
+  margin-bottom: ${widthPercentageToDP(4)}
+  padding-horizontal: ${widthPercentageToDP(41)}
   align-items: center
-  justify-content: space-between
   flex-direction: row
 `;
 

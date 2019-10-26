@@ -1,3 +1,6 @@
+import navigators from "../utils/navigators";
+import values from "./values";
+
 /**
  * 설정파일
  */
@@ -40,7 +43,38 @@ const config = {
   androidStore: {
     packageName: "com.handamproject"
   },
-  signDataKey: ["token", "userId", "BusFavorite", "pass_locking", "bio_locking", "lock_pass", "schedule_color"]
+  signDataKey: [
+    "token",
+    "userId",
+    "BusFavorite",
+    "pass_locking",
+    "bio_locking",
+    "lock_pass",
+    "schedule_color",
+    values.storeName.HOME_MENU
+  ],
+  homeMenu: [
+    {
+      sort: 1,
+      title: values.homeMenuTitle.SCHEDULE,
+      image: require("HandamProject/assets/image/home/schedule.png")
+    },
+    {
+      sort: 2,
+      title: values.homeMenuTitle.NOTICE,
+      image: require("HandamProject/assets/image/home/notice.png")
+    },
+    {
+      sort: 3,
+      title: values.homeMenuTitle.BUS,
+      image: require("HandamProject/assets/image/home/bus.png")
+    },
+    {
+      sort: 4,
+      title: values.homeMenuTitle.CIS,
+      image: require("HandamProject/assets/image/home/cis.png")
+    }
+  ]
 };
 
 export default config;

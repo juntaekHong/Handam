@@ -1,27 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { CenterScroll, HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
-import {
-  HomeTitle,
-  HomeAd,
-  HomeNavigateView,
-  TodayLectureTitle,
-  TodayLine
-} from "../../components/home/View";
-import {
-  HomeActions,
-  CommonActions,
-  AlarmActions,
-  HansungInfoActions,
-  LockActions
-} from "../../store/actionCreator";
+import { HomeTitle, HomeAd, HomeNavigateView, TodayLectureTitle, TodayLine } from "../../components/home/View";
+import { HomeActions, CommonActions, AlarmActions, HansungInfoActions, LockActions } from "../../store/actionCreator";
 import moment from "moment";
-import {
-  ScheduleButton,
-  BusButton,
-  NoticeButton,
-  CisButton
-} from "../../components/home/Button";
+import { ScheduleButton, BusButton, NoticeButton, CisButton, HomeNavigateButton } from "../../components/home/Button";
 import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString, widthPercentageToDP } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
@@ -31,10 +14,12 @@ import { CertFailModal } from "../../components/home/modal/CertFailModal";
 import { View } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import LottieView from "lottie-react-native";
+import values from "../../configs/values";
 
 const Home = ({
   navigation,
   noticeList,
+  homeMenu,
   count,
   hansunginfo = null,
   schedule_call,
@@ -49,6 +34,22 @@ const Home = ({
   const [certFailModal, setCertFailModal] = useState(false);
   const lottie = useRef(null);
 
+  const navigateAction = useCallback(title => {
+    switch (title) {
+      case values.homeMenuTitle.SCHEDULE:
+        navigateSchedule();
+        break;
+      case values.homeMenuTitle.NOTICE:
+        navigateNotice();
+        break;
+      case values.homeMenuTitle.CIS:
+        navigateCis();
+        break;
+      case values.homeMenuTitle.BUS:
+        navigateBus();
+        break;
+    }
+  }, []);
   const navigateNotice = useCallback(() => {
     navigation.navigate("notice");
   }, []);
@@ -62,10 +63,8 @@ const Home = ({
 
   const navigateSchedule = useCallback(() => {
     if (hansunginfo === null) return setCertModal(true);
-    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED")
-      return setCertLoadModal(true);
-    if (hansunginfo !== null && hansunginfo.status === "FAIL")
-      return setCertFailModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED") return setCertLoadModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "FAIL") return setCertFailModal(true);
     navigation.navigate("schedule");
   }, [hansunginfo]);
 
@@ -79,26 +78,19 @@ const Home = ({
     await LockActions.lockInit();
     await CommonActions.handleLoading(true);
     await HomeActions.getNoticeList();
-    await AlarmActions.alarmIsPostsAction(
-      user.isPostsAlarm == 1 ? true : false
-    );
+    await AlarmActions.alarmIsPostsAction(user.isPostsAlarm == 1 ? true : false);
     await AlarmActions.getAlarmList(false, 0);
     await CommonActions.handleLoading(false);
   }, [count]);
 
   const onPressRefresh = useCallback(() => {
     if (schedule_loading) return;
-    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED")
-      return setCertLoadModal(true);
-    if (hansunginfo !== null && hansunginfo.status === "FAIL")
-      return setCertFailModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED") return setCertLoadModal(true);
+    if (hansunginfo !== null && hansunginfo.status === "FAIL") return setCertFailModal(true);
 
     if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
       return setScheduleModal(true);
-    } else if (
-      hansunginfo !== null &&
-      hansunginfo.schedule.monday !== undefined
-    ) {
+    } else if (hansunginfo !== null && hansunginfo.schedule.monday !== undefined) {
       setScheduleModal(true);
     } else {
       setCertModal(true);
@@ -114,10 +106,7 @@ const Home = ({
     if (hansunginfo !== null && hansunginfo.schedule.monday === undefined) {
       await HansungInfoActions.getHansungInfo();
       setCall(call => call + 1);
-    } else if (
-      hansunginfo !== null &&
-      hansunginfo.schedule.monday !== undefined
-    ) {
+    } else if (hansunginfo !== null && hansunginfo.schedule.monday !== undefined) {
       await HansungInfoActions.scheduleLoadingAction(false);
       setCall(0);
     }
@@ -197,11 +186,43 @@ const Home = ({
         <HomeAd list={noticeList} />
         <View style={{ width: "100%" }}>
           <HomeNavigateView>
-            <BusButton onPress={navigateBus} />
-            <NoticeButton onPress={navigateNotice} />
-            <CisButton onPress={navigateCis} />
-            <ScheduleButton onPress={navigateSchedule} />
+            {homeMenu.map((item, index) => {
+              if (index > 3) return null;
+              return (
+                <HomeNavigateButton
+                  style={{ marginRight: widthPercentageToDP(18) }}
+                  title={item.title}
+                  image={item.image}
+                  onPress={() => navigateAction(item.title)}
+                />
+              );
+            })}
+            {homeMenu.length < 4 ? (
+              <HomeNavigateButton
+                image={require("HandamProject/assets/image/home/plusbox.png")}
+                onPress={() => navigation.navigate("homemenu")}
+              />
+            ) : null}
           </HomeNavigateView>
+          {homeMenu.length >= 4 ? (
+            <HomeNavigateView>
+              {homeMenu.map((item, index) => {
+                if (index < 4) return null;
+                return (
+                  <HomeNavigateButton
+                    style={{ marginRight: widthPercentageToDP(18) }}
+                    title={item.title}
+                    image={item.image}
+                    onPress={() => navigateAction(item.title)}
+                  />
+                );
+              })}
+              <HomeNavigateButton
+                image={require("HandamProject/assets/image/home/plusbox.png")}
+                onPress={() => navigation.navigate("homemenu")}
+              />
+            </HomeNavigateView>
+          ) : null}
         </View>
         <TodayLectureTitle onPress={onPressRefresh} />
         <TodayLine time={moment(time).format("MM. DD (ddd)")} />
@@ -231,6 +252,7 @@ const Home = ({
 
 export default connect(({ home, alarm, hansung, signin }) => ({
   noticeList: home.noticeList,
+  homeMenu: home.homeMenu,
   count: alarm.count,
   hansunginfo: hansung.hansunginfo,
   schedule_call: hansung.schedule_call,
