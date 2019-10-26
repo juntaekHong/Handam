@@ -8,7 +8,8 @@ import {
   CommonActions,
   AlarmActions,
   LockActions,
-  HansungInfoActions
+  HansungInfoActions,
+  HomeActions
 } from "../../store/actionCreator";
 import OneSignal from "react-native-onesignal";
 
@@ -26,6 +27,7 @@ class UpdateCheck extends PureComponent {
       await CommonActions.commonInit();
       await LockActions.lockInit();
       await AlarmActions.alarmInit();
+      HomeActions.initHomeMenu();
       CommonActions.getAppVersion();
       CommonActions.getTrack();
       CommonActions.getAdmissionYear();
