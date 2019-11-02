@@ -72,7 +72,7 @@ const HomeMenu = ({ homeMenu }) => {
 
   return (
     <HCenterView>
-      <Title title={"기능 관리 및 추가"} leftInVisible={true} />
+      <Title title={"기능 관리 및 추가"} leftInVisible={true} />
       <MenuCenterView>
         <DragSortableView
           dataSource={nowArr}
