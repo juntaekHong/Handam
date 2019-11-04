@@ -5,6 +5,7 @@ import AccountInfoScreen from "../../containers/myInfo/AccountInfoScreen";
 import MyPostListScreen from "../../containers/myInfo/MyPostListScreen";
 import MyScrapListScreen from "../../containers/myInfo/MyScrapListScreen";
 import ChangePasswordScreen from "../../containers/myInfo/ChangePasswordScreen";
+import Calculation from "../../containers/myInfo/Calculation";
 
 const MyInfoStack = createStackNavigator(
     {
@@ -14,6 +15,7 @@ const MyInfoStack = createStackNavigator(
         MyPost: {screen: MyPostListScreen},
         MyScrap: {screen: MyScrapListScreen},
         ChangePass: {screen: ChangePasswordScreen},
+        Calculation: {screen: Calculation},
     },
     {
         initialRouteName: null,

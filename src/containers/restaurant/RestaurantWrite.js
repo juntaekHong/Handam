@@ -243,8 +243,8 @@ class RestaurantWrite extends Component {
           visible={this.props.alertModal}
           text={this.props.alertText}
         />
-        <CustomModal
-          height={widthPercentageToDP(201.9)}
+        {/* <CustomModal
+          height={201.9}
           children={
             <CustomModalBlackText>사진을 삭제하겠습니까?</CustomModalBlackText>
           }
@@ -258,7 +258,7 @@ class RestaurantWrite extends Component {
             this.setState({ deletemodal: false });
           }}
           closeHandler={() => this.setState({ deletemodal: false })}
-        />
+        /> */}
         <TitleView
           titleName={"글쓰기"}
           leftChild={true}
