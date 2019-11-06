@@ -1,9 +1,9 @@
-import React, {useState, useEffect } from 'react';
-import { SafeAreaView, ScrollView, View, TouchableOpacity, BackHandler } from 'react-native';
+import React, {useState} from "react";
+import { SafeAreaView, ScrollView, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import navigators from '../../utils/navigators';
-import { widthPercentageToDP } from '../../utils/util.js';
-import { Title } from '../../components/common/View.js';
+import navigators from "../../utils/navigators";
+import { widthPercentageToDP } from "../../utils/util.js";
+import { Title } from "../../components/common/View.js";
 import { LineView, GradeLineView, CaltopView, CalbottomView, CalresultView, Radio_Selected, Radio_Out_Un} from "../../components/myInfo/View";
 import { NameTI, ScoreTI } from "../../components/myInfo/TextInput";
 import { ModalText, GradeText } from "../../components/myInfo/Text";
@@ -11,8 +11,8 @@ import { MenuTriggerBtn } from "../../components/myInfo/Button";
 import { CustomModal } from "../../components/common/Modal";
 
 const data = {
-  grade:["A+","A","B+","B","C+","C","D+","D","F","P/N"],
-  score:[4.5,4.0,3.5,3.0,2.5,2.0,1.5,1.0,0.0,null]
+  grade: [ "A+", "A", "B+", "B", "C+", "C", "D+" ,"D" ,"F" ,"P/N" ],
+  score: [ 4.5, 4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0, 0.0, null ]
 }
 
 const Calculation = props => {
@@ -22,16 +22,6 @@ const Calculation = props => {
   const [noticeModal, setNModal] = useState(false); // 알림 모달
   const [selectorModal, setSModal] = useState({ bool: false, index: 0}); //성적 선택 모달
   const SubjectArray=[];
-
-  //백핸들러 설정/해제
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      navigateBack();
-      return true;
-    });
-
-    return () => backHandler.remove();
-  }, []);
 
   //홈화면에서 접근하는지 성적페이지에서 접근하는지 구분
   const navigateBack = () => {
@@ -53,7 +43,7 @@ const Calculation = props => {
 
     for(let i in schedule) {
       for(let j in schedule[i]){
-        const subjectName = schedule[i][j].content.substring(0,schedule[i][j].content.indexOf('(',0));
+        const subjectName = schedule[i][j].content.substring(0,schedule[i][j].content.indexOf("(",0));
         if(SubjectArray.indexOf(subjectName) == -1){
           SubjectArray.push(subjectName);
         }
@@ -92,7 +82,7 @@ const Calculation = props => {
     const [name, setName] = useState(props.name);
     const [score, setScore] = useState(props.score);
     return ( 
-      <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(7)}}>
+      <View style={{flexDirection: "row", marginTop: widthPercentageToDP(7)}}>
         <NameTI
           underlineColorAndroid="transparent"
           value={name}
@@ -139,7 +129,7 @@ const Calculation = props => {
   
   const renderCalresult = () => {
     return scoreHidden?
-    <CalresultView addScore={scoreSet.addScore} averScore={scoreSet.averScore}/>:null
+      <CalresultView addScore={scoreSet.addScore} averScore={scoreSet.averScore}/>:null
   }
 
   //성적 선택 모달 내용
@@ -213,7 +203,7 @@ const Calculation = props => {
           calculate={()=>{
             calculationGrade();
             setScoreHidden(true);
-        }}/>
+          }}/>
       </ScrollView>
     </SafeAreaView>
   )
