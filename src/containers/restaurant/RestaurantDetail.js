@@ -153,7 +153,7 @@ class RestaurantDetail extends Component {
           />
 
           <CustomModal
-            height={widthPercentageToDP(201.9)}
+            height={201.9}
             children={
               <CustomModalBlackText>
                 해당 리뷰를 삭제하시겠습니까?
@@ -172,7 +172,7 @@ class RestaurantDetail extends Component {
             closeHandler={() => this.setState({ deletemodal: false })}
           />
           <CustomModal
-            height={widthPercentageToDP(201.9)}
+            height={201.9}
             children={
               <CustomModalBlackText>
                 {this.props.getRestaurant.tel}

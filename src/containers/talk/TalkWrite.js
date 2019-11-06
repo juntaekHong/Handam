@@ -299,7 +299,7 @@ class TalkWrite extends Component {
           text={this.state.alertText}
         />
         <CustomModal
-          height={widthPercentageToDP(201.9)}
+          height={201.9}
           children={
             <CustomModalBlackText>사진을 삭제하겠습니까?</CustomModalBlackText>
           }

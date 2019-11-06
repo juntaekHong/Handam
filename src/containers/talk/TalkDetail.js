@@ -522,7 +522,7 @@ class TalkDetail extends Component {
             }}
           /> */}
           <CustomModal
-            height={widthPercentageToDP(201.9)}
+            height={201.9}
             children={
               <CustomModalBlackText>
                 해당 글을 삭제하겠습니까?
@@ -553,7 +553,7 @@ class TalkDetail extends Component {
             closeHandler={() => this.setState({ reportmodal: false })}
           /> */}
           <CustomModal
-            height={widthPercentageToDP(381)}
+            height={381}
             children={
               <ReportDetailBody
                 handler={this.handleReportEUindex}
@@ -578,7 +578,7 @@ class TalkDetail extends Component {
             }
           />
           <CustomModal
-            height={widthPercentageToDP(201.9)}
+            height={201.9}
             children={
               this.state.isScrap == true ? (
                 <CustomModalText
