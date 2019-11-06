@@ -1,13 +1,13 @@
 import {createMaterialTopTabNavigator} from "react-navigation";
-import HansungInfoPointScreen from "../../containers/hansungInfo/HansungPointScreen";
-import GradesScreen from "../../containers/hansungInfo/GradesScreen";
+import HansungInfoPoint from "../../containers/hansungInfo/HansungPoint";
+import Grades from "../../containers/hansungInfo/Grades";
 import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 
 export default createMaterialTopTabNavigator(
     {
-        Point: { screen: HansungInfoPointScreen, navigationOptions: { tabBarLabel: "비교과포인트" } },
-        Grade: { screen: GradesScreen, navigationOptions: { tabBarLabel: "성적표" } },
+        Point: { screen: HansungInfoPoint, navigationOptions: { tabBarLabel: "비교과포인트" } },
+        Grade: { screen: Grades, navigationOptions: { tabBarLabel: "성적표" } },
     },
     {
         initialRouteName: "Grade",  // 처음 보여질 탭

@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { WheelPicker } from "../../components/signup/Modal";
 import { CommonActions, MyInfoActions, SignUpActions } from "../../store/actionCreator";
 
-class AccountInfoScreen extends React.Component {
+class AccountInfo extends React.Component {
   constructor(props) {
     super(props);
 
@@ -413,4 +413,4 @@ export default connect(state => ({
   admission_list: state.common.admission_list,
   admissionYear: state.signin.user.admissionYear,
   changeAdmissionYear: state.myInfo.userAdmissionYear
-}))(AccountInfoScreen);
+}))(AccountInfo);
