@@ -6,7 +6,7 @@ import { GradesDetailView } from "../../components/hansungInfo/View";
 import fonts from "../../configs/fonts";
 import {connect} from "react-redux";
 
-class GradesDetailScreen extends React.Component {
+class GradesDetail extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -82,4 +82,4 @@ export default connect((state) => ({
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
     grades_value_loading: state.hansung.grades_value_loading,
-}))(GradesDetailScreen);
+}))(GradesDetail);

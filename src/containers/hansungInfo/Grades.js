@@ -2,17 +2,17 @@ import React from 'react';
 import {ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, FlatList} from 'react-native';
 import { ProgressView, DetailView } from "../../components/hansungInfo/View";
 import { BTText, SUBTText, VALText } from "../../components/hansungInfo/Text";
-import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
+import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
 import {connect} from "react-redux";
 import {UIActivityIndicator} from "react-native-indicators";
 import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
-import GradesDetailScreen from "./GradesDetailScreen";
+import GradesDetailScreen from "./GradesDetail";
 import {GradesModal} from "../../components/hansungInfo/Modal";
 
-class GradesScreen extends React.Component {
+class Grades extends React.Component {
 
     constructor(props) {
         super(props);
@@ -342,4 +342,4 @@ export default connect((state) => ({
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
     professor_text: state.hansung.professor_text,
-}))(GradesScreen);
+}))(Grades);

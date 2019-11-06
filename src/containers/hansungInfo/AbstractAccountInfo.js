@@ -4,7 +4,7 @@ import fonts from "../../configs/fonts";
 import React from "react";
 import {connect} from "react-redux";
 
-class AbstractAccountInfoScreen extends React.Component {
+class AbstractAccountInfo extends React.Component {
 
     constructor(props) {
         super(props);
@@ -104,4 +104,4 @@ export default connect(state => ({
     userAvatar: state.myInfo.userAvatar,
     avatar: state.signin.user.avatar,
     avatarDelete: state.myInfo.avatarDelete,
-}))(AbstractAccountInfoScreen);
+}))(AbstractAccountInfo);

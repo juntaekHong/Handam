@@ -7,12 +7,12 @@ import fonts from '../../configs/fonts';
 import { HansungInfoActions } from "../../store/actionCreator";
 import { ProgressView, DetailView, PointListItem } from "../../components/hansungInfo/View";
 import { BTText, SUBTText, VALText } from "../../components/hansungInfo/Text";
-import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
+import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {UIActivityIndicator} from "react-native-indicators";
 import * as Progress from 'react-native-progress';
 import {NonSubjectPointModal} from "../../components/hansungInfo/Modal";
 
-class HansungPointScreen extends React.Component {
+class HansungPoint extends React.Component {
 
     constructor(props) {
         super(props);
@@ -269,4 +269,4 @@ export default connect((state) => ({
     nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
     nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
     grades_status: state.hansung.grades_status,
-}))(HansungPointScreen);
+}))(HansungPoint);

@@ -18,7 +18,7 @@ import { MyInfoActions} from "../../store/actionCreator";
 import {connect} from "react-redux";
 import {CustomModal} from "../../components/common/Modal";
 
-class SecessionScreen extends React.Component {
+class Secession extends React.Component {
     constructor(props) {
         super(props);
 
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
     failmodal: state.myInfo.failmodal,
-}))(SecessionScreen);
+}))(Secession);

@@ -17,7 +17,7 @@ import {
 } from "../../components/talk/View";
 import { UIActivityIndicator } from "react-native-indicators";
 
-class MyPostListScreen extends React.Component {
+class MyPostList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -176,4 +176,4 @@ export default connect(state => ({
   postsList: state.myInfo.postsList,
   total: state.myInfo.total,
   myPost_loading: state.myInfo.myPost_loading
-}))(MyPostListScreen);
+}))(MyPostList);

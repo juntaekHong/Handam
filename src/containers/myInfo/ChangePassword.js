@@ -18,7 +18,7 @@ import fonts from "../../configs/fonts";
 import {MyInfoActions} from "../../store/actionCreator";
 import {CustomModal} from "../../components/common/Modal";
 
-class ChangePasswordScreen extends React.Component {
+class ChangePassword extends React.Component {
     constructor(props) {
         super(props);
 
@@ -254,4 +254,4 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
     ChangePassword: state.myInfo.userPass,
-}))(ChangePasswordScreen);
+}))(ChangePassword);
