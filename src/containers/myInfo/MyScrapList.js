@@ -17,7 +17,7 @@ import {
 } from "../../components/talk/View";
 import { UIActivityIndicator } from "react-native-indicators";
 
-class MyScrapListScreen extends React.Component {
+class MyScrapList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -177,4 +177,4 @@ export default connect(state => ({
   scrapsList: state.myInfo.scrapsList,
   scrapsTotal: state.myInfo.scrapstotal,
   myPost_loading: state.myInfo.myPost_loading
-}))(MyScrapListScreen);
+}))(MyScrapList);

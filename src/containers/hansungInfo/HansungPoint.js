@@ -5,14 +5,14 @@ import { connect } from "react-redux";
 import Hyperlink from 'react-native-hyperlink';
 import fonts from '../../configs/fonts';
 import { HansungInfoActions } from "../../store/actionCreator";
-import { ProgressView, DetailView, PointListItem } from "../../components/hansungInfo/View";
-import { BTText, SUBTText, VALText } from "../../components/hansungInfo/Text";
-import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
+import { ProgressView, DetailView, PointListItem, HansungPointMainView, HansungPointSubView } from "../../components/hansungInfo/View";
+import { BTText } from "../../components/hansungInfo/Text";
+import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {UIActivityIndicator} from "react-native-indicators";
 import * as Progress from 'react-native-progress';
 import {NonSubjectPointModal} from "../../components/hansungInfo/Modal";
 
-class HansungPointScreen extends React.Component {
+class HansungPoint extends React.Component {
 
     constructor(props) {
         super(props);
@@ -123,9 +123,9 @@ class HansungPointScreen extends React.Component {
                         </View>
                         :
                         this.props.nonSubjectPoint_status == true ?
-                            <View style={{flex:1}}>
+                            <View style={{flex:1, backgroundColor: '#ffffff'}}>
                                 <ProgressView>
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                         <View style={{flexDirection: 'row'}}>
                                             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                                 <BTText>내 비교과 포인트</BTText>
@@ -138,79 +138,43 @@ class HansungPointScreen extends React.Component {
                                     <View style={{marginTop: widthPercentageToDP(10)}}>
                                         <Progress.Bar
                                             progress={(this.props.hansunginfo.nonSubjectPoint.myTotalPoint*1)/800}
-                                            width={ widthPercentageToDP(321)}
+                                            width={ widthPercentageToDP(331)}
                                             height={ widthPercentageToDP(17)}
                                             color={'#24a0fa'}
                                             unfilledColor={'#ebebeb'}
                                             borderColor={'#f8f8f8'}
                                             borderRadius={ widthPercentageToDP(9)}/>
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: widthPercentageToDP(10), width: widthPercentageToDP(321)}}>
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: widthPercentageToDP(10)}}>
                                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo.nonSubjectPoint.myTotalPoint}</Text>
                                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>800</Text>
                                         </View>
                                     </View>
                                 </ProgressView>
-                                <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                                <DetailView style={{paddingHorizontal:widthPercentageToDP(20)}}>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <View style={{flexDirection: 'column', justifyContent: 'center', marginTop: widthPercentageToDP(20.6)}}>
-                                            <BTText>주요 통계치</BTText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(17), marginBottom: widthPercentageToDP(15.5)}}>
-                                        <View style={{flexDirection: 'column', marginLeft: widthPercentageToDP(6)}}>
-                                            <SUBTText>신청가능 목록</SUBTText>
-                                            <VALText>{this.props.hansunginfo.nonSubjectPoint.applyAvailableList}</VALText>
-                                        </View>
-                                        <View style={{flexDirection: 'column', marginLeft: widthPercentageToDP(27)}}>
-                                            <SUBTText>인증대기</SUBTText>
-                                            <VALText>{this.props.hansunginfo.nonSubjectPoint.waitingCertification}</VALText>
-                                        </View>
-                                        <View style={{flexDirection: 'column', marginLeft: widthPercentageToDP(27)}}>
-                                            <SUBTText>인증완료</SUBTText>
-                                            <VALText>{this.props.hansunginfo.nonSubjectPoint.completedCertification}</VALText>
-                                        </View>
-                                        <View style={{flexDirection: 'column', marginLeft: widthPercentageToDP(27)}}>
-                                            <SUBTText>인증반려</SUBTText>
-                                            <VALText>{this.props.hansunginfo.nonSubjectPoint.declinedCertification}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={styles.devisionLine}/>
-                                    <View style={{flexDirection: 'row', paddingHorizontal: widthPercentageToDP(12), marginBottom: widthPercentageToDP(16)}}>
-                                        <View>
-                                            <SUBTText>다음학기 이월 예정 포인트</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.carryOverPoint}</VALText>
-                                        </View>
-                                        <View style={{marginLeft: widthPercentageToDP(38)}}>
-                                            <SUBTText>{`${this.props.hansunginfo.nonSubjectPoint.semester.semester}학기 포인트`}</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.semester.semesterPoint}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', paddingHorizontal: widthPercentageToDP(14)}}>
-                                        <View>
-                                            <SUBTText>학과 평균</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.departmentAverage}</VALText>
-                                        </View>
-                                        <View style={{marginLeft: widthPercentageToDP(25)}}>
-                                            <SUBTText>학과 최대</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.departmentMaximum}</VALText>
-                                        </View>
-                                        <View style={{marginLeft: widthPercentageToDP(25)}}>
-                                            <SUBTText>학년 평균</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.gradeAverage}</VALText>
-                                        </View>
-                                        <View style={{marginLeft: widthPercentageToDP(25)}}>
-                                            <SUBTText>학년 최대</SUBTText>
-                                            <VALText style={{fontSize: widthPercentageToDP(14), color: 'black', fontFamily: fonts.nanumBarunGothic}}>{this.props.hansunginfo.nonSubjectPoint.gradeMaximum}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(57), marginBottom: widthPercentageToDP(29)}}>
+                                <DetailView>
+                                    {/*큰 박스 뷰*/}
+                                    <HansungPointMainView
+                                        list={this.props.hansunginfo.nonSubjectPoint.applyAvailableList}
+                                        waiting={this.props.hansunginfo.nonSubjectPoint.waitingCertification}
+                                        completed={this.props.hansunginfo.nonSubjectPoint.completedCertification}
+                                        declined={this.props.hansunginfo.nonSubjectPoint.declinedCertification}
+                                    />
+                                    {/*작은 박스 뷰*/}
+                                    <HansungPointSubView
+                                        carryOverPoint={this.props.hansunginfo.nonSubjectPoint.carryOverPoint}
+                                        currentSemester={this.props.hansunginfo.nonSubjectPoint.semester.semester}
+                                        currentSemesterPoint={this.props.hansunginfo.nonSubjectPoint.semester.semesterPoint}
+                                        departmentAverage={this.props.hansunginfo.nonSubjectPoint.departmentAverage}
+                                        departmentMaximum={this.props.hansunginfo.nonSubjectPoint.departmentMaximum}
+                                        gradeAverage={this.props.hansunginfo.nonSubjectPoint.gradeAverage}
+                                        gradeMaximum={this.props.hansunginfo.nonSubjectPoint.gradeMaximum}
+                                    />
+                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(40), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(29)}}>
                                         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                             <BTText>세부 통계치</BTText>
                                         </View>
                                     </View>
                                 </DetailView>
-                                <DetailView style={{paddingTop: widthPercentageToDP(0)}}>
+                                <DetailView style={{paddingLeft: widthPercentageToDP(0)}}>
                                     {
                                         this.props.hansunginfo.nonSubjectPointDetail == null ?
                                             <View style={{height: widthPercentageToDP(300), alignItems: 'center', justifyContent: 'center'}}>
@@ -256,11 +220,6 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor: '#f8f8f8'
-    },
-    devisionLine: {
-        height: widthPercentageToDP(1),
-        marginBottom: widthPercentageToDP(15.5),
-        backgroundColor: '#f8f8f8'
     }
 });
 
@@ -269,4 +228,4 @@ export default connect((state) => ({
     nonSubjectPoint_status: state.hansung.nonSubjectPoint_status,
     nonSubjectPoint_loading: state.hansung.nonSubjectPoint_loading,
     grades_status: state.hansung.grades_status,
-}))(HansungPointScreen);
+}))(HansungPoint);

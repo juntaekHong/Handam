@@ -1,18 +1,19 @@
 import React from 'react';
 import {ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, FlatList} from 'react-native';
-import { ProgressView, DetailView } from "../../components/hansungInfo/View";
-import { BTText, SUBTText, VALText } from "../../components/hansungInfo/Text";
-import AbstractAccountInfoScreen from "./AbstractAccountInfoScreen";
+import { ProgressView, DetailView, GradeMainView, GradeSubView, MajorUnitView, TeachingUnitView, MinorUnitView, DoubleMajorUnitView, ConnectedMajorUnitView, SemesterAvgGradeChart } from "../../components/hansungInfo/View";
+import { BTText } from "../../components/hansungInfo/Text";
+import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {widthPercentageToDP} from "../../utils/util";
 import fonts from "../../configs/fonts";
 import {connect} from "react-redux";
 import {UIActivityIndicator} from "react-native-indicators";
 import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
-import GradesDetailScreen from "./GradesDetailScreen";
+import GradesDetailScreen from "./GradesDetail";
 import {GradesModal} from "../../components/hansungInfo/Modal";
+import navigators from "../../utils/navigators";
 
-class GradesScreen extends React.Component {
+class Grades extends React.Component {
 
     constructor(props) {
         super(props);
@@ -123,7 +124,35 @@ class GradesScreen extends React.Component {
                 clearInterval(timeout);
             }
         }, 700);
-    }
+    };
+
+    // chartDataRender
+    chartDataRender = data => {
+        let avgData = [];
+        let semesterData = [];
+        let chartData = [{x: "해당없음", y: 0}];
+
+        data.map((Data) => {
+            avgData.push(parseFloat(Data['gradesSummary'].averageScore));
+        });
+        avgData.reverse();
+
+        for( let grades = 1; grades <= Math.round(avgData.length / 2); grades++) {
+            for( let semester = 1; semester <=2; semester++) {
+                semesterData.push(grades+"학년 " + semester + "학기");
+                if( grades == Math.round(avgData.length / 2) && avgData.length % 2 == 1)
+                    break;
+            }
+        }
+
+        for(let i = 0; i < avgData.length; i++) {
+            chartData.push({x: semesterData[i], y: avgData[i]});
+        }
+
+        return (
+            chartData
+        )
+    };
 
     render() {
         return (
@@ -148,11 +177,14 @@ class GradesScreen extends React.Component {
                         </View>
                         :
                         this.props.grades_status == true ?
-                            <View>
-                                <ProgressView>
-                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', width: widthPercentageToDP(321)}}>
+                            <View style={{backgroundColor: '#ffffff'}}>
+                                <View style={{backgroundColor: '#ffffff', marginTop: widthPercentageToDP(4), marginLeft: widthPercentageToDP(22)}}>
+                                    <Image style={{width: widthPercentageToDP(331), height: widthPercentageToDP(63)}} source={require("../../../assets/image/hansungInfo/ad_1.png")} />
+                                </View>
+                                <ProgressView style={{paddingTop: widthPercentageToDP(13)}}>
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                         <View style={{flexDirection: 'row'}}><View style={{flexDirection: 'column', justifyContent: 'center'}}>
-                                            <BTText>총 학점</BTText>
+                                            <BTText>{this.props.hansunginfo.name}님의 학점</BTText>
                                         </View>
                                         </View>
                                         <TouchableOpacity onPress={ () => {this.setState({refreshModal: true})}}>
@@ -162,118 +194,108 @@ class GradesScreen extends React.Component {
                                     <View style={{marginTop: widthPercentageToDP(10)}}>
                                         <Progress.Bar
                                             progress={(this.props.hansunginfo.summaryGrades.acquisitionGrades*1)/(this.props.hansunginfo.hansungInfoId.substring(0,2)>15? 130:140)}
-                                            width={ widthPercentageToDP(321)}
+                                            width={widthPercentageToDP(331)}
                                             height={ widthPercentageToDP(17)}
                                             color={'#24a0fa'}
                                             unfilledColor={'#ebebeb'}
                                             borderColor={'#f8f8f8'}
                                             borderRadius={ widthPercentageToDP(9)}/>
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: widthPercentageToDP(10), width: widthPercentageToDP(321)}}>
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: widthPercentageToDP(10)}}>
                                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo.summaryGrades.acquisitionGrades}</Text>
                                             <Text style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: 'black'}}>{this.props.hansunginfo.hansungInfoId.substring(0,2)>15?130:140}</Text>
                                         </View>
                                     </View>
                                 </ProgressView>
-                                <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                                <DetailView style={{paddingHorizontal: widthPercentageToDP(20)}}>
-                                    <View style={{flexDirection: 'row'}}>
-                                        <View style={{flexDirection: 'column', justifyContent: 'center', marginTop: widthPercentageToDP(20.6)}}>
-                                            <BTText>내 성적</BTText>
-                                        </View>
+                                <DetailView>
+                                    <GradeMainView
+                                        applyGrades={this.props.hansunginfo.summaryGrades.applyGrades}
+                                        acquisitionGrades={this.props.hansunginfo.summaryGrades.acquisitionGrades}
+                                        ratedTotal={this.props.hansunginfo.summaryGrades.ratedTotal}
+                                        averageRating={this.props.hansunginfo.summaryGrades.averageRating}
+                                        percentile={this.props.hansunginfo.summaryGrades.percentile}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(25), marginBottom: widthPercentageToDP(26)}}>
+                                        {
+                                            this.props.hansunginfo.summaryGrades.ratedTotal != 0  ?
+                                                <SemesterAvgGradeChart data={this.chartDataRender(this.props.hansunginfo.detailGrades)}/>
+                                                :
+                                                null
+                                        }
                                     </View>
+
+                                    <TouchableOpacity onPress={() => {navigators.navigate("calculation");}}>
+                                        <Image style={{backgroundColor:'#ffffff', width: widthPercentageToDP(345), height: widthPercentageToDP(40)}} source={require("../../../assets/image/hansungInfo/calculation_of_credit.png")} />
+                                    </TouchableOpacity>
+
+                                    <View style={{marginTop: widthPercentageToDP(28), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(12)}}>
+                                        <BTText>세부 학점</BTText>
+                                    </View>
+                                    <GradeSubView
+                                        requiredAccomplishments={this.props.hansunginfo.summaryGrades.requiredAccomplishments}
+                                        foundationAccomplishments={this.props.hansunginfo.summaryGrades.foundationAccomplishments}
+                                        hansungHumanResources={this.props.hansunginfo.summaryGrades.hansungHumanResources}
+                                        autonomy={this.props.hansunginfo.summaryGrades.autonomy}
+                                        knowledge={this.props.hansunginfo.summaryGrades.knowledge}
+                                        core={this.props.hansunginfo.summaryGrades.core}
+                                        generalSelection={this.props.hansunginfo.summaryGrades.generalSelection}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(30), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(8)}}>
+                                        <BTText>전공</BTText>
+                                    </View>
+                                    <MajorUnitView
+                                        requiredMajor={this.props.hansunginfo.summaryGrades.requiredMajor}
+                                        optionalMajor={this.props.hansunginfo.summaryGrades.optionalMajor}
+                                        foundationMajor={this.props.hansunginfo.summaryGrades.foundationMajor}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(30), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(8)}}>
+                                        <BTText>교직</BTText>
+                                    </View>
+                                    <TeachingUnitView
+                                        requiredTeaching={this.props.hansunginfo.summaryGrades.requiredTeaching}
+                                        optionalTeaching={this.props.hansunginfo.summaryGrades.optionalTeaching}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(30), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(8)}}>
+                                        <BTText>부전공</BTText>
+                                    </View>
+                                    <MinorUnitView
+                                        requiredMinor={this.props.hansunginfo.summaryGrades.requiredMinor}
+                                        optionalMinor={this.props.hansunginfo.summaryGrades.optionalMinor}
+                                        foundationMinor={this.props.hansunginfo.summaryGrades.foundationMinor}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(30), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(8)}}>
+                                        <BTText>복수전공</BTText>
+                                    </View>
+                                    <DoubleMajorUnitView
+                                        requiredDoubleMajor={this.props.hansunginfo.summaryGrades.requiredDoubleMajor}
+                                        optionalDoubleMajor={this.props.hansunginfo.summaryGrades.optionalDoubleMajor}
+                                        foundationDoubleMajor={this.props.hansunginfo.summaryGrades.foundationDoubleMajor}
+                                    />
+
+                                    <View style={{marginTop: widthPercentageToDP(30), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(8)}}>
+                                        <BTText>연계전공</BTText>
+                                    </View>
+                                    <ConnectedMajorUnitView
+                                        requiredConnectedMajor={this.props.hansunginfo.summaryGrades.requiredConnectedMajor}
+                                        optionalConnectedMajor={this.props.hansunginfo.summaryGrades.optionalConnectedMajor}
+                                        foundationConnectedMajor={this.props.hansunginfo.summaryGrades.foundationConnectedMajor}
+                                    />
+
                                 </DetailView>
-                                <DetailView style={{paddingTop: widthPercentageToDP(0), paddingHorizontal: widthPercentageToDP(12), paddingBottom: widthPercentageToDP(31)}}>
-                                    <View style={styles.mainPoint}>
-                                        <View style={{width: widthPercentageToDP(56)}}>
-                                            <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>신청학점</SUBTText>
-                                            <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.applyGrades}</VALText>
-                                        </View>
-                                        <View style={styles.devisionLine} />
-                                        <View style={{width: widthPercentageToDP(56)}}>
-                                            <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>취득학점</SUBTText>
-                                            <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.acquisitionGrades}</VALText>
-                                        </View>
-                                        <View style={styles.devisionLine} />
-                                        <View style={{width: widthPercentageToDP(56)}}>
-                                            <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>평균총계</SUBTText>
-                                            <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.ratedTotal}</VALText>
-                                        </View>
-                                        <View style={styles.devisionLine} />
-                                        <View style={{width: widthPercentageToDP(56)}}>
-                                            <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>평균학점</SUBTText>
-                                            <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.averageRating}</VALText>
-                                        </View>
-                                        <View style={styles.devisionLine} />
-                                        <View style={{width: widthPercentageToDP(56)}}>
-                                            <SUBTText style={{textAlign: 'center',color: 'white', fontFamily: fonts.nanumBarunGothic}}>백분위</SUBTText>
-                                            <VALText style={{color: 'white'}}>{this.props.hansunginfo.summaryGrades.percentile}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>교필</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.requiredAccomplishments}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>토대</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.foundationAccomplishments}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>인재</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.hansungHumanResources}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>자율</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.autonomy}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>전공</SUBTText>
-                                            <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredMajor) +  parseInt(this.props.hansunginfo.summaryGrades.optionalMajor) + parseInt( this.props.hansunginfo.summaryGrades.foundationMajor)}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>소양</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.knowledge}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>핵심</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.core}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>일선</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.generalSelection}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>교직</SUBTText>
-                                            <VALText style={styles.valTextChange}>{this.props.hansunginfo.summaryGrades.requiredTeaching}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>부전</SUBTText>
-                                            <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredMinor) + parseInt(this.props.hansunginfo.summaryGrades.optionalMinor) + parseInt(this.props.hansunginfo.summaryGrades.foundationMinor)}</VALText>
-                                        </View>
-                                    </View>
-                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(18), paddingLeft: widthPercentageToDP(18)}}>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>복전</SUBTText>
-                                            <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredDoubleMajor)+ parseInt(this.props.hansunginfo.summaryGrades.optionalDoubleMajor) + parseInt(this.props.hansunginfo.summaryGrades.foundationDoubleMajor)}</VALText>
-                                        </View>
-                                        <View style={styles.detailView}>
-                                            <SUBTText style={{textAlign: 'center'}}>연전</SUBTText>
-                                            <VALText style={styles.valTextChange}>{parseInt(this.props.hansunginfo.summaryGrades.requiredConnectedMajor) + parseInt(this.props.hansunginfo.summaryGrades.optionalConnectedMajor) + parseInt(this.props.hansunginfo.summaryGrades.foundationConnectedMajor)}</VALText>
-                                        </View>
-                                    </View>
-                                </DetailView>
-                                <View style={{width: widthPercentageToDP(375), height: widthPercentageToDP(7), backgroundColor: '#f8f8f8'}}/>
-                                <DetailView style={{paddingHorizontal: widthPercentageToDP(20)}}>
-                                    <View style={{marginTop: widthPercentageToDP(18)}}>
+
+                                <DetailView>
+                                    <View style={{width: widthPercentageToDP(310), marginLeft: widthPercentageToDP(6), marginTop: widthPercentageToDP(46)}}>
                                         <View style={{flexDirection: 'row'}}>
                                             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
                                                 <BTText>이전 학기 성적</BTText>
                                             </View>
                                         </View>
-                                        {this.bySemesterView()}
                                     </View>
+                                    {this.bySemesterView()}
                                 </DetailView>
                             </View>
                             :
@@ -342,4 +364,4 @@ export default connect((state) => ({
     grades_status: state.hansung.grades_status,
     grades_loading: state.hansung.grades_loading,
     professor_text: state.hansung.professor_text,
-}))(GradesScreen);
+}))(Grades);

@@ -17,7 +17,7 @@ import { connect } from "react-redux";
 import { HansungInfoActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 
-class CertificationScreen extends React.Component {
+class Certification extends React.Component {
     constructor(props) {
         super(props);
 
@@ -234,4 +234,4 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
     hansunginfo: state.hansung.hansunginfo,
-}))(CertificationScreen);
+}))(Certification);
