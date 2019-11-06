@@ -16,6 +16,8 @@ import hansung from "./hansungInfo/hansungInfo";
 import alarm from "./alarm/alarm";
 import lock from "./lock/lock";
 import myInfo from "./myInfo/myInfo";
+import reading from "./reading/reading";
+
 export default combineReducers({
   counter,
   auth,
@@ -31,4 +33,5 @@ export default combineReducers({
   alarm,
   lock,
   myInfo,
+  reading
 });

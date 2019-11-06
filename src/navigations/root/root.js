@@ -11,6 +11,8 @@ import RestaurantStack_noTab from "../restaurant/RestaurantStack_noTab";
 import Cis from "../../containers/notice/Cis";
 import HomeMenu from "../../containers/home/HomeMenu";
 import Calculation from "../../containers/myInfo/Calculation";
+import ReadingRoom from "../../containers/reading/ReadingRoom";
+import RestaurantMenu from "../../containers/home/RestaurantMenu";
 
 const RootStack = createStackNavigator(
   {
@@ -25,7 +27,9 @@ const RootStack = createStackNavigator(
     schedule: { screen: Schedule },
     RestaurantStack_noTab: { screen: RestaurantStack_noTab },
     homemenu: { screen: HomeMenu },
-    calculation: {screen: Calculation},
+    calculation: { screen: Calculation },
+    reading: ReadingRoom,
+    restaurantmenu: RestaurantMenu
   },
   {
     initialRouteName: "main",
