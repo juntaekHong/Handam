@@ -10,13 +10,7 @@ import { BusTab } from "../../components/bus/view/BusTab";
 import { BusFloatButton } from "../../components/bus/button/BusFloatButton";
 import { getData, storeData } from "../../utils/util";
 
-const Bus = ({
-  navigation,
-  jongro_text,
-  seongbuk_text,
-  seongbuk_list,
-  jongro_list
-}) => {
+const Bus = ({ navigation, jongro_text, seongbuk_text, seongbuk_list, jongro_list }) => {
   const [index, setIndex] = useState(1);
   const [time, setTime] = useState("");
   const [loading, setLoading] = useState(false);
@@ -100,23 +94,15 @@ const Bus = ({
 
   return (
     <BaseView>
-      <Title title={"스쿨버스"} rightInVisible={true} leftHandler={goBack} />
+      <Title title={"마을버스"} rightInVisible={true} leftHandler={goBack} />
       <BusTab onPress={onIndexChange} index={index} />
       <TimeTable time={time} onPress={navigateTimeTable} />
       {index == 0 ? (
         <ShuttleWebView />
       ) : index == 1 ? (
-        <BusList
-          list={seongbuk_list}
-          favorite={favorite}
-          handleFavorite={handleFavorite}
-        />
+        <BusList list={seongbuk_list} favorite={favorite} handleFavorite={handleFavorite} />
       ) : (
-        <BusList
-          list={jongro_list}
-          favorite={favorite}
-          handleFavorite={handleFavorite}
-        />
+        <BusList list={jongro_list} favorite={favorite} handleFavorite={handleFavorite} />
       )}
       {index !== 0 ? <BusFloatButton onPress={floatAction} /> : null}
     </BaseView>

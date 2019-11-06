@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { HomeTitle, HomeAd, HomeNavigateView, TodayLectureTitle, TodayLine } from "../../components/home/View";
 import { HomeActions, CommonActions, AlarmActions, HansungInfoActions, LockActions } from "../../store/actionCreator";
 import moment from "moment";
-import { ScheduleButton, BusButton, NoticeButton, CisButton, HomeNavigateButton } from "../../components/home/Button";
+import { HomeNavigateButton } from "../../components/home/Button";
 import TodayLecture from "../../components/home/view/TodayLecture";
 import { dayToString, widthPercentageToDP } from "../../utils/util";
 import { CertModal } from "../../components/home/modal/CertModal";
@@ -48,6 +48,15 @@ const Home = ({
       case values.homeMenuTitle.BUS:
         navigateBus();
         break;
+      case values.homeMenuTitle.READING:
+        navigateReading();
+        break;
+      case values.homeMenuTitle.RESTAURANT:
+        navigateRestaurant();
+        break;
+      case values.homeMenuTitle.CALCULATE:
+        navigateCalculation();
+        break;
     }
   }, []);
   const navigateNotice = useCallback(() => {
@@ -59,6 +68,18 @@ const Home = ({
 
   const navigateBus = useCallback(() => {
     navigation.navigate("busstack");
+  }, []);
+
+  const navigateReading = useCallback(() => {
+    navigation.navigate("reading");
+  }, []);
+
+  const navigateRestaurant = useCallback(() => {
+    navigation.navigate("restaurantmenu");
+  }, []);
+
+  const navigateCalculation = useCallback(() => {
+    navigation.navigate("calculation");
   }, []);
 
   const navigateSchedule = useCallback(() => {

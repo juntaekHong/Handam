@@ -73,6 +73,21 @@ const config = {
       sort: 4,
       title: values.homeMenuTitle.CIS,
       image: require("HandamProject/assets/image/home/cis.png")
+    },
+    {
+      sort: 5,
+      title: values.homeMenuTitle.READING,
+      image: require("HandamProject/assets/image/home/reading.png")
+    },
+    {
+      sort: 6,
+      title: values.homeMenuTitle.CALCULATE,
+      image: require("HandamProject/assets/image/home/calculation.png")
+    },
+    {
+      sort: 7,
+      title: values.homeMenuTitle.RESTAURANT,
+      image: require("HandamProject/assets/image/home/restaurant.png")
     }
   ]
 };

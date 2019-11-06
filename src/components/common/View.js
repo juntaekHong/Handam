@@ -9,22 +9,17 @@ import { ScrollView } from "react-native";
 
 export const LinkView = styled.TouchableOpacity`
   height: 100%;
-  padding-left: ${props =>
-    props.paddingLeft ? widthPercentageToDP(props.paddingLeft) : 0};
-  padding-right: ${props =>
-    props.paddingRight ? widthPercentageToDP(props.paddingRight) : 0};
+  padding-left: ${props => (props.paddingLeft ? widthPercentageToDP(props.paddingLeft) : 0)};
+  padding-right: ${props => (props.paddingRight ? widthPercentageToDP(props.paddingRight) : 0)};
   justify-content: center;
   align-items: center;
 `;
 
 export const BaseView = styled.View`
   flex: 1;
-  background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : "white"};
-  padding-top: ${({ paddingTop }) =>
-    paddingTop ? widthPercentageToDP(paddingTop) : 0};
-  padding-bottom: ${({ paddingBottom }) =>
-    paddingBottom ? widthPercentageToDP(paddingBottom) : 0};
+  background-color: ${props => (props.backgroundColor ? props.backgroundColor : "white")};
+  padding-top: ${({ paddingTop }) => (paddingTop ? widthPercentageToDP(paddingTop) : 0)};
+  padding-bottom: ${({ paddingBottom }) => (paddingBottom ? widthPercentageToDP(paddingBottom) : 0)};
 `;
 
 export const HCenterView = styled(BaseView)`
@@ -35,8 +30,7 @@ export const CenterView = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : colors.white};
+  background-color: ${props => (props.backgroundColor ? props.backgroundColor : colors.white)};
 `;
 
 export const CenterScroll = styled.ScrollView`
@@ -51,11 +45,7 @@ export const RowView = styled.View`
 `;
 
 export const Scroll = props => (
-  <ScrollView
-    style={{ width: "100%" }}
-    contentContainerStyle={{ flexGrow: 1, alignItems: "center" }}
-    {...props}
-  >
+  <ScrollView style={{ width: "100%" }} contentContainerStyle={{ flexGrow: 1, alignItems: "center" }} {...props}>
     {props.children}
   </ScrollView>
 );
@@ -99,18 +89,11 @@ export const Title = ({
   style
 }) => {
   return (
-    <TitleView
-      height={height}
-      paddingLeft={paddingLeft}
-      paddingRight={paddingRight}
-      style={style}
-    >
+    <TitleView height={height} paddingLeft={paddingLeft} paddingRight={paddingRight} style={style}>
       {leftRender ? (
         leftRender()
       ) : !leftInVisible ? (
-        <TitleIcon
-          onPress={leftHandler ? leftHandler : navigations.navigateBack}
-        >
+        <TitleIcon onPress={leftHandler ? leftHandler : navigations.navigateBack}>
           <FastImage
             style={{
               height: widthPercentageToDP(20),
@@ -126,9 +109,7 @@ export const Title = ({
       {rightRender ? (
         rightRender()
       ) : !rightInVisible ? (
-        <TitleIcon
-          onPress={rightHandler ? rightHandler : navigations.navigateBack}
-        >
+        <TitleIcon onPress={rightHandler ? rightHandler : navigations.navigateBack}>
           <FastImage
             style={{
               height: widthPercentageToDP(18),
