@@ -8,21 +8,21 @@ import ChangePassword from "../../containers/myInfo/ChangePassword";
 import Calculation from "../../containers/myInfo/Calculation";
 
 const MyInfoStack = createStackNavigator(
-    {
-        MyInfo: { screen: MyInfo },
-        Secession: {screen: Secession},
-        AccountInfo: {screen: AccountInfo},
-        MyPost: {screen: MyPostList},
-        MyScrap: {screen: MyScrapList},
-        ChangePass: {screen: ChangePassword},
-        Calculation: {screen: Calculation},
-    },
-    {
-        initialRouteName: null,
-        defaultNavigationOptions: {
-            header: null
-        }
+  {
+    MyInfo: { screen: MyInfo },
+    Secession: { screen: Secession },
+    AccountInfo: { screen: AccountInfo },
+    MyPost: { screen: MyPostList },
+    MyScrap: { screen: MyScrapList },
+    ChangePass: { screen: ChangePassword },
+    Calculation: { screen: Calculation }
+  },
+  {
+    initialRouteName: null,
+    defaultNavigationOptions: {
+      header: null
     }
+  }
 );
 
 export default MyInfoStack;

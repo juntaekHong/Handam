@@ -10,7 +10,6 @@ import {
     StyleSheet, BackHandler
 } from "react-native";
 import {
-    removeData,
     widthPercentageToDP,
     removeAllData
 } from "../../utils/util";
@@ -32,9 +31,8 @@ import {
 } from "../../components/myInfo/Text";
 import { UIActivityIndicator } from "react-native-indicators";
 import {HansungInfoActions, MyInfoActions, TalkActions} from "../../store/actionCreator";
-import { myInfoLoadingHandle } from "../../store/modules/hansungInfo/hansungInfo";
 import ImageCropPicker from 'react-native-image-crop-picker';
-
+ 
 class MyInfo extends React.Component {
 
     _didFocusSubscription;
