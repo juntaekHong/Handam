@@ -1,21 +1,12 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView
-} from "react-native";
+import { View, TouchableOpacity, Image, StyleSheet, Platform, ScrollView, SafeAreaView } from "react-native";
 import { widthPercentageToDP } from "../../utils/util";
 import { SECText, ACCOUNTINFOText } from "../../components/myInfo/Text";
 import { AccountView } from "../../components/myInfo/View";
+import { timeFormat } from "../../utils/util";
 import { connect } from "react-redux";
 import { WheelPicker } from "../../components/signup/Modal";
-import {
-  MyInfoActions,
-  SignUpActions
-} from "../../store/actionCreator";
+import { CommonActions, MyInfoActions, SignUpActions } from "../../store/actionCreator";
 
 class AccountInfo extends React.Component {
   constructor(props) {
@@ -29,6 +20,8 @@ class AccountInfo extends React.Component {
       admissionYearModal: false
     };
 
+    // CommonActions.getTrack();
+    // CommonActions.getAdmissionYear();
   }
 
   navigategoBack = () => {
@@ -38,6 +31,12 @@ class AccountInfo extends React.Component {
   navigateChangePass = () => {
     this.props.navigation.navigate("ChangePass");
   };
+
+  // render 전에 major_list, 앱 버전 불러오기
+  // componentWillMount = async () => {
+  //     await CommonActions.getTrack();
+  //     await CommonActions.getAdmissionYear();
+  // };
 
   // 전공(1트랙) 항목 값 변경
   major_value_change = async major => {
@@ -121,8 +120,7 @@ class AccountInfo extends React.Component {
   lengthCheck = aboutLength => {
     if (aboutLength == null) return "해당없음";
 
-    let charactors =
-      aboutLength.length > 8 ? aboutLength.slice(0, 8) + ".." : aboutLength;
+    let charactors = aboutLength.length > 8 ? aboutLength.slice(0, 8) + ".." : aboutLength;
 
     return charactors;
   };
@@ -133,11 +131,7 @@ class AccountInfo extends React.Component {
         <WheelPicker
           visible={this.state.majorModal}
           data={this.props.major_list}
-          value={
-            this.props.changeMajor == null
-              ? this.props.major
-              : this.props.changeMajor
-          }
+          value={this.props.changeMajor == null ? this.props.major : this.props.changeMajor}
           closeHandler={() => {
             this.setState({ majorModal: false });
           }}
@@ -146,11 +140,7 @@ class AccountInfo extends React.Component {
         <WheelPicker
           visible={this.state.doublemajorModal}
           data={this.props.track_list}
-          value={
-            this.props.changeDoubleMajor == null
-              ? this.props.doubleMajor
-              : this.props.changeDoubleMajor
-          }
+          value={this.props.changeDoubleMajor == null ? this.props.doubleMajor : this.props.changeDoubleMajor}
           closeHandler={() => {
             this.setState({ doublemajorModal: false });
           }}
@@ -159,11 +149,7 @@ class AccountInfo extends React.Component {
         <WheelPicker
           visible={this.state.minorModal}
           data={this.props.track_list}
-          value={
-            this.props.changeMinor == null
-              ? this.props.minor
-              : this.props.changeMinor
-          }
+          value={this.props.changeMinor == null ? this.props.minor : this.props.changeMinor}
           closeHandler={() => {
             this.setState({ minorModal: false });
           }}
@@ -172,11 +158,7 @@ class AccountInfo extends React.Component {
         <WheelPicker
           visible={this.state.connectedMajorModal}
           data={this.props.track_list}
-          value={
-            this.props.changeConnectedMajor == null
-              ? this.props.connectedMajor
-              : this.props.changeConnectedMajor
-          }
+          value={this.props.changeConnectedMajor == null ? this.props.connectedMajor : this.props.changeConnectedMajor}
           closeHandler={() => {
             this.setState({ connectedMajorModal: false });
           }}
@@ -185,11 +167,7 @@ class AccountInfo extends React.Component {
         <WheelPicker
           visible={this.state.admissionYearModal}
           data={this.props.admission_list}
-          value={
-            this.props.changeAdmissionYear == null
-              ? this.props.admissionYear
-              : this.props.changeAdmissionYear
-          }
+          value={this.props.changeAdmissionYear == null ? this.props.admissionYear : this.props.changeAdmissionYear}
           closeHandler={() => {
             this.setState({ admissionYearModal: false });
           }}
@@ -232,16 +210,12 @@ class AccountInfo extends React.Component {
 
           <AccountView>
             <ACCOUNTINFOText>이메일</ACCOUNTINFOText>
-            <ACCOUNTINFOText style={{ color: "#646464" }}>
-              {this.props.userId}
-            </ACCOUNTINFOText>
+            <ACCOUNTINFOText style={{ color: "#646464" }}>{this.props.userId}</ACCOUNTINFOText>
           </AccountView>
           <View style={styles.divisionLine} />
           <AccountView style={{ marginTop: widthPercentageToDP(13.5) }}>
             <ACCOUNTINFOText>닉네임</ACCOUNTINFOText>
-            <ACCOUNTINFOText style={{ color: "#646464" }}>
-              {this.props.userNickName}
-            </ACCOUNTINFOText>
+            <ACCOUNTINFOText style={{ color: "#646464" }}>{this.props.userNickName}</ACCOUNTINFOText>
           </AccountView>
           <View style={styles.divisionLine} />
           <TouchableOpacity
@@ -371,9 +345,7 @@ class AccountInfo extends React.Component {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <ACCOUNTINFOText style={{ color: "#646464" }}>
-                {this.props.changeAdmissionYear != null
-                  ? this.props.changeAdmissionYear
-                  : this.props.admissionYear}
+                {this.props.changeAdmissionYear != null ? this.props.changeAdmissionYear : this.props.admissionYear}
               </ACCOUNTINFOText>
               <Image
                 width={widthPercentageToDP(28)}

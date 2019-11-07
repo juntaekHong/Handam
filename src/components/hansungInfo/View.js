@@ -9,8 +9,8 @@ import PureChart from 'react-native-pure-chart';
 // 비교과, 성적표 프로그레스 영역
 export const ProgressView = styled.View`
   background-color: white;
-  padding-Horizontal: ${widthPercentageToDP(22)};
-  padding-Top: ${widthPercentageToDP(17)};
+  paddingHorizontal: ${widthPercentageToDP(22)};
+  paddingTop: ${widthPercentageToDP(17)};
 `;
 
 // 비교과, 성적표 주요 목록 값 영역
@@ -23,8 +23,8 @@ export const DetailView = styled.View`
 
 // 학기별 성적표 영역
 export const GradesDetailView = styled.View`
-  flex-direction: row;
-  margin-top: ${widthPercentageToDP(22)};
+  flexDirection: row;
+  marginTop: ${widthPercentageToDP(22)};
 `;
 
 // 비교과 인증 리스트 뷰
@@ -434,7 +434,7 @@ export const ConnectedMajorUnitView = props => {
             </GradeSimpleView>
         </ImageBackground>
     )
-};  
+};
 
 // 학기별 평균학점 그래프
 export const SemesterAvgGradeChart = props => {
