@@ -146,9 +146,7 @@ class Grades extends React.Component {
         }
 
         for(let i = 0; i < avgData.length; i++) {
-            if (i >= 8) break;
-            else
-                chartData.push({x: semesterData[i], y: avgData[i]});
+            chartData.push({x: semesterData[i], y: avgData[i]});
         }
 
         return (
@@ -227,7 +225,7 @@ class Grades extends React.Component {
                                     </View>
 
                                     <TouchableOpacity onPress={() => {navigators.navigate("calculation");}}>
-                                        <Image style={{backgroundColor:'#ffffff', width: widthPercentageToDP(345), height: widthPercentageToDP(58)}} source={require("../../../assets/image/hansungInfo/calculation_of_credit.png")} />
+                                        <Image style={{backgroundColor:'#ffffff', width: widthPercentageToDP(345), height: widthPercentageToDP(40)}} source={require("../../../assets/image/hansungInfo/calculation_of_credit.png")} />
                                     </TouchableOpacity>
 
                                     <View style={{marginTop: widthPercentageToDP(28), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(12)}}>
