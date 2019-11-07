@@ -47,7 +47,6 @@ class MyScrapList extends React.Component {
       7
     );
     await MyInfoActions.postLoadingHandle(false);
-
   }
 
   pageListScraps = async () => {

@@ -11,8 +11,8 @@ import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
 import GradesDetailScreen from "./GradesDetail";
 import {GradesModal} from "../../components/hansungInfo/Modal";
-import navigators from "../../utils/navigators";
-
+import navigators from "../../utils/navigators";  
+ 
 class Grades extends React.Component {
 
     constructor(props) {
@@ -137,16 +137,14 @@ class Grades extends React.Component {
         });
         avgData.reverse();
 
-        for( let grades = 1; grades <= Math.round(avgData.length / 2); grades++) {
-            for( let semester = 1; semester <=2; semester++) {
-                semesterData.push(grades+"학년 " + semester + "학기");
-                if( grades == Math.round(avgData.length / 2) && avgData.length % 2 == 1)
-                    break;
-            }
+        for( let semester = 1; semester <= avgData.length; semester++) {
+            semesterData.push(semester + "학기");
         }
 
         for(let i = 0; i < avgData.length; i++) {
-            chartData.push({x: semesterData[i], y: avgData[i]});
+            if (i >= 8) break;
+            else
+                chartData.push({x: semesterData[i], y: avgData[i]});
         }
 
         return (
@@ -225,7 +223,7 @@ class Grades extends React.Component {
                                     </View>
 
                                     <TouchableOpacity onPress={() => {navigators.navigate("calculation");}}>
-                                        <Image style={{backgroundColor:'#ffffff', width: widthPercentageToDP(345), height: widthPercentageToDP(40)}} source={require("../../../assets/image/hansungInfo/calculation_of_credit.png")} />
+                                        <Image style={{backgroundColor:'#ffffff', width: widthPercentageToDP(345), height: widthPercentageToDP(58)}} source={require("../../../assets/image/hansungInfo/calculation_of_credit.png")} />
                                     </TouchableOpacity>
 
                                     <View style={{marginTop: widthPercentageToDP(28), marginLeft: widthPercentageToDP(7), marginBottom: widthPercentageToDP(12)}}>

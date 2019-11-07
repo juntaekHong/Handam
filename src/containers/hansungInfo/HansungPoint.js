@@ -10,8 +10,8 @@ import { BTText } from "../../components/hansungInfo/Text";
 import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {UIActivityIndicator} from "react-native-indicators";
 import * as Progress from 'react-native-progress';
-import {NonSubjectPointModal} from "../../components/hansungInfo/Modal";
-
+import {NonSubjectPointModal} from "../../components/hansungInfo/Modal"; 
+ 
 class HansungPoint extends React.Component {
 
     constructor(props) {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor: '#f8f8f8'
     }
-});
+}); 
 
 export default connect((state) => ({
     hansunginfo: state.hansung.hansunginfo,
