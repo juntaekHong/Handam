@@ -22,6 +22,10 @@ const init = {
   pushKey: {
     dev: "4f682cdd-46b2-470f-976c-e61a359fc147",
     prod: "73a21036-6f4c-47d8-8ecb-d86aa26de4aa"
+  },
+  readingServer: {
+    dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
+    prod: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev"
   }
 };
 
@@ -29,6 +33,7 @@ const config = {
   server: init.server[init.type],
   mailServer: init.mailServer[init.type],
   shuttleWebView: init.shuttleWebView[init.type],
+  readingServer: init.readingServer[init.type],
   pushKey: init.pushKey[init.type],
   bus_url: "http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll",
   bus_key: "KBxpAljaCeVDNgnaQtyrBO8wPG5PDE1q1WWh%2B7K9N0tuiP9RPOISKOpZt2WvzJLFO6CaZrLCf4sGzPz87lF1SA%3D%3D",
