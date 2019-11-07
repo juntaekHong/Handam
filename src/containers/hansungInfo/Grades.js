@@ -137,12 +137,8 @@ class Grades extends React.Component {
         });
         avgData.reverse();
 
-        for( let grades = 1; grades <= Math.round(avgData.length / 2); grades++) {
-            for( let semester = 1; semester <=2; semester++) {
-                semesterData.push(grades+"학년 " + semester + "학기");
-                if( grades == Math.round(avgData.length / 2) && avgData.length % 2 == 1)
-                    break;
-            }
+        for( let semester = 1; semester <= avgData.length; semester++) {
+            semesterData.push(semester + "학기");
         }
 
         for(let i = 0; i < avgData.length; i++) {

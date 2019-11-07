@@ -454,7 +454,7 @@ export const SemesterAvgGradeChart = props => {
                        gap={widthPercentageToDP((300 / data.length))}
                        customValueRenderer={(index, point) => {
                            return (
-                               <Text style={{fontSize: widthPercentageToDP(8), fontFamily: fonts.nanumBarunGothicB, textAlign: 'center', color: '#24a0fa', paddingLeft: widthPercentageToDP(4)}}>{point.y}</Text>
+                               <Text style={{fontSize: widthPercentageToDP(8), fontFamily: fonts.nanumBarunGothicB, textAlign: 'center', color: '#24a0fa'}}>{point.y}</Text>
                            )
                        }}
             />
