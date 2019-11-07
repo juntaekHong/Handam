@@ -24,7 +24,9 @@ const data = {
 };
 
 const Calculation = props => {
-  const [classData, setClassData] = useState([{ name: "", score: "", grade: "선택" }]); //시간표데이터
+  const [classData, setClassData] = useState([
+    { name: "", score: "", grade: "선택" }
+  ]); //시간표데이터
   const [scoreSet, setScoreSet] = useState([]); //성적데이터 저장
   const [scoreHidden, setScoreHidden] = useState(false); // 성적 계산시 결과보여주는거
   const [noticeModal, setNModal] = useState(false); // 알림 모달
@@ -51,7 +53,10 @@ const Calculation = props => {
 
     for (let i in schedule) {
       for (let j in schedule[i]) {
-        const subjectName = schedule[i][j].content.substring(0, schedule[i][j].content.indexOf("(", 0));
+        const subjectName = schedule[i][j].content.substring(
+          0,
+          schedule[i][j].content.indexOf("(", 0)
+        );
         if (SubjectArray.indexOf(subjectName) == -1) {
           SubjectArray.push(subjectName);
         }
@@ -61,7 +66,9 @@ const Calculation = props => {
     if (SubjectArray.length > 0) {
       //시간표 항목이 있으면
       const object = [];
-      SubjectArray.map(item => object.push({ name: item, score: "", grade: "선택" }));
+      SubjectArray.map(item =>
+        object.push({ name: item, score: "", grade: "선택" })
+      );
       setClassData([]);
       setClassData(object);
     } else {
@@ -84,7 +91,11 @@ const Calculation = props => {
 
     const averScore = (totalScore / addScore).toFixed(2);
 
-    setScoreSet({ totalScore: totalScore, addScore: addScore, averScore: averScore });
+    setScoreSet({
+      totalScore: totalScore,
+      addScore: addScore,
+      averScore: averScore
+    });
   };
 
   //과목이름 학점 성적 적는 곳
@@ -137,12 +148,24 @@ const Calculation = props => {
 
   const renderBoxComponents = () => {
     return classData.map((item, index) => {
-      return <BoxComponent index={index} name={item.name} score={item.score} grade={item.grade} />;
+      return (
+        <BoxComponent
+          index={index}
+          name={item.name}
+          score={item.score}
+          grade={item.grade}
+        />
+      );
     });
   };
 
   const renderCalresult = () => {
-    return scoreHidden ? <CalresultView addScore={scoreSet.addScore} averScore={scoreSet.averScore} /> : null;
+    return scoreHidden ? (
+      <CalresultView
+        addScore={scoreSet.addScore}
+        averScore={scoreSet.averScore}
+      />
+    ) : null;
   };
 
   //성적 선택 모달 내용
@@ -187,7 +210,9 @@ const Calculation = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomModal
-        children={<ModalText kind={props.hansunginfo.status !== undefined ? 0 : 1} />}
+        children={
+          <ModalText kind={props.hansunginfo.status !== undefined ? 0 : 1} />
+        }
         visible={noticeModal}
         footerHandler={async () => {
           await setNModal(false);
@@ -208,14 +233,23 @@ const Calculation = props => {
 
       <Title title="현 학기 성적계산" rightInVisible={true} />
       <LineView />
-      <ScrollView style={{ backgroundColor: "#f8f8f8", width: widthPercentageToDP(375) }}>
-        <CaltopView reset={() => resetSchedule()} lists={() => listsSchedule()} />
+      <ScrollView
+        style={{ backgroundColor: "#f8f8f8", width: widthPercentageToDP(375) }}
+      >
+        <CaltopView
+          reset={() => resetSchedule()}
+          lists={() => listsSchedule()}
+        />
         <LineView />
         <CalbottomView
           renderCalresult={renderCalresult}
           renderBoxComponents={renderBoxComponents}
           add={() => {
-            if (classData.length < 10) setClassData([...classData, { name: "", score: "", grade: "선택" }]);
+            if (classData.length < 10)
+              setClassData([
+                ...classData,
+                { name: "", score: "", grade: "선택" }
+              ]);
           }}
           calculate={() => {
             calculationGrade();

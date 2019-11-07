@@ -11,8 +11,8 @@ import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
 import GradesDetailScreen from "./GradesDetail";
 import {GradesModal} from "../../components/hansungInfo/Modal";
-import navigators from "../../utils/navigators";
-
+import navigators from "../../utils/navigators";  
+ 
 class Grades extends React.Component {
 
     constructor(props) {
