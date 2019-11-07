@@ -37,17 +37,16 @@ const yGroup = num => {
       return 87;
   }
 };
-const RoomContainer = styled.View`
-  width: ${wp(323)}
-  height : ${wp(280)}
-`;
 
-const SeatGroup = styled.View`
-  position: absolute
-  flex-direction: row
-  left: ${({ start }) => xGroup(start)}
-  top: ${({ start }) => yGroup(start)}
-`;
+const RoomContainer = props => <View style={{ width: wp(323), height: wp(280) }}>{props.children}</View>;
+
+const SeatGroup = props => (
+  <View
+    style={{ position: "absolute", flexDirection: "row", left: wp(xGroup(props.start)), top: wp(yGroup(props.start)) }}
+  >
+    {props.children}
+  </View>
+);
 
 const SeatLine = ({ data, start, end, row = "column" }) => {
   const [list, setList] = useState([]);

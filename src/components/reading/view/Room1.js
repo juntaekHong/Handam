@@ -85,17 +85,16 @@ const yGroup = num => {
       return 164;
   }
 };
-const RoomContainer = styled.View`
-  width: ${wp(426)}
-  height : ${wp(280)}
-`;
 
-const SeatGroup = styled.View`
-  position: absolute
-  flex-direction: row
-  left: ${({ start }) => xGroup(start)}
-  top: ${({ start }) => yGroup(start)}
-`;
+const RoomContainer = props => <View style={{ width: wp(426), height: wp(280) }}>{props.children}</View>;
+
+const SeatGroup = props => (
+  <View
+    style={{ position: "absolute", flexDirection: "row", left: wp(xGroup(props.start)), top: wp(yGroup(props.start)) }}
+  >
+    {props.children}
+  </View>
+);
 
 const SeatLine = ({ data, start, end }) => {
   const [list, setList] = useState([]);
@@ -123,6 +122,7 @@ const SeatLine = ({ data, start, end }) => {
 export const Room1 = ({ data }) => {
   return (
     <RoomContainer>
+      <View style={{ flex: 1 }} />
       <SeatGroup start={1}>
         <SeatLine start={1} end={4} data={data} />
         <SeatLine start={8} end={5} data={data} />
