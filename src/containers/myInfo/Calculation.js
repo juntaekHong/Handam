@@ -33,13 +33,6 @@ const Calculation = props => {
   const [selectorModal, setSModal] = useState({ bool: false, index: 0 }); //성적 선택 모달
   const SubjectArray = [];
 
-  //홈화면에서 접근하는지 성적페이지에서 접근하는지 구분
-  const navigateBack = () => {
-    if (props.navigation.state.params.from == "grade") {
-      navigators.navigate("Grade");
-    } else navigators.navigate("home");
-  };
-
   //초기화 버튼 리스너
   const resetSchedule = () => {
     setScoreHidden(false);
@@ -49,28 +42,36 @@ const Calculation = props => {
   //시간표 불러오기 버튼 리스너
   const listsSchedule = async () => {
     setScoreHidden(false);
-    const schedule = props.hansunginfo.schedule;
 
-    for (let i in schedule) {
-      for (let j in schedule[i]) {
-        const subjectName = schedule[i][j].content.substring(
-          0,
-          schedule[i][j].content.indexOf("(", 0)
-        );
-        if (SubjectArray.indexOf(subjectName) == -1) {
-          SubjectArray.push(subjectName);
-        }
-      }
+    let schedule = null;
+
+    if (props.hansunginfo !== null) {
+      schedule = props.hansunginfo.schedule;
     }
 
-    if (SubjectArray.length > 0) {
+    if (schedule !== null) {
       //시간표 항목이 있으면
-      const object = [];
-      SubjectArray.map(item =>
-        object.push({ name: item, score: "", grade: "선택" })
-      );
-      setClassData([]);
-      setClassData(object);
+      for (let i in schedule) {
+        for (let j in schedule[i]) {
+          const subjectName = schedule[i][j].content.substring(
+            0,
+            schedule[i][j].content.indexOf("(", 0)
+          );
+          if (SubjectArray.indexOf(subjectName) == -1) {
+            SubjectArray.push(subjectName);
+          }
+        }
+      }
+      if (SubjectArray.length > 0) {
+        const object = [];
+        SubjectArray.map(item =>
+          object.push({ name: item, score: "", grade: "선택" })
+        );
+        setClassData([]);
+        setClassData(object);
+      } else {
+        setNModal(true);
+      }
     } else {
       //시간표 항목이 없으면
       setNModal(true);
@@ -210,9 +211,7 @@ const Calculation = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomModal
-        children={
-          <ModalText kind={props.hansunginfo.status !== undefined ? 0 : 1} />
-        }
+        children={<ModalText kind={props.hansunginfo !== null ? 0 : 1} />}
         visible={noticeModal}
         footerHandler={async () => {
           await setNModal(false);
