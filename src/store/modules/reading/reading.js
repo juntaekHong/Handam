@@ -9,7 +9,7 @@ const initState = {};
 
 export const getLibraryCount = (room_no = 1) => async dispatch => {
   try {
-    const result = await fetch(`${config.server}/reading?room_no=${room_no}`);
+    const result = await fetch(`${config.readingServer}/reading?room_no=${room_no}`);
     const data = await result.text();
     const $ = cheerio.load(data);
     let total = $(
