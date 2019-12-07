@@ -95,12 +95,14 @@ const Home = ({
   }, []);
 
   const initCall = useCallback(async () => {
-    await AlarmActions.alarmInit();
-    await LockActions.lockInit();
+    await Promise.all([AlarmActions.alarmInit(), LockActions.lockInit()]);
     await CommonActions.handleLoading(true);
-    await HomeActions.getNoticeList();
-    await AlarmActions.alarmIsPostsAction(user.isPostsAlarm == 1 ? true : false);
-    await AlarmActions.getAlarmList(false, 0);
+    await Promise.all([
+      HomeActions.getNoticeList(),
+      AlarmActions.alarmIsPostsAction(user.isPostsAlarm == 1 ? true : false),
+      AlarmActions.alarmIsNonSubjectAction(user.isNonSubjectPointAlarm == 1 ? true : false),
+      AlarmActions.getAlarmList(false, 0)
+    ]);
     await CommonActions.handleLoading(false);
   }, [count]);
 

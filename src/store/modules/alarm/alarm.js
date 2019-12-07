@@ -11,6 +11,7 @@ const ALARM_UNREAD_LIST = "alarm/ALARM_UNREAD_LIST";
 const ALARM_READ = "alarm/ALARM_READ";
 const ALARM_ALL = "alarm/ALARM_ALL";
 const ALARM_IS_POSTS = "alarm/ALARM_IS_POSTS";
+const ALARM_IS_NON_SUBJECTPOINT = "alarm/ALARM_IS_NON_SUBJECTPOINT";
 
 export const alarmInit = createAction(ALARM_INIT);
 const alarmCountAction = createAction(ALARM_COUNT);
@@ -19,14 +20,17 @@ const alarmUnreadAction = createAction(ALARM_UNREAD_LIST);
 const alarmReadAction = createAction(ALARM_READ);
 export const alarmIsPostsAction = createAction(ALARM_IS_POSTS);
 export const alarmAllAction = createAction(ALARM_ALL);
+export const alarmIsNonSubjectAction = createAction(ALARM_IS_NON_SUBJECTPOINT);
 
+const alarmOptions = ["isPostsAlarm", "isNonSubjectPointAlarm"];
 const initState = {
   count: 0,
   readList: [],
   unreadList: [],
   alarmSet: {
     all: false,
-    isPostsAlarm: false
+    isPostsAlarm: false,
+    isNonSubjectPointAlarm: false
   }
 };
 
@@ -35,9 +39,7 @@ export const getAlarmList = (isRead, page) => async dispatch => {
     const token = await getData("token");
     let count = 50;
     page = page / count + 1;
-    let url = `/alarm/isRead?isRead=${
-      isRead ? 1 : 0
-    }&page=${page}&count=${count}`;
+    let url = `/alarm/isRead?isRead=${isRead ? 1 : 0}&page=${page}&count=${count}`;
     const jsonData = await api.get(url, { token });
     if (jsonData.statusCode == 200) {
       const { result, resultCount } = jsonData;
@@ -77,19 +79,33 @@ export const putUpdateUser = type => async dispatch => {
     const userId = await getData("userId");
     const token = await getData("token");
     let body = {};
-    if (type === "all_off") {
-      body.isPostsAlarm = 0;
-    } else if (type === "all") {
-      body.isPostsAlarm = 1;
-    } else if (type === "posts") {
-      body.isPostsAlarm = 1;
-    } else if (type === "posts_off") {
-      body.isPostsAlarm = 0;
+
+    switch (type) {
+      case "all_off":
+        alarmOptions.map(item => {
+          body[`${item}`] = 0;
+        });
+        break;
+      case "all":
+        alarmOptions.map(item => {
+          body[`${item}`] = 1;
+        });
+        break;
+      case "posts":
+        body.isPostsAlarm = 1;
+        break;
+      case "posts_off":
+        body.isPostsAlarm = 0;
+        break;
+      case "isNonSubject":
+        body.isNonSubjectPointAlarm = 1;
+        break;
+      case "isNonSubject_off":
+        body.isNonSubjectPointAlarm = 0;
+        break;
     }
-    const jsonData = await api.put(`/user/userId/${userId}`, {
-      token,
-      body
-    });
+    const jsonData = await api.put(`/user/userId/${userId}`, { token, body });
+
     if (jsonData.statusCode == 200) {
       return true;
     } else return false;
@@ -115,9 +131,7 @@ export default handleActions(
       }),
     [ALARM_READ]: (state, { payload }) =>
       produce(state, draft => {
-        draft.unreadList = draft.unreadList.filter(
-          item => item.alarmIndex !== payload
-        );
+        draft.unreadList = draft.unreadList.filter(item => item.alarmIndex !== payload);
         draft.count--;
       }),
     [ALARM_ALL]: (state, { payload }) =>
@@ -127,6 +141,10 @@ export default handleActions(
     [ALARM_IS_POSTS]: (state, { payload }) =>
       produce(state, draft => {
         draft.alarmSet.isPostsAlarm = payload;
+      }),
+    [ALARM_IS_NON_SUBJECTPOINT]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.alarmSet.isNonSubjectPointAlarm = payload;
       })
   },
   initState

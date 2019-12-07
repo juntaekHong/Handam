@@ -23,10 +23,13 @@ class UpdateCheck extends PureComponent {
 
   async componentDidMount() {
     try {
-      const auth = await AuthActions.checkIntro();
-      await CommonActions.commonInit();
-      await LockActions.lockInit();
-      await AlarmActions.alarmInit();
+      const result = await Promise.all([
+        AuthActions.checkIntro(),
+        CommonActions.commonInit(),
+        LockActions.lockInit(),
+        AlarmActions.alarmInit()
+      ]);
+      const auth = result[0];
       HomeActions.initHomeMenu();
       CommonActions.getAppVersion();
       CommonActions.getTrack();
