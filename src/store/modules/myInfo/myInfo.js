@@ -17,22 +17,16 @@ const USER_MAJOR_HANDLE = "myInfo/USER_MAJOR_HANDLE";
 export const userMajorHandleAction = createAction(USER_MAJOR_HANDLE);
 
 const USER_DOUBLEMAJOR_HANDLE = "myInfo/USER_DOUBLEMAJOR_HANDLE";
-export const userDoubleMajorHandleAction = createAction(
-  USER_DOUBLEMAJOR_HANDLE
-);
+export const userDoubleMajorHandleAction = createAction(USER_DOUBLEMAJOR_HANDLE);
 
 const USER_MINOR_HANDLE = "myInfo/USER_MINOR_HANDLE";
 export const userMinorHandleAction = createAction(USER_MINOR_HANDLE);
 
 const USER_CONNECTEDMAJOR_HANDLE = "myInfo/USER_CONNECTEDMAJOR_HANDLE";
-export const userConnectedMajorHandleAction = createAction(
-  USER_CONNECTEDMAJOR_HANDLE
-);
+export const userConnectedMajorHandleAction = createAction(USER_CONNECTEDMAJOR_HANDLE);
 
 const USER_ADMISSION_YEAR_HANDLE = "myInfo/USER_ADMISSION_YEAR_HANDLE";
-export const userAdmissionYearHandleAction = createAction(
-  USER_ADMISSION_YEAR_HANDLE
-);
+export const userAdmissionYearHandleAction = createAction(USER_ADMISSION_YEAR_HANDLE);
 
 // 비밀번호 변경
 const USER_PASS_HANDLE = "myInfo/USER_PASS_HANDLE";
@@ -262,7 +256,6 @@ export const changePassHandle = (pass, newPass) => async dispatch => {
     body: data
   });
 
-  console.log(changeData);
   if (changeData.statusCode == 200) {
     dispatch(userPassHandleAction(pass));
   }
@@ -281,7 +274,6 @@ export const uploadAvatar = image => async dispatch => {
     });
 
     await dispatch(avatarHandleAction(jsonData.result));
-    console.log(jsonData.result);
   } catch (err) {}
 };
 
@@ -293,23 +285,15 @@ export const deleteAvatar = () => async dispatch => {
       token: token
     });
 
-    console.log(jsonData);
     await dispatch(avatarHandleAction(null));
   } catch (err) {}
 };
 
 // 내가 쓴 글
-export const pageListPostsByUserIndex = (
-  order,
-  page,
-  count
-) => async dispatch => {
+export const pageListPostsByUserIndex = (order, page, count) => async dispatch => {
   const token = await getData("token");
 
-  const jsonData = await api.get(
-    `/posts/publisher/?orderBy=${order}&page=${page}&count=${count}`,
-    { token: token }
-  );
+  const jsonData = await api.get(`/posts/publisher/?orderBy=${order}&page=${page}&count=${count}`, { token: token });
 
   if (jsonData.statusCode == 200) {
     dispatch({ type: READ_MY_POSTS, payload: jsonData.result });
@@ -319,17 +303,10 @@ export const pageListPostsByUserIndex = (
 };
 
 // 내가 스크랩한 글
-export const pageListPostsByIsScrap = (
-  order,
-  page,
-  count
-) => async dispatch => {
+export const pageListPostsByIsScrap = (order, page, count) => async dispatch => {
   const token = await getData("token");
 
-  const jsonData = await api.get(
-    `/posts/scrap/?orderBy=${order}&page=${page}&count=${count}`,
-    { token: token }
-  );
+  const jsonData = await api.get(`/posts/scrap/?orderBy=${order}&page=${page}&count=${count}`, { token: token });
 
   if (jsonData.statusCode == 200) {
     dispatch({ type: READ_SCRAP_POSTS, payload: jsonData.result });
