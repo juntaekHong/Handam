@@ -137,10 +137,11 @@ class MyInfo extends React.Component {
             } else {
                 await HansungInfoActions.deleteHansungInfo();
             }
-        }, 1000);
+        }, 1000);ß
     };
 
     renderLogout = async () => {
+        await HansungInfoActions.deleteHansungInfo();
         await removeAllData();
         this.props.navigation.navigate("signIn");
     };
@@ -213,7 +214,7 @@ class MyInfo extends React.Component {
                         height={311}
                         children={
                             <CustomModalBlackText>
-                                인증을 삭제하시겠습니까?
+                                인증서를 삭제하시겠습니까?
                             </CustomModalBlackText>
                         }
                         visible={this.state.deletemodal}
@@ -370,7 +371,7 @@ class MyInfo extends React.Component {
                     <CertificationView>
                         {this.props.myInfo_loading == true ? (
                             <View style={[styles.certView, styles.myinfoShadow]}>
-                                <UIActivityIndicator style={{zIndex: 1, position: 'relative', top: widthPercentageToDP(78.5)}} color={"grey"} />
+                                <UIActivityIndicator size={20} style={{zIndex: 1, position: 'relative', top: widthPercentageToDP(78.5)}} color={"grey"} />
                                 <Image style={{
                                     width: widthPercentageToDP(375),
                                     height: widthPercentageToDP(157)
