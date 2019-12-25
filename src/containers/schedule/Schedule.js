@@ -13,14 +13,22 @@ import { widthPercentageToDP, dayToInt } from "../../utils/util";
 import { ScheduleFloatButton } from "../../components/schedule/button/ScheduleFloatButton";
 import { HansungInfoActions } from "../../store/actionCreator";
 import { ScheduleModal } from "../../components/schedule/modal/ScheduleModal";
+import navigators from "../../utils/navigators";
+import { getData } from "../../utils/util";
 
 const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
   const [time, setTime] = useState(new Array(15).fill(0));
   const [modal, setModal] = useState(false);
+  const [isHansungInfoPw, setIsHansungInfoPw] =useState(true);
 
   const scheduleCall = useCallback(async () => {
-    closeModal();
-    await HansungInfoActions.scheduleCallAction(true);
+    const hansungInfoPw = await getData('hansungInfoPw')
+    if(hansungInfoPw===null){
+      setIsHansungInfoPw(false)
+    } else {
+      closeModal();
+      await HansungInfoActions.scheduleCallAction(true);
+    }
   }, []);
 
   const visibleModal = useCallback(() => {
@@ -37,7 +45,8 @@ const Schedule = ({ hansunginfo, schedule_loading, schedule_color }) => {
       <ScheduleModal
         visible={modal}
         closeHandler={closeModal}
-        footerHandler={scheduleCall}
+        children={isHansungInfoPw?"시간표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다.":`인증서에 문제가 있습니다.\n인증서를 삭제 후 재등록해주세요.`}
+        footerHandler={isHansungInfoPw? scheduleCall:()=>[closeModal(), navigators.navigate('MyInfo')]}
       />
       <BaseView>
         <TableHeader />

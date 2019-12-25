@@ -15,6 +15,7 @@ import { widthPercentageToDP } from "../../utils/util";
 import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { HansungInfoActions } from "../../store/actionCreator";
+import { CustomModal } from "../../components/common/Modal";
 
 class Certification extends React.Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class Certification extends React.Component {
 
     this.state = {
       hansung_id: "",
-      hansung_pass: ""
+      hansung_pass: "",
+      modal : false,
     };
   }
 
@@ -36,6 +38,7 @@ class Certification extends React.Component {
         <TouchableOpacity
           style={styles.submit}
           onPress={async () => {
+            // this.setState({modal:true})
             let hansunginfo = new Object();
             hansunginfo.hansungInfoId = this.state.hansung_id;
             hansunginfo.hansungInfoPw = this.state.hansung_pass;
@@ -47,6 +50,7 @@ class Certification extends React.Component {
             await HansungInfoActions.myInfoLoadingHandle(true);
             await HansungInfoActions.loadingHandle(true);
             this.props.navigation.navigate("MyInfo");
+            this.setState({ modal: false });
           }}
         >
           <Text style={styles.submitText}>인증하기</Text>
@@ -77,26 +81,72 @@ class Certification extends React.Component {
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={{ flex: 1 }}
       >
-        <TouchableOpacity
-          onPress={async () => {
-            this.navigationBack();
+        {/* 모달 */}
+        {/* <CustomModal
+          height={476}
+          children={
+            <View style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <View style={{height: widthPercentageToDP(120)}}>
+                <Text>이미지 자리</Text>
+              </View>
+              <Text style={{
+                color: '#259ffa', 
+                fontSize: widthPercentageToDP(20), 
+                fontFamily: fonts.nanumBarunGothicB,
+                textAlign: 'center',
+                marginBottom: widthPercentageToDP(11)}}>아이디 / 비밀번호 암호화</Text>
+              <Text style={{
+                color: '#646464', 
+                fontSize: widthPercentageToDP(13), 
+                fontFamily: fonts.nanumBarunGothic,
+                lineHeight: widthPercentageToDP(22),
+                textAlign: 'center'}}>
+                {`학우님의 아이디와 비밀번호가 암호화 되었습니다.\n확인을 눌러주세요.`}
+              </Text>
+            </View>
+          }
+          visible={this.state.modal}
+          footerHandler={async() => {
+            let hansunginfo = new Object();
+            hansunginfo.hansungInfoId = this.state.hansung_id;
+            hansunginfo.hansungInfoPw = this.state.hansung_pass;
+
+            this.setState({ loading: true });
+
+            await HansungInfoActions.createHansungInfo(hansunginfo);
+            // await this.certification_Check();
+            await HansungInfoActions.myInfoLoadingHandle(true);
+            await HansungInfoActions.loadingHandle(true);
+            this.props.navigation.navigate("MyInfo");
+            this.setState({ modal: false });
           }}
-          style={[
-            {
-              alignItems: "flex-end",
-              marginRight: widthPercentageToDP(20.9),
-              marginTop: widthPercentageToDP(21.8)
-            }
-          ]}
+          closeHandler={() => this.setState({ modal: false })}
+        /> */}
+        <View 
+          style={{
+            alignItems: "flex-end",
+            marginRight: widthPercentageToDP(20.9),
+            marginTop: widthPercentageToDP(21.8)
+          }}
         >
-          <Image
-            style={{
-              width: widthPercentageToDP(28),
-              height: widthPercentageToDP(28)
+          <TouchableOpacity
+            onPress={async () => {
+              this.navigationBack();
             }}
-            source={require("../../../assets/image/hansungInfo/close.png")}
-          />
-        </TouchableOpacity>
+          >
+            <Image
+              style={{
+                width: widthPercentageToDP(28),
+                height: widthPercentageToDP(28)
+              }}
+              source={require("../../../assets/image/hansungInfo/close.png")}
+            />
+          </TouchableOpacity>
+        </View>
         <SafeAreaView style={styles.container}>
           <TouchableWithoutFeedback>
             <View style={styles.inner}>

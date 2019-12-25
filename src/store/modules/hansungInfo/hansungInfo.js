@@ -5,7 +5,8 @@ import {
   getData,
   scheduleContent,
   makeColor,
-  storeData
+  storeData,
+  removeData
 } from "../../../utils/util";
 
 // 한성정보
@@ -114,6 +115,8 @@ export const createHansungInfo = hansunginfo => async dispatch => {
   });
 
   if (jsonData.statusCode == 200) {
+    await storeData("hansungInfoId", jsonData.result.hansungInfoId);
+    await storeData("hansungInfoPw", jsonData.result.hansungInfoPw);
     await dispatch(createHansungInfoAction(jsonData.result));
     //1번 더 요청
     await api.post(`/hansungInfo`, { body: hansunginfo, token: token });
@@ -130,6 +133,8 @@ export const deleteHansungInfo = () => async dispatch => {
 
   if (jsonData.statusCode == 200) {
     await dispatch(deleteHansungInfoAction(jsonData.result));
+    await removeData('hansungInfoId');
+    await removeData('hansungInfoPw');
   } else if (jsonData.statusCode == 403) {
     //
   }
@@ -171,15 +176,27 @@ export const getHansungInfo = () => async dispatch => {
 
 export const createHansungInfoNonSubjectPoint = () => async dispatch => {
   const token = await getData("token");
+  const hansungInfoId = await getData("hansungInfoId");
+  const hansungInfoPw = await getData("hansungInfoPw");
 
   //서버로 전송
   const jsonData = await api.post(`/hansungInfo/nonSubjectPoint`, {
+    body: {
+      hansungInfoId,
+      hansungInfoPw
+    },
     token: token
   });
   if (jsonData.statusCode == 200) {
     await dispatch(createHansungInfoAction(jsonData.result));
     //1번 더 요청
-    await api.post(`/hansungInfo/nonSubjectPoint`, { token: token });
+    await api.post(`/hansungInfo/nonSubjectPoint`, { 
+      body: {
+        hansungInfoId,
+        hansungInfoPw
+      },
+      token: token 
+    });
     return true;
   } else if (jsonData.statusCode == 403) {
     // 마이페이지로가서 재인증.
@@ -189,14 +206,28 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
 
 export const createHansungInfoGrades = () => async dispatch => {
   const token = await getData("token");
+  const hansungInfoId = await getData("hansungInfoId");
+  const hansungInfoPw = await getData("hansungInfoPw");
 
   //서버로 전송
-  const jsonData = await api.post(`/hansungInfo/grades`, { token: token });
+  const jsonData = await api.post(`/hansungInfo/grades`, { 
+    body: {
+      hansungInfoId,
+      hansungInfoPw
+    },
+    token: token 
+  });
 
   if (jsonData.statusCode == 200) {
     await dispatch(createHansungInfoAction(jsonData.result));
     //1번 더 요청
-    await api.post(`/hansungInfo/grades`, { token: token });
+    await api.post(`/hansungInfo/grades`, { 
+      body: {
+        hansungInfoId,
+        hansungInfoPw
+      },
+      token: token 
+    });
   } else if (jsonData.statusCode == 403) {
     // 마이페이지로가서 재인증.
   }
@@ -205,10 +236,26 @@ export const createHansungInfoGrades = () => async dispatch => {
 export const createHansungInfoSchedule = () => async dispatch => {
   try {
     const token = await getData("token");
-    const jsonData = await api.post("/hansungInfo/schedule", { token });
+    const hansungInfoId = await getData("hansungInfoId");
+    const hansungInfoPw = await getData("hansungInfoPw");
+
+    const jsonData = await api.post("/hansungInfo/schedule", { 
+      body: {
+        hansungInfoId,
+        hansungInfoPw
+      },
+      token 
+    });
+    console.log(jsonData)
     if (jsonData.statusCode == 200) {
       await dispatch(createHansungInfoAction(jsonData.result));
-      await api.post("/hansungInfo/schedule", { token });
+      await api.post("/hansungInfo/schedule", {
+        body: {
+          hansungInfoId,
+          hansungInfoPw
+        },
+        token 
+      });
       return true;
     } else {
       return false;
