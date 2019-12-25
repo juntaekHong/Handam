@@ -11,7 +11,8 @@ import {HansungInfoActions} from "../../store/actionCreator";
 import * as Progress from "react-native-progress";
 import GradesDetailScreen from "./GradesDetail";
 import {GradesModal} from "../../components/hansungInfo/Modal";
-import navigators from "../../utils/navigators";  
+import navigators from "../../utils/navigators";
+import { getData } from "../../utils/util";
  
 class Grades extends React.Component {
 
@@ -21,22 +22,28 @@ class Grades extends React.Component {
         this.state = {
             selected: true,
             refreshModal: false,
+            isHansungInfoPw: true
         }
     }
 
     grades_check = async () => {
-        await HansungInfoActions.gradesLoadingHandle(true);
-        await HansungInfoActions.createHansungInfoGrades();
-        await HansungInfoActions.getHansungInfo();
+        const hansungInfoPw = await getData("hansungInfoPw");
+        if(hansungInfoPw===null){
+            this.setState({refreshModal: true, isHansungInfoPw: false})
+        } else {
+            await HansungInfoActions.gradesLoadingHandle(true);
+            await HansungInfoActions.createHansungInfoGrades();
+            await HansungInfoActions.getHansungInfo();
 
-        let timeout = setInterval( async () => {
-            if(this.props.hansunginfo.summaryGrades.ratedTotal==undefined){
-                await HansungInfoActions.getHansungInfo();
-            }
-            else if(this.props.hansunginfo.summaryGrades.ratedTotal!=undefined){
-                await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); await HansungInfoActions.professorTextHandle(true); clearInterval(timeout);
-            }
-        }, 5000);
+            let timeout = setInterval( async () => {
+                if(this.props.hansunginfo.summaryGrades.ratedTotal==undefined){
+                    await HansungInfoActions.getHansungInfo();
+                }
+                else if(this.props.hansunginfo.summaryGrades.ratedTotal!=undefined){
+                    await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); await HansungInfoActions.professorTextHandle(true); clearInterval(timeout);
+                }
+            }, 5000);
+        }
     };
 
     navigateMyInfo = () => {
@@ -46,18 +53,23 @@ class Grades extends React.Component {
     };
 
     refreshBtn = async () => {
-        await HansungInfoActions.gradesLoadingHandle(true);
-        await HansungInfoActions.createHansungInfoGrades();
-        await HansungInfoActions.getHansungInfo();
-
-        let timeout = setInterval( async () => {
-            if(this.props.hansunginfo.summaryGrades.ratedTotal==undefined){
-                await HansungInfoActions.getHansungInfo();
-            }
-            else if(this.props.hansunginfo.summaryGrades.ratedTotal!=undefined){
-                await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); clearInterval(timeout);
-            }
-        }, 5000);
+        const hansungInfoPw = await getData("hansungInfoPw");
+        if(hansungInfoPw===null){
+            this.setState({isHansungInfoPw: false})
+        } else {
+            await HansungInfoActions.gradesLoadingHandle(true);
+            await HansungInfoActions.createHansungInfoGrades();
+            await HansungInfoActions.getHansungInfo();
+    
+            let timeout = setInterval( async () => {
+                if(this.props.hansunginfo.summaryGrades.ratedTotal==undefined){
+                    await HansungInfoActions.getHansungInfo();
+                }
+                else if(this.props.hansunginfo.summaryGrades.ratedTotal!=undefined){
+                    await HansungInfoActions.gradesLoadingHandle(false); await HansungInfoActions.gradesHandle(true); clearInterval(timeout);
+                }
+            }, 5000);
+        }
     };
 
     reCertification_Check = async () => {
@@ -157,12 +169,17 @@ class Grades extends React.Component {
             <View style={styles.container}>
                 <GradesModal
                     visible={this.state.refreshModal}
+                    children={
+                        this.state.isHansungInfoPw?
+                            "성적표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다.":`인증서에 문제가 있습니다.\n인증서를 삭제 후 재등록해주세요.`
+                    }
                     footerHandler={async () => {
-                        this.setState({refreshModal: false});
-                        await this.refreshBtn();
+                        this.state.isHansungInfoPw?
+                        await this.refreshBtn():[this.setState({refreshModal: false}),await navigators.navigate('MyInfo')]
                     }}
                     closeHandler={() => this.setState({ refreshModal: false })}
                 />
+                
                 <ScrollView style={this.props.grades_loading == true ? {backgroundColor: 'white'} : null}>
                     <AbstractAccountInfoScreen move={this.navigateMyInfo()} selected={this.state.selected}/>
 
