@@ -9,11 +9,11 @@ const init = {
   type: "dev",
   server: {
     dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
-    prod: "https://www.handam.kr"
+    prod: "https://u6g8ovcai1.execute-api.ap-northeast-2.amazonaws.com/prod"
   },
   mailServer: {
     dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
-    prod: "https://www.handam.kr"
+    prod: "https://u6g8ovcai1.execute-api.ap-northeast-2.amazonaws.com/prod"
   },
   shuttleWebView: {
     dev: "http://dev.shuttle.handam.s3-website.ap-northeast-2.amazonaws.com",
@@ -36,8 +36,7 @@ const config = {
   readingServer: init.readingServer[init.type],
   pushKey: init.pushKey[init.type],
   bus_url: "http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll",
-  bus_key:
-    "KBxpAljaCeVDNgnaQtyrBO8wPG5PDE1q1WWh%2B7K9N0tuiP9RPOISKOpZt2WvzJLFO6CaZrLCf4sGzPz87lF1SA%3D%3D",
+  bus_key: "KBxpAljaCeVDNgnaQtyrBO8wPG5PDE1q1WWh%2B7K9N0tuiP9RPOISKOpZt2WvzJLFO6CaZrLCf4sGzPz87lF1SA%3D%3D",
   jongro: "100900010",
   seongbuk: "107900003",
   androidVersion: "2.1.0",
