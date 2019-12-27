@@ -121,6 +121,7 @@ export const LikeBTN = props => {
       onPress={() => {
         props.handler();
       }}
+      disabled={props.disabled}
     >
       <LikeIMG2
         source={

@@ -2,7 +2,14 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { CenterScroll, HCenterView } from "../../components/common/View";
 import { connect } from "react-redux";
 import { HomeTitle, HomeAd, HomeNavigateView, TodayLectureTitle, TodayLine } from "../../components/home/View";
-import { HomeActions, CommonActions, AlarmActions, HansungInfoActions, LockActions } from "../../store/actionCreator";
+import {
+  HomeActions,
+  CommonActions,
+  AlarmActions,
+  HansungInfoActions,
+  LockActions,
+  ProfessorActions
+} from "../../store/actionCreator";
 import moment from "moment";
 import { HomeNavigateButton } from "../../components/home/Button";
 import TodayLecture from "../../components/home/view/TodayLecture";

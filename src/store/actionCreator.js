@@ -17,6 +17,7 @@ import * as lock from "./modules/lock/lock";
 import * as hansungInfo from "./modules/hansungInfo/hansungInfo";
 import * as myInfo from "./modules/myInfo/myInfo";
 import * as reading from "./modules/reading/reading";
+import * as professor from "./modules/professor/professor";
 
 const { dispatch } = store;
 
@@ -34,3 +35,4 @@ export const LockActions = bindActionCreators(lock, dispatch);
 export const HansungInfoActions = bindActionCreators(hansungInfo, dispatch);
 export const MyInfoActions = bindActionCreators(myInfo, dispatch);
 export const ReadingActions = bindActionCreators(reading, dispatch);
+export const ProfessorActions = bindActionCreators(professor, dispatch);
