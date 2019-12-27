@@ -18,6 +18,7 @@ import {
 import { Image28, SelectedEmojiImage, C_LikeImage } from "./Image";
 import { BackBtn, C_ReplyButton, C_LikeButton } from "./Button";
 import ImageCapInset from "rn-imagecapinsets";
+import {LikeBTN} from "../talk/Button";
 
 const emojiList = [
   { index: 1, emoji: require("../../../assets/image/community/emoji/1.png") },
@@ -198,17 +199,34 @@ renderWriterName = props => {
   }
 };
 
+// 준택 교수평가 button 수정.
+// renderGoodButton = props => {
+//   if (props.isGoodButton == true) {
+//     return (
+//       <C_LikeButton onPress={() => props.isGoodHandler()}>
+//         <C_LikeImage
+//           source={require("../../../assets/image/community/likes.png")}
+//         />
+//         <C_LikeText>{props.isGoodCount}</C_LikeText>
+//       </C_LikeButton>
+//     );
+//   }
+// };
+
+// 준택 교수평가 button 수정.
 renderGoodButton = props => {
-  if (props.isGoodButton == true) {
-    return (
-      <C_LikeButton>
-        <C_LikeImage
-          source={require("../../../assets/image/community/likes.png")}
-        />
-        <C_LikeText>0</C_LikeText>
-      </C_LikeButton>
-    );
-  }
+    if (props.isGoodButton == true) {
+        return (
+            <View>
+                <LikeBTN
+                    handler={props.handleLike}
+                    isGood={props.isGood}
+                    goodCount={props.goodCount}
+                    disabled={props.noClick}
+                />
+            </View>
+        );
+    }
 };
 
 renderReplyButton = props => {
@@ -229,6 +247,15 @@ renderDotButton = props => {
       </TouchableOpacity>
     );
   }
+};
+
+// 내가 쓴 교수평가 교수 정보 추가 - 준택 작업. 테스트중
+professorInfo = (props) => {
+
+    if (typeof props.data.professorName == "undefined") {
+        return;
+    } else
+        return <C_ContentText style={{fontFamily: fonts.nanumBarunGothicB}}>{props.data.professorName + ` 교수님\n`}{`트랙: ` + props.data.department}</C_ContentText>;
 };
 
 export const ReplyView = props => {
@@ -273,9 +300,13 @@ export const ReplyView = props => {
           </View>
           {this.renderDotButton(props)}
         </ReplyContainer>
-        <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
-          <C_ContentText>{props.data.content}</C_ContentText>
-        </Hyperlink>
+        <View>
+            {/* 교수 정보 작업 */}
+            {this.professorInfo(props)}
+            <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
+                <C_ContentText>{props.data.content}</C_ContentText>
+            </Hyperlink>
+        </View>
 
         <ButtonView>
           {this.renderReplyButton(props)}

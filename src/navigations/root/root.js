@@ -13,6 +13,9 @@ import HomeMenu from "../../containers/home/HomeMenu";
 import Calculation from "../../containers/myInfo/Calculation";
 import ReadingRoom from "../../containers/reading/ReadingRoom";
 import RestaurantMenu from "../../containers/home/RestaurantMenu";
+import ProfessorDetail_noTab from "../professor/ProfessorStack_noTab";
+import MyWriteProfessorList from "../../containers/professor/MyWriteProfessorList";
+import ProfessorDetail from "../../containers/professor/ProfessorDetail";
 
 const RootStack = createStackNavigator(
   {
@@ -29,7 +32,10 @@ const RootStack = createStackNavigator(
     homemenu: { screen: HomeMenu },
     calculation: { screen: Calculation },
     reading: ReadingRoom,
-    restaurantmenu: RestaurantMenu
+    restaurantmenu: RestaurantMenu,
+    ProfessorDetail_noTab: {screen: ProfessorDetail_noTab},
+    ProfessorDetail: { screen: ProfessorDetail },
+    MyWriteProfessorList: {screen: MyWriteProfessorList},
   },
   {
     initialRouteName: "main",

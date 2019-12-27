@@ -17,6 +17,7 @@ import alarm from "./alarm/alarm";
 import lock from "./lock/lock";
 import myInfo from "./myInfo/myInfo";
 import reading from "./reading/reading";
+import professor from "./professor/professor";
 
 export default combineReducers({
   counter,
@@ -33,5 +34,6 @@ export default combineReducers({
   alarm,
   lock,
   myInfo,
-  reading
+  reading,
+  professor
 });
