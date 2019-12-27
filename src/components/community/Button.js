@@ -36,6 +36,7 @@ export const AnonymousButton = props => {
       onPress={() => {
         props.handler();
       }}
+      disabled={props.disabled}
     >
       <Image28
         source={
