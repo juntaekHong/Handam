@@ -137,7 +137,7 @@ class MyInfo extends React.Component {
             } else {
                 await HansungInfoActions.deleteHansungInfo();
             }
-        }, 1000);ß
+        }, 1000);
     };
 
     renderLogout = async () => {

@@ -40,33 +40,27 @@ class Grades extends React.Component {
 
     this.state = {
       selected: true,
-      refreshModal: false,
-      isHansungInfoPw: true
+      refreshModal: false
     };
   }
 
   grades_check = async () => {
-    const hansungInfoPw = await getData("hansungInfoPw");
-    if (hansungInfoPw === null) {
-      this.setState({ refreshModal: true, isHansungInfoPw: false });
-    } else {
-      await HansungInfoActions.gradesLoadingHandle(true);
-      await HansungInfoActions.createHansungInfoGrades();
-      await HansungInfoActions.getHansungInfo();
+    await HansungInfoActions.gradesLoadingHandle(true);
+    await HansungInfoActions.createHansungInfoGrades();
+    await HansungInfoActions.getHansungInfo();
 
-      let timeout = setInterval(async () => {
-        if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
-          await HansungInfoActions.getHansungInfo();
-        } else if (
-          this.props.hansunginfo.summaryGrades.ratedTotal != undefined
-        ) {
-          await HansungInfoActions.gradesLoadingHandle(false);
-          await HansungInfoActions.gradesHandle(true);
-          await HansungInfoActions.professorTextHandle(true);
-          clearInterval(timeout);
-        }
-      }, 5000);
-    }
+    let timeout = setInterval(async () => {
+      if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
+        await HansungInfoActions.getHansungInfo();
+      } else if (
+        this.props.hansunginfo.summaryGrades.ratedTotal != undefined
+      ) {
+        await HansungInfoActions.gradesLoadingHandle(false);
+        await HansungInfoActions.gradesHandle(true);
+        await HansungInfoActions.professorTextHandle(true);
+        clearInterval(timeout);
+      }
+    }, 5000);
   };
 
   navigateMyInfo = () => {
@@ -74,26 +68,22 @@ class Grades extends React.Component {
   };
 
   refreshBtn = async () => {
-    const hansungInfoPw = await getData("hansungInfoPw");
-    if (hansungInfoPw === null) {
-      this.setState({ isHansungInfoPw: false });
-    } else {
-      await HansungInfoActions.gradesLoadingHandle(true);
-      await HansungInfoActions.createHansungInfoGrades();
-      await HansungInfoActions.getHansungInfo();
+    this.setState({refreshModal:false})
+    await HansungInfoActions.gradesLoadingHandle(true);
+    await HansungInfoActions.createHansungInfoGrades();
+    await HansungInfoActions.getHansungInfo();
 
-      let timeout = setInterval(async () => {
-        if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
-          await HansungInfoActions.getHansungInfo();
-        } else if (
-          this.props.hansunginfo.summaryGrades.ratedTotal != undefined
-        ) {
-          await HansungInfoActions.gradesLoadingHandle(false);
-          await HansungInfoActions.gradesHandle(true);
-          clearInterval(timeout);
-        }
-      }, 5000);
-    }
+    let timeout = setInterval(async () => {
+      if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
+        await HansungInfoActions.getHansungInfo();
+      } else if (
+        this.props.hansunginfo.summaryGrades.ratedTotal != undefined
+      ) {
+        await HansungInfoActions.gradesLoadingHandle(false);
+        await HansungInfoActions.gradesHandle(true);
+        clearInterval(timeout);
+      }
+    }, 5000);
   };
 
   reCertification_Check = async () => {
@@ -239,19 +229,8 @@ class Grades extends React.Component {
       <View style={styles.container}>
         <GradesModal
           visible={this.state.refreshModal}
-          children={
-            this.state.isHansungInfoPw
-              ? "성적표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다."
-              : `인증서에 문제가 있습니다.\n인증서를 삭제 후 재등록해주세요.`
-          }
-          footerHandler={async () => {
-            this.state.isHansungInfoPw
-              ? await this.refreshBtn()
-              : [
-                  this.setState({ refreshModal: false }),
-                  await navigators.navigate("MyInfo")
-                ];
-          }}
+          children={"성적표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다."}
+          footerHandler={async () => await this.refreshBtn()}
           closeHandler={() => this.setState({ refreshModal: false })}
         />
 

@@ -10,9 +10,7 @@ import { BTText } from "../../components/hansungInfo/Text";
 import AbstractAccountInfoScreen from "./AbstractAccountInfo";
 import {UIActivityIndicator} from "react-native-indicators";
 import * as Progress from 'react-native-progress';
-import {NonSubjectPointModal, CertificationModal} from "../../components/hansungInfo/Modal"; 
-import { getData } from "../../utils/util";
-import navigators from '../../utils/navigators';
+import {NonSubjectPointModal} from "../../components/hansungInfo/Modal";
  
 class HansungPoint extends React.Component {
 
@@ -20,8 +18,7 @@ class HansungPoint extends React.Component {
         super(props);
 
         this.state = {
-            refreshModal: false,
-            isHansungInfoPw: true
+            refreshModal: false
         }
 
         this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester!=undefined&&this.props.hansunginfo.nonSubjectPoint.semester.semester!=undefined?
@@ -37,29 +34,24 @@ class HansungPoint extends React.Component {
     };
 
     nonSubjectPoint_check = async () => {
-        const hansungInfoPw = await getData("hansungInfoPw");
-        if(hansungInfoPw===null){
-            this.setState({refreshModal: true, isHansungInfoPw: false})
-        } else {
-            await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-            await HansungInfoActions.createHansungInfoNonSubjectPoint();
-            await HansungInfoActions.getHansungInfo();
-    
-            let timeout = setInterval(async ()=>{
-                if(this.props.hansunginfo!=null && this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
-                    await HansungInfoActions.getHansungInfo();
-                }
-                else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){
-                    await HansungInfoActions.nonSubjectPointLoadingHandle(false); clearInterval(timeout);
-                }
-                else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){
-                    await HansungInfoActions.nonSubjectPointLoadingHandle(false);
-                    await HansungInfoActions.nonSubjectPointHandle(true);
-    
-                    clearInterval(timeout);
-                }
-            } , 5000);
-        }
+        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+        await HansungInfoActions.createHansungInfoNonSubjectPoint();
+        await HansungInfoActions.getHansungInfo();
+
+        let timeout = setInterval(async ()=>{
+            if(this.props.hansunginfo!=null && this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
+                await HansungInfoActions.getHansungInfo();
+            }
+            else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){
+                await HansungInfoActions.nonSubjectPointLoadingHandle(false); clearInterval(timeout);
+            }
+            else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){
+                await HansungInfoActions.nonSubjectPointLoadingHandle(false);
+                await HansungInfoActions.nonSubjectPointHandle(true);
+
+                clearInterval(timeout);
+            }
+        } , 5000);
     };
 
     reCertification_Check = async () => {
@@ -88,30 +80,25 @@ class HansungPoint extends React.Component {
     };
 
     refreshBtn = async () => {
-        const hansungInfoPw = await getData("hansungInfoPw");
-        if(hansungInfoPw===null){
-            this.setState({isHansungInfoPw: false})
-        } else {
-            this.setState({refreshModal: false});
-            await HansungInfoActions.nonSubjectPointLoadingHandle(true);
-            await HansungInfoActions.createHansungInfoNonSubjectPoint();
-            await HansungInfoActions.getHansungInfo();
+        this.setState({refreshModal: false})
+        await HansungInfoActions.nonSubjectPointLoadingHandle(true);
+        await HansungInfoActions.createHansungInfoNonSubjectPoint();
+        await HansungInfoActions.getHansungInfo();
 
-            let timeout = setInterval(async ()=>{
-                if(this.props.hansunginfo!=null && this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
-                    await HansungInfoActions.getHansungInfo();
-                }
-                else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){
-                    await HansungInfoActions.nonSubjectPointLoadingHandle(false); clearInterval(timeout);
-                }
-                else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){
-                    await HansungInfoActions.nonSubjectPointLoadingHandle(false);
-                    await HansungInfoActions.nonSubjectPointHandle(true);
+        let timeout = setInterval(async ()=>{
+            if(this.props.hansunginfo!=null && this.props.hansunginfo.nonSubjectPoint.semester == undefined || this.props.hansunginfo.nonSubjectPoint.semester.semester == undefined){
+                await HansungInfoActions.getHansungInfo(); 
+            } 
+            else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester == '0'){
+                await HansungInfoActions.nonSubjectPointLoadingHandle(false); clearInterval(timeout);
+            } 
+            else if(this.props.hansunginfo!=null&&this.props.hansunginfo.nonSubjectPoint.semester.semester != '0'){
+                await HansungInfoActions.nonSubjectPointLoadingHandle(false); 
+                await HansungInfoActions.nonSubjectPointHandle(true); 
 
-                    clearInterval(timeout);
-                }
-            } , 5000);
-        }
+                clearInterval(timeout); 
+            }
+        } , 5000);
     };
 
     render() {
@@ -119,14 +106,8 @@ class HansungPoint extends React.Component {
             <View style={styles.container}>
                 <NonSubjectPointModal
                     visible={this.state.refreshModal}
-                    children={
-                        this.state.isHansungInfoPw?
-                            "비교과를 불러오는데\n최대 수 분 정도 소요될 수 있습니다.":`인증서에 문제가 있습니다.\n인증서를 삭제 후 재등록해주세요.`
-                    }
-                    footerHandler={async () => {
-                        this.state.isHansungInfoPw?
-                        await this.refreshBtn():[this.setState({refreshModal: false}),await navigators.navigate('MyInfo')]
-                    }}
+                    children={"비교과를 불러오는데\n최대 수 분 정도 소요될 수 있습니다."}
+                    footerHandler={async () => await this.refreshBtn()}
                     closeHandler={() => this.setState({ refreshModal: false })}
                 />
 
