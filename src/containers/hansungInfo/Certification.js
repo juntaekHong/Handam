@@ -16,6 +16,7 @@ import fonts from "../../configs/fonts";
 import { connect } from "react-redux";
 import { HansungInfoActions } from "../../store/actionCreator";
 import { CustomModal } from "../../components/common/Modal";
+import encryptionImg from "../../../assets/image/hansungInfo/encryption.png";
 
 class Certification extends React.Component {
   constructor(props) {
@@ -37,21 +38,7 @@ class Certification extends React.Component {
       return (
         <TouchableOpacity
           style={styles.submit}
-          onPress={async () => {
-            // this.setState({modal:true})
-            let hansunginfo = new Object();
-            hansunginfo.hansungInfoId = this.state.hansung_id;
-            hansunginfo.hansungInfoPw = this.state.hansung_pass;
-
-            this.setState({ loading: true });
-
-            await HansungInfoActions.createHansungInfo(hansunginfo);
-            // await this.certification_Check();
-            await HansungInfoActions.myInfoLoadingHandle(true);
-            await HansungInfoActions.loadingHandle(true);
-            this.props.navigation.navigate("MyInfo");
-            this.setState({ modal: false });
-          }}
+          onPress={() => this.setState({modal:true})}
         >
           <Text style={styles.submitText}>인증하기</Text>
         </TouchableOpacity>
@@ -82,7 +69,7 @@ class Certification extends React.Component {
         style={{ flex: 1 }}
       >
         {/* 모달 */}
-        {/* <CustomModal
+        <CustomModal
           height={476}
           children={
             <View style={{
@@ -91,7 +78,7 @@ class Certification extends React.Component {
               alignItems: 'center',
             }}>
               <View style={{height: widthPercentageToDP(120)}}>
-                <Text>이미지 자리</Text>
+                <Image source={encryptionImg}/>
               </View>
               <Text style={{
                 color: '#259ffa', 
@@ -125,7 +112,7 @@ class Certification extends React.Component {
             this.setState({ modal: false });
           }}
           closeHandler={() => this.setState({ modal: false })}
-        /> */}
+        />
         <View 
           style={{
             alignItems: "flex-end",
