@@ -56,5 +56,5 @@ buck-out/
 *.jsbundle
 android/gradle.properties
 
-package-lock.json
 ios/Carthage/
+package-lock.json
