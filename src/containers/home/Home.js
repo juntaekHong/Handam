@@ -22,7 +22,6 @@ import { View } from "react-native";
 import { NavigationEvents } from "react-navigation";
 import LottieView from "lottie-react-native";
 import values from "../../configs/values";
-import navigators from "../../utils/navigators";
 import { getData } from "../../utils/util";
 
 const Home = ({
@@ -41,7 +40,6 @@ const Home = ({
   const [scheduleModal, setScheduleModal] = useState(false);
   const [certLoadModal, setCertLoadModal] = useState(false);
   const [certFailModal, setCertFailModal] = useState(false);
-  const [isHansungInfoPw, setIsHansungInfoPw] =useState(true);
   const lottie = useRef(null);
 
   const navigateAction = useCallback(title => {
@@ -105,6 +103,10 @@ const Home = ({
   }, []);
 
   const initCall = useCallback(async () => {
+    const hansungInfoPw = await getData('hansungInfoPw');
+    if(hansungInfoPw===null) {
+      await HansungInfoActions.deleteHansungInfo();
+    }
     await Promise.all([AlarmActions.alarmInit(), LockActions.lockInit()]);
     await CommonActions.handleLoading(true);
     await Promise.all([
@@ -131,14 +133,8 @@ const Home = ({
   }, [hansunginfo, schedule_loading]);
 
   const callSchedule = useCallback(async() => {
-    const hansungInfoPw = await getData('hansungInfoPw')
-    if(hansungInfoPw===null){
-      setScheduleModal(true);
-      setIsHansungInfoPw(false);
-    } else {
-      setScheduleModal(false);
-      HansungInfoActions.scheduleCallAction(true);
-    }
+    setScheduleModal(false);
+    HansungInfoActions.scheduleCallAction(true);
   }, []);
 
   const getSchedule = useCallback(async () => {
@@ -213,9 +209,8 @@ const Home = ({
       />
       <ScheduleModal
         closeHandler={() => setScheduleModal(false)}
-        children={isHansungInfoPw?"시간표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다.":`인증서에 문제가 있습니다.\n인증서를 삭제 후 재등록해주세요.`}
         visible={scheduleModal}
-        footerHandler={isHansungInfoPw? callSchedule:()=>[setScheduleModal(false), navigators.navigate('MyInfo')]}
+        footerHandler={callSchedule}
       />
       <CenterScroll
         contentContainerStyle={{
