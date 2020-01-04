@@ -328,6 +328,7 @@ class TalkDetail extends Component {
               }
               return (
                 <TouchableOpacity
+                  activeOpacity={1}
                   onPress={async () => {
                     await TalkActions.handleImageIndex(index);
                     await TalkActions.handleImageModal(true);

@@ -178,7 +178,7 @@ class TalkAbout extends Component {
             rightChild={
               <SearchBTN
                 navigation={async () => {
-                  await TalkActions.initPostList();
+                  await TalkActions.initpageListPostsforSearch();
                   this.navigateTalkSearch();
                 }}
               />

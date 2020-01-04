@@ -81,15 +81,15 @@ class Certification extends React.Component {
                 alignItems: 'center',
               }}>
                 <Image source={encryptionImg} style={{
-                  width: widthPercentageToDP(240),
-                  height: widthPercentageToDP(120)
+                  width: widthPercentageToDP(280),
+                  height: widthPercentageToDP(160)
                   }} 
                 />
                 <Image source={dotsImg} style={{
                   width:widthPercentageToDP(20), 
                   height:widthPercentageToDP(20),
-                  marginTop:widthPercentageToDP(19),
-                  marginBottom:widthPercentageToDP(13)}} 
+                  marginBottom:widthPercentageToDP(13)
+                  }} 
                 />
                 <Text style={{
                   color: '#259ffa', 
