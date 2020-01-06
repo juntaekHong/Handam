@@ -15,22 +15,12 @@ const ProfessorEvalution2 = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <EvaluationHeaderView
-          title={"과제만족도"}
-          goback={() => {
-            props.navigation.goBack(null);
-          }}
-          close={() => {
-            props.from !== false
-              ? props.navigation.navigate("ProfessorDetail")
-              : props.navigation.navigate("MyWriteProfessorList");
-          }}
-        />
         <View
           style={{
             width: "100%",
             paddingLeft: widthPercentageToDP(48),
-            paddingRight: widthPercentageToDP(47)
+            paddingRight: widthPercentageToDP(47),
+            marginTop: widthPercentageToDP(26)
           }}
         >
           <SelectBtn

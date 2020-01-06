@@ -39,8 +39,8 @@ export const FilterImg2 = () => {
 
 // 이미지 및 사이즈 수정 예정
 const Selection = styled.Image`
-  width: ${widthPercentageToDP(21)};
-  height: ${widthPercentageToDP(21)};
+  width: ${widthPercentageToDP(16)};
+  height: ${widthPercentageToDP(16)};
 `;
 
 export const TrackSelectionImg = props => {
@@ -74,8 +74,8 @@ export const ProfessorSelectionImg = props => {
 };
 
 const Reply = styled.Image`
-  width: ${widthPercentageToDP(11.2)};
-  height: ${widthPercentageToDP(11.1)};
+  width: ${widthPercentageToDP(16)};
+  height: ${widthPercentageToDP(16)};
 `;
 
 export const ReplyImg = props => {
@@ -166,5 +166,57 @@ export const NonResult = styled.Image`
 export const NonResultImg = () => {
   return (
     <NonResult source={require("../../../assets/image/professor/empty.png")} />
+  );
+};
+
+const Star = styled.Image`
+  width: ${props =>
+    props.size === "Large" ? widthPercentageToDP(16) : widthPercentageToDP(16)};
+  height: ${props =>
+    props.size === "Large" ? widthPercentageToDP(18) : widthPercentageToDP(16)};
+`;
+
+export const EmptyStarImg = props => {
+  return (
+    <Star
+      {...props}
+      source={require("../../../assets/image/professor/star-0.png")}
+    />
+  );
+};
+
+export const HalfStarImg = props => {
+  return (
+    <Star
+      {...props}
+      source={require("../../../assets/image/professor/star-0-5.png")}
+    />
+  );
+};
+
+export const PullStarImg = props => {
+  return (
+    <Star
+      {...props}
+      source={require("../../../assets/image/professor/star-1.png")}
+    />
+  );
+};
+
+export const HalfMoreStarImg = props => {
+  return (
+    <Star
+      {...props}
+      source={require("../../../assets/image/professor/star-0-75.png")}
+    />
+  );
+};
+
+export const HalfBelowStarImg = props => {
+  return (
+    <Star
+      {...props}
+      source={require("../../../assets/image/professor/star-0-25.png")}
+    />
   );
 };

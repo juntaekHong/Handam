@@ -6,7 +6,7 @@ import {
     ProfessorFilterBtn,
     BackBtn,
     EvaluationBtn,
-    CloseBtn, MyWriteProfessorBtn, GoodBtn, BadBtn, MyWriteProfessorContainer
+    CloseBtn, GoodBtn, BadBtn, MyWriteProfessorContainer
 } from "./Button";
 import {SearchTI} from "./TextInput";
 import {
@@ -18,7 +18,7 @@ import {
     TitleNameText,
     EvaluationTitleText, StepInfoText, RecommendText, MyWriteProfessorText, NonResultText
 } from "./Text";
-import {View, Text, FlatList, processColor, Image, BackHandler, TouchableOpacity} from "react-native";
+import {View, Text, FlatList, processColor, Image, BackHandler, TouchableOpacity, Animated, StyleSheet, Platform} from "react-native";
 import fonts from "../../configs/fonts";
 import {FilterImg, NonResultImg, RecommendImg, RecommendImg2, ReplyImg, SearchImg} from "./Image";
 import {RadarChart} from "react-native-charts-wrapper";
@@ -28,6 +28,14 @@ import * as Progress from "react-native-progress";
 import {ProfessorActions} from "../../store/actionCreator";
 import {BottomMenuModal, CustomModal} from "../common/Modal";
 import {AlertModal} from "../community/Modal";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import {
+    PullStarImg,
+    HalfMoreStarImg,
+    HalfStarImg,
+    HalfBelowStarImg,
+    EmptyStarImg
+  } from "../../components/professor/Image";
 
 export const TopView = styled.View`
   width: ${widthPercentageToDP(340)};
@@ -108,12 +116,12 @@ const ModalTitleView = styled.View`
 
 export const FilterView = props => {
     return (
-        <View style={{position: 'absolute', top: widthPercentageToDP(-14), width: widthPercentageToDP(250), height: widthPercentageToDP(210)}}>
+        <View style={{position: 'absolute', top: widthPercentageToDP(-14), width: widthPercentageToDP(250)}}>
             <ModalTitleView>
                 <FilterImg/>
-                <ModalText style={{paddingLeft: widthPercentageToDP(4.3), fontFamily: fonts.nanumBarunGothic, color: '#000000'}}>필터링 검색</ModalText>
+                <ModalText style={{marginLeft: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothic, color: '#000000'}}>필터링 검색</ModalText>
             </ModalTitleView>
-            <View>
+            <View style={{marginHorizontal: widthPercentageToDP(31)}}>
                 <TrackFilterBtn handler={() => props.trackList()} track={props.selectTrack}/>
                 <ProfessorFilterBtn disabled={props.professorListDisabled} handler={() => props.professorList()} professor={props.selectProfessor}/>
             </View>
@@ -208,7 +216,48 @@ const DetailView = styled.View`
 const AvgGradeStarView = styled.View`
   flex-direction: row;
   align-items: center;
-`;
+`; 
+
+// 교수평가 메인페이지 & 교수평가 상세페이지 교수님 종합 점수 별점 표시
+Star = (score, size) => {
+    let star = [];
+
+    for (let i = 1; i <= parseInt(score); i++) {
+      star.push(1);
+    }
+
+    if (parseInt(score) < 5) {
+      if (parseFloat(score) % 1 >= 0.9) {
+        star.push(1);
+      } else if (parseFloat(score) % 1 >= 0.65 && parseFloat(score) % 1 < 0.9) {
+        star.push(0.75);
+      } else if(parseFloat(score) % 1 >= 0.4 && parseFloat(score) % 1 < 0.65) {
+        star.push(0.5);
+      } else if(parseFloat(score) % 1 >= 0.2 && parseFloat(score) % 1 < 0.4) {
+        star.push(0.25);
+      }
+    }
+
+    for (let i = star.length; i < 5; i++) {
+      star.push(0);
+    }
+
+    let StarView = star.map(item => {
+      if (item === 1) {
+        return <PullStarImg size={size} />;
+      } else if (item === 0.75) {
+        return <HalfMoreStarImg size={size} />;
+      } else if (item === 0.5) {
+        return <HalfStarImg size={size} />;
+      } else if (item === 0.25) {
+        return <HalfBelowStarImg size={size} />;
+      } else {
+        return <EmptyStarImg size={size} />;
+      }
+    });
+
+    return StarView;
+  };
 
 export const ProfessorListView = props => {
 
@@ -224,15 +273,22 @@ export const ProfessorListView = props => {
                 <ProfessorInfoView>
                     <ProfessorNameText>{item.professorName} 교수님</ProfessorNameText>
                     <AvgGradeStarView>
-                        <Text>평균평점공간</Text>
+                    <View style={{ flexDirection: "row" }}>{Star(item.avgScore)}</View>
                         <AvgStarText style={{marginLeft: widthPercentageToDP(3)}}>{parseFloat(item.avgScore).toFixed(1)}</AvgStarText>
                         <AvgStarText style={{fontSize: widthPercentageToDP(7), fontFamily: fonts.nanumBarunGothicUL, color: '#565a61'}}> / 5.0</AvgStarText>
                     </AvgGradeStarView>
                     <DetailView>
-                        <ProfessorInfoText>트랙: {item.department}</ProfessorInfoText>
+                        <ProfessorInfoText numberOfLines={2}>트랙: {item.track.length === 2 ? item.track[0] + `\n` +  item.track[1] : item.track}</ProfessorInfoText>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: widthPercentageToDP(14)}}>
-                            <ProfessorInfoText style={{fontSize: widthPercentageToDP(11), color: '#171717'}}>{item.isGood === true ? <RecommendImg/> : <RecommendImg2/>} {" " + item.goodCount + " "} </ProfessorInfoText>
-                            <ProfessorInfoText style={{fontSize: widthPercentageToDP(11), color: '#171717'}}><ReplyImg />{"  " + item.professorInfoReplyCount+ " "}</ProfessorInfoText>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                {item.isGood === true ? <RecommendImg/> : <RecommendImg2/>} 
+                                <ProfessorInfoText style={{paddingLeft: widthPercentageToDP(1), paddingRight: widthPercentageToDP(3), fontSize: widthPercentageToDP(11), color: '#171717'}}>{" " + item.goodCount + "  "}</ProfessorInfoText>
+                            </View>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <ReplyImg />
+                                <ProfessorInfoText style={{paddingLeft: widthPercentageToDP(1), fontSize: widthPercentageToDP(11), color: '#171717'}}>{" " + item.professorInfoReplyCount}</ProfessorInfoText>
+                            </View>
+
                         </View>
                     </DetailView>
                 </ProfessorInfoView>
@@ -243,20 +299,20 @@ export const ProfessorListView = props => {
                         rotationEnabled={false}
                         touchEnabled={false}
                         chartDescription={{text : ''}}
-                        xAxis={{valueFormatter: ["강의수준","과제만족도","학점비율","융통성","소통"]}}
+                        xAxis={{valueFormatter: ["과제 만족도","소통","학점비율","강의수준","융통성"]}}
                         yAxis={{enabled: false, granularity: 1, axisMinimum: 0, axisMaximum: 3}}
                         skipWebLineCount={5}
                         legend={{ enabled: false }}
                         data={{
                             dataSets: [
                                 {
-                                    values: [item.avgLecturePower, item.avgHomework, item.avgGrade, item.avgElasticity, item.avgCommunication],
+                                    values: [item.avgHomework, item.avgCommunication, item.avgGrade, item.avgLecturePower, item.avgElasticity],
                                     label: "교수평가 지표", // required
                                     config: {
-                                        color: processColor("rgba(13, 207, 224, 0.6)"),
+                                        color: processColor("rgba(13, 207, 224, 1)"),
                                         drawFilled: true,
                                         fillAlpha: 100,
-                                        fillColor: processColor("rgba(13, 207, 224, 0.6)"),
+                                        fillColor: processColor("rgba(13, 207, 224, 1)"),
                                         drawValues: false,
                                     }
                                 },
@@ -295,7 +351,7 @@ export const ProfessorListView = props => {
                           ListFooterComponent={props.ListFooterComponent}
                           onEndReached={props.onEndReached}
                           onEndReachedThreshold={0.01}
-                />
+                /> 
             </View>
     )
 };
@@ -306,7 +362,7 @@ const ProfessorDetail = styled.View`
   height: ${widthPercentageToDP(393)};
 `;
 
-const ProfessorTopView = styled.View`
+export const ProfessorTopView = styled.View`
   flex-direction: row;
   align-items: center;
   width: 100%;
@@ -339,9 +395,9 @@ const TagView = styled.View`
   justify-content: center;
   height: ${widthPercentageToDP(24)};
   border-radius: ${widthPercentageToDP(13)};
-  border-width ${widthPercentageToDP(1)};
-  border-color: #b7b7b7;
-  background-color: #eeeeee;
+  border-width: ${widthPercentageToDP(1)};
+  border-color: #868686;
+  background-color: #E2E2E2;
   padding-left: ${widthPercentageToDP(8)};
 `;
 
@@ -356,22 +412,24 @@ export const ProfessorDetailView = props => {
     // 해당 페이지에서 댓글 삭제 시, 교수 평가 항목 리프레쉬
     const [evaluationUpdate, setEvaluationUpdate] = useState(false);
 
+    const [select, setSelect] = useState(props.select);
+
     useEffect(() => {
         if(props.data.length === 0) {
-            setEvaluationUpdate(true);
+            setEvaluationUpdate(false);
         } else {
             setEvaluationUpdate(false);
         }
     }, [props.data]);
 
+    useEffect(() => {
+        setSelect(props.select);
+    }, [props.select]);
+
     const _renderListHeader = () => {
         return (
-            <ProfessorTopView>
-                <BackBtn goback={() => props.handler()}/>
-                <TitleNameText>교수평가</TitleNameText>
-                <EvaluationBtn Evaluation={() => {ProfessorActions.myWriteProfessorReplyInitHandle(); ProfessorActions.fromHandle(true); props.evaluation();}}/>
-            </ProfessorTopView>
-        )
+            <View/>
+        );
     };
 
     const GoodBadUpdate = async (professorInfoIndex) => {
@@ -391,7 +449,7 @@ export const ProfessorDetailView = props => {
                 setIsGood(1);
                 setGoodCount(goodCount + 1);
                 setBadCount(badCount - 1);
-            }
+            } 
 
             const updateInfoData = {
                 professorInfoIndex: professorInfoIndex,
@@ -412,6 +470,26 @@ export const ProfessorDetailView = props => {
         }
     };
 
+    // 리플 리스트 보이게 스와이프 기능
+    const renderRightActions = (progress, dragX) => {
+        const trans = dragX.interpolate({
+            inputRange: [-100, 0],
+            outputRange: [1, 0],
+            extrapolate: 'clamp',
+        });
+
+        return (
+          <TouchableOpacity style={styles.rightAction} >
+            <Animated.View
+              style={[
+                {
+                  transform: [{ translateX: trans }],
+                },
+              ]} />
+          </TouchableOpacity>
+        );
+      };
+
     return (
         evaluationUpdate === true ?
         <ProfessorDetail style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -423,20 +501,20 @@ export const ProfessorDetailView = props => {
                   keyExtractor={(item, index) => index.toString()}
                   ListHeaderComponent={_renderListHeader}
                   renderItem={({ item, index }) => {
-
+                      
                       return (
-                          <ProfessorDetail key={index}>
-                              <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23)}}>
+                          <ProfessorDetail style={select === "score" ? {height: widthPercentageToDP(520)} : {height: widthPercentageToDP(216)}} key={index}>
+                              <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23), borderBottomWidth: 0}}>
                                   <View>
                                       <Text style={{fontSize: widthPercentageToDP(16), fontFamily: fonts.nanumBarunGothicB, color: '#000000'}}>{item.professorName} 교수님</Text>
                                   </View>
                                   <View style={{marginTop: widthPercentageToDP(13)}}>
                                       <View style={{flexDirection: 'row'}}>
                                           <TagView style={{width: widthPercentageToDP(156), marginRight: widthPercentageToDP(8)}}>
-                                              <ProfessorInfoText numberOfLines={1} style={{width: widthPercentageToDP(140), color: '#000000', textAlign: 'center'}}># {item.department}</ProfessorInfoText>
+                                              <ProfessorInfoText numberOfLines={1} style={{width: widthPercentageToDP(140), color: '#000000', textAlign: 'center'}}># {item.track.length === 2 ? item.track[0] + `/ ` +  item.track[1] : item.track}</ProfessorInfoText>
                                           </TagView>
                                           <TagView style={{width: widthPercentageToDP(136)}}>
-                                            <ProfessorInfoText style={{width: widthPercentageToDP(120), color: '#000000', textAlign: 'center'}}># {item.address.length === 0 ? `데이터 없음` : item.address}</ProfessorInfoText>
+                                            <ProfessorInfoText style={{width: widthPercentageToDP(120), color: '#000000', textAlign: 'center'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
                                           </TagView>
                                       </View>
                                       <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(6)}}>
@@ -449,40 +527,60 @@ export const ProfessorDetailView = props => {
                                       </View>
                                   </View>
                               </DetailDataView>
-                              <DetailDataView style={{paddingTop: widthPercentageToDP(0), height: widthPercentageToDP(224)}}>
+                              <View style={{flexDirection: 'row', width: '100%', marginTop: widthPercentageToDP(15)}}>
+                                  <TouchableOpacity onPress={() => props.scoreOnPress()} style={select === "score" ? {width: '50%', borderBottomWidth: widthPercentageToDP(4), borderBottomColor: '#259ffa'}:{width: '50%', borderBottomWidth: widthPercentageToDP(4), borderBottomColor: '#e7e7e7'} }>
+                                      <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothic, color: '#000000', paddingBottom: widthPercentageToDP(10)}}>
+                                          종합 평가
+                                      </Text>
+                                  </TouchableOpacity>
+                                  <TouchableOpacity onPress={() => props.replyOnPress()} style={select === "reply" ? {width: '50%', borderBottomWidth: widthPercentageToDP(4), borderBottomColor: '#259ffa'}:{width: '50%', borderBottomWidth: widthPercentageToDP(4), borderBottomColor: '#e7e7e7'} }>
+                                      <Text style={{textAlign: 'center', fontSize: widthPercentageToDP(14), fontFamily: fonts.nanumBarunGothic, color: '#000000', paddingBottom: widthPercentageToDP(10)}}>
+                                          리뷰
+                                      </Text>
+                                  </TouchableOpacity>
+                              </View>
+                              {
+                                  select === "score" ?
+                                  <Swipeable renderRightActions={renderRightActions} onSwipeableRightOpen={() => props.replyOnPress()} >
+                                      <DetailDataView style={{paddingTop: widthPercentageToDP(0), height: widthPercentageToDP(264), justifyContent: 'center'}}>
                                   <RadarChart
-                                      style={{width: widthPercentageToDP(218), height: '100%'}}
+                                      style={{width: widthPercentageToDP(248), height: widthPercentageToDP(248), marginTop: widthPercentageToDP(16) }}
                                       rotationEnabled={false}
                                       touchEnabled={false}
                                       chartDescription={{text : ''}}
-                                      xAxis={{valueFormatter: ["강의수준","과제 만족도","학점비율","융통성","소통"]}}
-                                      yAxis={{enabled: false, granularity: 1, axisMinimum: 0, axisMaximum: 3}}
+                                      xAxis={{valueFormatter: ["과제 만족도","소통","학점비율","강의수준","융통성"], textSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothicUL}}
+                                      yAxis={{enabled: false, granularity: 1, axisMinimum: 0, axisMaximum: Platform.OS === "ios" ? 3 : 2}}
                                       skipWebLineCount={5}
                                       legend={{ enabled: false }}
                                       data={{
                                           dataSets: [
                                               {
-                                                  values: [item.avgLecturePower, item.avgHomework, item.avgGrade, item.avgElasticity, item.avgCommunication],
+                                                  values: [item.avgHomework, item.avgCommunication, item.avgGrade, item.avgLecturePower, item.avgElasticity],
                                                   label: "교수평가 지표", // required
                                                   config: {
-                                                      color: processColor("rgba(13, 207, 224, 0.6)"),
+                                                      color: processColor("rgba(13, 207, 224, 1)"),
                                                       drawFilled: true,
                                                       fillAlpha: 100,
-                                                      fillColor: processColor("rgba(13, 207, 224, 0.6)"),
+                                                      fillColor: processColor("rgba(13, 207, 224, 1)"),
                                                       drawValues: true,
-                                                  }
+                                                      fontFamily: Platform.OS === "ios" ? fonts.nanumBarunGothicUL : fonts.nanumBarunGothicB,
+                                                      valueFormatter: "0.#",
+                                                  },   
                                               },
                                           ],
                                       }}
                                   />
-                                  <View style={{paddingTop: widthPercentageToDP(72), paddingLeft: widthPercentageToDP(45)}}>
-                                      <ProfessorInfoText style={{color: '#777777'}}>총점</ProfessorInfoText>
-                                      <View style={{marginBottom: widthPercentageToDP(51)}}>
-                                          <View style={{flexDirection: 'row'}}>
-                                              <AvgStarText style={{fontSize: widthPercentageToDP(12)}}>{parseFloat(item.avgScore).toFixed(1)}</AvgStarText>
-                                              <AvgStarText style={{fontSize: widthPercentageToDP(10), fontFamily: fonts.nanumBarunGothicUL, color: '#565a61'}}> / 5.0</AvgStarText>
-                                          </View>
-                                          <Text>평균평점 공간</Text>
+                              </DetailDataView>
+                              <View style={{flexDirection: 'row', justifyContent: 'space-between' , paddingTop: widthPercentageToDP(12), marginLeft: widthPercentageToDP(30), marginRight: widthPercentageToDP(24), paddingBottom: widthPercentageToDP(12)}}>
+                                      <View>
+                                        <ProfessorInfoText style={{fontSize: widthPercentageToDP(15), fontFamily: fonts.nanumBarunGothicB, color: '#777777'}}>총점</ProfessorInfoText>
+                                        <View style={{marginTop: widthPercentageToDP(5)}}>
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                <AvgStarText style={{fontSize: widthPercentageToDP(15)}}>{parseFloat(item.avgScore).toFixed(2)}</AvgStarText>
+                                                <AvgStarText style={{fontSize: widthPercentageToDP(12), fontFamily: fonts.nanumBarunGothicUL, color: '#565a61'}}> / 5.0</AvgStarText>
+                                            </View>
+                                            <View style={{ flexDirection: "row", marginTop: widthPercentageToDP(2) }}>{Star(item.avgScore, "Large")}</View>
+                                        </View>
                                       </View>
                                       <View style={{flexDirection: 'row'}}>
                                           <View style={{justifyContent: 'center', marginRight: widthPercentageToDP(19)}}>
@@ -525,13 +623,16 @@ export const ProfessorDetailView = props => {
                                           </View>
                                       </View>
                                   </View>
-                              </DetailDataView>
-                              <ReviewResultCount>
-                                  <CurrentOrderText style={{color: '#565a61'}}>평가 리뷰 결과</CurrentOrderText>
-                                  <CurrentOrderText style={{color: '#565a61'}}> (</CurrentOrderText>
-                                  <CurrentOrderText style={{color: '#259ffa'}}>{item.ProfessorReplyCount}</CurrentOrderText>
-                                  <CurrentOrderText style={{color: '#565a61'}}>)</CurrentOrderText>
-                              </ReviewResultCount>
+                                  </Swipeable>
+                                  :
+                                  <ReviewResultCount>
+                                    <CurrentOrderText style={{color: '#565a61'}}>평가 리뷰 결과</CurrentOrderText>
+                                    <CurrentOrderText style={{color: '#565a61'}}> (</CurrentOrderText>
+                                    <CurrentOrderText style={{color: '#259ffa'}}>{item.ProfessorReplyCount}</CurrentOrderText>
+                                    <CurrentOrderText style={{color: '#565a61'}}>)</CurrentOrderText>
+                                  </ReviewResultCount>
+                              } 
+                                  <View style={{borderBottomColor: '#dbdbdb', borderBottomWidth: widthPercentageToDP(1)}}/>
                           </ProfessorDetail>
                       )
                   }}
@@ -561,6 +662,7 @@ export const ProfessorReplyListView = props => {
     // 댓글 좋아요 변경위해 필요.
     const [isGoodList, setIsGoodList] = useState(props.reply);
     const [checkLoading, setCheckLoading] = useState(false);
+    const [reRoad, setReRoad] = useState(props.professorInfoIndex);
 
     useEffect(() => {
         this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -610,8 +712,12 @@ export const ProfessorReplyListView = props => {
         await ProfessorActions.myProfessorReplyPostList();
 
         setReplyIndex(null);
-        setAlertModal(false);
-        setAlertText(null);
+
+        let timeout = setInterval(() => {
+            setAlertModal(false);
+            setAlertText(null);
+            clearTimeout(timeout);
+          }, 1500);
     };
 
     const reportReply = () => {
@@ -708,6 +814,21 @@ export const ProfessorReplyListView = props => {
 
                                     Promise.all([promise1]).then(async () => {
                                         await replyLikeUpdate(item.professorReplyIndex);
+                                    }).catch(() => {
+                                        setAlertText("해당 댓글이 이미 삭제되었습니다.");
+                                        setAlertModal(true);
+
+                                        ProfessorActions.professorDetailListInitHandle();
+                                        ProfessorActions.getProfessorInfo(props.professorIndex);
+
+                                        let timeout = setInterval(async() => {
+                                            await ProfessorActions.pageListProfessorReply(reRoad);
+                                            await ProfessorActions.myProfessorReplyPostList();
+    
+                                            setAlertModal(false);
+                                            setAlertText(null);
+                                            clearTimeout(timeout);
+                                          }, 1500);
                                     });
                                 }}
                                 isReplyButton={false}
@@ -740,7 +861,6 @@ export const ProfessorReplyListView = props => {
 
 // 교수평가 각 항목 평가 헤더뷰
 const HeaderView = styled.View`
-  margin-bottom: ${widthPercentageToDP(26)};
   padding-bottom: ${widthPercentageToDP(12)};
   border-bottom-width: ${widthPercentageToDP(1)};
   border-bottom-color: #e7e7e7;
@@ -801,12 +921,12 @@ const NonResultContainer = styled.View`
   justify-content: center;
   width: 100%;
   margin-top: ${widthPercentageToDP(155)};
-  marginBottom: ${widthPercentageToDP(155)};
+  marginBottom: ${props => props.text === "검색 결과가 없습니다!" && Platform.OS === "ios" ?  widthPercentageToDP(250) : widthPercentageToDP(155)};
 `;
 
 export const NonResultView = props => {
   return (
-      <NonResultContainer>
+      <NonResultContainer {...props}>
           <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: widthPercentageToDP(26.3)}}>
               <NonResultImg/>
           </View>
@@ -852,10 +972,6 @@ export const MyWriteProfessorListView = props => {
     const _renderListHeader = () => {
         return (
             <View>
-                <View style={{flexDirection: 'row', alignItems: 'center', height: widthPercentageToDP(60), paddingLeft: widthPercentageToDP(14), backgroundColor: '#ffffff'}}>
-                    <BackBtn goback={() => props.handler()}/>
-                    <EvaluationTitleText style={{width: widthPercentageToDP(245.7), marginLeft: widthPercentageToDP(23)}}>내가 쓴 교수평가</EvaluationTitleText>
-                </View>
                 <View style={{flexDirection: 'row', backgroundColor: '#f8f8f8', paddingLeft: widthPercentageToDP(23), paddingVertical: widthPercentageToDP(16)}}>
                     <CurrentOrderText>
                         내가 쓴 교수평가 (
@@ -930,7 +1046,11 @@ export const MyWriteProfessorListView = props => {
         await ProfessorActions.myProfessorReplyPostList();
 
         setReplyIndex(null);
-        setAletModal(false);
+        
+        let timeout = setInterval(() => {
+            setAletModal(false);
+            clearTimeout(timeout);
+          }, 1500);
     };
 
     const updateReplyData = async () => {
@@ -964,3 +1084,13 @@ export const MyWriteProfessorListView = props => {
         </View>
     )
 };
+
+const styles = StyleSheet.create({
+    rightAction: {
+      flex: 1,
+      justifyContent: 'center',
+      // flex: 1,
+      alignItems: 'flex-end', 
+    }
+  });
+  

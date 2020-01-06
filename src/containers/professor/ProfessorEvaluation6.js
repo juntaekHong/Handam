@@ -17,23 +17,12 @@ const ProfessorEvalution6 = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <EvaluationHeaderView
-          title={"추천여부"}
-          goback={() => {
-            props.navigation.goBack(null);
-          }}
-          close={() => {
-            props.from !== false
-              ? props.navigation.navigate("ProfessorDetail")
-              : props.navigation.navigate("MyWriteProfessorList");
-          }}
-        />
         <View
           style={{
             width: "100%",
             paddingLeft: widthPercentageToDP(48),
             paddingRight: widthPercentageToDP(47),
-            marginTop: widthPercentageToDP(123),
+            marginTop: widthPercentageToDP(149),
             marginBottom: widthPercentageToDP(68)
           }}
         >

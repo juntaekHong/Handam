@@ -42,32 +42,6 @@ class Professor extends React.Component {
       selectTrack: "해당없음",
       selectProfessor: "해당없음",
 
-      // 학부 리스트 임시 생성.
-      major_list: [
-        "해당없음",
-        "크리에이티브인문학부",
-        "예술학부",
-        "사회과학부",
-        "글로벌패션산업학부",
-        "ICT디자인학부",
-        "뷰티디자인&매니지먼트학과",
-        "컴퓨터공학부",
-        "기계전자공학부",
-        "IT융합공학부",
-        "스마트경영공학부",
-        "융합행정학과",
-        "호텔외식경영학과",
-        "뷰티디자인학과",
-        "비즈니스컨설팅학과",
-        "ICT융합디자인학과",
-        "상상력인재학부",
-        "기초교양교육과정",
-        "융·복합교양교육과정",
-        "사고와표현교육과정",
-        "교양영어교육과정",
-        "창의IT·디자인교육과정",
-        "교원양성교육과정"
-      ],
       // 검색창 검색
       inputText: ""
     };
@@ -76,7 +50,9 @@ class Professor extends React.Component {
   async componentDidMount() {
     await ProfessorActions.ProfessorPageList(
       this.props.professor_list.length / 6,
-      6
+      6,
+      "",
+      ""
     );
 
     await ProfessorActions.myProfessorReplyPostList();
@@ -87,7 +63,9 @@ class Professor extends React.Component {
 
     const promise1 = await ProfessorActions.ProfessorPageList(
       this.props.professor_list.length / 6,
-      6
+      6,
+      "",
+      ""
     );
 
     Promise.all([promise1]).then(() => {});
@@ -98,15 +76,11 @@ class Professor extends React.Component {
     if (this.state.filterSearch === false) {
       await ProfessorActions.ProfessorPageList(
         this.props.professor_list.length / 6 + 1,
-        6
+        6,
+        "",
+        ""
       );
     } else {
-      // filter된 리스트 불러오기
-      // await ProfessorActions.ProfessorPageList(
-      //     this.props.professor_list.length / 6 + 1,
-      //     6,
-      //     filter
-      // );
     }
     await this.setState({ loading: false });
   };
@@ -224,7 +198,8 @@ class Professor extends React.Component {
               const promise1 = ProfessorActions.ProfessorPageList(
                 1,
                 100,
-                this.state.inputText + ""
+                this.state.inputText + "",
+                ""
               );
 
               Promise.all([promise1]).then(() => {
@@ -299,7 +274,7 @@ class Professor extends React.Component {
           width={316}
           height={344}
           visible={this.state.trackFilter}
-          data={this.state.major_list}
+          data={this.props.track_list}
           value={this.state.selectTrack}
           closeHandler={async () => {
             await this.setState({ trackFilter: false });

@@ -1,8 +1,17 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
-import { MyWriteProfessorListView } from "../../components/professor/View";
 import { ProfessorActions } from "../../store/actionCreator";
+import { widthPercentageToDP } from "../../utils/util";
+import {
+  MyWriteProfessorListView,
+  NonResultView
+} from "../../components/professor/View";
+import { BackBtn } from "../../components/professor/Button";
+import {
+  CurrentOrderText,
+  EvaluationTitleText
+} from "../../components/professor/Text";
 
 class MyWriteProfessorList extends React.Component {
   constructor(props) {
@@ -23,9 +32,36 @@ class MyWriteProfessorList extends React.Component {
     await ProfessorActions.myWriteProfessorReplyInitHandle();
   }
 
+  _renderListHeader = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            height: widthPercentageToDP(60),
+            paddingLeft: widthPercentageToDP(14),
+            backgroundColor: "#ffffff"
+          }}
+        >
+          <BackBtn goback={() => this.navigategoBack()} />
+          <EvaluationTitleText
+            style={{
+              width: widthPercentageToDP(245.7),
+              marginLeft: widthPercentageToDP(23)
+            }}
+          >
+            내가 쓴 교수평가
+          </EvaluationTitleText>
+        </View>
+      </View>
+    );
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+        {this._renderListHeader()}
         <MyWriteProfessorListView
           data={this.props.my_write_professor_list}
           myNickName={this.props.userNickName}
