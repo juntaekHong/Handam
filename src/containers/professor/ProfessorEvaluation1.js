@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { SafeAreaView, ScrollView, View } from "react-native";
 import { NextBtn, SelectBtn } from "../../components/professor/Button";
-import {
-  EvaluationHeaderView,
-  ProgressView
-} from "../../components/professor/View";
+import { ProgressView } from "../../components/professor/View";
 import { widthPercentageToDP } from "../../utils/util";
 import { connect } from "react-redux";
+
 const ProfessorEvalution1 = props => {
   const [objectValue, setObjectValue] =
     props.reply.length !== 0
@@ -16,22 +14,12 @@ const ProfessorEvalution1 = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <EvaluationHeaderView
-          title={"강의수준"}
-          goback={() => {
-            props.navigation.goBack(null);
-          }}
-          close={() => {
-            props.from !== false
-              ? props.navigation.navigate("ProfessorDetail")
-              : props.navigation.navigate("MyWriteProfessorList");
-          }}
-        />
         <View
           style={{
             width: "100%",
             paddingLeft: widthPercentageToDP(48),
-            paddingRight: widthPercentageToDP(47)
+            paddingRight: widthPercentageToDP(47),
+            marginTop: widthPercentageToDP(26)
           }}
         >
           <SelectBtn

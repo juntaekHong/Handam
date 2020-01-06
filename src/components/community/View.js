@@ -18,7 +18,7 @@ import {
 import { Image28, SelectedEmojiImage, C_LikeImage } from "./Image";
 import { BackBtn, C_ReplyButton, C_LikeButton } from "./Button";
 import ImageCapInset from "rn-imagecapinsets";
-import {LikeBTN} from "../talk/Button";
+import { LikeBTN } from "../talk/Button";
 
 const emojiList = [
   { index: 1, emoji: require("../../../assets/image/community/emoji/1.png") },
@@ -215,18 +215,18 @@ renderWriterName = props => {
 
 // 준택 교수평가 button 수정.
 renderGoodButton = props => {
-    if (props.isGoodButton == true) {
-        return (
-            <View>
-                <LikeBTN
-                    handler={props.handleLike}
-                    isGood={props.isGood}
-                    goodCount={props.goodCount}
-                    disabled={props.noClick}
-                />
-            </View>
-        );
-    }
+  if (props.isGoodButton == true) {
+    return (
+      <View>
+        <LikeBTN
+          handler={props.handleLike}
+          isGood={props.isGood}
+          goodCount={props.goodCount}
+          disabled={props.noClick}
+        />
+      </View>
+    );
+  }
 };
 
 renderReplyButton = props => {
@@ -249,13 +249,19 @@ renderDotButton = props => {
   }
 };
 
-// 내가 쓴 교수평가 교수 정보 추가 - 준택 작업. 테스트중
-professorInfo = (props) => {
-
-    if (typeof props.data.professorName == "undefined") {
-        return;
-    } else
-        return <C_ContentText style={{fontFamily: fonts.nanumBarunGothicB}}>{props.data.professorName + ` 교수님\n`}{`트랙: ` + props.data.department}</C_ContentText>;
+// 내가 쓴 교수평가 교수 정보 추가 - 준택 작업.
+professorInfo = props => {
+  if (typeof props.data.professorName == "undefined") {
+    return;
+  } else
+    return (
+      <C_ContentText style={{ fontFamily: fonts.nanumBarunGothicB }}>
+        {props.data.professorName + ` 교수님\n트랙:`}
+        {props.data.track.length != 1
+          ? props.data.track[0] + "/ " + props.data.track[1]
+          : props.data.track}
+      </C_ContentText>
+    );
 };
 
 export const ReplyView = props => {
@@ -273,7 +279,7 @@ export const ReplyView = props => {
         source={
           Platform.OS === "ios"
             ? require("../../../assets/image/community/reply.png")
-            : {uri:"reply"}
+            : { uri: "reply" }
         }
         capInsets={{
           top: widthPercentageToDP(12),
@@ -301,11 +307,11 @@ export const ReplyView = props => {
           {this.renderDotButton(props)}
         </ReplyContainer>
         <View>
-            {/* 교수 정보 작업 */}
-            {this.professorInfo(props)}
-            <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
-                <C_ContentText>{props.data.content}</C_ContentText>
-            </Hyperlink>
+          {/* 교수 정보 작업 */}
+          {this.professorInfo(props)}
+          <Hyperlink linkDefault={true} linkStyle={{ color: "#2980b9" }}>
+            <C_ContentText>{props.data.content}</C_ContentText>
+          </Hyperlink>
         </View>
 
         <ButtonView>
@@ -325,9 +331,11 @@ export const ReplyView = props => {
           paddingBottom: widthPercentageToDP(21),
           marginBottom: widthPercentageToDP(10)
         }}
-        source={Platform.OS === "ios"
-        ? require("../../../assets/image/community/reply.png")
-        : {uri:"reply"}}
+        source={
+          Platform.OS === "ios"
+            ? require("../../../assets/image/community/reply.png")
+            : { uri: "reply" }
+        }
         capInsets={{
           top: widthPercentageToDP(12),
           right: widthPercentageToDP(12),
@@ -443,9 +451,11 @@ export const Re_ReplyView = props => {
             paddingBottom: widthPercentageToDP(21),
             marginBottom: widthPercentageToDP(10)
           }}
-          source={Platform.OS === "ios"
-          ? require("../../../assets/image/community/reply.png")
-          : {uri:"reply"}}
+          source={
+            Platform.OS === "ios"
+              ? require("../../../assets/image/community/reply.png")
+              : { uri: "reply" }
+          }
           capInsets={{
             top: widthPercentageToDP(12),
             right: widthPercentageToDP(12),
@@ -529,9 +539,11 @@ export const Re_ReplyView = props => {
             paddingBottom: widthPercentageToDP(21),
             marginBottom: widthPercentageToDP(10)
           }}
-          source={Platform.OS === "ios"
-          ? require("../../../assets/image/community/reply.png")
-          : {uri:"reply"}}
+          source={
+            Platform.OS === "ios"
+              ? require("../../../assets/image/community/reply.png")
+              : { uri: "reply" }
+          }
           capInsets={{
             top: widthPercentageToDP(12),
             right: widthPercentageToDP(12),

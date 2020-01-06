@@ -43,33 +43,53 @@ const TrackFilter = styled.TouchableOpacity`
 export const TrackFilterBtn = props => {
   return (
     <TrackFilter onPress={() => props.handler()}>
-      <TrackSelectionImg select={props.track} />
       <View
         style={{
+          width: "100%",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
-          width: widthPercentageToDP(227),
-          marginLeft: widthPercentageToDP(4),
-          paddingLeft: widthPercentageToDP(9),
-          paddingBottom: widthPercentageToDP(5.5),
-          borderBottomWidth: widthPercentageToDP(1)
+
+          paddingBottom: widthPercentageToDP(1.1),
+          borderBottomWidth: widthPercentageToDP(1),
+          borderBottomColor: "#707070"
         }}
       >
         {props.track === "해당없음" ? (
-          <ModalText>트랙명(필수)</ModalText>
-        ) : null}
-        <Text
-          numberOfLines={1}
+          <ModalText
+            style={{
+              width: "100%",
+              position: "absolute",
+              textAlign: "center"
+            }}
+          >
+            트랙명(필수)
+          </ModalText>
+        ) : (
+          <Text
+            numberOfLines={1}
+            style={{
+              width: "100%",
+              position: "absolute",
+              textAlign: "center",
+              fontSize: widthPercentageToDP(16),
+              fontFamily: fonts.nanumBarunGothicB,
+              color: "#000000",
+              paddingLeft: widthPercentageToDP(20),
+              paddingRight: widthPercentageToDP(20)
+            }}
+          >
+            {props.track == "해당없음" ? "" : props.track}
+          </Text>
+        )}
+        <View
           style={{
-            width: widthPercentageToDP(160),
-            fontSize: widthPercentageToDP(16),
-            fontFamily: fonts.nanumBarunGothicB,
-            color: "#000000"
+            position: "relative",
+            width: "100%",
+            alignItems: "flex-end"
           }}
         >
-          {props.track == "해당없음" ? "" : props.track}
-        </Text>
+          <TrackSelectionImg select={props.track} />
+        </View>
       </View>
     </TrackFilter>
   );
@@ -89,31 +109,53 @@ export const ProfessorFilterBtn = props => {
         props.handler();
       }}
     >
-      <ProfessorSelectionImg select={props.professor} />
       <View
         style={{
+          width: "100%",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
-          width: widthPercentageToDP(227),
-          marginLeft: widthPercentageToDP(4),
-          paddingLeft: widthPercentageToDP(9),
-          paddingBottom: widthPercentageToDP(5.5),
-          borderBottomWidth: widthPercentageToDP(1)
+
+          paddingBottom: widthPercentageToDP(1.1),
+          borderBottomWidth: widthPercentageToDP(1),
+          borderBottomColor: "#707070"
         }}
       >
-        {props.professor === "해당없음" ? <ModalText>교수명</ModalText> : null}
-        <Text
-          numberOfLines={1}
+        {props.professor === "해당없음" ? (
+          <ModalText
+            style={{
+              width: "100%",
+              position: "absolute",
+              textAlign: "center"
+            }}
+          >
+            교수님 명
+          </ModalText>
+        ) : (
+          <Text
+            numberOfLines={1}
+            style={{
+              width: "100%",
+              position: "absolute",
+              textAlign: "center",
+              fontSize: widthPercentageToDP(16),
+              fontFamily: fonts.nanumBarunGothicB,
+              color: "#000000",
+              paddingLeft: widthPercentageToDP(20),
+              paddingRight: widthPercentageToDP(20)
+            }}
+          >
+            {props.professor == "해당없음" ? "" : props.professor}
+          </Text>
+        )}
+        <View
           style={{
-            width: widthPercentageToDP(160),
-            fontSize: widthPercentageToDP(16),
-            fontFamily: fonts.nanumBarunGothicB,
-            color: "#000000"
+            position: "relative",
+            width: "100%",
+            alignItems: "flex-end"
           }}
         >
-          {props.professor == "해당없음" ? "" : props.professor}
-        </Text>
+          <ProfessorSelectionImg select={props.professor} />
+        </View>
       </View>
     </ProfessorFilter>
   );
