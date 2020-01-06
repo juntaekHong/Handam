@@ -18,6 +18,7 @@ import * as hansungInfo from "./modules/hansungInfo/hansungInfo";
 import * as myInfo from "./modules/myInfo/myInfo";
 import * as reading from "./modules/reading/reading";
 import * as professor from "./modules/professor/professor";
+import * as map from "./modules/map/map";
 
 const { dispatch } = store;
 
@@ -36,3 +37,4 @@ export const HansungInfoActions = bindActionCreators(hansungInfo, dispatch);
 export const MyInfoActions = bindActionCreators(myInfo, dispatch);
 export const ReadingActions = bindActionCreators(reading, dispatch);
 export const ProfessorActions = bindActionCreators(professor, dispatch);
+export const MapActions = bindActionCreators(map, dispatch);

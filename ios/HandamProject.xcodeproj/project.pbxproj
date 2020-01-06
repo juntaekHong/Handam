@@ -128,6 +128,7 @@
 		85DED60FF32C4D37B6076801 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17607F5AB3B14C1981B48E39 /* libimageCropPicker.a */; };
 		8AD39E5D24414AFFB0B5FAAD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DA45C0B5FA1C424BB87EF22F /* libz.tbd */; };
 		8F14CFED95C349809D3CF1F5 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A04B7C27426F4E8DABDD5056 /* MaterialCommunityIcons.ttf */; };
+		A8914C650A4C41F193104134 /* libRCTDirectedScrollView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7598E3E894014092A419EB9C /* libRCTDirectedScrollView.a */; };
 		AD2ECFCEE9AA4C0AB7F14D27 /* NanumBarunGothicBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 75E5DC09829E49898C7742B0 /* NanumBarunGothicBold.otf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		AF47141041134522ACEC66D7 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A85E6C4A93C0488388EA34E9 /* EvilIcons.ttf */; };
@@ -282,6 +283,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = A8580F741BCF5C5B00DA927B;
 			remoteInfo = "SwiftyJSON tvOS Tests";
+		};
+		0765316E23B730B60076AC09 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 700883D118684D09BAE324A9 /* RCTDirectedScrollView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 899B2D911DE4DA9800EFC859;
+			remoteInfo = RCTDirectedScrollView;
 		};
 		07844C9023111C9F00694E3E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -829,6 +837,8 @@
 		603E364FC3BA475C9DCD3C48 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		65DFFE9615084C3B8873415A /* libLottie.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLottie.a; sourceTree = "<group>"; };
 		6DFC4816BC0F48BEB35F36E6 /* libCodePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libCodePush.a; sourceTree = "<group>"; };
+		700883D118684D09BAE324A9 /* RCTDirectedScrollView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTDirectedScrollView.xcodeproj; path = "../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView.xcodeproj"; sourceTree = "<group>"; };
+		7598E3E894014092A419EB9C /* libRCTDirectedScrollView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTDirectedScrollView.a; sourceTree = "<group>"; };
 		75E5DC09829E49898C7742B0 /* NanumBarunGothicBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumBarunGothicBold.otf; path = ../assets/fonts/NanumBarunGothicBold.otf; sourceTree = "<group>"; };
 		76EE0CFD29994DDDA1F066F3 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		776CD417EF6F458B887CBD00 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -927,6 +937,7 @@
 				7E2B8E0FE3D94B00B13AA3C4 /* libLottie.a in Frameworks */,
 				08202ED9DE5E41A8833DCC92 /* libLottieReactNative.a in Frameworks */,
 				83C1A84F33214889A9D6C78B /* libRCTOneSignal.a in Frameworks */,
+				A8914C650A4C41F193104134 /* libRCTDirectedScrollView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1223,6 +1234,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0765316B23B730B60076AC09 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0765316F23B730B60076AC09 /* libRCTDirectedScrollView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		07844C8923111C9F00694E3E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1293,6 +1312,7 @@
 				65DFFE9615084C3B8873415A /* libLottie.a */,
 				BB89074DA89040F687FC7822 /* libLottieReactNative.a */,
 				984C8340BFAC4DA4AA501B83 /* libRCTOneSignal.a */,
+				7598E3E894014092A419EB9C /* libRCTDirectedScrollView.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1506,6 +1526,7 @@
 				2997A1828E4842EA868DA53B /* Lottie.xcodeproj */,
 				D4235407562D4520B4492B0D /* LottieReactNative.xcodeproj */,
 				CD12A4EBDDD647F48B5B677C /* RCTOneSignal.xcodeproj */,
+				700883D118684D09BAE324A9 /* RCTDirectedScrollView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1617,6 +1638,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				07BF5E4622E73C3D0057C9FA /* Embed Frameworks */,
+				07DA1E0323B8B3C8008046B1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1764,6 +1786,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = 0765316B23B730B60076AC09 /* Products */;
+					ProjectRef = 700883D118684D09BAE324A9 /* RCTDirectedScrollView.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1981,6 +2007,13 @@
 			fileType = wrapper.cfbundle;
 			path = "SwiftyJSON tvOS Tests.xctest";
 			remoteRef = 07652FEE23B64F290076AC09 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0765316F23B730B60076AC09 /* libRCTDirectedScrollView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTDirectedScrollView.a;
+			remoteRef = 0765316E23B730B60076AC09 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		07844C9123111C9F00694E3E /* Lottie.framework */ = {
@@ -2451,7 +2484,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		07DA1E0323B8B3C8008046B1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Charts.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2628,6 +2680,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = HandamProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2635,6 +2688,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2671,6 +2725,7 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = HandamProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2678,6 +2733,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2699,7 +2755,7 @@
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2724,11 +2780,12 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = HandamProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.5;
+				MARKETING_VERSION = 3.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2753,7 +2810,7 @@
 				CODE_SIGN_ENTITLEMENTS = HandamProject/HandamProject.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 35;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = XS5MCXNWJU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2777,11 +2834,12 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = HandamProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3.0.5;
+				MARKETING_VERSION = 3.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2826,12 +2884,14 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2876,12 +2936,14 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2925,12 +2987,14 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2974,12 +3038,14 @@
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-directed-scrollview/ios/RCTDirectedScrollView",
 				);
 				INFOPLIST_FILE = "HandamProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (

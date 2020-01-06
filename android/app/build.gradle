@@ -116,8 +116,8 @@ android {
         applicationId "com.handamproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 35
-        versionName "3.0.5"
+        versionCode 39
+        versionName "3.2.0"
     }
     signingConfigs {
         release {
@@ -160,6 +160,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-directed-scrollview')
     implementation project(':react-native-charts-wrapper')
     implementation project(':react-native-onesignal')
     implementation 'com.facebook.fresco:fresco:1.12.0'

@@ -187,6 +187,7 @@ export const createHansungInfoNonSubjectPoint = () => async dispatch => {
     },
     token: token
   });
+
   if (jsonData.statusCode == 200) {
     await dispatch(createHansungInfoAction(jsonData.result));
     //1번 더 요청
@@ -246,7 +247,6 @@ export const createHansungInfoSchedule = () => async dispatch => {
       },
       token 
     });
-    console.log(jsonData)
     if (jsonData.statusCode == 200) {
       await dispatch(createHansungInfoAction(jsonData.result));
       await api.post("/hansungInfo/schedule", {

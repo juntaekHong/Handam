@@ -18,6 +18,7 @@ import lock from "./lock/lock";
 import myInfo from "./myInfo/myInfo";
 import reading from "./reading/reading";
 import professor from "./professor/professor";
+import map from "./map/map";
 
 export default combineReducers({
   counter,
@@ -35,5 +36,6 @@ export default combineReducers({
   lock,
   myInfo,
   reading,
-  professor
+  professor,
+  map
 });

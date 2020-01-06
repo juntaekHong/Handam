@@ -9,7 +9,7 @@ export const ScheduleModal = props => {
     <CustomModal {...props} height={220}>
       <BaseView style={{ paddingTop: widthPercentageToDP(12) }}>
         <NBGBText style={{ textAlign: "center" }}>
-          {props.children}
+          {"시간표를 불러오는데\n최대 수 분 정도 소요될 수 있습니다."}
         </NBGBText>
       </BaseView>
     </CustomModal>
