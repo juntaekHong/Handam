@@ -122,7 +122,7 @@ class RestaurantDetail extends Component {
     good.isGood = bool;
     good.restaurantIndex = this.props.getRestaurant.restaurantIndex;
     RestaurantActions.putRestaurantSubscriber(good);
-    this.props.navigation.state.params.likeHandler(bool == 0 ? true : false);
+    this.props.navigation.state.params.likeHandler({isGood:bool});
   };
 
   render() {

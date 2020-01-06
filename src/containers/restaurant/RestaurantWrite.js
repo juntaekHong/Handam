@@ -80,7 +80,7 @@ class RestaurantWrite extends Component {
 
   navigateRestaurantDetail = () => {
     this.props.navigation.navigate("RestaurantDetail", {
-      handler: this.props.navigation.state.params.handler
+      likeHandler: this.props.navigation.state.params.handler
     });
   };
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   SafeAreaView,
   StyleSheet,
+  RefreshControl,
   View,
   TextInput,
   Image,
@@ -46,6 +47,7 @@ class Vote extends Component {
     super(props);
 
     this.state = {
+      refreshing: false,
       no_click: false,
       form: "reply",
       replyIndex: null,
@@ -67,7 +69,15 @@ class Vote extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getVote();
+  }
+
+  componentWillUnmount() {
+    clearInterval(Duetimeset);
+  }
+
+  getVote = async() => {
     const currentVote = await VoteActions.getVote();
     await VoteActions.pageListPastVote();
     if (currentVote) {
@@ -112,10 +122,6 @@ class Vote extends Component {
         VoteActions.handleLoading(false);
       });
     }
-  }
-
-  componentWillUnmount() {
-    clearInterval(Duetimeset);
   }
 
   IsPushed = () => {
@@ -230,6 +236,13 @@ class Vote extends Component {
     }, 1000);
   };
 
+  _onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.getVote();
+    this.setState({ refreshing: false });
+    console.log("현수")
+  };
+
   render() {
     if (this.props.loading == true) {
       return <UIActivityIndicator color={"gray"} />;
@@ -285,6 +298,12 @@ class Vote extends Component {
             ref={ref => {
               this.flatlistRef = ref;
             }}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="never"
           >
