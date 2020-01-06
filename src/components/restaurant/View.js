@@ -161,11 +161,12 @@ export const RestaurantItem = props => {
             <ReplyCount>{props.data.restaurantReplyCount}</ReplyCount>
           </RowView>
 
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
-              setState({ isGood: !state.isGood });
+              setState({ isGood: state.isGood == 1 ? 0 : 1 });
               const good = new Object();
-              good.isGood = state.isgood == 1 ? 0 : 1;
+              good.isGood = state.isGood == 1 ? 0 : 1;
+              console.log(state.isGood)
               good.restaurantIndex = props.data.restaurantIndex;
               props.likeHandler(good);
             }}
@@ -177,7 +178,7 @@ export const RestaurantItem = props => {
                   : require("../../../assets/image/community/heart.png")
               }
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </BottomContainer>
       </InfoContainer>
     </RestaurantItemView>

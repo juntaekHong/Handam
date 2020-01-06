@@ -145,6 +145,9 @@ export const getRestaurant = restaurantIndex => async dispatch => {
     { token: token }
   );
 
+  console.log("식당 정보")
+  console.log(jsonData.result)
+
   if (jsonData.statusCode == 200) {
     dispatch(getRestaurantAction(jsonData.result));
     return true;
@@ -154,12 +157,14 @@ export const getRestaurant = restaurantIndex => async dispatch => {
 };
 
 export const putRestaurantSubscriber = good => async dispatch => {
+  console.log(good)
   const token = await getData("token");
   const jsonData = await api.put(
     `/restaurantSubscriber/restaurantIndex/${good.restaurantIndex}`,
     { body: good, token: token }
   );
-
+  console.log("식당 좋아요")
+  console.log(jsonData);
   if (jsonData.statusCode == 200) {
     dispatch(putSubscriberAction(jsonData.result));
     return true;

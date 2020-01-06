@@ -48,16 +48,16 @@ class TalkSearch extends Component {
   }
 
   navigateTalkAbout = async () => {
-    TalkActions.handleAboutloading(true);
+    // TalkActions.handleAboutloading(true);
     this.props.navigation.navigate("TalkAbout");
-    await TalkActions.initPostList();
-    await TalkActions.pageListPosts(
-      this.props.filter,
-      this.props.orderby,
-      this.props.postsList.length / 15 + 1,
-      15
-    );
-    TalkActions.handleAboutloading(false);
+    // await TalkActions.initpageListPostsforSearch();
+    // await TalkActions.pageListPostsForSearch(
+    //   this.props.filter,
+    //   this.props.orderby,
+    //   this.props.searchpostsList.length / 15 + 1,
+    //   15
+    // );
+    // TalkActions.handleAboutloading(false);
   };
 
   navigateTalkDetail = postsIndex => {
@@ -69,13 +69,14 @@ class TalkSearch extends Component {
     });
   };
 
-  pageListPosts = async () => {
+  pageListPostsForSearch = async () => {
     await this.setState({ loading: true });
-    await TalkActions.pageListPosts(
+    const text = this.state.text.replace(/ /gi,'');
+    await TalkActions.pageListPostsForSearch(
       this.state.filter +
-        ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
+        ` AND ( ( title LIKE ${text} ) OR ( content LIKE ${text} ) )`,
       this.props.orderby,
-      this.props.postsList.length / 15 + 1,
+      this.props.searchpostsList.length / 15 + 1,
       15
     );
     await this.setState({ loading: false });
@@ -88,7 +89,7 @@ class TalkSearch extends Component {
   renderPostslist = () => {
     if (this.props.detailloading == true) {
       return <UIActivityIndicator color={"gray"} />;
-    } else if (this.props.total !== 0) {
+    } else if (this.props.searchTotal !== 0) {
       return (
         <FlatList
           style={styles.flatlist}
@@ -96,12 +97,12 @@ class TalkSearch extends Component {
           keyExtractor={(item, index) => index.toString()}
           onEndReachedThreshold={0.01}
           onEndReached={() =>
-            this.props.postsList.length < this.props.total
-              ? this.pageListPosts()
+            this.props.searchpostsList.length < this.props.searchTotal
+              ? this.pageListPostsForSearch()
               : null
           }
           ListFooterComponent={this.renderListFooter}
-          data={this.props.postsList}
+          data={this.props.searchpostsList}
           renderItem={({ item, index }) => {
             if (item.status == "ACTIVE") {
               return (
@@ -144,12 +145,14 @@ class TalkSearch extends Component {
               onSubmitEditing={async () => {
                 // ` AND  ((title LIKE ${this.state.text}) OR (content LIKE ${this.state.text}))`
                 TalkActions.handleDetailloading(true);
-                await TalkActions.initPostList();
-                await TalkActions.pageListPosts(
+                const text = this.state.text.replace(/ /gi,'');
+                console.log({text})
+                await TalkActions.initpageListPostsforSearch();
+                await TalkActions.pageListPostsForSearch(
                   this.state.filter +
-                    ` AND ( ( title LIKE ${this.state.text} ) OR ( content LIKE ${this.state.text} ) )`,
+                    ` AND ( ( title LIKE ${text} ) OR ( content LIKE ${text} ) )`,
                   this.props.orderby,
-                  this.props.postsList.length / 15,
+                  this.props.searchpostsList.length / 15,
                   15
                 );
                 TalkActions.handleDetailloading(false);
@@ -187,8 +190,8 @@ const styles = StyleSheet.create({
 
 export default connect(state => ({
   categoryIndex: state.talk.categoryIndex,
-  postsList: state.talk.postsList,
-  total: state.talk.total,
+  searchpostsList: state.talk.searchpostsList,
+  searchTotal: state.talk.searchTotal,
   filter: state.talk.filter,
   orderby: state.talk.orderby,
   detailloading: state.talk.detailloading

@@ -38,6 +38,9 @@ const POSTSLIST = "talk/POSTSLIST";
 const HOTPOSTSLIST = "talk/HOTPOSTSLIST";
 const INIT_GETPOSTS = "talk/INIT_GETPOSTS";
 const GETPOSTS = "talk/GETPOSTS";
+const INIT_SEARCHPOSTSLIST = "talk/INIT_SEARCHPOSTSLIST";
+const SEARCH_POSTS_TOTAL = "talk/SEARCH_POSTS_TOTAL";
+const SEARCHPOSTS = "talk/SEARCHPOSTS";
 
 const initPostsListAction = createAction(INIT_POSTSLIST);
 const postsTotalAction = createAction(POSTS_TOTAL);
@@ -45,6 +48,9 @@ const postsListAction = createAction(POSTSLIST);
 const hostpostsListAction = createAction(HOTPOSTSLIST);
 const initGetPostsAction = createAction(INIT_GETPOSTS);
 const getPostsAction = createAction(GETPOSTS);
+const searchPostsTotalAction = createAction(SEARCH_POSTS_TOTAL);
+const searchPostsAction = createAction(SEARCHPOSTS);
+const initSearchPostsListAction = createAction(INIT_SEARCHPOSTSLIST);
 
 //댓글
 const INIT_REPLYSLIST = "talk/INIT_REPLYSLIST";
@@ -80,6 +86,8 @@ const initState = {
   total: 0,
   postsList: [],
   hotpostsList: [],
+  searchTotal: 0,
+  searchpostsList: [],
   getPosts: { imagePath: [] },
 
   //댓글
@@ -250,6 +258,31 @@ export const putPostsSubscriber = posts => async dispatch => {
     { body: posts, token: token }
   );
   if (jsonData.statusCode == 200) {
+    return true;
+  } else {
+    throw "error";
+  }
+};
+
+export const initpageListPostsforSearch = () => dispatch => {
+  dispatch(searchPostsTotalAction(0));
+  dispatch(initSearchPostsListAction());
+}
+
+export const pageListPostsForSearch = (
+  filter,
+  orderby,
+  page,
+  count
+) => async dispatch => {
+  const token = await getData("token");
+  const jsonData = await api.get(
+    `/posts/?filter=${filter}&orderBy=${orderby}&page=${page}&count=${count}`,
+    { token: token }
+  );
+  if (jsonData.statusCode == 200) {
+    dispatch(searchPostsTotalAction(jsonData.resultCount));
+    dispatch(searchPostsAction(jsonData.result));
     return true;
   } else {
     throw "error";
@@ -442,7 +475,20 @@ export default handleActions(
       produce(state, draft => {
         draft.getPosts = { imagePath: [] };
       }),
-
+    [SEARCH_POSTS_TOTAL]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.searchTotal = payload;
+      }),
+    [SEARCHPOSTS]: (state, action) => {
+      return {
+        ...state,
+        searchpostsList: [...state.searchpostsList, ...action.payload]
+      };
+    },
+    [INIT_SEARCHPOSTSLIST]: (state, { payload }) =>
+      produce(state, draft => {
+        draft.searchpostsList = [];
+      }),
     //댓글
     [INIT_REPLYSLIST]: (state, { payload }) =>
       produce(state, draft => {
