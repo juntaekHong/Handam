@@ -189,8 +189,11 @@ export const FilterProfessorList = (page, count, filter1) => async dispatch => {
     const token = await getData("token");
     let Keyword = filter1 === undefined || filter1 === "" ? "" : filter1;
 
-    let url = `/professorInfo/?page=${page}&count=${count}&filter=department like ${Keyword}`;
+    if (Keyword.indexOf("트랙") != -1 || Keyword.indexOf("전공") != -1) {
+      Keyword = Keyword.substring(0, Keyword.length - 3);
+    }
 
+    let url = `/professorInfo/?page=${page}&count=${count}&filter=trackName like ${Keyword}`;
     const jsonData = await api.get(url, {
       token: token
     });
@@ -213,15 +216,17 @@ export const ProfessorPageList = (
 ) => async dispatch => {
   try {
     const token = await getData("token");
-    let Keyword = keyword === undefined || keyword === "" ? "" : keyword;
-    let Keyword2 = keyword2 === undefined || keyword2 === "" ? null : keyword2;
 
     let url = `/professorInfo/?page=${page}&count=${count}`;
 
-    if (keyword != null) url += `&filter=department like ${Keyword}`;
-    if (keyword != null && Keyword2 === null)
-      url += ` or professorName like ${Keyword}`;
-    if (Keyword2 != null) url += ` and professorName like ${Keyword2}`;
+    if (keyword.indexOf("트랙") != -1 || keyword.indexOf("전공") != -1) {
+      keyword = keyword.substring(0, keyword.length - 3);
+    }
+
+    if (keyword != "") url += `&filter=trackName like ${keyword}`;
+    if (keyword != "" && keyword2 === "")
+      url += ` or professorName like ${keyword}`;
+    if (keyword2 != "") url += ` and professorName like ${keyword2}`;
 
     const jsonData = await api.get(url, {
       token: token

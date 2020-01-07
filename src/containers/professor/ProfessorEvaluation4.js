@@ -15,21 +15,10 @@ const ProfessorEvalution4 = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <EvaluationHeaderView
-          title={"학점비율"}
-          goback={() => {
-            props.navigation.goBack(null);
-          }}
-          close={() => {
-            props.from !== false
-              ? props.navigation.navigate("ProfessorDetail")
-              : props.navigation.navigate("MyWriteProfessorList");
-          }}
-        />
         <View
           style={{
             width: "100%",
-            marginTop: widthPercentageToDP(67),
+            marginTop: widthPercentageToDP(93),
             paddingLeft: widthPercentageToDP(48),
             paddingRight: widthPercentageToDP(47),
             marginBottom: widthPercentageToDP(65)
@@ -39,19 +28,19 @@ const ProfessorEvalution4 = props => {
             value={5}
             text={"후함"}
             currentValue={objectValue}
-            onPress={() => setObjectValue(5)}
+            onPress={async () => await setObjectValue(5)}
           />
           <SelectBtn
             value={3}
             text={"비율 맞춤"}
             currentValue={objectValue}
-            onPress={() => setObjectValue(3)}
+            onPress={async () => await setObjectValue(3)}
           />
           <SelectBtn
             value={1}
             text={"짜게줌"}
             currentValue={objectValue}
-            onPress={() => setObjectValue(1)}
+            onPress={async () => await setObjectValue(1)}
           />
         </View>
 

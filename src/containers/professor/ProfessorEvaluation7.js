@@ -6,8 +6,8 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
+  StyleSheet,
   TextInput,
   View,
   TouchableOpacity
@@ -92,10 +92,14 @@ const ProfessorEvalution7 = props => {
         inner_promise3,
         inner_promise4
       ]).then(() => {
-        setAlertMdoal(false);
         props.navigation.navigate("ProfessorDetail", {
           professorIndex: props.navigation.state.params.professorIndex
         });
+
+        let timeout = setInterval(() => {
+          setAlertMdoal(false);
+          clearTimeout(timeout);
+        }, 1500);
         // setLoading(false);
       });
     });
@@ -120,7 +124,10 @@ const ProfessorEvalution7 = props => {
         );
         await ProfessorActions.pageListProfessorReply(index);
 
-        await setAlertMdoal(false);
+        let timeout = setInterval(() => {
+          setAlertMdoal(false);
+          clearTimeout(timeout);
+        }, 1500);
 
         props.from === true
           ? props.navigation.navigate("ProfessorDetail")
@@ -130,7 +137,10 @@ const ProfessorEvalution7 = props => {
       })
       .catch(async () => {
         // 댓글 내용 변경하지 않을 시, 수정안되서 수정한 항목값들은 반영안됨.
-        await setAlertMdoal(false);
+        let timeout = setInterval(() => {
+          setAlertMdoal(false);
+          clearTimeout(timeout);
+        }, 1500);
 
         props.from === true
           ? props.navigation.navigate("ProfessorDetail")
@@ -144,85 +154,48 @@ const ProfessorEvalution7 = props => {
     <SafeAreaView style={{ flex: 1 }}>
       <AlertModal visible={alertModal} text={alertText} />
       <ScrollView>
-        <EvaluationHeaderView
-          title={"평가하기"}
-          margin={false}
-          goback={() => {
-            props.navigation.goBack(null);
-          }}
-          close={() => {
-            props.from !== false
-              ? props.navigation.navigate("ProfessorDetail")
-              : props.navigation.navigate("MyWriteProfessorList");
-          }}
-        />
         <View
           style={{
-            backgroundColor: "#e7e7e7",
+            backgroundColor: "#ffffff",
             width: "100%",
-            padding: widthPercentageToDP(16),
-            height: widthPercentageToDP(350)
+            paddingHorizontal: widthPercentageToDP(22),
+            paddingTop: widthPercentageToDP(33),
+            height: widthPercentageToDP(331)
           }}
         >
           <TouchableOpacity
+            style={{ height: "100%" }}
             onPress={() => {
               textInput.focus();
             }}
           >
-            <ImageCapInset
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                style={{
+                  width: widthPercentageToDP(16),
+                  height: widthPercentageToDP(10)
+                }}
+                source={require("../../../assets/image/community/quotation_color.png")}
+              />
+              <Text
+                style={{ fontSize: widthPercentageToDP(12), color: "#0076ff" }}
+              >
+                익명
+              </Text>
+            </View>
+            <Text
               style={{
-                width: widthPercentageToDP(343),
-                minHeight: widthPercentageToDP(310),
-                maxHeight: widthPercentageToDP(310),
-                paddingTop: widthPercentageToDP(16),
-                paddingLeft: widthPercentageToDP(12),
-                paddingRight: widthPercentageToDP(6),
-                paddingBottom: widthPercentageToDP(21),
-                marginBottom: widthPercentageToDP(10)
-              }}
-              source={
-                Platform.OS === "ios"
-                  ? require("../../../assets/image/community/reply.png")
-                  : { uri: "reply" }
-              }
-              capInsets={{
-                top: widthPercentageToDP(12),
-                right: widthPercentageToDP(12),
-                bottom: widthPercentageToDP(22),
-                left: widthPercentageToDP(12)
+                marginTop: widthPercentageToDP(11),
+                fontSize: widthPercentageToDP(14),
+                fontFamily:
+                  review === ""
+                    ? fonts.nanumBarunGothicUL
+                    : fonts.nanumBarunGothic,
+                color: review === "" ? "#707070" : "#000000"
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: widthPercentageToDP(12)
-                }}
-              >
-                <Image
-                  style={{
-                    width: widthPercentageToDP(20),
-                    height: widthPercentageToDP(13)
-                  }}
-                  source={require("../../../assets/image/community/quotation_color.png")}
-                />
-                <Text
-                  style={{
-                    fontSize: widthPercentageToDP(12),
-                    fontFamily: fonts.nanumBarunGothic,
-                    color: "#259ffa"
-                  }}
-                >
-                  익명
-                </Text>
-              </View>
-              <Text
-                style={{ fontSize: widthPercentageToDP(12) }}
-                numberOfLines={17}
-              >
-                {review === "" ? `교수평가를 10자이상 입력해주세요!` : review}
-              </Text>
-            </ImageCapInset>
+              {review === "" ? `교수 평가를 10자 이상 작성해주세요!` : review}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -242,7 +215,9 @@ const ProfessorEvalution7 = props => {
       {/* 테스트 필요 */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : ""}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 43 : 0}
+        keyboardVerticalOffset={
+          Platform.OS === "ios" ? widthPercentageToDP(150) : 0
+        }
         enabled
       >
         <WriteContainer>
@@ -287,8 +262,8 @@ const ProfessorEvalution7 = props => {
 const styles = StyleSheet.create({
   textInput: {
     color: "#000000",
-    // width: widthPercentageToDP(216), //이모지 버튼 없을 경우에
-    width: widthPercentageToDP(246), //이모지 버튼 있는 경우
+    width: widthPercentageToDP(216), //이모지 버튼 없을 경우에
+    // width: widthPercentageToDP(246), //이모지 버튼 있는 경우
     maxHeight: widthPercentageToDP(30),
     padding: widthPercentageToDP(0),
     paddingBottom: Platform.OS === "ios" ? widthPercentageToDP(5) : 0,
