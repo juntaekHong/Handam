@@ -1,10 +1,36 @@
-import React, { useRef, useEffect } from "react";
-import { ImageBackground, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import {
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import { widthPercentageToDP as wp } from "../../utils/util";
 import { NBGBText, NBGText } from "../common/Text";
 import ScrollView, { ScrollViewChild } from "react-native-directed-scrollview";
 import colors from "../../configs/colors";
 import styled from "styled-components/native";
+import fonts from "../../configs/fonts";
+
+const shadow = {
+  ...Platform.select({
+    ios: {
+      shadowColor: "rgb(213, 213, 213)",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.16,
+      shadowRadius: 3.84
+    },
+    android: {
+      elevation: 2
+    }
+  })
+};
 
 export const SchoolMapContainer = props => {
   return (
@@ -32,14 +58,20 @@ export const SchoolMapContainer = props => {
 };
 
 export const SchoolMapItem = ({ data, onPress }) => (
-  <TouchableOpacity onPress={onPress}>
+  <TouchableOpacity
+    style={{
+      position: "absolute",
+      width: wp(data.width),
+      height: wp(data.height),
+      top: wp(data.top),
+      left: wp(data.left)
+    }}
+    onPress={onPress}
+  >
     <ImageBackground
       style={{
-        position: "absolute",
         width: wp(data.width),
-        height: wp(data.height),
-        top: wp(data.top),
-        left: wp(data.left)
+        height: wp(data.height)
       }}
       source={
         data.index === 1
@@ -125,3 +157,146 @@ export const SchoolMapItem = ({ data, onPress }) => (
     </ImageBackground>
   </TouchableOpacity>
 );
+
+const SearchContainer = styled.KeyboardAvoidingView`
+  width: ${wp(328)}
+  height: ${wp(46)}
+  padding-left: ${wp(12)}
+  padding-right: ${wp(12)}
+  background-color: ${colors.white}
+  border-radius: ${wp(23)}
+  flex-direction: row
+  align-items: center
+`;
+const SearchInput = styled.TextInput`
+  width: ${wp(268)}
+  height: ${wp(46)}
+  font-size: ${wp(16)}
+  font-family: ${fonts.nanumBarunGothic}
+`;
+export const SearchBar = props => (
+  <KeyboardAvoidingView
+    style={{ position: "absolute", top: wp(16), width: "100%", alignItems: "center" }}
+    behavior={Platform.OS === "ios" ? "padding" : ""}
+    keyboardVerticalOffset={wp(30)}
+  >
+    <SearchContainer>
+      <Image
+        style={{ width: wp(21), height: wp(21), marginRight: wp(15) }}
+        source={require("HandamProject/assets/image/common/search.png")}
+      />
+      <SearchInput placeholder={"Search"} onSubmitEditing={props.search} />
+    </SearchContainer>
+  </KeyboardAvoidingView>
+);
+
+export const InfoList = styled.ScrollView.attrs(props => ({
+  horizontal: true,
+  showsHorizontalScrollIndicator: false
+}))`
+  position: absolute
+  bottom: ${wp(29)}
+  width: 100%
+  background-color: transparent
+`;
+const InfoContainer = styled.View`
+  width: ${wp(309)}
+  min-height: ${wp(126)}
+  margin-right: ${wp(10)}
+  padding-left: ${wp(19)}
+  padding-right: ${wp(16)}
+  padding-top: ${wp(21)}
+  padding-bottom: ${wp(14)}
+  background-color: ${colors.white}
+  border-radius: ${wp(26)}
+  justify-content: space-between
+  ${shadow}
+`;
+const HorizontalView = styled.View`
+  flex-direction: row;
+`;
+const DetailButton = styled.TouchableOpacity`
+  width: ${wp(57)}
+  height: ${wp(25)}
+  border-radius: ${wp(13)}
+  justify-content: center
+  align-items: center
+  background-color: ${colors.blue}
+`;
+export const InfoItem = props => {
+  const { item, close, detail } = props;
+  return (
+    <InfoContainer>
+      <HorizontalView style={{ justifyContent: "space-between" }}>
+        <HorizontalView style={{ alignItems: "flex-end" }}>
+          <NBGBText fontSize={wp(22)} color={colors.blue}>
+            {item.title}
+          </NBGBText>
+          <NBGText fontSize={wp(14)} color={"#8d8d8d"} style={{ marginLeft: wp(7) }}>
+            {item.subTitle}
+          </NBGText>
+        </HorizontalView>
+        <TouchableOpacity onPress={close}>
+          <Image
+            style={{ width: wp(19), height: wp(19) }}
+            source={require("HandamProject/assets/image/common/close.png")}
+          />
+        </TouchableOpacity>
+      </HorizontalView>
+      <HorizontalView style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
+        <View>
+          <NBGText fontSize={wp(12)} color={"#8d8d8d"} style={{ marginBottom: wp(4) }}>
+            주요시설
+          </NBGText>
+          <NBGBText fontSize={wp(14)} color={"#6f6f6f"}>
+            {item.mainInfo.join(", ")}
+          </NBGBText>
+        </View>
+        <DetailButton onPress={detail}>
+          <NBGBText fontSize={wp(10)} color={colors.white}>
+            자세히
+          </NBGBText>
+        </DetailButton>
+      </HorizontalView>
+    </InfoContainer>
+  );
+};
+
+const DetailContainer = styled.View`
+  width: 100%
+  height: ${wp(74)}
+  padding-top: ${wp(21)}
+  padding-left: ${wp(22)}
+  flex-direction: row
+`;
+const Floor = styled(DetailButton).attrs(props => ({
+  disabled: true
+}))`
+  width: ${wp(39)}
+  height: ${wp(24)}
+  border-radius: ${wp(7)}
+  margin-right: ${wp(12)}
+`;
+export const DetailListItem = props => {
+  const { info } = props;
+  return (
+    <DetailContainer>
+      <Floor>
+        <NBGBText fontSize={wp(14)} color={colors.white}>
+          {info.floor}
+        </NBGBText>
+      </Floor>
+      <View>
+        {info.info.map((row, index) => (
+          <HorizontalView key={`p${index}`} style={{ marginBottom: wp(7) }}>
+            {row.map((item, index2) => (
+              <NBGText marginRight={wp(10)} key={`c${index}${index2}`} fontSize={wp(14)} color={"#6a6a6a"}>
+                {item}
+              </NBGText>
+            ))}
+          </HorizontalView>
+        ))}
+      </View>
+    </DetailContainer>
+  );
+};

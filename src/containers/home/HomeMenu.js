@@ -11,6 +11,8 @@ import navigators from "../../utils/navigators";
 import { HomeActions } from "../../store/actionCreator";
 import values from "../../configs/values";
 
+const MENU_LENGTH = config.homeMenu.filter(item => item.enabled).length;
+
 const filter = (arr1, arr2) => {
   return arr1.filter(item1 => {
     for (let item2 of arr2) {
@@ -23,14 +25,14 @@ const filter = (arr1, arr2) => {
 const blankItem = { image: require("HandamProject/assets/image/home/line.png") };
 
 const HomeMenu = ({ homeMenu }) => {
-  const [nowArr, setNowArr] = useState(homeMenu.length >= 7 ? homeMenu : [...homeMenu, blankItem]);
+  const [nowArr, setNowArr] = useState(homeMenu.length >= MENU_LENGTH ? homeMenu : [...homeMenu, blankItem]);
   const [baseArr, setBaseArr] = useState(filter(config.homeMenu, homeMenu));
 
   const removeArr = useCallback(
     obj => {
       try {
         const tmp = nowArr.filter((item, index) => item.title !== undefined && item.title !== obj.title);
-        if (tmp.length < 7) tmp.push(blankItem);
+        if (tmp.length < MENU_LENGTH) tmp.push(blankItem);
         setNowArr(tmp);
         setBaseArr(filter(config.homeMenu, tmp));
       } catch (e) {
@@ -44,13 +46,13 @@ const HomeMenu = ({ homeMenu }) => {
     num => {
       let add,
         newArr = nowArr.filter(item => item.title !== undefined);
-      if (newArr.length >= 7) return;
+      if (newArr.length >= MENU_LENGTH) return;
       const tmp = baseArr.filter((item, index) => {
         if (index !== num) return true;
         else add = item;
       });
       newArr.push(add);
-      if (newArr.length < 7) newArr.push(blankItem);
+      if (newArr.length < MENU_LENGTH) newArr.push(blankItem);
       setBaseArr(tmp);
       setNowArr(newArr);
     },
@@ -85,7 +87,9 @@ const HomeMenu = ({ homeMenu }) => {
             setNowArr(data);
           }}
           fixedItems={
-            nowArr.length < 7 || nowArr[nowArr.length - 1].title === undefined ? [nowArr.length - 1] : undefined
+            nowArr.length < MENU_LENGTH || nowArr[nowArr.length - 1].title === undefined
+              ? [nowArr.length - 1]
+              : undefined
           }
           onClickItem={(data, item, index) => {}}
           delayLongPress={200}
@@ -114,8 +118,6 @@ const HomeMenu = ({ homeMenu }) => {
             renderItem={({ item, index }) => {
               if (baseArr.length === 0) {
                 return <MenuNavBtn type={"blank"} title={item.title} image={item.image} />;
-              } else if (index === 0) {
-                return <MenuNavBtn type={"plus"} title={item.title} image={item.image} onPress={() => addArr(index)} />;
               } else {
                 return <MenuNavBtn type={"plus"} title={item.title} image={item.image} onPress={() => addArr(index)} />;
               }

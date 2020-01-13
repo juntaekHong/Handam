@@ -6,7 +6,8 @@ export default {
     NOTICE: "한성공지",
     READING: "열람실",
     RESTAURANT: "학식메뉴",
-    CALCULATE: "성적계산"
+    CALCULATE: "성적계산",
+    MAP: "학교위치"
   },
   storeName: {
     HOME_MENU: "homeMenu"

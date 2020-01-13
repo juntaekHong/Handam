@@ -7,7 +7,6 @@ import LockSolve from "../../containers/lock/LockSolve";
 import LibraryUpdate from "../../containers/update/LibraryUpdate";
 import LiveUpdate from "../../containers/update/LiveUpdate";
 import TestContainer from "../../containers/test/TestContainer";
-import SchoolMap from "../../containers/map/SchoolMap";
 
 const AuthSwitch = createSwitchNavigator(
   {
@@ -18,7 +17,7 @@ const AuthSwitch = createSwitchNavigator(
     locksolve: { screen: LockSolve },
     library: { screen: LibraryUpdate },
     liveupdate: { screen: LiveUpdate },
-    test: SchoolMap
+    test: TestContainer
   },
   {
     initialRouteName: "liveupdate"
