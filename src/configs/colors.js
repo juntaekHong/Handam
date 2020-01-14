@@ -14,7 +14,9 @@ const colors = {
   signUpNext: "#cad5dd",
   notFocus: "#646464",
   selectMajor: "#9e9e9e",
-  dotInActive: "#b2b2b2"
+  dotInActive: "#b2b2b2",
+  smallBlue: "#4c9ef2",
+  blue: "#24a0fa"
 };
 
 export default colors;

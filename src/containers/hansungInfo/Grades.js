@@ -52,9 +52,7 @@ class Grades extends React.Component {
     let timeout = setInterval(async () => {
       if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
         await HansungInfoActions.getHansungInfo();
-      } else if (
-        this.props.hansunginfo.summaryGrades.ratedTotal != undefined
-      ) {
+      } else if (this.props.hansunginfo.summaryGrades.ratedTotal != undefined) {
         await HansungInfoActions.gradesLoadingHandle(false);
         await HansungInfoActions.gradesHandle(true);
         await HansungInfoActions.professorTextHandle(true);
@@ -68,7 +66,7 @@ class Grades extends React.Component {
   };
 
   refreshBtn = async () => {
-    this.setState({refreshModal:false})
+    this.setState({ refreshModal: false });
     await HansungInfoActions.gradesLoadingHandle(true);
     await HansungInfoActions.createHansungInfoGrades();
     await HansungInfoActions.getHansungInfo();
@@ -76,9 +74,7 @@ class Grades extends React.Component {
     let timeout = setInterval(async () => {
       if (this.props.hansunginfo.summaryGrades.ratedTotal == undefined) {
         await HansungInfoActions.getHansungInfo();
-      } else if (
-        this.props.hansunginfo.summaryGrades.ratedTotal != undefined
-      ) {
+      } else if (this.props.hansunginfo.summaryGrades.ratedTotal != undefined) {
         await HansungInfoActions.gradesLoadingHandle(false);
         await HansungInfoActions.gradesHandle(true);
         clearInterval(timeout);
@@ -205,15 +201,27 @@ class Grades extends React.Component {
   chartDataRender = data => {
     let avgData = [];
     let semesterData = [];
-    let chartData = [{ x: "해당없음", y: 0 }];
+    let chartData = [];
+
+    if (data.length === 0) {
+      chartData.push({ x: "해당없음", y: 0 });
+    }
 
     data.map(Data => {
       avgData.push(parseFloat(Data["gradesSummary"].averageScore));
     });
     avgData.reverse();
 
+    let grade = 0;
+
     for (let semester = 1; semester <= avgData.length; semester++) {
-      semesterData.push(semester + "학기");
+      if (semester % 2 === 1) {
+        grade++;
+      }
+
+      semesterData.push(
+        grade + "학년 " + (semester % 2 === 0 ? 2 : 1) + "학기"
+      );
     }
 
     for (let i = 0; i < avgData.length; i++) {
@@ -376,6 +384,8 @@ class Grades extends React.Component {
                     this.props.hansunginfo.summaryGrades.averageRating
                   }
                   percentile={this.props.hansunginfo.summaryGrades.percentile}
+                  // 전공 평점(평균) 부분 작업중
+                  // MajorAvgScore={this.props}
                 />
                 <View
                   style={{

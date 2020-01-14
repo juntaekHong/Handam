@@ -16,6 +16,7 @@ import RestaurantMenu from "../../containers/home/RestaurantMenu";
 import ProfessorDetail_noTab from "../professor/ProfessorStack_noTab";
 import MyWriteProfessorList from "../../containers/professor/MyWriteProfessorList";
 import ProfessorDetail from "../../containers/professor/ProfessorDetail";
+import MapStack from "../map/MapStack";
 
 const RootStack = createStackNavigator(
   {
@@ -33,9 +34,10 @@ const RootStack = createStackNavigator(
     calculation: { screen: Calculation },
     reading: ReadingRoom,
     restaurantmenu: RestaurantMenu,
-    ProfessorDetail_noTab: {screen: ProfessorDetail_noTab},
+    ProfessorDetail_noTab: { screen: ProfessorDetail_noTab },
     ProfessorDetail: { screen: ProfessorDetail },
-    MyWriteProfessorList: {screen: MyWriteProfessorList},
+    MyWriteProfessorList: { screen: MyWriteProfessorList },
+    mapstack: { screen: MapStack }
   },
   {
     initialRouteName: "main",

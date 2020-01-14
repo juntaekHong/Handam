@@ -6,7 +6,7 @@ import values from "./values";
  */
 
 const init = {
-  type: "prod",
+  type: "dev",
   server: {
     dev: "https://obpo33ldql.execute-api.ap-northeast-2.amazonaws.com/dev",
     prod: "https://u6g8ovcai1.execute-api.ap-northeast-2.amazonaws.com/prod"
@@ -62,37 +62,50 @@ const config = {
     {
       sort: 1,
       title: values.homeMenuTitle.SCHEDULE,
-      image: require("HandamProject/assets/image/home/schedule.png")
+      image: require("HandamProject/assets/image/home/schedule.png"),
+      enabled: true
     },
     {
       sort: 2,
       title: values.homeMenuTitle.NOTICE,
-      image: require("HandamProject/assets/image/home/notice.png")
+      image: require("HandamProject/assets/image/home/notice.png"),
+      enabled: true
     },
     {
       sort: 3,
       title: values.homeMenuTitle.BUS,
-      image: require("HandamProject/assets/image/home/bus.png")
+      image: require("HandamProject/assets/image/home/bus.png"),
+      enabled: true
     },
     {
       sort: 4,
       title: values.homeMenuTitle.CIS,
-      image: require("HandamProject/assets/image/home/cis.png")
+      image: require("HandamProject/assets/image/home/cis.png"),
+      enabled: true
     },
     {
       sort: 5,
       title: values.homeMenuTitle.READING,
-      image: require("HandamProject/assets/image/home/reading.png")
+      image: require("HandamProject/assets/image/home/reading.png"),
+      enabled: true
     },
     {
       sort: 6,
       title: values.homeMenuTitle.CALCULATE,
-      image: require("HandamProject/assets/image/home/calculation.png")
+      image: require("HandamProject/assets/image/home/calculation.png"),
+      enabled: true
     },
     {
       sort: 7,
       title: values.homeMenuTitle.RESTAURANT,
-      image: require("HandamProject/assets/image/home/restaurant.png")
+      image: require("HandamProject/assets/image/home/restaurant.png"),
+      enabled: true
+    },
+    {
+      sort: 8,
+      title: values.homeMenuTitle.MAP,
+      image: require("HandamProject/assets/image/home/location.png"),
+      enabled: true
     }
   ]
 };

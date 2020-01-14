@@ -34,15 +34,25 @@ export const getNoticeList = () => async dispatch => {
 export const initHomeMenu = () => async dispatch => {
   try {
     const custom = await getData(values.storeName.HOME_MENU);
+    const arr = [];
     if (custom === null) {
-      const arr = [];
       for (let i = 0; i < config.homeMenu.length; i++) {
-        if (i > 6) break;
-        arr.push(config.homeMenu[i]);
+        // if (i > 6) break;
+        if (config.homeMenu[i].enabled) arr.push(config.homeMenu[i]);
       }
       dispatch(homeMenuAction(arr));
     } else {
-      dispatch(homeMenuAction(JSON.parse(custom)));
+      // dispatch(homeMenuAction(JSON.parse(custom)));
+      const menu = JSON.parse(custom);
+      for (let i = 0; i < menu.length; i++) {
+        for (let j = 0; j < config.homeMenu.length; j++) {
+          if (menu[i].title === config.homeMenu[j].title) {
+            if (config.homeMenu[j].enabled) arr.push(config.homeMenu[j]);
+            break;
+          }
+        }
+      }
+      dispatch(homeMenuAction(arr));
     }
     return true;
   } catch (e) {

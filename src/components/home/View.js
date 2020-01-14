@@ -30,10 +30,10 @@ const BadgeIcon = styled.Image`
 `;
 
 const HomeTitleRight = ({ alarm = false }) => {
-  navigateAlarm = useCallback(() => {
+  const navigateAlarm = useCallback(() => {
     navigators.navigate("alarm");
   }, []);
-  navigateSetting = useCallback(() => {
+  const navigateSetting = useCallback(() => {
     navigators.navigate("setting");
   }, []);
   return (

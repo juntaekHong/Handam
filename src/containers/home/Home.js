@@ -8,7 +8,7 @@ import {
   AlarmActions,
   HansungInfoActions,
   LockActions,
-  ProfessorActions
+  MapActions
 } from "../../store/actionCreator";
 import moment from "moment";
 import { HomeNavigateButton } from "../../components/home/Button";
@@ -23,6 +23,7 @@ import { NavigationEvents } from "react-navigation";
 import LottieView from "lottie-react-native";
 import values from "../../configs/values";
 import { getData } from "../../utils/util";
+import DragSortableView from "react-native-drag-sort";
 
 const Home = ({
   navigation,
@@ -65,6 +66,9 @@ const Home = ({
       case values.homeMenuTitle.CALCULATE:
         navigateCalculation();
         break;
+      case values.homeMenuTitle.MAP:
+        navigateSchoolMap();
+        break;
     }
   }, []);
   const navigateNotice = useCallback(() => {
@@ -90,6 +94,11 @@ const Home = ({
     navigation.navigate("calculation");
   }, []);
 
+  const navigateSchoolMap = useCallback(async () => {
+    await MapActions.initItem();
+    navigation.navigate("mapstack");
+  }, []);
+
   const navigateSchedule = useCallback(() => {
     if (hansunginfo === null) return setCertModal(true);
     if (hansunginfo !== null && hansunginfo.status === "UNVERIFIED") return setCertLoadModal(true);
@@ -103,8 +112,8 @@ const Home = ({
   }, []);
 
   const initCall = useCallback(async () => {
-    const hansungInfoPw = await getData('hansungInfoPw');
-    if(hansungInfoPw===null) {
+    const hansungInfoPw = await getData("hansungInfoPw");
+    if (hansungInfoPw === null) {
       await HansungInfoActions.deleteHansungInfo();
     }
     await Promise.all([AlarmActions.alarmInit(), LockActions.lockInit()]);
@@ -132,7 +141,7 @@ const Home = ({
     }
   }, [hansunginfo, schedule_loading]);
 
-  const callSchedule = useCallback(async() => {
+  const callSchedule = useCallback(async () => {
     setScheduleModal(false);
     HansungInfoActions.scheduleCallAction(true);
   }, []);
@@ -219,30 +228,27 @@ const Home = ({
         }}
       >
         <HomeAd list={noticeList} />
-        <View style={{ width: "100%" }}>
-          <HomeNavigateView>
-            {homeMenu.map((item, index) => {
-              if (index > 3) return null;
-              return (
-                <HomeNavigateButton
-                  style={{ marginRight: widthPercentageToDP(18) }}
-                  title={item.title}
-                  image={item.image}
-                  onPress={() => navigateAction(item.title)}
-                />
-              );
-            })}
-            {homeMenu.length < 4 ? (
-              <HomeNavigateButton
-                image={require("HandamProject/assets/image/home/plusbox.png")}
-                onPress={() => navigation.navigate("homemenu")}
-              />
-            ) : null}
-          </HomeNavigateView>
-          {homeMenu.length >= 4 ? (
-            <HomeNavigateView>
-              {homeMenu.map((item, index) => {
-                if (index < 4) return null;
+        <HomeNavigateView>
+          <DragSortableView
+            dataSource={[...homeMenu, {}]}
+            parentWidth={widthPercentageToDP(375)}
+            childrenWidth={widthPercentageToDP(78)}
+            childrenHeight={widthPercentageToDP(78)}
+            marginChildrenTop={widthPercentageToDP(21)}
+            onDataChange={data => {
+              // delete or add data to refresh
+            }}
+            onClickItem={(data, item, index) => {}}
+            delayLongPress={200}
+            renderItem={(item, index) => {
+              if (item.title === undefined) {
+                return (
+                  <HomeNavigateButton
+                    image={require("HandamProject/assets/image/home/plusbox.png")}
+                    onPress={() => navigation.navigate("homemenu")}
+                  />
+                );
+              } else {
                 return (
                   <HomeNavigateButton
                     style={{ marginRight: widthPercentageToDP(18) }}
@@ -251,14 +257,10 @@ const Home = ({
                     onPress={() => navigateAction(item.title)}
                   />
                 );
-              })}
-              <HomeNavigateButton
-                image={require("HandamProject/assets/image/home/plusbox.png")}
-                onPress={() => navigation.navigate("homemenu")}
-              />
-            </HomeNavigateView>
-          ) : null}
-        </View>
+              }
+            }}
+          />
+        </HomeNavigateView>
         <TodayLectureTitle onPress={onPressRefresh} />
         <TodayLine time={moment(time).format("MM. DD (ddd)")} />
         <TodayLecture
