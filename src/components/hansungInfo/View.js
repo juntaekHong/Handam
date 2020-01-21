@@ -473,10 +473,6 @@ export const GradeMainView = props => {
       <GradeSimpleView>
         <BlockView>
           <GradeValue>{props.percentile}</GradeValue>
-          <GradeProperty>전공평텟</GradeProperty>
-        </BlockView>
-        <BlockView style={{ paddingLeft: widthPercentageToDP(38) }}>
-          <GradeValue>{props.percentile}</GradeValue>
           <GradeProperty>백분위</GradeProperty>
         </BlockView>
         <BlockView style={{ paddingLeft: widthPercentageToDP(38) }}>

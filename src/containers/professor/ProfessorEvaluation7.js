@@ -55,7 +55,7 @@ const ProfessorEvalution7 = props => {
 
   useEffect(() => {
     setReviewLength(review.length);
-    if (reviewLength > 10) {
+    if (reviewLength >= 10) {
       setProfessorInfoData({
         professorInfoIndex: index,
         lecturePower: props.navigation.state.params.LecturePower,
@@ -205,6 +205,17 @@ const ProfessorEvalution7 = props => {
           text={`완료`}
           valueEmpty={reviewLength > 10 ? false : true}
           onPress={() => {
+            setProfessorInfoData({
+              professorInfoIndex: index,
+              lecturePower: props.navigation.state.params.LecturePower,
+              homework: props.navigation.state.params.Homework,
+              elasticity: props.navigation.state.params.Elasticity,
+              communication: props.navigation.state.params.Communication,
+              recommendation: props.navigation.state.params.Recommendation,
+              grade: props.navigation.state.params.Grade,
+              content: review
+            });
+
             props.reply.length === 0
               ? professorInfoInsert()
               : professorInfoUpdate();

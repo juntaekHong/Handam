@@ -398,7 +398,30 @@ const TagView = styled.View`
   border-width: ${widthPercentageToDP(1)};
   border-color: #868686;
   background-color: #E2E2E2;
-  padding-left: ${widthPercentageToDP(8)};
+`;
+
+// 평가하기 시, 작성 유의사항 알림 모달
+const NoticeModal = styled.View`
+  margin-left: ${widthPercentageToDP(32)};
+  margin-right: ${widthPercentageToDP(31)};
+`;
+
+export const NoticeModalView = props => {
+    return (
+        <NoticeModal>
+            {props.children}
+        </NoticeModal>
+    )
+};
+
+export const NoticeFooterView = styled.TouchableOpacity`
+  width: 100%
+  height: ${widthPercentageToDP(64)}
+  justify-content: center
+  align-items: center
+  border-bottom-left-radius: ${widthPercentageToDP(14)}
+  border-bottom-right-radius: ${widthPercentageToDP(14)}
+  background-color: #24a0fa;
 `;
 
 export const ProfessorDetailView = props => {
@@ -501,7 +524,7 @@ export const ProfessorDetailView = props => {
                   keyExtractor={(item, index) => index.toString()}
                   ListHeaderComponent={_renderListHeader}
                   renderItem={({ item, index }) => {
-                      
+
                       return (
                           <ProfessorDetail style={select === "score" ? {height: widthPercentageToDP(520)} : {height: widthPercentageToDP(216)}} key={index}>
                               <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23), borderBottomWidth: 0}}>
@@ -509,20 +532,49 @@ export const ProfessorDetailView = props => {
                                       <Text style={{fontSize: widthPercentageToDP(16), fontFamily: fonts.nanumBarunGothicB, color: '#000000'}}>{item.professorName} 교수님</Text>
                                   </View>
                                   <View style={{marginTop: widthPercentageToDP(13)}}>
-                                      <View style={{flexDirection: 'row'}}>
-                                          <TagView style={{width: widthPercentageToDP(156), marginRight: widthPercentageToDP(8)}}>
-                                              <ProfessorInfoText numberOfLines={1} style={{width: widthPercentageToDP(140), color: '#000000', textAlign: 'center'}}># {item.track.length === 2 ? item.track[0] + `/ ` +  item.track[1] : item.track}</ProfessorInfoText>
-                                          </TagView>
-                                          <TagView style={{width: widthPercentageToDP(136)}}>
-                                            <ProfessorInfoText style={{width: widthPercentageToDP(120), color: '#000000', textAlign: 'center'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
-                                          </TagView>
-                                      </View>
+                                      {
+                                          item.track.length === 2 && (item.track[0].length + item.track[1].length)> 22 ?
+                                            (item.track[0].length + item.track[1].length) <= 22 ?
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <TagView style={{marginRight: widthPercentageToDP(8)}}>
+                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
+                                                    </TagView>
+                                                    <TagView>
+                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                    </TagView>
+                                                </View>
+                                                :
+                                                <View style={{flexDirection: 'column'}}>
+                                                    <View style={{flexDirection: 'row'}}>
+                                                        <TagView>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track[0].length > item.track[1].length ? item.track[0] : item.track[1]}</ProfessorInfoText>
+                                                        </TagView>
+                                                    </View>
+                                                    <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(6)}}>
+                                                        <TagView style={{marginRight: widthPercentageToDP(8)}}>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track[0].length > item.track[1].length ? item.track[1] : item.track[0]}</ProfessorInfoText>
+                                                        </TagView>
+                                                        <TagView>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                        </TagView>
+                                                    </View>
+                                                </View>
+                                            :
+                                            <View style={{flexDirection: 'row'}}>
+                                                <TagView style={{marginRight: widthPercentageToDP(8)}}>
+                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
+                                                </TagView>
+                                                <TagView>
+                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                </TagView>
+                                            </View>
+                                      }
                                       <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(6)}}>
-                                          <TagView style={{width: widthPercentageToDP(196), marginRight: widthPercentageToDP(8)}}>
-                                              <ProfessorInfoText numberOfLines={1} style={{width: widthPercentageToDP(180), color: '#000000', textAlign: 'center'}}># {item.email}</ProfessorInfoText>
+                                          <TagView style={{marginRight: widthPercentageToDP(8)}}>
+                                              <ProfessorInfoText numberOfLines={1} style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.email}</ProfessorInfoText>
                                           </TagView>
-                                          <TagView style={{width: widthPercentageToDP(116)}}>
-                                              <ProfessorInfoText style={{width: widthPercentageToDP(100), color: '#000000', textAlign: 'center'}}># {item.tel}</ProfessorInfoText>
+                                          <TagView>
+                                              <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.tel}</ProfessorInfoText>
                                           </TagView>
                                       </View>
                                   </View>
@@ -1093,4 +1145,3 @@ const styles = StyleSheet.create({
       alignItems: 'flex-end', 
     }
   });
-  

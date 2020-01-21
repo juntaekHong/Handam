@@ -92,3 +92,14 @@ export const NonResultText = styled.Text`
   color: #707070;
   font-family: ${fonts.nanumBarunGothic};
 `;
+
+// 상세 페이지 알림 모달 텍스트
+export const NoticModalText = styled.Text`
+  font-family: ${fonts.nanumBarunGothic};
+  font-size: ${props =>
+    props.size ? widthPercentageToDP(props.size) : widthPercentageToDP(13)};
+  color: ${props => (props.color ? props.color : "#646464")};
+  line-height: ${widthPercentageToDP(22)};
+  margin-bottom: ${props =>
+    props.marginBottom ? widthPercentageToDP(props.marginBottom) : 0};
+`;
