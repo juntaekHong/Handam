@@ -134,9 +134,11 @@ export const SchoolMapItem = ({ data, onPress }) => (
           ? data.enabled
             ? require("HandamProject/assets/image/map/building-blue-15.png")
             : require("HandamProject/assets/image/map/building-white-15.png")
-          : data.enabled
-          ? require("HandamProject/assets/image/map/building-blue-16.png")
-          : require("HandamProject/assets/image/map/building-white-16.png")
+          : data.index === 16
+          ? data.enabled
+            ? require("HandamProject/assets/image/map/building-blue-16.png")
+            : require("HandamProject/assets/image/map/building-white-16.png")
+          : undefined
       }
     >
       <Image
@@ -201,7 +203,7 @@ export const InfoList = styled.ScrollView.attrs(props => ({
 `;
 const InfoContainer = styled.View`
   width: ${wp(309)}
-  min-height: ${wp(126)}
+  height: ${wp(126)}
   margin-right: ${wp(10)}
   padding-left: ${wp(19)}
   padding-right: ${wp(16)}
@@ -252,11 +254,13 @@ export const InfoItem = props => {
             {item.mainInfo.join(", ")}
           </NBGBText>
         </View>
-        <DetailButton onPress={detail}>
-          <NBGBText fontSize={wp(10)} color={colors.white}>
-            자세히
-          </NBGBText>
-        </DetailButton>
+        {item.detailEnable ? (
+          <DetailButton onPress={detail}>
+            <NBGBText fontSize={wp(10)} color={colors.white}>
+              자세히
+            </NBGBText>
+          </DetailButton>
+        ) : null}
       </HorizontalView>
     </InfoContainer>
   );
@@ -264,8 +268,8 @@ export const InfoItem = props => {
 
 const DetailContainer = styled.View`
   width: 100%
-  height: ${wp(74)}
   padding-top: ${wp(21)}
+  padding-bottom: ${wp(14)}
   padding-left: ${wp(22)}
   flex-direction: row
 `;
