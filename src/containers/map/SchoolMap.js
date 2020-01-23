@@ -46,18 +46,22 @@ const SchoolMap = props => {
           index.push(item.index);
           return true;
         }
+
         for (let main of item.mainInfo) {
           if (main.indexOf(text) >= 0) {
             index.push(item.index);
             return true;
           }
         }
-        for (let detail of item.detail) {
-          for (let info of detail.info) {
-            for (let name of info) {
-              if (name.indexOf(text) >= 0) {
-                index.push(item.index);
-                return true;
+
+        if (item.detailEnable) {
+          for (let detail of item.detail) {
+            for (let info of detail.info) {
+              for (let name of info) {
+                if (name.indexOf(text) >= 0) {
+                  index.push(item.index);
+                  return true;
+                }
               }
             }
           }

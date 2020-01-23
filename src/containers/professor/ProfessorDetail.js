@@ -1,6 +1,7 @@
 import React from "react";
 import {
   View,
+  Text,
   SafeAreaView,
   ScrollView,
   Animated,
@@ -12,14 +13,17 @@ import {
   NonResultView,
   ProfessorDetailView,
   ProfessorReplyListView,
-  ProfessorTopView
+  ProfessorTopView,
+  NoticeModalView,
+  NoticeFooterView
 } from "../../components/professor/View";
 import { BackBtn, EvaluationBtn } from "../../components/professor/Button";
-import { TitleNameText } from "../../components/professor/Text";
+import { TitleNameText, NoticModalText } from "../../components/professor/Text";
 import { widthPercentageToDP } from "../../utils/util";
 import { ProfessorActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { CustomModal } from "../../components/common/Modal";
 
 class ProfessorDetail extends React.Component {
   constructor(props) {
@@ -29,7 +33,9 @@ class ProfessorDetail extends React.Component {
       loading: false,
       currentProfessorIndex: null,
       select: "score",
-      professorInfoIndex: null
+      professorInfoIndex: null,
+      // 평가하기 클릭 시, 작성 유의사항 알림 모달
+      noticeModal: false
     };
   }
 
@@ -106,14 +112,48 @@ class ProfessorDetail extends React.Component {
       </View>
     ) : (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+        <CustomModal
+          width={292}
+          height={368}
+          children={
+            <NoticeModalView>
+              <NoticModalText size={16} marginBottom={30}>
+                * 교수 평가시 안내 사항
+              </NoticModalText>
+              <NoticModalText>
+                {
+                  "교수 평가는 교수님의 수업에 대한\n평가입니다. 수업 내용이 좋고 나쁨을 평가해주시고 학점, 강의수준 등에 대한 글을 작성해주세요. 외모나 개인에 대한 평가는\n모욕감과 치욕감을 드릴 우려가 있습니다.\n후배들을 위한 정보 등 한성인들의 공감을 얻어 낼 수 있는 글을 올려주세요."
+                }
+              </NoticModalText>
+            </NoticeModalView>
+          }
+          visible={this.state.noticeModal}
+          renderFooter={() => {
+            return (
+              <NoticeFooterView
+                disabled={false}
+                onPress={async () => {
+                  this.setState({ noticeModal: false });
+
+                  ProfessorActions.myWriteProfessorReplyInitHandle();
+                  ProfessorActions.fromHandle(true);
+                  this.navigateProfessorEvaluation();
+                }}
+              >
+                <NoticModalText size={20} color={"#ffffff"}>
+                  확인
+                </NoticModalText>
+              </NoticeFooterView>
+            );
+          }}
+          closeHandler={() => this.setState({ noticeModal: false })}
+        />
         <ProfessorTopView>
           <BackBtn goback={() => this.navigategoBack()} />
           <TitleNameText>교수평가</TitleNameText>
           <EvaluationBtn
             Evaluation={() => {
-              ProfessorActions.myWriteProfessorReplyInitHandle();
-              ProfessorActions.fromHandle(true);
-              this.navigateProfessorEvaluation();
+              this.setState({ noticeModal: true });
             }}
           />
         </ProfessorTopView>

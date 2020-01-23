@@ -24,6 +24,7 @@ const initState = {
       mainInfo: ["무용학과 실습실", "체육시설"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "4F",
@@ -67,6 +68,7 @@ const initState = {
       mainInfo: ["동아리방"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "5F",
@@ -122,6 +124,7 @@ const initState = {
       mainInfo: ["디자인대학", "학생&교직원식당", "매점"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "6F",
@@ -191,6 +194,7 @@ const initState = {
       mainInfo: ["학술정보관", "출력센터", "카페", "열람실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "6F",
@@ -249,6 +253,7 @@ const initState = {
       mainInfo: ["행정사무실", "강의실", "팥고당", "휴게실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "12F",
@@ -336,6 +341,7 @@ const initState = {
       mainInfo: ["학과행정실", "학생회실", "학사지원팀"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "7F",
@@ -422,6 +428,7 @@ const initState = {
       mainInfo: ["학생장학팀", "총학생회"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "4F",
@@ -472,6 +479,7 @@ const initState = {
       mainInfo: ["흡연실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: false,
       detail: [
         {
           floor: "",
@@ -499,6 +507,7 @@ const initState = {
       mainInfo: ["대학원교학실", "대학원장실", "한디원"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: false,
       detail: [
         {
           floor: "",
@@ -526,6 +535,7 @@ const initState = {
       mainInfo: ["교양강의실", "컴퓨터실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "5F",
@@ -577,6 +587,7 @@ const initState = {
       mainInfo: ["학군단"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: false,
       detail: [
         {
           floor: "",
@@ -604,6 +615,7 @@ const initState = {
       mainInfo: ["교수연구실", "상상큐브", "카페"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: false,
       detail: [
         {
           floor: "",
@@ -631,6 +643,7 @@ const initState = {
       mainInfo: ["회화과", "서양화", "동양화"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "4F",
@@ -686,6 +699,7 @@ const initState = {
       mainInfo: ["공과대학", "학과사무실", "강의실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "HF",
@@ -760,6 +774,7 @@ const initState = {
       mainInfo: ["공과대학", "학과사무실", "강의실"],
       enabled: false,
       // detail 높은층부터
+      detailEnable: true,
       detail: [
         {
           floor: "HF",
@@ -783,7 +798,7 @@ const initState = {
         },
         {
           floor: "2F",
-          info: ["정보통신공학과 실습실"]
+          info: [["정보통신공학과 실습실"]]
         },
         {
           floor: "1F",
@@ -792,6 +807,62 @@ const initState = {
         {
           floor: "B1",
           info: [["학회실"]]
+        }
+      ]
+    },
+    {
+      name: "",
+      title: "정류장",
+      subTitle: "Bus stop",
+      index: 17,
+      top: 483.5,
+      left: 313,
+      width: 14,
+      height: 14,
+      btnStyle: {
+        top: 0,
+        left: 0
+      },
+      nameStyle: {
+        top: 0,
+        left: 0
+      },
+      mainInfo: ["2번 마을버스 정류장"],
+      enabled: false,
+      // detail 높은층부터
+      detailEnable: false,
+      detail: [
+        {
+          floor: "",
+          info: [[""]]
+        }
+      ]
+    },
+    {
+      name: "",
+      title: "학교버스 정류장",
+      subTitle: "School Bus stop",
+      index: 18,
+      top: 544.5,
+      left: 303,
+      width: 14,
+      height: 14,
+      btnStyle: {
+        top: 0,
+        left: 0
+      },
+      nameStyle: {
+        top: 0,
+        left: 0
+      },
+      mainInfo: ["학교버스정류장"],
+      enabled: false,
+      // detail 높은층부터
+      detailEnable: false,
+      detail: [
+        {
+          floor: "",
+          info: [[""]]
         }
       ]
     }
