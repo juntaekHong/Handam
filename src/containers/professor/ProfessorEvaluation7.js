@@ -15,7 +15,8 @@ import {
 import { NextBtn } from "../../components/professor/Button";
 import {
   EvaluationHeaderView,
-  ProgressView
+  ProgressView,
+  ReviewBottomView
 } from "../../components/professor/View";
 import { timeSince, widthPercentageToDP } from "../../utils/util";
 import {
@@ -96,6 +97,8 @@ const ProfessorEvalution7 = props => {
           professorIndex: props.navigation.state.params.professorIndex
         });
 
+        ProfessorActions.myProfessorReplyPostList();
+
         let timeout = setInterval(() => {
           setAlertMdoal(false);
           clearTimeout(timeout);
@@ -153,118 +156,70 @@ const ProfessorEvalution7 = props => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AlertModal visible={alertModal} text={alertText} />
-      <ScrollView>
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            width: "100%",
-            paddingHorizontal: widthPercentageToDP(22),
-            paddingTop: widthPercentageToDP(33),
-            height: widthPercentageToDP(331)
-          }}
-        >
-          <TouchableOpacity
-            style={{ height: "100%" }}
-            onPress={() => {
-              textInput.focus();
-            }}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                style={{
-                  width: widthPercentageToDP(16),
-                  height: widthPercentageToDP(10)
-                }}
-                source={require("../../../assets/image/community/quotation_color.png")}
-              />
-              <Text
-                style={{ fontSize: widthPercentageToDP(12), color: "#0076ff" }}
-              >
-                익명
-              </Text>
-            </View>
-            <Text
-              style={{
-                marginTop: widthPercentageToDP(11),
-                fontSize: widthPercentageToDP(14),
-                fontFamily:
-                  review === ""
-                    ? fonts.nanumBarunGothicUL
-                    : fonts.nanumBarunGothic,
-                color: review === "" ? "#707070" : "#000000"
-              }}
-            >
-              {review === "" ? `교수 평가를 10자 이상 작성해주세요!` : review}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <ProgressView step={7} />
-
-        <NextBtn
-          text={`완료`}
-          valueEmpty={reviewLength > 10 ? false : true}
-          onPress={() => {
-            setProfessorInfoData({
-              professorInfoIndex: index,
-              lecturePower: props.navigation.state.params.LecturePower,
-              homework: props.navigation.state.params.Homework,
-              elasticity: props.navigation.state.params.Elasticity,
-              communication: props.navigation.state.params.Communication,
-              recommendation: props.navigation.state.params.Recommendation,
-              grade: props.navigation.state.params.Grade,
-              content: review
-            });
-
-            props.reply.length === 0
-              ? professorInfoInsert()
-              : professorInfoUpdate();
-          }}
-        />
-      </ScrollView>
-
-      {/* 테스트 필요 */}
       <KeyboardAvoidingView
+        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : ""}
         keyboardVerticalOffset={
           Platform.OS === "ios" ? widthPercentageToDP(150) : 0
         }
         enabled
       >
-        <WriteContainer>
-          <TextInputContainer>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <AnonymousButton disabled={true} anonymous={anonymous} />
-              {anonymous == 0 ? (
-                <AnonymousOFFText>익명</AnonymousOFFText>
-              ) : (
-                <AnonymousONText>익명</AnonymousONText>
-              )}
-            </View>
+        <ScrollView
+          style={{ width: widthPercentageToDP(375) }}
+          keyboardShouldPersistTaps="never"
+        >
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: widthPercentageToDP(22),
+              marginBottom: widthPercentageToDP(50),
+              paddingTop: widthPercentageToDP(33),
+              height: widthPercentageToDP(295)
+            }}
+          >
             <TextInput
-              ref={input => {
-                setTextInput(input);
+              style={{
+                fontSize: widthPercentageToDP(14),
+                fontFamily:
+                  review === ""
+                    ? fonts.nanumBarunGothicUL
+                    : fonts.nanumBarunGothic
               }}
-              style={styles.textInput}
+              scrollEnabled={true}
               underlineColorAndroid="transparent"
               onChangeText={review => setReview(review)}
-              // onFocus={() => this.setState({ emoji: false })}
-              placeholder={`댓글을 작성해주세요.`}
-              placeholderTextColor={"#929292"}
               value={review}
+              placeholder="교수 평가를 10자 이상 작성해주세요!"
+              placeholderTextColor={"#707070"}
               maxLength={1000}
-              numberOfLines={1}
               autoCapitalize={"none"}
               multiline={true}
             />
-          </TextInputContainer>
-          <WriteButton
-            // no_click={this.state.no_click}
-            handler={async () => {
-              Keyboard.dismiss();
+          </View>
+
+          <ProgressView step={7} />
+
+          <NextBtn
+            text={`완료`}
+            valueEmpty={reviewLength > 10 ? false : true}
+            onPress={() => {
+              setProfessorInfoData({
+                professorInfoIndex: index,
+                lecturePower: props.navigation.state.params.LecturePower,
+                homework: props.navigation.state.params.Homework,
+                elasticity: props.navigation.state.params.Elasticity,
+                communication: props.navigation.state.params.Communication,
+                recommendation: props.navigation.state.params.Recommendation,
+                grade: props.navigation.state.params.Grade,
+                content: review
+              });
+
+              props.reply.length === 0
+                ? professorInfoInsert()
+                : professorInfoUpdate();
             }}
           />
-        </WriteContainer>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

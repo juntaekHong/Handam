@@ -19,6 +19,7 @@ import {
 } from "../../components/professor/View";
 import { BackBtn, EvaluationBtn } from "../../components/professor/Button";
 import { TitleNameText, NoticModalText } from "../../components/professor/Text";
+import { CustomModalBlackText } from "../../components/myInfo/Text";
 import { widthPercentageToDP } from "../../utils/util";
 import { ProfessorActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
@@ -35,7 +36,9 @@ class ProfessorDetail extends React.Component {
       select: "score",
       professorInfoIndex: null,
       // 평가하기 클릭 시, 작성 유의사항 알림 모달
-      noticeModal: false
+      noticeModal: false,
+      // 평가 중복 작성 시, 알림 모달
+      duplicateCheckModal: false
     };
   }
 
@@ -113,6 +116,33 @@ class ProfessorDetail extends React.Component {
     ) : (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
         <CustomModal
+          width={295}
+          height={201.9}
+          children={
+            <CustomModalBlackText
+              style={{ marginBottom: widthPercentageToDP(5) }}
+            >
+              {"이미 평가한 교수님입니다."}
+            </CustomModalBlackText>
+          }
+          visible={this.state.duplicateCheckModal}
+          renderFooter={() => {
+            return (
+              <NoticeFooterView
+                disabled={false}
+                onPress={async () => {
+                  this.setState({ duplicateCheckModal: false });
+                }}
+              >
+                <NoticModalText size={20} color={"#ffffff"}>
+                  확인
+                </NoticModalText>
+              </NoticeFooterView>
+            );
+          }}
+          closeHandler={() => this.setState({ duplicateCheckModal: false })}
+        />
+        <CustomModal
           width={292}
           height={368}
           children={
@@ -153,7 +183,19 @@ class ProfessorDetail extends React.Component {
           <TitleNameText>교수평가</TitleNameText>
           <EvaluationBtn
             Evaluation={() => {
-              this.setState({ noticeModal: true });
+              let duplicateCheck = this.props.my_write_professor_list.findIndex(
+                item => {
+                  return (
+                    item.professorIndex === this.state.currentProfessorIndex
+                  );
+                }
+              );
+
+              if (duplicateCheck !== -1) {
+                this.setState({ duplicateCheckModal: true });
+              } else {
+                this.setState({ noticeModal: true });
+              }
             }}
           />
         </ProfessorTopView>

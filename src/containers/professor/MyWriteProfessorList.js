@@ -60,7 +60,13 @@ class MyWriteProfessorList extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: "#f8f8f8",
+          marginBottom: widthPercentageToDP(10)
+        }}
+      >
         {this._renderListHeader()}
         <MyWriteProfessorListView
           data={this.props.my_write_professor_list}
