@@ -96,6 +96,8 @@ const ProfessorEvalution7 = props => {
           professorIndex: props.navigation.state.params.professorIndex
         });
 
+        ProfessorActions.myProfessorReplyPostList();
+
         let timeout = setInterval(() => {
           setAlertMdoal(false);
           clearTimeout(timeout);
