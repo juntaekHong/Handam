@@ -15,8 +15,7 @@ import {
     ProfessorNameText,
     ProfessorInfoText,
     AvgStarText,
-    TitleNameText,
-    EvaluationTitleText, StepInfoText, RecommendText, MyWriteProfessorText, NonResultText
+    EvaluationTitleText, StepInfoText, RecommendText, MyWriteProfessorText, NonResultText, NoticModalText
 } from "./Text";
 import {View, Text, FlatList, processColor, Image, BackHandler, TouchableOpacity, Animated, StyleSheet, Platform} from "react-native";
 import fonts from "../../configs/fonts";
@@ -27,6 +26,7 @@ import {ReplyView, ReportDetailBody} from "../community/View";
 import * as Progress from "react-native-progress";
 import {ProfessorActions} from "../../store/actionCreator";
 import {BottomMenuModal, CustomModal} from "../common/Modal";
+import { CustomModalBlackText } from "../../components/myInfo/Text";
 import {AlertModal} from "../community/Modal";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import {
@@ -715,6 +715,7 @@ export const ProfessorReplyListView = props => {
     const [isGoodList, setIsGoodList] = useState(props.reply);
     const [checkLoading, setCheckLoading] = useState(false);
     const [reRoad, setReRoad] = useState(props.professorInfoIndex);
+    const [deleteModal, setDeleteModal] = useState(false);
 
     useEffect(() => {
         this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -754,8 +755,7 @@ export const ProfessorReplyListView = props => {
     };
 
     const deleteReply = async () => {
-        setAlertText("해당 댓글를 삭제하였습니다.");
-        setAlertModal(true);
+        setDeleteModal(false);
 
         await ProfessorActions.deleteProfessorReply(replyIndex);
         await ProfessorActions.professorDetailListInitHandle();
@@ -766,13 +766,8 @@ export const ProfessorReplyListView = props => {
         setReplyIndex(null);
 
         let timeout = setInterval(() => {
-            setAlertModal(false);
-            setAlertText(null);
             clearTimeout(timeout);
           }, 1500);
-    };
-
-    const reportReply = () => {
     };
 
     const handleReportIndex = index => {
@@ -804,11 +799,35 @@ export const ProfessorReplyListView = props => {
                 visible={bottomModal}
                 handler={() => {setBottomModal(false)}}
                 updateHandler={() => {updateReply();}}
-                deleteHandler={() => {deleteReply();}}
+                deleteHandler={() => {setDeleteModal(true);}}
                 reportHandler={() => {setReportModal(true);}}
                 who={who}
                 activeOpacity={0.8}
             />
+            <CustomModal
+            height={201.9}
+            children={
+              <CustomModalBlackText style={{marginBottom: widthPercentageToDP(5)}}>
+                해당 평가를 삭제하겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={deleteModal}
+            renderFooter={() => {
+                return (
+                  <NoticeFooterView
+                    disabled={false}
+                    onPress={async () => {
+                        deleteReply();
+                    }}
+                  >
+                    <NoticModalText size={20} color={"#ffffff"}>
+                      확인
+                    </NoticModalText>
+                  </NoticeFooterView>
+                );
+              }}
+            closeHandler={() => {setDeleteModal(false);}}
+          />
             <AlertModal
                 visible={alertModal}
                 text={alertText}
@@ -995,6 +1014,7 @@ export const MyWriteProfessorListView = props => {
     const alertText = "내가 쓴 교수평가를 삭제하였습니다.";
     const [alertModal, setAletModal] = useState(false);
     const [isGoodList, setIsGoodList] = useState(props.data);
+    const [deleteModal, setDeleteModal] = useState(false);
 
     useEffect(() => {
         this.backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -1079,10 +1099,10 @@ export const MyWriteProfessorListView = props => {
                     }}
                     isReplyButton={false}
                     isdotsButton={true}
-                    handler={() => {
+                    handler={async () => {
                         // dotsButton 이벤트
-                        setBottomModal(true);
-                        setReplyIndex(item.professorReplyIndex);
+                        await setReplyIndex(item.professorReplyIndex);
+                        await setBottomModal(true);
                     }}
                     writerName={props.myNickName}
                     data={item}
@@ -1092,17 +1112,12 @@ export const MyWriteProfessorListView = props => {
     };
 
     const deleteReply = async () => {
-        setAletModal(true);
+        setDeleteModal(false);
 
         await ProfessorActions.deleteProfessorReply(replyIndex);
         await ProfessorActions.myProfessorReplyPostList();
 
         setReplyIndex(null);
-        
-        let timeout = setInterval(() => {
-            setAletModal(false);
-            clearTimeout(timeout);
-          }, 1500);
     };
 
     const updateReplyData = async () => {
@@ -1120,10 +1135,34 @@ export const MyWriteProfessorListView = props => {
                 visible={bottomModal}
                 handler={() => {setReplyIndex(null); setBottomModal(false);}}
                 updateHandler={() => updateReplyData()}
-                deleteHandler={() => deleteReply()}
+                deleteHandler={() => {setDeleteModal(true); setReplyIndex(replyIndex)}}
                 who={who}
                 activeOpacity={0.8}
             />
+            <CustomModal
+            height={201.9}
+            children={
+              <CustomModalBlackText style={{marginBottom: widthPercentageToDP(5)}}>
+                해당 평가를 삭제하겠습니까?
+              </CustomModalBlackText>
+            }
+            visible={deleteModal}
+            renderFooter={() => {
+                return (
+                  <NoticeFooterView
+                    disabled={false}
+                    onPress={async () => {
+                        deleteReply()
+                    }}
+                  >
+                    <NoticModalText size={20} color={"#ffffff"}>
+                      확인
+                    </NoticModalText>
+                  </NoticeFooterView>
+                );
+              }}
+            closeHandler={() => {setDeleteModal(false);}}
+          />
             <AlertModal
                 visible={alertModal}
                 text={alertText}
