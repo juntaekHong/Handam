@@ -525,10 +525,9 @@ export const ProfessorDetailView = props => {
                   keyExtractor={(item, index) => index.toString()}
                   ListHeaderComponent={_renderListHeader}
                   renderItem={({ item, index }) => {
-
                       return (
                           <ProfessorDetail style={select === "score" ? {height: widthPercentageToDP(520)} : {height: widthPercentageToDP(216)}} key={index}>
-                              <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23), borderBottomWidth: 0}}>
+                              <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23), borderBottomWidth: 0, marginBottom: widthPercentageToDP(15)}}>
                                   <View>
                                       <Text style={{fontSize: widthPercentageToDP(16), fontFamily: fonts.nanumBarunGothicB, color: '#000000'}}>{item.professorName} 교수님</Text>
                                   </View>
@@ -541,7 +540,7 @@ export const ProfessorDetailView = props => {
                                                         <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                     </TagView>
                                                     <TagView>
-                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
+                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                     </TagView>
                                                 </View>
                                                 :
@@ -556,7 +555,7 @@ export const ProfessorDetailView = props => {
                                                             <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track[0].length > item.track[1].length ? item.track[1] : item.track[0]}</ProfessorInfoText>
                                                         </TagView>
                                                         <TagView>
-                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                         </TagView>
                                                     </View>
                                                 </View>
@@ -566,7 +565,7 @@ export const ProfessorDetailView = props => {
                                                     <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                 </TagView>
                                                 <TagView>
-                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
+                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                 </TagView>
                                             </View>
                                       }
@@ -602,7 +601,7 @@ export const ProfessorDetailView = props => {
                                       touchEnabled={false}
                                       chartDescription={{text : ''}}
                                       xAxis={{valueFormatter: ["과제 만족도","소통","학점비율","강의수준","융통성"], textSize: widthPercentageToDP(13), fontFamily: fonts.nanumBarunGothicUL}}
-                                      yAxis={{enabled: false, granularity: 1, axisMinimum: 0, axisMaximum: Platform.OS === "ios" ? 3 : 2}}
+                                      yAxis={{enabled: false, granularity: 1, axisMinimum: 0, axisMaximum: Platform.OS === "ios" ? 3 : 3}}
                                       skipWebLineCount={5}
                                       legend={{ enabled: false }}
                                       data={{
