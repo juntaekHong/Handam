@@ -207,8 +207,11 @@ class ProfessorDetail extends React.Component {
             myWriteReplySearch={this.props.professor_reply_list}
             myNickName={this.props.userNickName}
             select={this.state.select}
-            scoreOnPress={() => {
+            scoreOnPress={async () => {
               this.setState({ select: "score" });
+              await ProfessorActions.pageListProfessorReply(
+                this.state.professorInfoIndex
+              );
             }}
             replyOnPress={() => {
               this.setState({ select: "reply" });
@@ -229,7 +232,12 @@ class ProfessorDetail extends React.Component {
             ) : (
               <Swipeable
                 renderLeftActions={this.renderLeftActions}
-                onSwipeableLeftOpen={() => this.setState({ select: "score" })}
+                onSwipeableLeftOpen={async () => {
+                  await this.setState({ select: "score" });
+                  await ProfessorActions.pageListProfessorReply(
+                    this.state.professorInfoIndex
+                  );
+                }}
               >
                 <ProfessorReplyListView
                   reply={this.props.professor_reply_list}
