@@ -94,11 +94,14 @@ class Professor extends React.Component {
     await this.setState({ filter: false });
 
     let professor = this.state.selectProfessor;
+    let track = this.state.selectTrack.replace(/ /gi, "");
 
     if (this.state.selectProfessor === "해당없음") {
       professor = "";
     } else {
-      professor = professor.substring(0, professor.length - 4);
+      professor = professor
+        .substring(0, professor.length - 4)
+        .replace(/ /gi, "");
     }
 
     await ProfessorActions.professorListInitHandle();
@@ -107,7 +110,7 @@ class Professor extends React.Component {
     await ProfessorActions.ProfessorPageList(
       1,
       100,
-      this.state.selectTrack + "",
+      track + "",
       professor + ""
     );
     await this.setState({ filterSearch: true });
@@ -140,7 +143,8 @@ class Professor extends React.Component {
     ) {
       await this.setState({ selectProfessor: "해당없음" });
     }
-    await this.setState({ selectTrack: track });
+
+    await this.setState({ selectTrack: track.replace(/ /gi, "") });
     await this.setState({ trackFilter: false });
 
     await ProfessorActions.professorFilterListInitHandle();
@@ -195,16 +199,20 @@ class Professor extends React.Component {
               await this.setState({ filterSearch: true });
               await ProfessorActions.professorListInitHandle();
 
+              let text = this.state.inputText.replace(/ /gi, "");
+
               const promise1 = ProfessorActions.ProfessorPageList(
                 1,
                 100,
-                this.state.inputText + "",
+                text + "",
                 ""
               );
 
               Promise.all([promise1]).then(() => {
                 this.setState({ searching: false });
               });
+            } else {
+              this.setState({ inputText: "" });
             }
           }}
         />

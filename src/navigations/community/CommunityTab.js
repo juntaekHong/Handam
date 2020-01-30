@@ -13,11 +13,11 @@ export default createMaterialTopTabNavigator(
     Restaurant: {
       screen: Restaurant,
       navigationOptions: { tabBarLabel: "한슐랭" }
+    },
+    Professor: {
+      screen: Professor,
+      navigationOptions: { tabBarLabel: "교수평가" }
     }
-    // Professor: {
-    //   screen: Professor,
-    //   navigationOptions: { tabBarLabel: "교수평가" }
-    // }
   },
   {
     initialRouteName: "Talk", // 처음 보여질 탭
