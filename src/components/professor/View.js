@@ -278,7 +278,7 @@ export const ProfessorListView = props => {
                         <AvgStarText style={{fontSize: widthPercentageToDP(7), fontFamily: fonts.nanumBarunGothicUL, color: '#565a61'}}> / 5.0</AvgStarText>
                     </AvgGradeStarView>
                     <DetailView>
-                        <ProfessorInfoText numberOfLines={2}>트랙: {item.track.length === 2 ? item.track[0] + `\n` +  item.track[1] : item.track}</ProfessorInfoText>
+                        <ProfessorInfoText numberOfLines={2}>트랙: {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: widthPercentageToDP(14)}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 {item.isGood === true ? <RecommendImg/> : <RecommendImg2/>} 
@@ -404,6 +404,7 @@ const TagView = styled.View`
 const NoticeModal = styled.View`
   margin-left: ${widthPercentageToDP(32)};
   margin-right: ${widthPercentageToDP(31)};
+  margin-bottom: ${widthPercentageToDP(30)};
 `;
 
 export const NoticeModalView = props => {
@@ -533,14 +534,14 @@ export const ProfessorDetailView = props => {
                                   </View>
                                   <View style={{marginTop: widthPercentageToDP(13)}}>
                                       {
-                                          item.track.length === 2 && (item.track[0].length + item.track[1].length)> 22 ?
-                                            (item.track[0].length + item.track[1].length) <= 22 ?
+                                          item.track.length === 2 && (item.track[0].length + item.track[1].length)> 19 ?
+                                            (item.track[0].length + item.track[1].length) <= 19 ?
                                                 <View style={{flexDirection: 'row'}}>
                                                     <TagView style={{marginRight: widthPercentageToDP(8)}}>
                                                         <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                     </TagView>
                                                     <TagView>
-                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
                                                     </TagView>
                                                 </View>
                                                 :
@@ -555,7 +556,7 @@ export const ProfessorDetailView = props => {
                                                             <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track[0].length > item.track[1].length ? item.track[1] : item.track[0]}</ProfessorInfoText>
                                                         </TagView>
                                                         <TagView>
-                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
                                                         </TagView>
                                                     </View>
                                                 </View>
@@ -565,16 +566,16 @@ export const ProfessorDetailView = props => {
                                                     <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                 </TagView>
                                                 <TagView>
-                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "정보 없음" : item.address}</ProfessorInfoText>
+                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.address === undefined ? "연구동 정보 없음" : item.address}</ProfessorInfoText>
                                                 </TagView>
                                             </View>
                                       }
                                       <View style={{flexDirection: 'row', marginTop: widthPercentageToDP(6)}}>
                                           <TagView style={{marginRight: widthPercentageToDP(8)}}>
-                                              <ProfessorInfoText numberOfLines={1} style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.email}</ProfessorInfoText>
+                                              <ProfessorInfoText numberOfLines={1} style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.email === null ? "이메일 정보 없음" : item.email}</ProfessorInfoText>
                                           </TagView>
                                           <TagView>
-                                              <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.tel}</ProfessorInfoText>
+                                              <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.tel === null ? "번호 정보 없음" : item.tel }</ProfessorInfoText>
                                           </TagView>
                                       </View>
                                   </View>
