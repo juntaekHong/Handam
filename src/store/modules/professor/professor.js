@@ -190,7 +190,7 @@ export const FilterProfessorList = (page, count, filter1) => async dispatch => {
     let Keyword = filter1 === undefined || filter1 === "" ? "" : filter1;
 
     if (Keyword.indexOf("트랙") != -1 || Keyword.indexOf("전공") != -1) {
-      Keyword = Keyword.substring(0, Keyword.length - 3);
+      Keyword = Keyword.substring(0, Keyword.length - 2);
     }
 
     let url = `/professorInfo/?page=${page}&count=${count}&filter=trackName like ${Keyword}`;
