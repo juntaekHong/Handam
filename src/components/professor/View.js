@@ -386,7 +386,7 @@ const ReviewResultCount = styled.View`
   flex-direction: row;
   align-items: center;
   padding-left: ${widthPercentageToDP(20)};
-  background-color: #ebebeb;
+  background-color: #f8f8f8;
   height: ${widthPercentageToDP(45)};
 `;
 
@@ -526,7 +526,7 @@ export const ProfessorDetailView = props => {
                   ListHeaderComponent={_renderListHeader}
                   renderItem={({ item, index }) => {
                       return (
-                          <ProfessorDetail style={select === "score" ? {height: widthPercentageToDP(520)} : {height: widthPercentageToDP(216)}} key={index}>
+                          <ProfessorDetail style={select === "score" ? {height: widthPercentageToDP(535)} : {height: widthPercentageToDP(216)}} key={index}>
                               <DetailDataView style={{flexDirection: 'column', paddingLeft: widthPercentageToDP(23), borderBottomWidth: 0, marginBottom: widthPercentageToDP(15)}}>
                                   <View>
                                       <Text style={{fontSize: widthPercentageToDP(16), fontFamily: fonts.nanumBarunGothicB, color: '#000000'}}>{item.professorName} 교수님</Text>
@@ -540,7 +540,7 @@ export const ProfessorDetailView = props => {
                                                         <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                     </TagView>
                                                     <TagView>
-                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
+                                                        <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === null ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                     </TagView>
                                                 </View>
                                                 :
@@ -555,7 +555,7 @@ export const ProfessorDetailView = props => {
                                                             <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track[0].length > item.track[1].length ? item.track[1] : item.track[0]}</ProfessorInfoText>
                                                         </TagView>
                                                         <TagView>
-                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
+                                                            <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === null ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                         </TagView>
                                                     </View>
                                                 </View>
@@ -565,7 +565,7 @@ export const ProfessorDetailView = props => {
                                                     <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># {item.track.length === 2 ? item.track[0] + `/` +  item.track[1] : item.track}</ProfessorInfoText>
                                                 </TagView>
                                                 <TagView>
-                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === undefined ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
+                                                    <ProfessorInfoText style={{paddingHorizontal: widthPercentageToDP(8), color: '#000000'}}># { item.location === null ? "연구동 정보 없음" : "연구동 " + item.location}</ProfessorInfoText>
                                                 </TagView>
                                             </View>
                                       }
@@ -775,9 +775,6 @@ export const ProfessorReplyListView = props => {
     };
 
     const replyLikeUpdate = async (professorReplyIndex) => {
-
-        await setCheckLoading(true);
-
         setIsGoodList(isGoodList.map((item) => {
             if(item.professorReplyIndex === professorReplyIndex) {
                 if(item.isGood === true ) {
@@ -789,8 +786,6 @@ export const ProfessorReplyListView = props => {
                 return item;
             }
         }));
-
-        await setCheckLoading(false);
     };
 
     return (
@@ -881,10 +876,12 @@ export const ProfessorReplyListView = props => {
                                         isGood: isGoodList[index].isGood === true ? false : true,
                                     };
 
-                                    let promise1 = ProfessorActions.putProfessorReplySubscriber(replyData);
+                                    const promise1 = ProfessorActions.putProfessorReplySubscriber(replyData);
+                                    const promise2 = setCheckLoading(true);
 
-                                    Promise.all([promise1]).then(async () => {
-                                        await replyLikeUpdate(item.professorReplyIndex);
+                                    Promise.all([promise1, promise2]).then(() => {
+                                        replyLikeUpdate(item.professorReplyIndex);
+                                        setCheckLoading(false);
                                     }).catch(() => {
                                         setAlertText("해당 댓글이 이미 삭제되었습니다.");
                                         setAlertModal(true);
@@ -1086,16 +1083,16 @@ export const MyWriteProfessorListView = props => {
                     isGood={item.isGood === isGoodList[index].isGood ? item.isGood : isGoodList[index].isGood}
                     goodCount={item.goodCount === isGoodList[index].goodCount ? item.goodCount : isGoodList[index].goodCount}
                     handleLike={async () => {
-                        let replyData = {
-                            professorReplyIndex: item.professorReplyIndex,
-                            isGood: isGoodList[index].isGood === true ? false : true,
-                        };
+                        // let replyData = {
+                        //     professorReplyIndex: item.professorReplyIndex,
+                        //     isGood: isGoodList[index].isGood === true ? false : true,
+                        // };
 
-                        let promise1 = ProfessorActions.putProfessorReplySubscriber(replyData);
+                        // let promise1 = ProfessorActions.putProfessorReplySubscriber(replyData);
 
-                        Promise.all([promise1]).then(async () => {
-                            await replyLikeUpdate(item.professorReplyIndex);
-                        });
+                        // Promise.all([promise1]).then(async () => {
+                        //     await replyLikeUpdate(item.professorReplyIndex);
+                        // });
                     }}
                     isReplyButton={false}
                     isdotsButton={true}
@@ -1130,7 +1127,7 @@ export const MyWriteProfessorListView = props => {
     };
 
     return (
-        <View>
+        <View style={{marginBottom: widthPercentageToDP(70)}}>
             <BottomMenuModal
                 visible={bottomModal}
                 handler={() => {setReplyIndex(null); setBottomModal(false);}}

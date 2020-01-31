@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -9,32 +8,12 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  View,
-  TouchableOpacity
+  View
 } from "react-native";
 import { NextBtn } from "../../components/professor/Button";
-import {
-  EvaluationHeaderView,
-  ProgressView,
-  ReviewBottomView
-} from "../../components/professor/View";
+import { ProgressView } from "../../components/professor/View";
 import { timeSince, widthPercentageToDP } from "../../utils/util";
-import {
-  TextInputContainer,
-  WriteContainer
-} from "../../components/community/View";
-import {
-  AnonymousButton,
-  WriteButton
-} from "../../components/community/Button";
-import { AnonymousOFFText, AnonymousONText } from "../../components/talk/Text";
 import fonts from "../../configs/fonts";
-import {
-  C_ContentText,
-  C_CreatedAtText
-} from "../../components/community/Text";
-import Hyperlink from "react-native-hyperlink";
-import ImageCapInset from "rn-imagecapinsets";
 import { ProfessorActions } from "../../store/actionCreator";
 import { connect } from "react-redux";
 import { AlertModal } from "../../components/community/Modal";
@@ -48,7 +27,19 @@ const ProfessorEvalution7 = props => {
   const [review, setReview] =
     props.reply.length !== 0 ? useState(props.reply[0].content) : useState("");
   const [reviewLength, setReviewLength] = useState(0);
-  const [professorInfoData, setProfessorInfoData] = useState([]);
+  const [professorInfoData, setProfessorInfoData] =
+    props.reply.length !== 0
+      ? useState({
+          professorInfoIndex: index,
+          lecturePower: props.navigation.state.params.LecturePower,
+          homework: props.navigation.state.params.Homework,
+          elasticity: props.navigation.state.params.Elasticity,
+          communication: props.navigation.state.params.Communication,
+          recommendation: props.navigation.state.params.Recommendation,
+          grade: props.navigation.state.params.Grade,
+          content: review
+        })
+      : useState([]);
   const [loading, setLoading] = useState(false);
   const [textInput, setTextInput] = useState(props);
   const [alertModal, setAlertMdoal] = useState(false);
@@ -203,6 +194,8 @@ const ProfessorEvalution7 = props => {
             text={`완료`}
             valueEmpty={reviewLength > 10 ? false : true}
             onPress={() => {
+              Keyboard.dismiss();
+
               setProfessorInfoData({
                 professorInfoIndex: index,
                 lecturePower: props.navigation.state.params.LecturePower,
