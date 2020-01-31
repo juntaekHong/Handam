@@ -11,14 +11,16 @@ import {
   GoodImg,
   BadImg,
   GoodCheckImg,
-  BadCheckImg
+  BadCheckImg,
+  RefreshImg
 } from "./Image";
 import fonts from "../../configs/fonts";
 import { View, Text } from "react-native";
 import { EvaluationText, ModalText } from "./Text";
 
-const FilterContainer = styled.View`
-  align-items: flex-end;
+export const Container = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
   margin-top: ${widthPercentageToDP(6)};
   margin-right: ${widthPercentageToDP(23)};
 `;
@@ -27,11 +29,17 @@ const Filter = styled.TouchableOpacity``;
 
 export const FilterBtn = props => {
   return (
-    <FilterContainer>
-      <Filter onPress={() => props.handler()}>
-        <FilterImg2 />
-      </Filter>
-    </FilterContainer>
+    <Filter onPress={() => props.handler()}>
+      <FilterImg2 />
+    </Filter>
+  );
+};
+
+export const RefreshBtn = props => {
+  return (
+    <Filter onPress={() => props.handler()}>
+      <RefreshImg />
+    </Filter>
   );
 };
 

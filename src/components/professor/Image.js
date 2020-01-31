@@ -27,13 +27,19 @@ export const FilterImg = () => {
 };
 
 const Filter2 = styled.Image`
-  width: ${widthPercentageToDP(49)};
-  height: ${widthPercentageToDP(49)};
+  width: ${widthPercentageToDP(58)};
+  height: ${widthPercentageToDP(58)};
 `;
 
 export const FilterImg2 = () => {
   return (
-    <Filter2 source={require("../../../assets/image/professor/filter2.png")} />
+    <Filter2 source={require("../../../assets/image/professor/filter-2.png")} />
+  );
+};
+
+export const RefreshImg = () => {
+  return (
+    <Filter2 source={require("../../../assets/image/professor/refresh.png")} />
   );
 };
 
