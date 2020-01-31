@@ -18,6 +18,14 @@ import { ProfessorActions } from "../../store/actionCreator";
 import { connect } from "react-redux";
 import { AlertModal } from "../../components/community/Modal";
 
+checkSpace = str => {
+  if (str.replace(/(\s*)/g, "") == "") {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 const ProfessorEvalution7 = props => {
   const [anonymous, setAnonymous] = useState(1);
   const [index, setIndex] =
@@ -192,7 +200,9 @@ const ProfessorEvalution7 = props => {
 
           <NextBtn
             text={`완료`}
-            valueEmpty={reviewLength > 10 ? false : true}
+            valueEmpty={
+              review.trim().length >= 10 && checkSpace(review) ? false : true
+            }
             onPress={() => {
               Keyboard.dismiss();
 
