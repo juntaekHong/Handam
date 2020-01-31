@@ -63,8 +63,7 @@ class MyWriteProfessorList extends React.Component {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: "#f8f8f8",
-          marginBottom: widthPercentageToDP(10)
+          backgroundColor: "#f8f8f8"
         }}
       >
         {this._renderListHeader()}

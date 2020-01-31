@@ -72,8 +72,8 @@ const ProfessorEvalution5 = props => {
                 LecturePower: props.navigation.state.params.LecturePower,
                 Homework: props.navigation.state.params.Homework,
                 Elasticity: props.navigation.state.params.Elasticity,
-                Communication: props.navigation.state.params.Communication,
-                Grade: objectValue
+                Grade: props.navigation.state.params.Grade,
+                Communication: objectValue
               })
             }
           />
@@ -88,8 +88,8 @@ const ProfessorEvalution5 = props => {
                 LecturePower: props.navigation.state.params.LecturePower,
                 Homework: props.navigation.state.params.Homework,
                 Elasticity: props.navigation.state.params.Elasticity,
-                Communication: props.navigation.state.params.Communication,
-                Grade: objectValue
+                Grade: props.navigation.state.params.Grade,
+                Communication: objectValue
               })
             }
           />
@@ -103,8 +103,8 @@ const ProfessorEvalution5 = props => {
                 LecturePower: props.navigation.state.params.LecturePower,
                 Homework: props.navigation.state.params.Homework,
                 Elasticity: props.navigation.state.params.Elasticity,
-                Communication: props.navigation.state.params.Communication,
-                Grade: objectValue
+                Grade: props.navigation.state.params.Grade,
+                Communication: objectValue
               })
             }
           />
