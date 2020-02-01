@@ -22,7 +22,11 @@ import {
 import { ProfessorActions } from "../../store/actionCreator";
 import { UIActivityIndicator } from "react-native-indicators";
 import { widthPercentageToDP } from "../../utils/util";
-import { FilterBtn } from "../../components/professor/Button";
+import {
+  Container,
+  FilterBtn,
+  RefreshBtn
+} from "../../components/professor/Button";
 
 class Professor extends React.Component {
   constructor(props) {
@@ -226,11 +230,31 @@ class Professor extends React.Component {
             }}
           />
         )}
-        <FilterBtn
-          handler={() => {
-            this.FilterSearch();
-          }}
-        />
+        <Container>
+          <FilterBtn
+            handler={() => {
+              this.FilterSearch();
+            }}
+          />
+          <RefreshBtn
+            handler={async () => {
+              this.setState({ loading: true });
+              this.setState({ inputText: "" });
+              this.setState({ filterSearch: false });
+              this.setState({ selectTrack: "해당없음" });
+              this.setState({ selectProfessor: "해당없음" });
+              await ProfessorActions.professorListInitHandle();
+
+              await ProfessorActions.ProfessorPageList(
+                this.props.professor_list.length / 6,
+                6,
+                "",
+                ""
+              );
+              this.setState({ loading: false });
+            }}
+          />
+        </Container>
         <DivisionView
           filterSearch={this.state.filterSearch}
           count={this.props.professor_list.length}

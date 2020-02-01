@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 import { EvaluationHeaderView } from "./View";
 import navigators from "../../utils/navigators";
 
@@ -17,6 +18,8 @@ export const NavigationTopView = ({ props, from, navigationState }) => {
     <EvaluationHeaderView
       title={title[navigationState.index]}
       goback={() => {
+        title === "평가 리뷰 작성" ? Keyboard.dismiss() : null;
+
         navigationState.index !== 0
           ? navigators.navigate(`ProfessorEvaluation${navigationState.index}`)
           : navigators.navigateBack();
@@ -26,6 +29,8 @@ export const NavigationTopView = ({ props, from, navigationState }) => {
         //   ? props.navigation.navigate("ProfessorDetail")
         //   : props.navigation.navigate("MyWriteProfessorList");
         // redux connection 문제로 일단 임시로 첫페이지로 이동 후, goBack하는 방법으로 해결함.
+        title === "평가 리뷰 작성" ? Keyboard.dismiss() : null;
+
         navigators.navigate(`ProfessorEvaluation${1}`);
         navigators.navigateBack();
       }}
