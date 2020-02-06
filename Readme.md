@@ -4,12 +4,6 @@
 
 ### 설치 및 실행
 
-- git
-
-```sh
-$ git clone https://Guyclops@bitbucket.org/Guyclops/handamclient.git
-```
-
 - npm install
 
 ```
